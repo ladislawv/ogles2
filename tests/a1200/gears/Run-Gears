@@ -1,0 +1,18 @@
+; Run-Gears - es2gears on ogles2.library, until Esc in its window or Ctrl-C.
+;   CD to this directory, then:   Execute Run-Gears
+; Nothing is installed: libs/ is added to LIBS: while it runs.
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-gears directory first."
+  Quit 20
+EndIf
+Assign GEARS: ""
+Assign LIBS: GEARS:libs ADD
+; An older ogles2.library still in memory would be used instead of this one.
+Avail FLUSH >NIL:
+SetEnv CORPUS_FRAMES 0
+Echo "es2gears: three gears turning. Esc in its window (or Ctrl-C) ends it."
+GEARS:bin/es2gears
+UnSetEnv CORPUS_FRAMES
+Assign LIBS: GEARS:libs REMOVE
+Assign GEARS:

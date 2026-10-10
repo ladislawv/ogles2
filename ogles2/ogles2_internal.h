@@ -1,0 +1,403 @@
+#ifndef OGLES2_INTERNAL_H
+#define OGLES2_INTERNAL_H
+/*
+ * ogles2.library internals shared by the library's own files.
+ */
+#include <exec/types.h>
+#include <exec/libraries.h>
+#include <exec/semaphores.h>
+#include <dos/dos.h>
+#include <graphics/rastport.h>
+#include <utility/tagitem.h>
+#include "ogles2_api.h" /* generated: dispatch struct and every ogles2_* prototype */
+
+#define OGLES2_LIB_VERSION  1
+#define OGLES2_LIB_REVISION 0
+#define OGLES2_LIB_DATE     "10.10.2026"
+
+struct OGLES2Library
+{
+    struct Library lib;
+    BPTR segList;
+    struct SignalSemaphore lock; /* library-wide state: context list, log */
+};
+
+/* A GL context. Opaque to clients (struct OGLES2Context in the headers). */
+#define OGLES2_CONTEXT_MAGIC 0x474c4532UL /* "GLE2" */
+#define OGLES2_MAX_VERTEX_ATTRIBS 16
+#define OGLES2_MAX_TEXTURE_UNITS 16 /* plan 7.6 */
+#define OGLES2_MAX_VIEWPORT 4096 /* V3D_MAX_FRAMEBUFFER_SIZE on 4.2; GL_MAX_VIEWPORT_DIMS */
+
+/* glEnable capabilities, bits of OGLES2State.caps */
+#define OGLES2_CAP_CULL_FACE                (1UL << 0)
+#define OGLES2_CAP_BLEND                    (1UL << 1)
+#define OGLES2_CAP_DITHER                   (1UL << 2)
+#define OGLES2_CAP_STENCIL_TEST             (1UL << 3)
+#define OGLES2_CAP_DEPTH_TEST               (1UL << 4)
+#define OGLES2_CAP_SCISSOR_TEST             (1UL << 5)
+#define OGLES2_CAP_POLYGON_OFFSET_FILL      (1UL << 6)
+#define OGLES2_CAP_SAMPLE_ALPHA_TO_COVERAGE (1UL << 7)
+#define OGLES2_CAP_SAMPLE_COVERAGE          (1UL << 8)
+
+/* Fixed-function state (state.c), GLES 2.0 defaults set by ogles2_state_init. */
+struct OGLES2State
+{
+    ULONG caps;                     /* OGLES2_CAP_* bits (glEnable) */
+    GLboolean depth_mask;
+    GLboolean color_mask[4];
+    GLboolean sample_coverage_invert;
+    GLfloat clear_color[4];
+    GLfloat clear_depth;
+    GLfloat line_width;
+    GLfloat depth_range[2];         /* near, far */
+    GLfloat polygon_offset_factor, polygon_offset_units;
+    GLfloat sample_coverage_value;
+    GLfloat attrib[OGLES2_MAX_VERTEX_ATTRIBS][4]; /* current generic attributes */
+    GLenum generate_mipmap_hint;    /* glHint, the only target GLES2 has */
+    GLenum cull_face_mode, front_face, depth_func;
+    GLenum blend_src_rgb, blend_dst_rgb, blend_src_alpha, blend_dst_alpha;
+    GLenum blend_eq_rgb, blend_eq_alpha;
+    GLfloat blend_color[4];
+    /* stencil, [0] front and [1] back */
+    GLenum stencil_func[2], stencil_fail[2], stencil_zfail[2], stencil_zpass[2];
+    GLint stencil_ref[2];
+    GLuint stencil_value_mask[2], stencil_write_mask[2];
+    GLint clear_stencil;
+};
+
+struct OGLES2Buffer; /* buffer.c */
+
+/* glVertexAttribPointer state, one per generic attribute. */
+struct OGLES2Array
+{
+    GLboolean enabled, normalized;
+    GLint size;          /* 1..4 components */
+    GLenum type;
+    GLsizei stride;      /* as given; 0 = tightly packed */
+    const void *pointer; /* with a buffer: the offset into it */
+    struct OGLES2Buffer *buffer; /* the GL_ARRAY_BUFFER binding when it was set; NULL: client memory */
+};
+
+/* ---- program images (program.c, v3dp.c) ----
+ * What a linked program runs: compiled shaders plus what the driver must
+ * know to draw with them, Mesa's prog_data in short. Loaded from .v3dp files
+ * (plan section 8.3, v3dp/FORMAT.md) by v3dp.c; one is built in (PiStorm3D's
+ * smooth-shaded shaders, builtin_shaders.h), for clears drawn as rectangles. */
+
+/* Uniform recipe types: Mesa's enum quniform_contents at the validated commit
+ * (v3dp/FORMAT.md), those the runtime implements; the built-in image's own
+ * from 0x100. */
+#define OGLES2_U_CONSTANT          0
+#define OGLES2_U_UNIFORM           1
+#define OGLES2_U_VIEWPORT_X_SCALE  2
+#define OGLES2_U_VIEWPORT_Y_SCALE  3
+#define OGLES2_U_VIEWPORT_Z_OFFSET 4
+#define OGLES2_U_VIEWPORT_Z_SCALE  5
+#define OGLES2_U_TMU_CONFIG_P0     6  /* data: texture index << 24 | config bits */
+#define OGLES2_U_TMU_CONFIG_P1     7
+#define OGLES2_U_UBO_ADDR          16 /* data: unit << 24 | byte offset; unit 0 only */
+#define OGLES2_U_LINE_WIDTH        26
+#define OGLES2_U_AA_LINE_WIDTH     27
+#define OGLES2_U_BLEND_CONSTANT_R  42 /* to _A, 45 */
+#define OGLES2_U_PISTORM_VP_WIDTH  0x100 /* PiStorm3D's scale_p: viewport width in pixels */
+#define OGLES2_U_PISTORM_VP_HEIGHT 0x101 /* PiStorm3D's scale_p_y */
+
+/* Mesa's gl_state_index values at the validated commit, for STAGE_PARAMS. */
+#define OGLES2_STATE_DEPTH_RANGE        39
+#define OGLES2_STATE_FB_WPOS_Y_TRANSFORM 63
+#define OGLES2_STATE_FB_PNTC_Y_TRANSFORM 64
+
+#define OGLES2_VARIANT_VS 0 /* .v3dp VARIANT stages */
+#define OGLES2_VARIANT_CS 1 /* binning (coordinate) shader */
+#define OGLES2_VARIANT_FS 4
+
+/* One compiled shader (a .v3dp VARIANT): its key fields the runtime selects
+ * on, its prog_data, its code and its uniform recipe. */
+struct OGLES2Variant
+{
+    UBYTE stage;                  /* OGLES2_VARIANT_* */
+    UBYTE threads, single_seg;
+    /* vertex and binning */
+    UBYTE per_vertex_point_size;  /* key */
+    UBYTE separate_segments, vcm_cache_size, uses_vid, uses_iid, writes_psiz;
+    UBYTE vattr_sizes[16];
+    ULONG vpm_input_size, vpm_output_size;
+    /* fragment */
+    UBYTE is_points, is_lines;    /* key */
+    UBYTE num_inputs, writes_z, writes_z_from_fep, disable_ez, uses_center_w;
+    UBYTE uses_implicit_point_line_varyings, lock_scoreboard_on_first_thrsw, uses_pid;
+    ULONG flat_shade_flags[3], noperspective_flags[3], centroid_flags[3];
+    ULONG spill_size;
+    /* code, little-endian QPU instructions; its offset in the image's code */
+    const UBYTE *code;
+    ULONG code_bytes, code_offset;
+    UWORD nrecipe;
+    const ULONG *rtype, *rdata;
+};
+
+struct OGLES2ImageAttrib
+{
+    const char *name;
+    GLenum type;          /* GL_FLOAT_VEC3, ... (glGetActiveAttrib) */
+    UBYTE slot;           /* first vertex input slot; 0xff: not read */
+    UBYTE columns;        /* slots it takes: 1, or 2-4 for a matrix */
+};
+
+/* Where glUniform* writes one uniform in one stage's constant buffer. */
+struct OGLES2Place
+{
+    UBYTE stage;          /* 0 vertex, 1 fragment: the constant buffer */
+    UBYTE elem_stride;    /* 32-bit words between array elements */
+    UBYTE vec_stride;     /* 32-bit words between matrix columns */
+    UBYTE int_as_float;   /* Mesa's uniform_int_float format */
+    UWORD offset;         /* 32-bit words */
+};
+
+#define OGLES2_UNIFORM_SAMPLER 1
+#define OGLES2_UNIFORM_BUILTIN 2
+#define OGLES2_UNIFORM_HIDDEN  4
+
+struct OGLES2ImageUniform
+{
+    const char *name;     /* arrays without [0] (Mesa's naming) */
+    GLenum type;          /* of one element */
+    UWORD array;          /* elements, 0 if not an array */
+    UBYTE flags;          /* OGLES2_UNIFORM_* */
+    UBYTE nplaces;
+    const struct OGLES2Place *places;
+    ULONG sampler[2];     /* texture index in the vertex and fragment stage, ~0: none */
+};
+
+/* A state variable (STAGE_PARAMS kind 2): four values the runtime computes. */
+struct OGLES2StateVar
+{
+    UBYTE stage;          /* 0 vertex, 1 fragment */
+    UWORD offset;
+    UWORD state;          /* OGLES2_STATE_* */
+};
+
+struct v3d_mem;
+
+struct OGLES2Image
+{
+    const char *name;     /* for the log */
+    UBYTE hash[32];       /* the program hash (loaded images) */
+    UWORD nvariants;
+    const struct OGLES2Variant *variants;
+    UBYTE nattribs;
+    const struct OGLES2ImageAttrib *attribs;
+    UWORD nuniforms;
+    const struct OGLES2ImageUniform *uniforms;
+    UWORD cbuf_words[2];                  /* constant buffers, vertex and fragment */
+    const ULONG *cbuf_template[2];
+    UWORD nstatevars;
+    const struct OGLES2StateVar *statevars;
+    ULONG code_total;                     /* bytes of code, all variants */
+    struct v3d_mem *code_mem;             /* the code in GPU memory; NULL: built in */
+    APTR blocks;                          /* v3dp.c's allocations, to free */
+    struct OGLES2Image *next;             /* the context's program cache (program.c) */
+};
+
+/* GL shader and program objects share one name space (GLES 2.0 section 2.10). */
+#define OGLES2_OBJ_SHADER  1
+#define OGLES2_OBJ_PROGRAM 2
+
+struct OGLES2Shader
+{
+    UBYTE kind;           /* OGLES2_OBJ_SHADER */
+    BOOL delete_pending;
+    GLuint name;
+    GLenum type;          /* GL_VERTEX_SHADER, GL_FRAGMENT_SHADER */
+    char *source;         /* AllocVec'd, NUL-terminated */
+    GLboolean compiled;
+    UWORD attached;       /* programs it is attached to */
+};
+
+#define OGLES2_MAX_BINDINGS 16
+struct OGLES2Program
+{
+    UBYTE kind;           /* OGLES2_OBJ_PROGRAM */
+    BOOL delete_pending;
+    GLuint name;
+    struct OGLES2Shader *vs, *fs;
+    GLboolean linked;
+    const struct OGLES2Image *image;  /* after a successful link */
+    UBYTE attrib_index[OGLES2_MAX_VERTEX_ATTRIBS]; /* image attribute i <- generic attribute */
+    ULONG *cbuf[2];                   /* constant buffers, vertex and fragment */
+    UWORD nlocations;                 /* uniform locations: one per array element */
+    UWORD *loc_uniform, *loc_element; /* location -> uniform, element */
+    UBYTE *sampler_unit;              /* per uniform: its texture unit (glUniform1i) */
+    char bind_name[OGLES2_MAX_BINDINGS][32]; /* glBindAttribLocation, applied at link */
+    GLuint bind_index[OGLES2_MAX_BINDINGS];
+    UBYTE nbindings;
+    char *info_log;                   /* AllocVec'd or NULL */
+};
+
+struct OGLES2Context;
+/* program.c: a program on the built-in image, outside the name table
+ * (draw.c's clears); its storage freed with ogles2_program_builtin_free. */
+BOOL ogles2_program_builtin(struct OGLES2Program *p);
+void ogles2_program_builtin_free(struct OGLES2Program *p);
+
+/* v3dp.c: a .v3dp file's image, or NULL with the reason in why[]. */
+struct OGLES2Image *ogles2_v3dp_load(const UBYTE *file, ULONG len, char *why, ULONG whylen);
+void ogles2_image_free(struct OGLES2Image *im, struct OGLES2Context *ctx);
+/* The image's variant for `stage` and a draw of primitive `mode` (GL_POINTS ...). */
+const struct OGLES2Variant *ogles2_image_variant(const struct OGLES2Image *im, UBYTE stage,
+                                                 GLenum mode);
+
+/* The default framebuffer's surface (display.c). */
+struct OGLES2Display
+{
+    struct Screen *screen;          /* fullscreen: ours; window: the window's */
+    struct Window *window;          /* window mode: the window we ClipBlit into */
+    struct Window *input_window;    /* fullscreen: our backdrop window */
+    struct BitMap *bitmap;          /* what the GPU renders into */
+    struct RastPort rastport;       /* window mode: ClipBlit source over bitmap */
+    UWORD width, height;
+    BOOL own_screen, own_window, own_bitmap, vsync;
+    int rb_swap;                    /* 1: BGRA32 target, 0: RGBA32 */
+    APTR lock;                      /* cybergraphics bitmap lock, one frame long */
+    ULONG bprow, base;              /* valid while locked */
+};
+
+struct V3DContext; /* v3dcore */
+
+struct OGLES2Context
+{
+    ULONG magic;
+    GLenum error;        /* first error since the last glGetError (sticky) */
+    ULONG width, height; /* default framebuffer size; 0 without a display */
+    struct OGLES2State state;
+    struct OGLES2Display display;   /* zeroed for a state-only (test) context */
+    struct V3DContext *v3d;         /* GPU pools and control lists; NULL state-only */
+    UBYTE depth_bits, stencil_bits; /* of the default framebuffer */
+    UBYTE depth_format;             /* OGLES2_DEPTH_*: the tile buffer's depth type */
+    UBYTE job_clear_stencil;        /* the open job's stencil clear value (job.c) */
+    GLint viewport[4];              /* x, y, width, height */
+    GLint scissor[4];
+    ULONG frames, frames_dropped;   /* statistics, logged at destroy */
+    ULONG probe;                    /* OGLES2_PROBE_*, from ENV:OGLES2/Probe (context.c) */
+    ULONG probe_addr;               /* OGLES2_PROBE_ADDR's buffer (4 KB, the test's) */
+    struct OGLES2Array array[OGLES2_MAX_VERTEX_ATTRIBS];
+    void **objects;                 /* shaders and programs, indexed by name */
+    GLuint nobjects;                /* slots in objects (name 0 is never used) */
+    struct OGLES2Program *program;  /* glUseProgram */
+    struct OGLES2Draw *draw;        /* draw.c's per-context state, NULL until the first draw */
+    struct OGLES2TexState *tex;     /* texture.c's, NULL until first used */
+    UBYTE unpack_alignment, pack_alignment; /* glPixelStorei */
+    ULONG job_serial;               /* counts jobs; textures note the last that drew with them */
+    struct OGLES2Image *images;     /* program cache: every image loaded, by hash (plan 7.8) */
+    struct OGLES2BufState *buf;     /* buffer.c's, NULL until first used */
+};
+
+#define OGLES2_DEPTH_16  0
+#define OGLES2_DEPTH_24  1 /* with 8 stencil bits */
+#define OGLES2_DEPTH_32F 2
+
+/* Hardware probes for the A1200 tests, one letter each in ENV:OGLES2/Probe.
+ * Not for applications: they change what the library does. */
+#define OGLES2_PROBE_STORE_DITHER 1UL /* D: dithered RGBA8 store */
+#define OGLES2_PROBE_LOG_CLEAR   2UL  /* C: log the packed clear colour of each job */
+/* The M1 hardware probes (plan section 9, M1): */
+/* 4UL was F (GL_FIXED as the hardware's fixed type): it works and is the normal path now. */
+#define OGLES2_PROBE_FLIP_Y     8UL  /* Y: colour stored and loaded with Flip Y */
+#define OGLES2_PROBE_SEMAPHORE 16UL  /* S: render queued behind binning (semaphore packets) */
+#define OGLES2_PROBE_ADDR      32UL  /* A: positions copied to ENV:OGLES2/ProbeAddr (hex) */
+
+void ogles2_state_init(struct OGLES2Context *ctx);
+BOOL ogles2_state_dither(struct OGLES2Context *ctx); /* GL_DITHER enabled */
+
+/* ---- display (display.c) ---- */
+BOOL ogles2_display_libs_open(void);
+void ogles2_display_libs_close(void);
+BOOL ogles2_display_open(struct OGLES2Display *d, struct TagItem *tags, ULONG *why);
+void ogles2_display_close(struct OGLES2Display *d);
+BOOL ogles2_display_lock(struct OGLES2Display *d);
+void ogles2_display_unlock(struct OGLES2Display *d);
+void ogles2_display_present(struct OGLES2Display *d);
+/* glReadPixels: w x h pixels from (x, y) (GL's origin, the bottom-left),
+ * clipped by the caller, as RGBA bytes, bottom row first, `stride` apart. */
+void ogles2_display_read(struct OGLES2Display *d, UWORD x, UWORD y, UWORD w, UWORD h, UBYTE *dst,
+                         ULONG stride);
+
+/* ---- programs (program.c) and drawing (draw.c) ---- */
+void *ogles2_object(struct OGLES2Context *ctx, GLuint name, UBYTE kind); /* NULL if not that kind */
+void ogles2_objects_free(struct OGLES2Context *ctx); /* aglDestroyContext: programs, shaders, cache */
+void ogles2_draw_free(struct OGLES2Context *ctx);    /* aglDestroyContext, after the last job */
+const struct OGLES2Image *ogles2_builtin_image(void);
+/* texture.c */
+void ogles2_textures_free(struct OGLES2Context *ctx);
+BOOL ogles2_texture_query(struct OGLES2Context *ctx, GLenum pname, GLint *v);
+/* The texture and sampler state of texture unit `unit` (its 2D or cube
+ * binding), written into the open job's state buffer; FALSE: no memory. */
+BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, BOOL cube, ULONG *tex_state,
+                          ULONG *sampler_state);
+/* buffer.c */
+void ogles2_buffers_free(struct OGLES2Context *ctx);
+BOOL ogles2_buffer_query(struct OGLES2Context *ctx, GLenum pname, GLint *v);
+struct OGLES2Buffer *ogles2_buffer_array(struct OGLES2Context *ctx);
+GLuint ogles2_buffer_name(const struct OGLES2Buffer *b);
+ULONG ogles2_buffer_size(const struct OGLES2Buffer *b);
+const void *ogles2_buffer_indices(struct OGLES2Context *ctx, ULONG offset, ULONG bytes, BOOL *bad);
+ULONG ogles2_buffer_copy(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULONG offset, GLint size,
+                         GLenum type, GLboolean normalized, GLsizei stride, ULONG elem_bytes,
+                         ULONG *dst_stride, ULONG *vertices,
+                         void (*convert)(UBYTE *dst, ULONG dst_stride, const UBYTE *src,
+                                         ULONG src_stride, ULONG count, GLint size, GLenum type));
+/* glClear's quad path (draw.c): for clears the tile buffer cannot do. */
+void ogles2_draw_clear(struct OGLES2Context *ctx, GLbitfield mask);
+/* TRUE once the open job has a draw (its tile-buffer clear would come too early). */
+BOOL ogles2_job_has_draws(struct OGLES2Context *ctx);
+
+/* ---- jobs (job.c) ---- */
+void ogles2_job_begin(struct OGLES2Context *ctx);
+void ogles2_job_clear(struct OGLES2Context *ctx, GLbitfield mask);
+BOOL ogles2_job_flush(struct OGLES2Context *ctx);
+void ogles2_job_discard(struct OGLES2Context *ctx);
+
+extern struct ExecBase *SysBase;
+extern struct DosLibrary *DOSBase;
+extern struct Library *UtilityBase;
+extern struct OGLES2Library *OGLES2LibBase;
+
+/* Sets the sticky error if none is pending (GLES2 section 2.5). */
+void ogles2_error(struct OGLES2Context *ctx, GLenum error);
+/* A context pointer the library handed out and that is still alive. */
+BOOL ogles2_context_valid(struct OGLES2Context *ctx);
+
+/* ---- device (device.c) ----
+ * Initialises the V3D on first use (powers it on, reads its identity);
+ * FALSE if there is none or it did not start. */
+BOOL ogles2_device_open(void);
+/* GL_RENDERER: "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM" */
+const char *ogles2_device_renderer(void);
+/* [addr, addr+size) lies in RAM the GPU reaches (the device tree's memory node). */
+BOOL ogles2_device_gpu_reachable(ULONG addr, ULONG size);
+/* The public "V3D 4.2 submit" semaphore (v3dcore/include/v3d_gpu_lock.h):
+ * held from a job's binning submit until its render has finished. */
+struct SignalSemaphore *ogles2_device_gpu_lock(void);
+/* TRUE once the device initialised (a state-only context may have none). */
+BOOL ogles2_device_ready(void);
+/* v3dcore's device (struct V3DDevice); valid after ogles2_device_open. */
+struct V3DDevice *ogles2_device(void);
+/* Allocates a context's GPU pools and control lists for a w x h default
+ * framebuffer with depth_bits 16 (D16) or 32 (D32F); NULL if out of memory. */
+struct V3DContext *ogles2_device_context_new(UWORD w, UWORD h, int depth_bits);
+void ogles2_device_context_free(struct V3DContext *v);
+
+/* ---- log (log.c; plan section 10) ----
+ * Lines go to a RAM ring buffer, appended to the log file (T:ogles2.log, or
+ * the path in ENV:OGLES2/LogFile) when a context is destroyed, when the
+ * library is closed and when the OGLES2Log command asks. Builds with
+ * OGLES2_LOG_SYNC write every line at once, so a hang loses nothing.
+ * Formats are exec RawDoFmt's: %ld/%lu/%lx for 32-bit values, %s, %c. */
+BOOL ogles2_log_init(void);
+void ogles2_log_term(void);
+void ogles2_log(const char *fmt, ...);
+/* Appends the buffered lines to the log file. Needs a DOS process outside
+ * Forbid(); returns FALSE (and keeps the lines) when called from a plain task.
+ * Never call it from the library's Open/Close/Expunge vectors. */
+BOOL ogles2_log_flush(void);
+
+#endif

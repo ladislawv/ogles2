@@ -1,0 +1,57 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838A068
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 aglCreateContext2: context 0x08F2C984, 0x0, state only
+    13 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    14 glLinkProgram: PROGDIR:d59c497ea5e22752b642e93f.v3dp (5 variants, 1528 bytes of code)
+    15 glLinkProgram: PROGDIR:979ada9f17d3d1821c3b45bb.v3dp refused: uniform recipe type not implemented yet: 16
+    16 glLinkProgram: PROGDIR:ac1ecb1e7ef3afc88d3666c9.v3dp (7 variants, 2656 bytes of code)
+    17 glLinkProgram: PROGDIR:645f9567abe1c3a6e41839b9.v3dp (5 variants, 1176 bytes of code)
+    18 glLinkProgram: no binary for program 6525c1a37d1f1d6e8cf661b41e0f00d750e0262e59c8e751a37cc6a1d42bde99 (sources in T:ogles2_missing_shaders.txt)
+    19 aglDestroyContext: context 0x08F2C984 (0 frames, 0 dropped)
+    20 close (count 0)
+    21 open (count 1)
+    22 display: application bitmap, 256x128, BGRA
+    23 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    24 aglCreateContext2: context 0x08F2D4F4, 256x128
+    25 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+    26 glLinkProgram: PROGDIR:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+    27 texture 1 changed after a draw used it in the same frame: the frame is rendered first (logged once)
+    28 device: context freed, 133120 bytes of GPU memory still in use
+    29 aglDestroyContext: context 0x08F2D4F4 (21 frames, 0 dropped)
+    30 display: own window, 320x240, BGRA
+    31 device: context pools for 320x240, D16, 17816960 bytes of GPU memory in use
+    32 aglCreateContext2: context 0x08F2C8A4, 320x240
+    33 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+    34 glLinkProgram: PROGDIR:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+    35 texture 1 changed after a draw used it in the same frame: the frame is rendered first (logged once)
+    36 device: context freed, 266240 bytes of GPU memory still in use
+    37 aglDestroyContext: context 0x08F2C8A4 (21 frames, 0 dropped)
+    38 close (count 0)
+    39 open (count 1)
+    40 display: application bitmap, 320x240, BGRA
+    41 device: context pools for 320x240, D16, 17950080 bytes of GPU memory in use
+    42 aglCreateContext2: context 0x08F2D4F4, 320x240
+    43 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    44 device: context freed, 266240 bytes of GPU memory still in use
+    45 aglDestroyContext: context 0x08F2D4F4 (118 frames, 0 dropped)
+    46 display: own window, 320x240, BGRA
+    47 device: context pools for 320x240, D32F, 18113920 bytes of GPU memory in use
+    48 aglCreateContext2: context 0x08F2C8A4, 320x240
+    49 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    50 device: context freed, 266240 bytes of GPU memory still in use
+    51 aglDestroyContext: context 0x08F2C8A4 (120 frames, 0 dropped)
+    52 display: fullscreen, 640x480, BGRA
+    53 device: context pools for 640x480, D32F, 19118464 bytes of GPU memory in use
+    54 aglCreateContext2: context 0x08F2C8A4, 640x480
+    55 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    56 device: context freed, 266240 bytes of GPU memory still in use
+    57 aglDestroyContext: context 0x08F2C8A4 (118 frames, 0 dropped)

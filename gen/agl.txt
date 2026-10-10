@@ -1,0 +1,15 @@
+# agl* entries of the dispatch table (plan section 6.4; names and argument
+# lists as AmigaOS 4's ogles2.library, from glSnoop). One per line:
+#   name | return type | arguments after the context | context | client wrapper
+# context:  ctx   the library entry takes struct OGLES2Context *ctx first:
+#                 the client passes the program's current context
+#           none  the entry takes only its own arguments
+#           arg   the entry's first argument is the context (client type void *)
+# client:   gen   the generator writes the import-library function
+#           hand  client/agl.c writes it (it also maintains the current context)
+aglCreateContext2 | struct OGLES2Context * | ULONG *errcode, struct TagItem *tags | none | gen
+aglDestroyContext | void |                                     | arg  | hand
+aglMakeCurrent    | void |                                     | arg  | hand
+aglSwapBuffers    | void |                                     | ctx  | gen
+aglSetParams2     | void | struct TagItem *tags                | ctx  | gen
+aglSetBitmap      | void | struct BitMap *bitmap               | ctx  | gen

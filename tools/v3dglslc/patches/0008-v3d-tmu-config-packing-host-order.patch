@@ -1,0 +1,91 @@
+diff --git a/src/broadcom/compiler/v3d_packing.c b/src/broadcom/compiler/v3d_packing.c
+index 46643edd5e6..d8bdb221fc4 100644
+--- a/src/broadcom/compiler/v3d_packing.c
++++ b/src/broadcom/compiler/v3d_packing.c
+@@ -22,6 +22,7 @@
+  */
+ 
+ #include "v3d_compiler.h"
++#include "util/u_math.h"
+ 
+ #define __gen_user_data void
+ #define __gen_address_type uint32_t
+@@ -42,9 +43,12 @@ v3d_pack_unnormalized_coordinates(struct v3d_device_info *devinfo,
+ {
+         assert(devinfo->ver == 71 || devinfo->ver == 42);
+ 
++        /* *p1_packed is a host-order number; the packers work on GPU (LE) bytes. */
++        uint32_t p1_le = util_cpu_to_le32(*p1_packed);
+         struct V3D42_TMU_CONFIG_PARAMETER_1 p1_unpacked;
+-        V3D42_TMU_CONFIG_PARAMETER_1_unpack((uint8_t *)p1_packed, &p1_unpacked);
++        V3D42_TMU_CONFIG_PARAMETER_1_unpack((uint8_t *)&p1_le, &p1_unpacked);
+         p1_unpacked.unnormalized_coordinates = unnormalized_coordinates;
+-        V3D42_TMU_CONFIG_PARAMETER_1_pack(NULL, (uint8_t *)p1_packed,
++        V3D42_TMU_CONFIG_PARAMETER_1_pack(NULL, (uint8_t *)&p1_le,
+                                      &p1_unpacked);
++        *p1_packed = util_le32_to_cpu(p1_le);
+ }
+diff --git a/src/broadcom/compiler/v3d_tex.c b/src/broadcom/compiler/v3d_tex.c
+index d635a4a2f7d..245ec29db1b 100644
+--- a/src/broadcom/compiler/v3d_tex.c
++++ b/src/broadcom/compiler/v3d_tex.c
+@@ -22,6 +22,7 @@
+  */
+ 
+ #include "v3d_compiler.h"
++#include "util/u_math.h"
+ 
+ /* We don't do any address packing. */
+ #define __gen_user_data void
+@@ -285,11 +286,13 @@ v3d_vir_emit_tex(struct v3d_compile *c, nir_tex_instr *instr)
+         V3D42_TMU_CONFIG_PARAMETER_0_pack(NULL,
+                                           (uint8_t *)&p0_packed,
+                                           &p0_unpacked);
++        p0_packed = util_le32_to_cpu(p0_packed); /* packer wrote GPU (LE) bytes */
+ 
+         uint32_t p2_packed;
+         V3D42_TMU_CONFIG_PARAMETER_2_pack(NULL,
+                                           (uint8_t *)&p2_packed,
+                                           &p2_unpacked);
++        p2_packed = util_le32_to_cpu(p2_packed); /* packer wrote GPU (LE) bytes */
+ 
+         /* Load texture_idx number into the high bits of the texture address field,
+          * which will be be used by the driver to decide which texture to put
+@@ -333,6 +336,7 @@ v3d_vir_emit_tex(struct v3d_compile *c, nir_tex_instr *instr)
+                 V3D42_TMU_CONFIG_PARAMETER_1_pack(NULL,
+                                                   (uint8_t *)&p1_packed,
+                                                   &p1_unpacked);
++                p1_packed = util_le32_to_cpu(p1_packed); /* packer wrote GPU (LE) bytes */
+ 
+                 if (nir_tex_instr_need_sampler(instr)) {
+                         /* Load sampler_idx number into the high bits of the
+@@ -361,6 +365,7 @@ v3d_vir_emit_tex(struct v3d_compile *c, nir_tex_instr *instr)
+                 V3D42_TMU_CONFIG_PARAMETER_1_pack(NULL,
+                                                   (uint8_t *)&p1_packed_default,
+                                                   &p1_unpacked_default);
++                p1_packed_default = util_le32_to_cpu(p1_packed_default); /* packer wrote GPU (LE) bytes */
+                 vir_WRTMUC(c, QUNIFORM_CONSTANT, p1_packed_default);
+         }
+ 
+@@ -602,6 +607,7 @@ v3d_vir_emit_image_load_store(struct v3d_compile *c,
+         V3D42_TMU_CONFIG_PARAMETER_0_pack(NULL,
+                                           (uint8_t *)&p0_packed,
+                                           &p0_unpacked);
++        p0_packed = util_le32_to_cpu(p0_packed); /* packer wrote GPU (LE) bytes */
+ 
+         /* Load unit number into the high bits of the texture or sampler
+          * address field, which will be be used by the driver to decide which
+@@ -613,11 +619,13 @@ v3d_vir_emit_image_load_store(struct v3d_compile *c,
+         V3D42_TMU_CONFIG_PARAMETER_1_pack(NULL,
+                                           (uint8_t *)&p1_packed,
+                                           &p1_unpacked);
++        p1_packed = util_le32_to_cpu(p1_packed); /* packer wrote GPU (LE) bytes */
+ 
+         uint32_t p2_packed;
+         V3D42_TMU_CONFIG_PARAMETER_2_pack(NULL,
+                                           (uint8_t *)&p2_packed,
+                                           &p2_unpacked);
++        p2_packed = util_le32_to_cpu(p2_packed); /* packer wrote GPU (LE) bytes */
+ 
+         if (instr->intrinsic != nir_intrinsic_image_load)
+                 c->tmu_dirty_rcl = true;

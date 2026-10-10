@@ -1,0 +1,18 @@
+diff --git a/src/drm-shim/device.c b/src/drm-shim/device.c
+index 7df59002768..343091d70fa 100644
+--- a/src/drm-shim/device.c
++++ b/src/drm-shim/device.c
+@@ -87,6 +87,13 @@ drm_shim_device_init(void)
+    mtx_init(&shim_device.lock, mtx_plain);
+ 
+    shim_device.mem_fd = memfd_create("shim mem", MFD_CLOEXEC);
++   if (shim_device.mem_fd == -1) {
++      /* WSL1 fallback: no memfd_create(), use an unlinked temp file. */
++      char tmpl[] = "/tmp/drm-shim-mem-XXXXXX";
++      shim_device.mem_fd = mkstemp(tmpl);
++      if (shim_device.mem_fd != -1)
++         unlink(tmpl);
++   }
+    assert(shim_device.mem_fd != -1);
+ 
+    ASSERTED int ret = ftruncate(shim_device.mem_fd, SHIM_MEM_SIZE);

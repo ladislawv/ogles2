@@ -1,0 +1,15 @@
+ogles2 M1 step 1: clear and present
+     GL_RENDERER (first context decides): see the log
+     fullscreen: mode 0x50031303
+PASS: fullscreen: create (MODEID tag)
+PASS: fullscreen: clear to 000000 shows 000000
+PASS: fullscreen: clear to ff0000 shows ff0000
+PASS: fullscreen: clear to 00ff00 shows 00ff00
+PASS: fullscreen: clear to 0000ff shows 0000ff
+PASS: fullscreen: clear to ffffff shows ffffff
+PASS: fullscreen: clear to 4080bf shows 4080bf
+PASS: fullscreen: a frame that clears only depth keeps the picture (ff00ff)
+PASS: fullscreen: no GL error
+     fullscreen: 100 clear+swap frames in 41 ms (0.4 ms per frame)
+PASS: fullscreen: destroy returns the memory (-16 bytes difference)
+ALL PASSED: 10 of 10 checks passed

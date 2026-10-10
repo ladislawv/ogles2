@@ -1,0 +1,10 @@
+ogles2 M2: glDrawElements, indirectly indexed uniforms
+PASS: smooth: links
+PASS: glDrawElements 8-bit (indices 4-7) ff0000 red, 16-bit (8-11) 00ff00 green, gap 000000
+PASS: glDrawElements: GL_UNSIGNED_INT is GL_INVALID_ENUM (no OES_element_index_uint yet)
+PASS: skin: links (UBO_ADDR)
+PASS: skin: bone[5] moves the triangle right: 6d6d6d drawn, 000000 empty
+PASS: skin: bone[20] moves it up: acacac drawn (grey about ac), 000000 empty
+PASS: no GL error left over
+PASS: destroy returns the memory (0 bytes difference)
+ALL PASSED: 8 of 8 checks passed

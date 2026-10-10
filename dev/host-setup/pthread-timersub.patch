@@ -1,0 +1,20 @@
+diff --git a/pthreads/pthread.c b/pthreads/pthread.c
+index 178f5ad..ecf48d2 100644
+--- a/pthreads/pthread.c
++++ b/pthreads/pthread.c
+@@ -48,6 +48,15 @@
+ #include <stdlib.h>
+ #include <sys/time.h>
+ 
++#ifndef timersub
++/* BSD macro; no header in this toolchain defines it. tv_usec is unsigned in NDK 3.2. */
++#define timersub(a, b, r) do { \
++	(r)->tv_sec = (a)->tv_sec - (b)->tv_sec; \
++	(r)->tv_usec = (a)->tv_usec - (b)->tv_usec; \
++	if ((LONG)(r)->tv_usec < 0) { (r)->tv_sec--; (r)->tv_usec += 1000000; } \
++} while (0)
++#endif
++
+ #include "pthread.h"
+ #include "debug.h"
+ 

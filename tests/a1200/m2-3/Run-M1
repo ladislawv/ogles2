@@ -1,0 +1,64 @@
+; Run-M1 - ogles2 M2 run 3: glDrawElements, indexed uniform arrays. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m2-3 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M2R3: ""
+If NOT EXISTS M2R3:results
+  MakeDir M2R3:results
+EndIf
+Echo "ogles2 M2 run 3, starting at step {FROM}" >>M2R3:results/00-progress.txt
+Date >>M2R3:results/00-progress.txt
+Assign LIBS: M2R3:libs ADD
+; Expunge libraries nobody has open: an ogles2.library left in memory by an
+; earlier run would otherwise be used instead of this package's.
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M2R3:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 4: glDrawElements and an indexed uniform array (nothing to see)"
+  M2R3:bin/m2_elements >M2R3:results/1-elements.txt
+  Echo "step 1 done" >>M2R3:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 4: linking and uniforms (nothing to see)"
+  M2R3:bin/m2_link >M2R3:results/2-link.txt
+  Echo "step 2 done" >>M2R3:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 4: textures on a hidden bitmap (nothing to see)"
+  M2R3:bin/m2_texture BITMAP QUICK >M2R3:results/3-texture.txt
+  Echo "step 3 done" >>M2R3:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 4: the triangle test on a hidden bitmap (nothing to see)"
+  M2R3:bin/m1_draw BITMAP QUICK >M2R3:results/4-draw.txt
+  Echo "step 4 done" >>M2R3:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M2R3:libs REMOVE
+If NOT EXISTS M2R3:results/notes.txt
+  Copy M2R3:notes-template.txt M2R3:results/notes.txt
+EndIf
+List M2R3:results >M2R3:results/99-files.txt
+Echo "finished" >>M2R3:results/00-progress.txt
+Date >>M2R3:results/00-progress.txt
+Assign M2R3:
+Echo ""
+Echo "Done. Results are in results/."

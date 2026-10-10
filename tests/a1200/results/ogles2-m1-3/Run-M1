@@ -1,0 +1,83 @@
+; Run-M1 - ogles2 M1 run 3: the GPU clears and presents. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m1-3 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M1R3: ""
+If NOT EXISTS M1R3:results
+  MakeDir M1R3:results
+EndIf
+Echo "ogles2 M1 run 3, starting at step {FROM}" >>M1R3:results/00-progress.txt
+Date >>M1R3:results/00-progress.txt
+Assign LIBS: M1R3:libs ADD
+SetEnv OGLES2/LogFile M1R3:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 6: smoke test (nothing to see)"
+  M1R3:bin/smoke >M1R3:results/1-smoke.txt
+  Echo "step 1 done" >>M1R3:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 6: the GPU clears a hidden bitmap (nothing to see, about 10 seconds)"
+  M1R3:bin/m1_clear BITMAP >M1R3:results/2-bitmap.txt
+  Echo "step 2 done" >>M1R3:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 6: a window titled ogles2 opens. Watch it for about 10 seconds:"
+  Echo "  black, red, green, blue, white, light blue, magenta (1 second each),"
+  Echo "  then a smooth fade from red to blue, then it closes."
+  Wait 3
+  M1R3:bin/m1_clear WINDOW >M1R3:results/3-window.txt
+  Echo "step 3 done" >>M1R3:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 6: a window titled m1_clear: application window. The same colours."
+  Wait 3
+  M1R3:bin/m1_clear ADOPT >M1R3:results/4-adopt.txt
+  Echo "step 4 done" >>M1R3:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 6: the whole screen. The same colours, about 10 seconds,"
+  Echo "  then the Workbench comes back."
+  Wait 3
+  M1R3:bin/m1_clear FULLSCREEN >M1R3:results/5-fullscreen.txt
+  Echo "step 5 done" >>M1R3:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 6 VAL
+  Echo "Step 6 of 6: a hardware probe on the hidden bitmap (nothing to see)."
+  Echo "  Its colour checks are EXPECTED to fail: it records what the GPU does"
+  Echo "  when asked to dither, the setting that broke the colours in run 2."
+  SetEnv OGLES2/StoreDither 1
+  M1R3:bin/m1_clear BITMAP >M1R3:results/6-dither-probe.txt
+  UnSetEnv OGLES2/StoreDither
+  Echo "step 6 done" >>M1R3:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M1R3:libs REMOVE
+If NOT EXISTS M1R3:results/notes.txt
+  Copy M1R3:notes-template.txt M1R3:results/notes.txt
+EndIf
+List M1R3:results >M1R3:results/99-files.txt
+Echo "finished" >>M1R3:results/00-progress.txt
+Date >>M1R3:results/00-progress.txt
+Assign M1R3:
+Echo ""
+Echo "Done. Please add a few words to results/notes.txt and send the results directory back."

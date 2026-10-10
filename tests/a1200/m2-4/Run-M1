@@ -1,0 +1,70 @@
+; Run-M1 - ogles2 M2 run 4: buffer objects. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m2-4 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M2R4: ""
+If NOT EXISTS M2R4:results
+  MakeDir M2R4:results
+EndIf
+Echo "ogles2 M2 run 4, starting at step {FROM}" >>M2R4:results/00-progress.txt
+Date >>M2R4:results/00-progress.txt
+Assign LIBS: M2R4:libs ADD
+; Expunge libraries nobody has open: an ogles2.library left in memory by an
+; earlier run would otherwise be used instead of this package's.
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M2R4:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 5: buffer objects (nothing to see)"
+  M2R4:bin/m2_buffers >M2R4:results/1-buffers.txt
+  Echo "step 1 done" >>M2R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 5: glDrawElements and an indexed uniform array (nothing to see)"
+  M2R4:bin/m2_elements >M2R4:results/2-elements.txt
+  Echo "step 2 done" >>M2R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 5: linking and uniforms (nothing to see)"
+  M2R4:bin/m2_link >M2R4:results/3-link.txt
+  Echo "step 3 done" >>M2R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 5: textures on a hidden bitmap (nothing to see)"
+  M2R4:bin/m2_texture BITMAP QUICK >M2R4:results/4-texture.txt
+  Echo "step 4 done" >>M2R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 5: the triangle test on a hidden bitmap (nothing to see)"
+  M2R4:bin/m1_draw BITMAP QUICK >M2R4:results/5-draw.txt
+  Echo "step 5 done" >>M2R4:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M2R4:libs REMOVE
+If NOT EXISTS M2R4:results/notes.txt
+  Copy M2R4:notes-template.txt M2R4:results/notes.txt
+EndIf
+List M2R4:results >M2R4:results/99-files.txt
+Echo "finished" >>M2R4:results/00-progress.txt
+Date >>M2R4:results/00-progress.txt
+Assign M2R4:
+Echo ""
+Echo "Done. Results are in results/."

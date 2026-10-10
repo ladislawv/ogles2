@@ -1,0 +1,60 @@
+; Run-M1 - ogles2 M1 run 10: the M1 tests together, after the probes. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m1-10 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M1R10: ""
+If NOT EXISTS M1R10:results
+  MakeDir M1R10:results
+EndIf
+Echo "ogles2 M1 run 10, starting at step {FROM}" >>M1R10:results/00-progress.txt
+Date >>M1R10:results/00-progress.txt
+Assign LIBS: M1R10:libs ADD
+; Expunge libraries nobody has open: an ogles2.library left in memory by an
+; earlier run would otherwise be used instead of this package's.
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M1R10:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 3: the probes again, without Flip Y (nothing to see, a few seconds)"
+  M1R10:bin/m1_hwprobe >M1R10:results/1-hwprobe.txt
+  Echo "step 1 done" >>M1R10:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 3: the triangle test on a hidden bitmap, in a window and on the whole"
+  Echo "  screen, without pauses (about 15 seconds of quick flashes)."
+  Wait 3
+  M1R10:bin/m1_draw QUICK >M1R10:results/2-draw.txt
+  Echo "step 2 done" >>M1R10:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 3: the soak again, 10,000 frames in a window (about 10 seconds)."
+  M1R10:bin/m1_soak >M1R10:results/3-soak.txt
+  Echo "step 3 done" >>M1R10:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M1R10:libs REMOVE
+If NOT EXISTS M1R10:results/notes.txt
+  Copy M1R10:notes-template.txt M1R10:results/notes.txt
+EndIf
+List M1R10:results >M1R10:results/99-files.txt
+Echo "finished" >>M1R10:results/00-progress.txt
+Date >>M1R10:results/00-progress.txt
+Assign M1R10:
+Echo ""
+Echo "Done. Results are in results/."

@@ -1,0 +1,14 @@
+; Start-amictld - starts the remote test station's server now, in the
+; background, without a reboot. See ReadMe.txt.
+;   CD to the server's directory, then:   Execute Start-amictld
+FailAt 21
+If NOT EXISTS amictld
+  Echo "Please CD into the amictld directory first."
+  Quit 20
+EndIf
+If NOT EXISTS amictld.token
+  Echo "amictld.token is missing: the server would refuse to start."
+  Quit 20
+EndIf
+Run >NIL: amictld
+Echo "amictld started. Its log is amictld.log in this directory."

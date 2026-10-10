@@ -1,0 +1,1338 @@
+/*
+ * Shader and program objects (GLES 2.0 section 2.10), attribute and uniform
+ * locations, and uniform storage (plan section 7.8).
+ *
+ * glCompileShader keeps the source and succeeds (S1, plan 7.8). glLinkProgram
+ * hashes the sources (v3dp/FORMAT.md, PROGRAM: the vertex shader, then the
+ * fragment shader) and loads <hash>.v3dp from PROGDIR: or OGLES2Cache:, the
+ * name being the hash's first 24 hex digits (FFS allows 30 characters); the
+ * full hash in the file must match. A
+ * program with no binary fails to link; its sources go to
+ * T:ogles2_missing_shaders.txt for the offline compiler. Loaded images stay
+ * in the context's program cache, by hash, until the context goes: a
+ * relink, or another program with the same sources, reuses them (plan 7.8).
+ *
+ * Uniform storage is one constant buffer per stage, as in Mesa: glUniform*
+ * writes each value into every stage that uses it (the .v3dp's storage
+ * places), and the uniform recipes read from there at draw time.
+ *
+ * One image is built in: PiStorm3D's smooth-shaded shaders (builtin_shaders.h)
+ * with a hand-written description, used for clears drawn as rectangles.
+ */
+#include <exec/memory.h>
+#include <dos/dos.h>
+#include <proto/exec.h>
+#include <proto/dos.h>
+#include <string.h>
+#include "ogles2_internal.h"
+#include "builtin_shaders.h"
+#include "blake3.h"
+
+/* ---- the built-in image ---- */
+
+static const struct OGLES2ImageAttrib smooth_attribs[] = {
+    {"a_position", GL_FLOAT_VEC3, 0, 1}, /* VPM inputs 0-2, both shaders */
+    {"a_color", GL_FLOAT_VEC4, 1, 1},    /* VPM inputs 3-6, vertex shader only */
+};
+
+static const struct OGLES2Place smooth_mvp_place[] = {{0, 16, 4, 0, 0}};
+
+static const struct OGLES2ImageUniform smooth_uniforms[] = {
+    {"u_mvp", GL_FLOAT_MAT4, 0, 0, 1, smooth_mvp_place, {~0UL, ~0UL}},
+};
+
+/* The vertex and coordinate shaders read the same stream (v3d_assembler.c:
+ * scale_p, scale_p_y, the matrix, then the depth range's scale and offset,
+ * which the coordinate shader does not reach). The matrix goes row by row:
+ * the shader forms x' = x M00 + y M10 + z M20 + w M30 from the first four
+ * words, so they are row 0 of the column-major GL matrix (words 0, 4, 8, 12). */
+static const ULONG smooth_rtype[20] = {
+    OGLES2_U_PISTORM_VP_WIDTH, OGLES2_U_PISTORM_VP_HEIGHT,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    OGLES2_U_VIEWPORT_Z_SCALE, OGLES2_U_VIEWPORT_Z_OFFSET,
+};
+static const ULONG smooth_rdata[20] = {0, 0, 0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 0, 0};
+
+/* The record values PiStorm3D's d_BuildShaderRecord uses for this pairing,
+ * expressed as prog_data: 4 threads, the vertex and coordinate shaders start
+ * in their final thread section, VPM output segments of 1 (coordinate) and 2
+ * (vertex), a VCM cache of 4 batches, four varyings using the pixel centre w. */
+static const struct OGLES2Variant smooth_variants[3] = {
+    {OGLES2_VARIANT_CS, 4, 1, 0, 0, 4, 0, 0, 0, {3}, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+     {0}, {0}, {0}, 0, builtin_coordinate, sizeof(builtin_coordinate), 0, 20, smooth_rtype,
+     smooth_rdata},
+    {OGLES2_VARIANT_VS, 4, 1, 0, 0, 4, 0, 0, 0, {3, 4}, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+     {0}, {0}, {0}, 0, builtin_vertex_smooth, sizeof(builtin_vertex_smooth),
+     sizeof(builtin_coordinate), 20, smooth_rtype, smooth_rdata},
+    {OGLES2_VARIANT_FS, 4, 0, 0, 0, 0, 0, 0, 0, {0}, 0, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 0,
+     {0}, {0}, {0}, 0, builtin_fragment_smooth, sizeof(builtin_fragment_smooth),
+     sizeof(builtin_coordinate) + sizeof(builtin_vertex_smooth), 0, 0, 0},
+};
+
+static const struct OGLES2Image builtin_smooth = {
+    "built-in smooth colour (PiStorm3D VERTEX_SMOOTH, FRAGMENT_UNTEXTURED_SMOOTH)",
+    {0},
+    3, smooth_variants,
+    2, smooth_attribs,
+    1, smooth_uniforms,
+    {16, 0}, {0, 0},
+    0, 0,
+    sizeof(builtin_coordinate) + sizeof(builtin_vertex_smooth) + sizeof(builtin_fragment_smooth),
+    0, 0, 0,
+};
+
+const struct OGLES2Image *ogles2_builtin_image(void)
+{
+    return &builtin_smooth;
+}
+
+/* ---- small string helpers (the library has no C library) ---- */
+
+static int str_eq(const char *a, const char *b)
+{
+    while (*a && *a == *b)
+        a++, b++;
+    return *a == *b;
+}
+
+static ULONG str_len(const char *s)
+{
+    ULONG n = 0;
+    while (s[n])
+        n++;
+    return n;
+}
+
+/* Copies src into dst[size] like glGet*InfoLog: truncated, NUL-terminated. */
+static GLsizei copy_out(char *dst, GLsizei size, const char *src)
+{
+    GLsizei n = 0;
+    if (!dst || size <= 0)
+        return 0;
+    while (src && src[n] && n < size - 1) {
+        dst[n] = src[n];
+        n++;
+    }
+    dst[n] = 0;
+    return n;
+}
+
+/* ---- the name table ---- */
+
+void *ogles2_object(struct OGLES2Context *ctx, GLuint name, UBYTE kind)
+{
+    UBYTE *o;
+    if (name == 0 || name >= ctx->nobjects)
+        return 0;
+    o = ctx->objects[name];
+    return (o && *o == kind) ? o : 0;
+}
+
+static BOOL name_exists(struct OGLES2Context *ctx, GLuint name)
+{
+    return name && name < ctx->nobjects && ctx->objects[name];
+}
+
+static GLuint new_name(struct OGLES2Context *ctx, void *obj)
+{
+    GLuint i;
+    for (i = 1; i < ctx->nobjects; i++)
+        if (!ctx->objects[i]) {
+            ctx->objects[i] = obj;
+            return i;
+        }
+    {
+        GLuint n = ctx->nobjects ? ctx->nobjects * 2 : 16;
+        void **t = AllocVec(n * sizeof(void *), MEMF_ANY | MEMF_CLEAR);
+        if (!t)
+            return 0;
+        for (i = 0; i < ctx->nobjects; i++)
+            t[i] = ctx->objects[i];
+        if (ctx->objects)
+            FreeVec(ctx->objects);
+        i = ctx->nobjects ? ctx->nobjects : 1;
+        ctx->objects = t;
+        ctx->nobjects = n;
+        ctx->objects[i] = obj;
+        return i;
+    }
+}
+
+static void free_shader(struct OGLES2Context *ctx, struct OGLES2Shader *s)
+{
+    ctx->objects[s->name] = 0;
+    if (s->source)
+        FreeVec(s->source);
+    FreeVec(s);
+}
+
+/* A shader marked for deletion goes once no program holds it. */
+static void release_shader(struct OGLES2Context *ctx, struct OGLES2Shader *s)
+{
+    if (!s)
+        return;
+    s->attached--;
+    if (s->delete_pending && !s->attached)
+        free_shader(ctx, s);
+}
+
+static void unlink_program(struct OGLES2Context *ctx, struct OGLES2Program *p)
+{
+    int k;
+    for (k = 0; k < 2; k++) {
+        if (p->cbuf[k])
+            FreeVec(p->cbuf[k]);
+        p->cbuf[k] = 0;
+    }
+    if (p->loc_uniform)
+        FreeVec(p->loc_uniform);
+    if (p->sampler_unit)
+        FreeVec(p->sampler_unit);
+    p->loc_uniform = p->loc_element = 0;
+    p->sampler_unit = 0;
+    p->nlocations = 0;
+    p->image = 0; /* images belong to the context's cache */
+    p->linked = GL_FALSE;
+    (void)ctx;
+}
+
+static void set_log(struct OGLES2Program *p, const char *a, const char *b)
+{
+    ULONG la = str_len(a), lb = b ? str_len(b) : 0;
+    if (p->info_log)
+        FreeVec(p->info_log);
+    p->info_log = AllocVec(la + lb + 1, MEMF_ANY);
+    if (p->info_log) {
+        memcpy(p->info_log, a, la);
+        if (lb)
+            memcpy(p->info_log + la, b, lb);
+        p->info_log[la + lb] = 0;
+    }
+}
+
+static void free_program(struct OGLES2Context *ctx, struct OGLES2Program *p)
+{
+    ctx->objects[p->name] = 0;
+    release_shader(ctx, p->vs);
+    release_shader(ctx, p->fs);
+    unlink_program(ctx, p);
+    if (p->info_log)
+        FreeVec(p->info_log);
+    FreeVec(p);
+}
+
+void ogles2_objects_free(struct OGLES2Context *ctx)
+{
+    GLuint i;
+    UBYTE *o;
+    ctx->program = 0;
+    for (i = 1; i < ctx->nobjects; i++) /* programs first: they hold shaders */
+        if ((o = ctx->objects[i]) && *o == OGLES2_OBJ_PROGRAM)
+            free_program(ctx, (struct OGLES2Program *)o);
+    for (i = 1; i < ctx->nobjects; i++)
+        if ((o = ctx->objects[i]))
+            free_shader(ctx, (struct OGLES2Shader *)o);
+    if (ctx->objects)
+        FreeVec(ctx->objects);
+    ctx->objects = 0;
+    ctx->nobjects = 0;
+    while (ctx->images) {
+        struct OGLES2Image *im = ctx->images;
+        ctx->images = im->next;
+        ogles2_image_free(im, ctx);
+    }
+}
+
+/* Looks a name up for a call that wants `kind`: GL_INVALID_VALUE for no such
+ * object, GL_INVALID_OPERATION for an object of the other kind. */
+static void *lookup(struct OGLES2Context *ctx, GLuint name, UBYTE kind)
+{
+    void *o = ogles2_object(ctx, name, kind);
+    if (!o)
+        ogles2_error(ctx, name_exists(ctx, name) ? GL_INVALID_OPERATION : GL_INVALID_VALUE);
+    return o;
+}
+
+/* ---- shaders ---- */
+
+GLuint ogles2_glCreateShader(struct OGLES2Context *ctx, GLenum type)
+{
+    struct OGLES2Shader *s;
+    if (!ogles2_context_valid(ctx))
+        return 0;
+    if (type != GL_VERTEX_SHADER && type != GL_FRAGMENT_SHADER) {
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        return 0;
+    }
+    s = AllocVec(sizeof(*s), MEMF_ANY | MEMF_CLEAR);
+    if (!s || !(s->name = new_name(ctx, s))) {
+        if (s)
+            FreeVec(s);
+        ogles2_error(ctx, GL_OUT_OF_MEMORY);
+        return 0;
+    }
+    s->kind = OGLES2_OBJ_SHADER;
+    s->type = type;
+    return s->name;
+}
+
+void ogles2_glDeleteShader(struct OGLES2Context *ctx, GLuint shader)
+{
+    struct OGLES2Shader *s;
+    if (!ogles2_context_valid(ctx) || shader == 0)
+        return;
+    if (!(s = lookup(ctx, shader, OGLES2_OBJ_SHADER)))
+        return;
+    s->delete_pending = TRUE;
+    if (!s->attached)
+        free_shader(ctx, s);
+}
+
+GLboolean ogles2_glIsShader(struct OGLES2Context *ctx, GLuint shader)
+{
+    if (!ogles2_context_valid(ctx))
+        return GL_FALSE;
+    return ogles2_object(ctx, shader, OGLES2_OBJ_SHADER) ? GL_TRUE : GL_FALSE;
+}
+
+void ogles2_glShaderSource(struct OGLES2Context *ctx, GLuint shader, GLsizei count,
+                           const GLchar *const *string, const GLint *length)
+{
+    struct OGLES2Shader *s;
+    ULONG total = 0, n;
+    GLsizei i;
+    char *src;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (count < 0) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (!(s = lookup(ctx, shader, OGLES2_OBJ_SHADER)))
+        return;
+    for (i = 0; i < count; i++)
+        if (string[i])
+            total += (length && length[i] >= 0) ? (ULONG)length[i] : str_len(string[i]);
+    if (!(src = AllocVec(total + 1, MEMF_ANY))) {
+        ogles2_error(ctx, GL_OUT_OF_MEMORY);
+        return;
+    }
+    total = 0;
+    for (i = 0; i < count; i++) {
+        if (!string[i])
+            continue;
+        n = (length && length[i] >= 0) ? (ULONG)length[i] : str_len(string[i]);
+        memcpy(src + total, string[i], n);
+        total += n;
+    }
+    src[total] = 0;
+    if (s->source)
+        FreeVec(s->source);
+    s->source = src;
+}
+
+void ogles2_glCompileShader(struct OGLES2Context *ctx, GLuint shader)
+{
+    struct OGLES2Shader *s;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (!(s = lookup(ctx, shader, OGLES2_OBJ_SHADER)))
+        return;
+    /* S1 (plan 7.8): the source is only kept; linking does the real work. */
+    s->compiled = s->source ? GL_TRUE : GL_FALSE;
+}
+
+void ogles2_glGetShaderiv(struct OGLES2Context *ctx, GLuint shader, GLenum pname, GLint *params)
+{
+    struct OGLES2Shader *s;
+    if (!ogles2_context_valid(ctx) || !params)
+        return;
+    if (!(s = lookup(ctx, shader, OGLES2_OBJ_SHADER)))
+        return;
+    switch (pname) {
+    case GL_SHADER_TYPE:          *params = (GLint)s->type; break;
+    case GL_DELETE_STATUS:        *params = s->delete_pending ? GL_TRUE : GL_FALSE; break;
+    case GL_COMPILE_STATUS:       *params = s->compiled; break;
+    case GL_INFO_LOG_LENGTH:      *params = 0; break; /* no log */
+    case GL_SHADER_SOURCE_LENGTH: *params = s->source ? (GLint)str_len(s->source) + 1 : 0; break;
+    default:                      ogles2_error(ctx, GL_INVALID_ENUM); break;
+    }
+}
+
+void ogles2_glGetShaderInfoLog(struct OGLES2Context *ctx, GLuint shader, GLsizei bufSize,
+                               GLsizei *length, GLchar *infoLog)
+{
+    GLsizei n;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (bufSize < 0) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (!lookup(ctx, shader, OGLES2_OBJ_SHADER))
+        return;
+    n = copy_out(infoLog, bufSize, "");
+    if (length)
+        *length = n;
+}
+
+void ogles2_glGetShaderSource(struct OGLES2Context *ctx, GLuint shader, GLsizei bufSize,
+                              GLsizei *length, GLchar *source)
+{
+    struct OGLES2Shader *s;
+    GLsizei n;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (bufSize < 0) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (!(s = lookup(ctx, shader, OGLES2_OBJ_SHADER)))
+        return;
+    n = copy_out(source, bufSize, s->source ? s->source : "");
+    if (length)
+        *length = n;
+}
+
+/* ---- programs ---- */
+
+GLuint ogles2_glCreateProgram(struct OGLES2Context *ctx)
+{
+    struct OGLES2Program *p;
+    if (!ogles2_context_valid(ctx))
+        return 0;
+    p = AllocVec(sizeof(*p), MEMF_ANY | MEMF_CLEAR);
+    if (!p || !(p->name = new_name(ctx, p))) {
+        if (p)
+            FreeVec(p);
+        ogles2_error(ctx, GL_OUT_OF_MEMORY);
+        return 0;
+    }
+    p->kind = OGLES2_OBJ_PROGRAM;
+    return p->name;
+}
+
+void ogles2_glDeleteProgram(struct OGLES2Context *ctx, GLuint program)
+{
+    struct OGLES2Program *p;
+    if (!ogles2_context_valid(ctx) || program == 0)
+        return;
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    p->delete_pending = TRUE;
+    if (ctx->program != p) /* the current program goes when it stops being current */
+        free_program(ctx, p);
+}
+
+GLboolean ogles2_glIsProgram(struct OGLES2Context *ctx, GLuint program)
+{
+    if (!ogles2_context_valid(ctx))
+        return GL_FALSE;
+    return ogles2_object(ctx, program, OGLES2_OBJ_PROGRAM) ? GL_TRUE : GL_FALSE;
+}
+
+void ogles2_glAttachShader(struct OGLES2Context *ctx, GLuint program, GLuint shader)
+{
+    struct OGLES2Program *p;
+    struct OGLES2Shader *s, **slot;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)) ||
+        !(s = lookup(ctx, shader, OGLES2_OBJ_SHADER)))
+        return;
+    slot = s->type == GL_VERTEX_SHADER ? &p->vs : &p->fs;
+    if (*slot) { /* already attached, or one of that type already is */
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    *slot = s;
+    s->attached++;
+}
+
+void ogles2_glDetachShader(struct OGLES2Context *ctx, GLuint program, GLuint shader)
+{
+    struct OGLES2Program *p;
+    struct OGLES2Shader *s;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)) ||
+        !(s = lookup(ctx, shader, OGLES2_OBJ_SHADER)))
+        return;
+    if (p->vs == s)
+        p->vs = 0;
+    else if (p->fs == s)
+        p->fs = 0;
+    else {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    release_shader(ctx, s);
+}
+
+void ogles2_glGetAttachedShaders(struct OGLES2Context *ctx, GLuint program, GLsizei maxCount,
+                                 GLsizei *count, GLuint *shaders)
+{
+    struct OGLES2Program *p;
+    GLsizei n = 0;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (maxCount < 0) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    if (p->vs && n < maxCount)
+        shaders[n++] = p->vs->name;
+    if (p->fs && n < maxCount)
+        shaders[n++] = p->fs->name;
+    if (count)
+        *count = n;
+}
+
+void ogles2_glBindAttribLocation(struct OGLES2Context *ctx, GLuint program, GLuint index,
+                                 const GLchar *name)
+{
+    struct OGLES2Program *p;
+    int i;
+    if (!ogles2_context_valid(ctx) || !name)
+        return;
+    if (index >= OGLES2_MAX_VERTEX_ATTRIBS) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    if (name[0] == 'g' && name[1] == 'l' && name[2] == '_') {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    for (i = 0; i < p->nbindings; i++)
+        if (str_eq(p->bind_name[i], name))
+            break;
+    if (i == p->nbindings) {
+        if (p->nbindings == OGLES2_MAX_BINDINGS || str_len(name) >= sizeof(p->bind_name[0])) {
+            ogles2_log("glBindAttribLocation: \"%s\" not kept (too many or too long)", (ULONG)name);
+            return;
+        }
+        p->nbindings++;
+    }
+    copy_out(p->bind_name[i], sizeof(p->bind_name[i]), name);
+    p->bind_index[i] = index;
+}
+
+/* ---- linking ---- */
+
+/* The program hash (v3dp/FORMAT.md, PROGRAM), as hex: per shader, vertex
+ * first, its stage and length as little-endian 32-bit words, then its text. */
+static void program_hash(const struct OGLES2Program *p, UBYTE out[32], char hex[65])
+{
+    static const char digits[] = "0123456789abcdef";
+    struct blake3 h;
+    int k;
+    blake3_init(&h);
+    for (k = 0; k < 2; k++) {
+        const char *src = k ? p->fs->source : p->vs->source;
+        ULONG stage = k ? 4 : 0, len = str_len(src), i;
+        UBYTE w[8];
+        for (i = 0; i < 4; i++) {
+            w[i] = (UBYTE)(stage >> (8 * i));
+            w[4 + i] = (UBYTE)(len >> (8 * i));
+        }
+        blake3_update(&h, w, 8);
+        blake3_update(&h, src, len);
+    }
+    blake3_final(&h, out);
+    for (k = 0; k < 32; k++) {
+        hex[2 * k] = digits[out[k] >> 4];
+        hex[2 * k + 1] = digits[out[k] & 15];
+    }
+    hex[64] = 0;
+}
+
+/* Reads a whole file; NULL if it does not exist. */
+static UBYTE *read_file(const char *path, ULONG *len)
+{
+    BPTR fh = Open((STRPTR)path, MODE_OLDFILE);
+    UBYTE *buf = 0;
+    LONG size;
+    if (!fh)
+        return 0;
+    if (Seek(fh, 0, OFFSET_END) >= 0 && (size = Seek(fh, 0, OFFSET_BEGINNING)) > 0 &&
+        size < 16L * 1024 * 1024 && (buf = AllocVec((ULONG)size, MEMF_ANY))) {
+        if (Read(fh, buf, size) != size) {
+            FreeVec(buf);
+            buf = 0;
+        }
+        *len = (ULONG)size;
+    }
+    Close(fh);
+    return buf;
+}
+
+/* Appends a program without a binary to T:ogles2_missing_shaders.txt, for
+ * the offline compiler (plan 7.8). */
+static void note_missing(const struct OGLES2Program *p, const char *hex)
+{
+    BPTR fh = Open((STRPTR) "T:ogles2_missing_shaders.txt", MODE_READWRITE);
+    if (!fh)
+        return;
+    Seek(fh, 0, OFFSET_END);
+    FPuts(fh, (STRPTR) "--- program ");
+    FPuts(fh, (STRPTR)hex);
+    FPuts(fh, (STRPTR) "\n--- vertex shader\n");
+    FPuts(fh, (STRPTR)p->vs->source);
+    FPuts(fh, (STRPTR) "\n--- fragment shader\n");
+    FPuts(fh, (STRPTR)p->fs->source);
+    FPuts(fh, (STRPTR) "\n--- end\n");
+    Close(fh);
+}
+
+#define FILE_HASH_DIGITS 24 /* + ".v3dp": 29 characters, FFS's limit is 30 */
+
+static struct OGLES2Image *load_image(struct OGLES2Program *p, const UBYTE *hash, const char *hex)
+{
+    static const char *const dirs[] = {"PROGDIR:", "OGLES2Cache:"};
+    char path[96], why[120];
+    struct OGLES2Image *im;
+    UBYTE *file;
+    ULONG len = 0;
+    int d;
+    for (d = 0; d < 2; d++) {
+        strcpy(path, dirs[d]);
+        strncat(path, hex, FILE_HASH_DIGITS);
+        strcat(path, ".v3dp");
+        if (!(file = read_file(path, &len)))
+            continue;
+        im = ogles2_v3dp_load(file, len, why, sizeof(why));
+        FreeVec(file);
+        if (im && memcmp(im->hash, hash, 32)) {
+            /* The same first 24 digits, another program: not ours. */
+            ogles2_log("glLinkProgram: %s is another program (hash differs)", (ULONG)path);
+            ogles2_image_free(im, 0);
+            continue;
+        }
+        if (im) {
+            ogles2_log("glLinkProgram: %s (%ld variants, %ld bytes of code)", (ULONG)path,
+                       (LONG)im->nvariants, im->code_total);
+            return im;
+        }
+        ogles2_log("glLinkProgram: %s refused: %s", (ULONG)path, (ULONG)why);
+        set_log(p, "the program binary was refused: ", why);
+        return 0;
+    }
+    ogles2_log("glLinkProgram: no binary for program %s (sources in T:ogles2_missing_shaders.txt)",
+               (ULONG)hex);
+    set_log(p, "no program binary for this program: ", hex);
+    note_missing(p, hex);
+    return 0;
+}
+
+/* After an image is set: attribute locations, uniform locations, constant
+ * buffers. FALSE (with the log set) if the attributes do not fit. */
+static BOOL bind_image(struct OGLES2Program *p, const struct OGLES2Image *im)
+{
+    ULONG used = 0;
+    int a, i, k, n;
+    UWORD u, nloc = 0;
+
+    /* Attribute locations: glBindAttribLocation first, then the lowest free
+     * run (a matrix takes one location per column). */
+    for (a = 0; a < im->nattribs; a++) {
+        p->attrib_index[a] = 0xff;
+        for (i = 0; i < p->nbindings; i++)
+            if (str_eq(p->bind_name[i], im->attribs[a].name)) {
+                p->attrib_index[a] = (UBYTE)p->bind_index[i];
+                for (k = 0; k < im->attribs[a].columns; k++)
+                    used |= 1UL << (p->bind_index[i] + k);
+            }
+    }
+    for (a = 0; a < im->nattribs; a++) {
+        if (p->attrib_index[a] != 0xff)
+            continue;
+        n = im->attribs[a].columns;
+        for (i = 0; i + n <= OGLES2_MAX_VERTEX_ATTRIBS; i++) {
+            ULONG run = ((1UL << n) - 1) << i;
+            if (!(used & run))
+                break;
+        }
+        if (i + n > OGLES2_MAX_VERTEX_ATTRIBS) {
+            set_log(p, "too many vertex attributes", 0);
+            return FALSE;
+        }
+        p->attrib_index[a] = (UBYTE)i;
+        used |= ((1UL << n) - 1) << i;
+    }
+
+    /* Uniform locations: one per array element of every visible uniform. */
+    for (u = 0; u < im->nuniforms; u++)
+        if (!(im->uniforms[u].flags & (OGLES2_UNIFORM_BUILTIN | OGLES2_UNIFORM_HIDDEN)))
+            nloc += im->uniforms[u].array ? im->uniforms[u].array : 1;
+    p->loc_uniform = AllocVec(nloc * 4 + 4, MEMF_ANY);
+    p->sampler_unit = AllocVec(im->nuniforms + 1, MEMF_ANY | MEMF_CLEAR);
+    for (k = 0; k < 2; k++)
+        p->cbuf[k] = AllocVec(im->cbuf_words[k] * 4 + 4, MEMF_ANY | MEMF_CLEAR);
+    if (!p->loc_uniform || !p->sampler_unit || !p->cbuf[0] || !p->cbuf[1]) {
+        set_log(p, "out of memory", 0);
+        return FALSE;
+    }
+    p->loc_element = p->loc_uniform + nloc;
+    nloc = 0;
+    for (u = 0; u < im->nuniforms; u++) {
+        const struct OGLES2ImageUniform *un = &im->uniforms[u];
+        UWORD e, ne = un->array ? un->array : 1;
+        if (un->flags & (OGLES2_UNIFORM_BUILTIN | OGLES2_UNIFORM_HIDDEN))
+            continue;
+        for (e = 0; e < ne; e++) {
+            p->loc_uniform[nloc] = u;
+            p->loc_element[nloc] = e;
+            nloc++;
+        }
+    }
+    p->nlocations = nloc;
+    for (k = 0; k < 2; k++)
+        if (im->cbuf_template[k])
+            memcpy(p->cbuf[k], im->cbuf_template[k], im->cbuf_words[k] * 4);
+    p->image = im;
+    return TRUE;
+}
+
+void ogles2_glLinkProgram(struct OGLES2Context *ctx, GLuint program)
+{
+    struct OGLES2Program *p;
+    struct OGLES2Image *im;
+    UBYTE hash[32];
+    char hex[65];
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    /* A program in use keeps its old image in the open job until relinked:
+     * the job's records already point at its code (ogles2_image_free defers). */
+    unlink_program(ctx, p);
+    if (!p->vs || !p->fs || !p->vs->compiled || !p->fs->compiled) {
+        set_log(p, "a compiled vertex shader and fragment shader must be attached", 0);
+        return;
+    }
+    program_hash(p, hash, hex);
+    for (im = ctx->images; im && memcmp(im->hash, hash, 32); im = im->next)
+        ;
+    if (!im) {
+        if (!(im = load_image(p, hash, hex)))
+            return;
+        im->next = ctx->images;
+        ctx->images = im;
+    }
+    if (!bind_image(p, im)) {
+        unlink_program(ctx, p);
+        return;
+    }
+    p->linked = GL_TRUE;
+    set_log(p, "", 0);
+}
+
+/* A program on the built-in image (draw.c's clears). */
+BOOL ogles2_program_builtin(struct OGLES2Program *p)
+{
+    memset(p, 0, sizeof(*p));
+    p->kind = OGLES2_OBJ_PROGRAM;
+    if (!bind_image(p, &builtin_smooth)) {
+        ogles2_program_builtin_free(p);
+        return FALSE;
+    }
+    p->linked = GL_TRUE;
+    return TRUE;
+}
+
+void ogles2_program_builtin_free(struct OGLES2Program *p)
+{
+    unlink_program(0, p);
+    if (p->info_log)
+        FreeVec(p->info_log);
+    p->info_log = 0;
+}
+
+void ogles2_glUseProgram(struct OGLES2Context *ctx, GLuint program)
+{
+    struct OGLES2Program *p = 0, *old;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (program) {
+        if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+            return;
+        if (!p->linked) {
+            ogles2_error(ctx, GL_INVALID_OPERATION);
+            return;
+        }
+    }
+    old = ctx->program;
+    ctx->program = p;
+    if (old && old != p && old->delete_pending)
+        free_program(ctx, old);
+}
+
+void ogles2_glValidateProgram(struct OGLES2Context *ctx, GLuint program)
+{
+    if (!ogles2_context_valid(ctx))
+        return;
+    lookup(ctx, program, OGLES2_OBJ_PROGRAM); /* the status is LINK_STATUS's (glGetProgramiv) */
+}
+
+/* The name glGetActiveUniform reports: arrays get "[0]" (GLES 2.0 2.10.4). */
+static ULONG active_name_len(const struct OGLES2ImageUniform *u)
+{
+    return str_len(u->name) + (u->array ? 3 : 0);
+}
+
+static BOOL visible(const struct OGLES2ImageUniform *u)
+{
+    return !(u->flags & (OGLES2_UNIFORM_BUILTIN | OGLES2_UNIFORM_HIDDEN));
+}
+
+/* The index'th visible uniform, or NULL. */
+static const struct OGLES2ImageUniform *active_uniform(const struct OGLES2Image *im, GLuint index)
+{
+    UWORD u;
+    for (u = 0; u < im->nuniforms; u++)
+        if (visible(&im->uniforms[u]) && index-- == 0)
+            return &im->uniforms[u];
+    return 0;
+}
+
+static const struct OGLES2ImageAttrib *active_attrib(const struct OGLES2Image *im, GLuint index)
+{
+    UWORD a;
+    for (a = 0; a < im->nattribs; a++)
+        if (im->attribs[a].slot != 0xff && index-- == 0)
+            return &im->attribs[a];
+    return 0;
+}
+
+void ogles2_glGetProgramiv(struct OGLES2Context *ctx, GLuint program, GLenum pname, GLint *params)
+{
+    struct OGLES2Program *p;
+    const struct OGLES2Image *im;
+    GLint n, i;
+    if (!ogles2_context_valid(ctx) || !params)
+        return;
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    im = p->image;
+    switch (pname) {
+    case GL_DELETE_STATUS:     *params = p->delete_pending ? GL_TRUE : GL_FALSE; break;
+    case GL_LINK_STATUS:
+    case GL_VALIDATE_STATUS:   *params = p->linked; break;
+    case GL_INFO_LOG_LENGTH:
+        *params = (p->info_log && p->info_log[0]) ? (GLint)str_len(p->info_log) + 1 : 0;
+        break;
+    case GL_ATTACHED_SHADERS:  *params = (p->vs ? 1 : 0) + (p->fs ? 1 : 0); break;
+    case GL_ACTIVE_ATTRIBUTES:
+        for (n = 0; im && active_attrib(im, (GLuint)n); n++)
+            ;
+        *params = n;
+        break;
+    case GL_ACTIVE_UNIFORMS:
+        for (n = 0; im && active_uniform(im, (GLuint)n); n++)
+            ;
+        *params = n;
+        break;
+    case GL_ACTIVE_ATTRIBUTE_MAX_LENGTH:
+        n = 0;
+        for (i = 0; im && active_attrib(im, (GLuint)i); i++)
+            if ((GLint)str_len(active_attrib(im, (GLuint)i)->name) + 1 > n)
+                n = (GLint)str_len(active_attrib(im, (GLuint)i)->name) + 1;
+        *params = n;
+        break;
+    case GL_ACTIVE_UNIFORM_MAX_LENGTH:
+        n = 0;
+        for (i = 0; im && active_uniform(im, (GLuint)i); i++)
+            if ((GLint)active_name_len(active_uniform(im, (GLuint)i)) + 1 > n)
+                n = (GLint)active_name_len(active_uniform(im, (GLuint)i)) + 1;
+        *params = n;
+        break;
+    default:
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        break;
+    }
+}
+
+void ogles2_glGetProgramInfoLog(struct OGLES2Context *ctx, GLuint program, GLsizei bufSize,
+                                GLsizei *length, GLchar *infoLog)
+{
+    struct OGLES2Program *p;
+    GLsizei n;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (bufSize < 0) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    n = copy_out(infoLog, bufSize, p->info_log ? p->info_log : "");
+    if (length)
+        *length = n;
+}
+
+/* Linked program for a location query: GL_INVALID_OPERATION if not linked. */
+static struct OGLES2Program *linked(struct OGLES2Context *ctx, GLuint program)
+{
+    struct OGLES2Program *p = lookup(ctx, program, OGLES2_OBJ_PROGRAM);
+    if (p && !p->linked) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return 0;
+    }
+    return p;
+}
+
+GLint ogles2_glGetAttribLocation(struct OGLES2Context *ctx, GLuint program, const GLchar *name)
+{
+    struct OGLES2Program *p;
+    int a;
+    if (!ogles2_context_valid(ctx) || !name || !(p = linked(ctx, program)))
+        return -1;
+    for (a = 0; a < p->image->nattribs; a++)
+        if (p->image->attribs[a].slot != 0xff && str_eq(p->image->attribs[a].name, name))
+            return p->attrib_index[a];
+    return -1;
+}
+
+void ogles2_glGetActiveAttrib(struct OGLES2Context *ctx, GLuint program, GLuint index,
+                              GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type,
+                              GLchar *name)
+{
+    struct OGLES2Program *p;
+    const struct OGLES2ImageAttrib *a;
+    GLsizei n;
+    if (!ogles2_context_valid(ctx) || !(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    if (!p->image || !(a = active_attrib(p->image, index)) || bufSize < 0) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    n = copy_out(name, bufSize, a->name);
+    if (length)
+        *length = n;
+    if (size)
+        *size = 1;
+    if (type)
+        *type = a->type;
+}
+
+/* ---- uniforms ----
+ * Locations number every array element of every visible uniform, in the
+ * image's order (the .v3dp leaves the numbering to the runtime). */
+
+GLint ogles2_glGetUniformLocation(struct OGLES2Context *ctx, GLuint program, const GLchar *name)
+{
+    struct OGLES2Program *p;
+    const struct OGLES2Image *im;
+    ULONG len, base;
+    LONG index = -1;
+    UWORD loc;
+    if (!ogles2_context_valid(ctx) || !name || !(p = linked(ctx, program)))
+        return -1;
+    im = p->image;
+    len = str_len(name);
+    base = len;
+    /* "a[3]": an array element; "a" and "a[0]" are its first. */
+    if (len > 3 && name[len - 1] == ']') {
+        ULONG i = len - 2, v = 0, mul = 1;
+        while (i > 0 && name[i] >= '0' && name[i] <= '9') {
+            v += (ULONG)(name[i] - '0') * mul;
+            mul *= 10;
+            i--;
+        }
+        if (name[i] == '[' && i < len - 2) {
+            base = i;
+            index = (LONG)v;
+        }
+    }
+    for (loc = 0; loc < p->nlocations; loc++) {
+        const struct OGLES2ImageUniform *u = &im->uniforms[p->loc_uniform[loc]];
+        if (p->loc_element[loc])
+            continue;
+        if (str_eq(u->name, name))
+            return loc; /* the whole name, struct members included */
+        if (index >= 0 && u->array && (LONG)u->array > index && str_len(u->name) == base &&
+            !strncmp(u->name, name, base))
+            return loc + (GLint)index;
+    }
+    return -1;
+}
+
+void ogles2_glGetActiveUniform(struct OGLES2Context *ctx, GLuint program, GLuint index,
+                               GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type,
+                               GLchar *name)
+{
+    struct OGLES2Program *p;
+    const struct OGLES2ImageUniform *u;
+    GLsizei n;
+    if (!ogles2_context_valid(ctx) || !(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    if (!p->image || !(u = active_uniform(p->image, index)) || bufSize < 0) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    n = copy_out(name, bufSize, u->name);
+    if (u->array && name && n + 3 < bufSize) {
+        name[n++] = '[';
+        name[n++] = '0';
+        name[n++] = ']';
+        name[n] = 0;
+    }
+    if (length)
+        *length = n;
+    if (size)
+        *size = u->array ? u->array : 1;
+    if (type)
+        *type = u->type;
+}
+
+/* Kinds of uniform data. */
+#define K_FLOAT 0
+#define K_INT   1
+#define K_BOOL  2
+#define K_SAMPLER 3
+
+/* Kind, components per column and columns of a GL uniform type; 0 if unknown. */
+static int type_shape(GLenum t, int *kind, int *comps, int *cols)
+{
+    *cols = 1;
+    switch (t) {
+    case GL_FLOAT:        *kind = K_FLOAT; *comps = 1; return 1;
+    case GL_FLOAT_VEC2:   *kind = K_FLOAT; *comps = 2; return 1;
+    case GL_FLOAT_VEC3:   *kind = K_FLOAT; *comps = 3; return 1;
+    case GL_FLOAT_VEC4:   *kind = K_FLOAT; *comps = 4; return 1;
+    case GL_INT:          *kind = K_INT;   *comps = 1; return 1;
+    case GL_INT_VEC2:     *kind = K_INT;   *comps = 2; return 1;
+    case GL_INT_VEC3:     *kind = K_INT;   *comps = 3; return 1;
+    case GL_INT_VEC4:     *kind = K_INT;   *comps = 4; return 1;
+    case GL_BOOL:         *kind = K_BOOL;  *comps = 1; return 1;
+    case GL_BOOL_VEC2:    *kind = K_BOOL;  *comps = 2; return 1;
+    case GL_BOOL_VEC3:    *kind = K_BOOL;  *comps = 3; return 1;
+    case GL_BOOL_VEC4:    *kind = K_BOOL;  *comps = 4; return 1;
+    case GL_FLOAT_MAT2:   *kind = K_FLOAT; *comps = 2; *cols = 2; return 1;
+    case GL_FLOAT_MAT3:   *kind = K_FLOAT; *comps = 3; *cols = 3; return 1;
+    case GL_FLOAT_MAT4:   *kind = K_FLOAT; *comps = 4; *cols = 4; return 1;
+    case GL_SAMPLER_2D:
+    case GL_SAMPLER_CUBE: *kind = K_SAMPLER; *comps = 1; return 1;
+    default:              return 0;
+    }
+}
+
+static ULONG fbits(GLfloat f)
+{
+    union { GLfloat f; ULONG u; } c;
+    c.f = f;
+    return c.u;
+}
+
+/* glUniform* and glUniformMatrix*: `count` values of `comps` x `cols`
+ * components, floats (fv) or ints (iv), into the current program's uniform
+ * at `location`. `kind` is the call's (K_FLOAT for f, K_INT for i). */
+static void set_uniform(struct OGLES2Context *ctx, GLint location, GLsizei count, int kind,
+                        int comps, int cols, const GLfloat *fv, const GLint *iv)
+{
+    struct OGLES2Program *p;
+    const struct OGLES2ImageUniform *u;
+    int ukind, ucomps, ucols, c, k, pl;
+    UWORD e, first, ne;
+    GLsizei i;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (!(p = ctx->program)) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    if (location == -1) /* silently ignored (GLES 2.0 section 2.10.4) */
+        return;
+    if (count < 0) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (location < 0 || location >= p->nlocations) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    u = &p->image->uniforms[p->loc_uniform[location]];
+    first = p->loc_element[location];
+    if (!type_shape(u->type, &ukind, &ucomps, &ucols) || ucomps != comps || ucols != cols ||
+        (count > 1 && !u->array) ||
+        !(ukind == kind || ukind == K_BOOL || (ukind == K_SAMPLER && kind == K_INT && comps == 1))) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    if (!count || (!fv && !iv))
+        return;
+    ne = u->array ? u->array : 1;
+    if (count > ne - first)
+        count = ne - first; /* past the array's end: ignored (GLES 2.0 2.10.4) */
+    if (ukind == K_SAMPLER) {
+        for (i = 0; i < count; i++)
+            if (iv[i] < 0 || iv[i] >= 16) {
+                ogles2_error(ctx, GL_INVALID_VALUE);
+                return;
+            }
+        p->sampler_unit[p->loc_uniform[location]] = (UBYTE)iv[0];
+        return;
+    }
+    for (pl = 0; pl < u->nplaces; pl++) {
+        const struct OGLES2Place *place = &u->places[pl];
+        ULONG *cb = p->cbuf[place->stage];
+        for (i = 0, e = first; i < count; i++, e++)
+            for (c = 0; c < cols; c++)
+                for (k = 0; k < comps; k++) {
+                    int src = (i * cols + c) * comps + k;
+                    ULONG w;
+                    ULONG at = place->offset + (ULONG)e * place->elem_stride + (ULONG)c * place->vec_stride + k;
+                    if (ukind == K_BOOL) {
+                        BOOL b = kind == K_FLOAT ? fv[src] != 0.0f : iv[src] != 0;
+                        w = place->int_as_float ? (b ? fbits(1.0f) : 0) : (b ? ~0UL : 0);
+                    } else if (ukind == K_INT) {
+                        w = place->int_as_float ? fbits((GLfloat)iv[src]) : (ULONG)iv[src];
+                    } else {
+                        w = fbits(fv[src]);
+                    }
+                    if (at < p->image->cbuf_words[place->stage])
+                        cb[at] = w;
+                }
+    }
+}
+
+void ogles2_glUniform1fv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                         const GLfloat *value)
+{
+    set_uniform(ctx, location, count, K_FLOAT, 1, 1, value, 0);
+}
+
+void ogles2_glUniform1iv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                         const GLint *value)
+{
+    set_uniform(ctx, location, count, K_INT, 1, 1, 0, value);
+}
+
+void ogles2_glUniform2fv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                         const GLfloat *value)
+{
+    set_uniform(ctx, location, count, K_FLOAT, 2, 1, value, 0);
+}
+
+void ogles2_glUniform2iv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                         const GLint *value)
+{
+    set_uniform(ctx, location, count, K_INT, 2, 1, 0, value);
+}
+
+void ogles2_glUniform3fv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                         const GLfloat *value)
+{
+    set_uniform(ctx, location, count, K_FLOAT, 3, 1, value, 0);
+}
+
+void ogles2_glUniform3iv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                         const GLint *value)
+{
+    set_uniform(ctx, location, count, K_INT, 3, 1, 0, value);
+}
+
+void ogles2_glUniform4fv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                         const GLfloat *value)
+{
+    set_uniform(ctx, location, count, K_FLOAT, 4, 1, value, 0);
+}
+
+void ogles2_glUniform4iv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                         const GLint *value)
+{
+    set_uniform(ctx, location, count, K_INT, 4, 1, 0, value);
+}
+
+void ogles2_glUniform1f(struct OGLES2Context *ctx, GLint location, GLfloat v0)
+{
+    set_uniform(ctx, location, 1, K_FLOAT, 1, 1, &v0, 0);
+}
+
+void ogles2_glUniform2f(struct OGLES2Context *ctx, GLint location, GLfloat v0, GLfloat v1)
+{
+    GLfloat v[2];
+    v[0] = v0; v[1] = v1;
+    set_uniform(ctx, location, 1, K_FLOAT, 2, 1, v, 0);
+}
+
+void ogles2_glUniform3f(struct OGLES2Context *ctx, GLint location, GLfloat v0, GLfloat v1,
+                        GLfloat v2)
+{
+    GLfloat v[3];
+    v[0] = v0; v[1] = v1; v[2] = v2;
+    set_uniform(ctx, location, 1, K_FLOAT, 3, 1, v, 0);
+}
+
+void ogles2_glUniform4f(struct OGLES2Context *ctx, GLint location, GLfloat v0, GLfloat v1,
+                        GLfloat v2, GLfloat v3)
+{
+    GLfloat v[4];
+    v[0] = v0; v[1] = v1; v[2] = v2; v[3] = v3;
+    set_uniform(ctx, location, 1, K_FLOAT, 4, 1, v, 0);
+}
+
+void ogles2_glUniform1i(struct OGLES2Context *ctx, GLint location, GLint v0)
+{
+    set_uniform(ctx, location, 1, K_INT, 1, 1, 0, &v0);
+}
+
+void ogles2_glUniform2i(struct OGLES2Context *ctx, GLint location, GLint v0, GLint v1)
+{
+    GLint v[2];
+    v[0] = v0; v[1] = v1;
+    set_uniform(ctx, location, 1, K_INT, 2, 1, 0, v);
+}
+
+void ogles2_glUniform3i(struct OGLES2Context *ctx, GLint location, GLint v0, GLint v1, GLint v2)
+{
+    GLint v[3];
+    v[0] = v0; v[1] = v1; v[2] = v2;
+    set_uniform(ctx, location, 1, K_INT, 3, 1, 0, v);
+}
+
+void ogles2_glUniform4i(struct OGLES2Context *ctx, GLint location, GLint v0, GLint v1, GLint v2,
+                        GLint v3)
+{
+    GLint v[4];
+    v[0] = v0; v[1] = v1; v[2] = v2; v[3] = v3;
+    set_uniform(ctx, location, 1, K_INT, 4, 1, 0, v);
+}
+
+void ogles2_glUniformMatrix2fv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                               GLboolean transpose, const GLfloat *value)
+{
+    if (ogles2_context_valid(ctx) && transpose != GL_FALSE) { /* GLES 2.0: must be FALSE */
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    set_uniform(ctx, location, count, K_FLOAT, 2, 2, value, 0);
+}
+
+void ogles2_glUniformMatrix3fv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                               GLboolean transpose, const GLfloat *value)
+{
+    if (ogles2_context_valid(ctx) && transpose != GL_FALSE) { /* GLES 2.0: must be FALSE */
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    set_uniform(ctx, location, count, K_FLOAT, 3, 3, value, 0);
+}
+
+void ogles2_glUniformMatrix4fv(struct OGLES2Context *ctx, GLint location, GLsizei count,
+                               GLboolean transpose, const GLfloat *value)
+{
+    if (ogles2_context_valid(ctx) && transpose != GL_FALSE) { /* GLES 2.0: must be FALSE */
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    set_uniform(ctx, location, count, K_FLOAT, 4, 4, value, 0);
+}
+
+/* glGetUniformfv / iv: the value as the first storage place holds it. */
+static void get_uniform(struct OGLES2Context *ctx, GLuint program, GLint location, GLfloat *fv,
+                        GLint *iv)
+{
+    struct OGLES2Program *p;
+    const struct OGLES2ImageUniform *u;
+    const struct OGLES2Place *place;
+    int kind, comps, cols, c, k;
+    if (!ogles2_context_valid(ctx) || !(p = linked(ctx, program)))
+        return;
+    if (location < 0 || location >= p->nlocations) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    u = &p->image->uniforms[p->loc_uniform[location]];
+    if (!type_shape(u->type, &kind, &comps, &cols))
+        return;
+    if (kind == K_SAMPLER) {
+        if (fv) *fv = (GLfloat)p->sampler_unit[p->loc_uniform[location]];
+        if (iv) *iv = p->sampler_unit[p->loc_uniform[location]];
+        return;
+    }
+    if (!u->nplaces)
+        return;
+    place = &u->places[0];
+    for (c = 0; c < cols; c++)
+        for (k = 0; k < comps; k++) {
+            ULONG at = place->offset + (ULONG)p->loc_element[location] * place->elem_stride +
+                       (ULONG)c * place->vec_stride + k;
+            ULONG w = at < p->image->cbuf_words[place->stage] ? p->cbuf[place->stage][at] : 0;
+            union { ULONG u; GLfloat f; } cv;
+            GLfloat f;
+            GLint n;
+            cv.u = w;
+            if (kind == K_FLOAT || place->int_as_float) {
+                f = cv.f;
+                n = (GLint)f;
+            } else {
+                n = (GLint)w;
+                f = (GLfloat)n;
+            }
+            if (kind == K_BOOL) {
+                n = w != 0;
+                f = (GLfloat)n;
+            }
+            if (fv) fv[c * comps + k] = f;
+            if (iv) iv[c * comps + k] = n;
+        }
+}
+
+void ogles2_glGetUniformfv(struct OGLES2Context *ctx, GLuint program, GLint location,
+                           GLfloat *params)
+{
+    if (params)
+        get_uniform(ctx, program, location, params, 0);
+}
+
+void ogles2_glGetUniformiv(struct OGLES2Context *ctx, GLuint program, GLint location,
+                           GLint *params)
+{
+    if (params)
+        get_uniform(ctx, program, location, 0, params);
+}
+
+/* All precisions are fp32 and 32-bit ints on V3D (plan 7.8). */
+void ogles2_glGetShaderPrecisionFormat(struct OGLES2Context *ctx, GLenum shadertype,
+                                       GLenum precisiontype, GLint *range, GLint *precision)
+{
+    BOOL is_float;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if ((shadertype != GL_VERTEX_SHADER && shadertype != GL_FRAGMENT_SHADER) ||
+        precisiontype < GL_LOW_FLOAT || precisiontype > GL_HIGH_INT) {
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        return;
+    }
+    is_float = precisiontype <= GL_HIGH_FLOAT;
+    if (range) {
+        range[0] = is_float ? 127 : 31;
+        range[1] = is_float ? 127 : 30;
+    }
+    if (precision)
+        *precision = is_float ? 23 : 0;
+}
+
+void ogles2_glReleaseShaderCompiler(struct OGLES2Context *ctx)
+{
+    (void)ctx; /* nothing is held between compiles */
+}
+
+/* No shader binary formats (GL_NUM_SHADER_BINARY_FORMATS is 0): programs
+ * come from .v3dp files found by their sources' hash. */
+void ogles2_glShaderBinary(struct OGLES2Context *ctx, GLsizei count, const GLuint *shaders,
+                           GLenum binaryFormat, const void *binary, GLsizei length)
+{
+    (void)count;
+    (void)shaders;
+    (void)binaryFormat;
+    (void)binary;
+    (void)length;
+    if (ogles2_context_valid(ctx))
+        ogles2_error(ctx, GL_INVALID_ENUM);
+}

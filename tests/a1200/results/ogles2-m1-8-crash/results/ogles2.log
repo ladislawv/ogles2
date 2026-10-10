@@ -1,0 +1,32 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0825E3D0
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 320x240, BGRA
+    13 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08441534, 320x240
+    15 glLinkProgram: M1 links every program to the built-in smooth colour (PiStorm3D VERTEX_SMOOTH, FRAGMENT_UNTEXTURED_SMOOTH)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08441534 (1 frames, 0 dropped)
+    18 display: application bitmap, 320x240, BGRA
+    19 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    20 aglCreateContext2: context 0x08441534, 320x240
+    21 device: context freed, 0 bytes of GPU memory still in use
+    22 aglDestroyContext: context 0x08441534 (1 frames, 0 dropped)
+    23 aglCreateContext2: probes "F" (ENV:OGLES2/Probe)
+    24 display: application bitmap, 320x240, BGRA
+    25 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    26 aglCreateContext2: context 0x08441534, 320x240
+    27 device: context freed, 0 bytes of GPU memory still in use
+    28 aglDestroyContext: context 0x08441534 (1 frames, 0 dropped)
+    29 aglCreateContext2: probes "Y" (ENV:OGLES2/Probe)
+    30 display: application bitmap, 320x240, BGRA
+    31 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    32 aglCreateContext2: context 0x08441534, 320x240

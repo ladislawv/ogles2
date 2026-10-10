@@ -1,0 +1,13 @@
+diff --git a/src/compiler/glsl/ir_constant_expression.cpp b/src/compiler/glsl/ir_constant_expression.cpp
+index 3cec052fbf6..366c7596d4f 100644
+--- a/src/compiler/glsl/ir_constant_expression.cpp
++++ b/src/compiler/glsl/ir_constant_expression.cpp
+@@ -461,7 +461,7 @@ pack_2x32(uint32_t a, uint32_t b)
+ }
+ 
+ static void
+-unpack_2x32(uint64_t p, uint32_t *a, uint32_t *b)
++unpack_2x32(uint64_t p, unsigned *a, unsigned *b)
+ {
+    *a = p & 0xffffffff;
+    *b = (p >> 32);

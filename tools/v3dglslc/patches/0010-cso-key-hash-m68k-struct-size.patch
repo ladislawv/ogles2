@@ -1,0 +1,23 @@
+diff --git a/src/gallium/auxiliary/cso_cache/cso_cache.h b/src/gallium/auxiliary/cso_cache/cso_cache.h
+index 35408e147b0..32aca5a8b20 100644
+--- a/src/gallium/auxiliary/cso_cache/cso_cache.h
++++ b/src/gallium/auxiliary/cso_cache/cso_cache.h
+@@ -182,11 +182,16 @@ cso_construct_key(const void *key, int key_size)
+    const unsigned *ikey = (const unsigned *)key;
+    unsigned num_elements = key_size / 4;
+ 
+-   assert(key_size % 4 == 0);
+-
+    for (unsigned i = 0; i < num_elements; i++)
+       hash ^= ikey[i];
+ 
++   /* m68k aligns 32-bit fields to 2 bytes, so a state struct can end on a
++    * 2-byte boundary: fold in the trailing bytes.
++    */
++   const unsigned char *tail = (const unsigned char *)key;
++   for (unsigned i = num_elements * 4; i < (unsigned)key_size; i++)
++      hash ^= (unsigned)tail[i] << (8 * (i % 4));
++
+    return hash;
+ }
+ 

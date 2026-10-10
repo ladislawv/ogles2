@@ -1,0 +1,54 @@
+; Run-M1 - ogles2 M1 run 4: where do the clear colours go wrong? See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Nothing opens on the screen. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m1-4 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M1R4: ""
+If NOT EXISTS M1R4:results
+  MakeDir M1R4:results
+EndIf
+Echo "ogles2 M1 run 4, starting at step {FROM}" >>M1R4:results/00-progress.txt
+Date >>M1R4:results/00-progress.txt
+Assign LIBS: M1R4:libs ADD
+; Expunge libraries nobody has open: an ogles2.library left in memory by an
+; earlier run would otherwise be used instead of this package's.
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M1R4:results/ogles2.log
+SetEnv OGLES2/Probe C
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 2: colour probe on a hidden bitmap (nothing to see, about 10 seconds)"
+  M1R4:bin/m1_probe >M1R4:results/1-probe.txt
+  Echo "step 1 done" >>M1R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 2: the run 3 bitmap test again, clear words logged (nothing to see)"
+  M1R4:bin/m1_clear BITMAP >M1R4:results/2-bitmap.txt
+  Echo "step 2 done" >>M1R4:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/Probe
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M1R4:libs REMOVE
+If NOT EXISTS M1R4:results/notes.txt
+  Copy M1R4:notes-template.txt M1R4:results/notes.txt
+EndIf
+List M1R4:results >M1R4:results/99-files.txt
+Echo "finished" >>M1R4:results/00-progress.txt
+Date >>M1R4:results/00-progress.txt
+Assign M1R4:
+Echo ""
+Echo "Done. Results are in results/."

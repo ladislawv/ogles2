@@ -1,0 +1,24 @@
+ogles2 M1 hardware probes
+baseline (no probe): drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+F  GL_FIXED positions, converted to float (the normal path): drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+F  GL_FIXED positions read by the hardware's fixed type: drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+RESULT F: the hardware fixed type reads GL 16.16
+Y  not run (run 8: the flipped store wrote outside the bitmap; `m1_hwprobe Y` runs it)
+A  the library logs every memory region against the device tree (ogles2.log)
+A  positions in ordinary fast RAM at 0x08fc95ac: drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+RESULT A1: no Zorro II RAM on this machine (no fast region in 0x200000-0x9fffff)
+A  positions at the top of fast RAM, 0x79dfe000 (region 0x41000020-0x79dfffff): drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+RESULT A2: the GPU reads the top of the Pi's RAM
+A  positions in fast RAM below the Pi's RAM, 0x00c40000 (region 0x00c00020-0x00c7ffff): drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+RESULT A3: the GPU reads fast RAM outside the device tree's ranges
+S  render queued behind binning: first frame drawn normally, after 200 frames drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+S  200 frames: 73 ms normally, 73 ms queued
+RESULT S: the semaphore packets work (the render waits for binning)
+done

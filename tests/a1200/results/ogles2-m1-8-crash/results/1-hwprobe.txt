@@ -1,0 +1,8 @@
+ogles2 M1 hardware probes
+baseline (no probe): drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+F  GL_FIXED positions, converted to float (the normal path): drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+F  GL_FIXED positions read by the hardware's fixed type: drawn normally
+   bottom left ea0c09, bottom right 0beb09, top 0708f0; top left 000000, top right 000000, bottom 777811
+RESULT F: the hardware fixed type reads GL 16.16

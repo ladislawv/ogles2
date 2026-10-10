@@ -1,0 +1,22 @@
+ogles2 M1 step 2: first triangles
+PASS: window: create (own window, 24-bit depth)
+PASS: window: program: a_position at 0, a_color at 3 (bound to 3), u_mvp at 0
+PASS: window: GL_CURRENT_PROGRAM
+PASS: window: smooth triangle: bottom left ea0c09 (red), bottom right 0beb09 (green), top 0708f0 (blue)
+PASS: window: smooth triangle: inside 4f5060 is a mix, outside 404040 and 404040 are the clear colour
+PASS: window: constant colour from a disabled array: ffff00 (ffff00)
+PASS: window: matrix (scale 0.5, x + 0.5): 5e6041 drawn, 000000 empty
+PASS: window: culling: back culled keeps it (4f5060), front culled removes it (000000), front face CW keeps it (4f5060)
+PASS: window: depth test (32 bits): overlap 0000ff (blue), far only ff0000 (red)
+PASS: window: depth test off: the later triangle covers the earlier (ff0000, red)
+PASS: window: viewport (left half): left 4e5060 drawn, right 000000 empty
+PASS: window: scissor box: inside ffffff white, left 000000 and top 000000 empty
+PASS: window: blending (alpha 0.5 red over blue): 80007f (808080 with green 0, +-2)
+PASS: window: colour mask (red off): 00ffff (00ffff)
+PASS: window: triangle strip 00ff00 (00ff00) and fan ff00ff (ff00ff)
+PASS: window: line ffffff and point ffffff white, beside the line 000000 empty
+PASS: window: no GL error
+     window: 100 frames of 200 triangles in 86 ms (0.8 ms per frame)
+PASS: window: no GL error after the timing run and deleting the program
+PASS: window: destroy returns the memory (-96 bytes difference)
+ALL PASSED: 19 of 19 checks passed

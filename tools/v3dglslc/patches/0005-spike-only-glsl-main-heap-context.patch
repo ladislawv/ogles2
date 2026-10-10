@@ -1,0 +1,29 @@
+diff --git a/src/compiler/glsl/main.cpp b/src/compiler/glsl/main.cpp
+index ad9b12ee6ae..d47b9691292 100644
+--- a/src/compiler/glsl/main.cpp
++++ b/src/compiler/glsl/main.cpp
+@@ -92,15 +92,21 @@ main(int argc, char * const* argv)
+       usage_fail(argv[0]);
+ 
+    struct gl_shader_program *whole_program;
+-   static struct gl_context local_ctx;
++   /* Heap, not static: the Amiga hunk format cannot align a static object
++    * beyond 8 bytes, and struct gl_context asks for more. */
++   const size_t ctx_align = alignof(struct gl_context);
++   char *ctx_mem = (char *)calloc(1, sizeof(struct gl_context) + ctx_align);
++   struct gl_context *local_ctx = (struct gl_context *)
++      (((uintptr_t)ctx_mem + ctx_align - 1) & ~(uintptr_t)(ctx_align - 1));
+ 
+    whole_program = standalone_compile_shader(&options, argc - optind,
+-                                             &argv[optind], &local_ctx);
++                                             &argv[optind], local_ctx);
+ 
+    if (!whole_program)
+       usage_fail(argv[0]);
+ 
+-   standalone_compiler_cleanup(whole_program, &local_ctx);
++   standalone_compiler_cleanup(whole_program, local_ctx);
++   free(ctx_mem);
+ 
+    return status;
+ }

@@ -1,0 +1,14 @@
+diff --git a/src/compiler/nir/nir.h b/src/compiler/nir/nir.h
+index cf249d52773..2889fe64d53 100644
+--- a/src/compiler/nir/nir.h
++++ b/src/compiler/nir/nir.h
+@@ -334,7 +334,8 @@ struct nir_cmat_tensor_load {
+    uint32_t split_col_index:15;
+    uint8_t view_permutations[NIR_TENSOR_VIEW_MAX_PERMUTATIONS];
+    uint8_t layout_clamp_mode; /* nir_tensor_clamp_mode */
+-};
++} __attribute__((aligned(4))); /* m68k aligns uint32_t to 2: keep it 3 ints, as the
++                                * const_index STATIC_ASSERTs below require */
+ 
+ #define nir_const_value_to_array(arr, c, components, m) \
+    do {                                                 \

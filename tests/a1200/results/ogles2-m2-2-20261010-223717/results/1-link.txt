@@ -1,0 +1,33 @@
+ogles2 M2: linking from program binaries, uniforms
+     smooth: link ok
+PASS: smooth: links from its binary
+PASS: smooth: 2 active attributes
+PASS: smooth: 1 active uniform
+PASS: smooth: u_mvp is a mat4
+PASS: smooth: attribute locations
+PASS: smooth: uniform locations
+PASS: smooth: glUniformMatrix4fv reads back
+PASS: smooth: transpose TRUE is GL_INVALID_VALUE
+PASS: smooth: glUniform4f on a mat4 is GL_INVALID_OPERATION
+PASS: smooth: location -1 is ignored
+     light: link ok
+PASS: light: links from its binary
+PASS: light: mat3 (columns 4 words apart) reads back
+PASS: light: array element locations
+PASS: light: light_dir[2] reads back
+PASS: light: a count past the array's end is cut
+PASS: light: int uniform reads back
+PASS: light: glUniform1f on an int is GL_INVALID_OPERATION
+PASS: light: 5 active uniforms
+PASS: light: glGetActiveUniform names light_dir[0], size 4
+     skin: link failed: the program binary was refused: uniform recipe type not implemented yet: 16
+PASS: skin: refused until M2 adds indirectly indexed uniform arrays (UBO_ADDR)
+     state: link ok
+PASS: state: links from its binary
+     tex: link ok
+PASS: tex: links from its binary
+     smooth+comment: link failed: no program binary for this program: 6525c1a37d1f1d6e8cf661b41e0f00d750e0262e59c8e751a37cc6a1d42bde99
+PASS: a program without a binary fails to link
+PASS: its sources are in T:ogles2_missing_shaders.txt
+PASS: no GL error left over
+ALL PASSED: 25 of 25 checks passed

@@ -1,0 +1,15 @@
+ogles2 M1 step 1: clear and present
+     GL_RENDERER (first context decides): see the log
+PASS: own window: create (own window)
+PASS: own window: GET_WIDTH/GET_HEIGHT 320x240, GET_WINDOW
+PASS: own window: clear to 000000 shows 000000
+PASS: own window: clear to 1000000 shows 000000
+PASS: own window: clear to 010000 shows 000000
+PASS: own window: clear to 000100 shows 000000
+PASS: own window: clear to 1010100 shows 000000
+PASS: own window: clear to 4080c0 shows 4080c0
+FAIL: own window: a frame without glClear keeps the picture (000000)
+PASS: own window: no GL error
+     own window: 100 clear+swap frames in 63 ms (1.6 ms per frame)
+PASS: own window: destroy returns the memory (-120 bytes difference)
+FAILED: 10 of 11 checks passed

@@ -1,0 +1,14 @@
+ogles2 M1 step 1: clear and present
+     GL_RENDERER (first context decides): see the log
+PASS: application bitmap: create (BITMAP tag)
+PASS: application bitmap: clear to 000000 shows 000000
+PASS: application bitmap: clear to ff0000 shows ff0000
+PASS: application bitmap: clear to 00ff00 shows 00ff00
+PASS: application bitmap: clear to 0000ff shows 0000ff
+PASS: application bitmap: clear to ffffff shows ffffff
+PASS: application bitmap: clear to 4080bf shows 4080bf
+PASS: application bitmap: a frame that clears only depth keeps the picture (ff00ff)
+PASS: application bitmap: no GL error
+     application bitmap: 100 clear+swap frames in 22 ms (0.2 ms per frame)
+PASS: application bitmap: destroy returns the memory (-264 bytes difference)
+ALL PASSED: 10 of 10 checks passed

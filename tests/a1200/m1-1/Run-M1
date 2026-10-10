@@ -1,0 +1,67 @@
+; Run-M1 - ogles2 M1 run 1: the GPU clears and presents. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m1-1 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M1RUN: ""
+If NOT EXISTS M1RUN:results
+  MakeDir M1RUN:results
+EndIf
+Echo "ogles2 M1 run 1, starting at step {FROM}" >>M1RUN:results/00-progress.txt
+Date >>M1RUN:results/00-progress.txt
+Assign LIBS: M1RUN:libs ADD
+SetEnv OGLES2/LogFile M1RUN:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 5: smoke test (no drawing)"
+  M1RUN:bin/smoke >M1RUN:results/1-smoke.txt
+  Echo "step 1 done" >>M1RUN:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 5: the GPU clears an application bitmap (nothing shown)"
+  M1RUN:bin/m1_clear BITMAP >M1RUN:results/2-bitmap.txt
+  Echo "step 2 done" >>M1RUN:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 5: a window opened by ogles2 (colours flash for a few seconds)"
+  M1RUN:bin/m1_clear WINDOW >M1RUN:results/3-window.txt
+  Echo "step 3 done" >>M1RUN:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 5: a window opened by the program (colours flash)"
+  M1RUN:bin/m1_clear ADOPT >M1RUN:results/4-adopt.txt
+  Echo "step 4 done" >>M1RUN:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 5: fullscreen (the screen flashes colours, then returns)"
+  M1RUN:bin/m1_clear FULLSCREEN >M1RUN:results/5-fullscreen.txt
+  Echo "step 5 done" >>M1RUN:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M1RUN:libs REMOVE
+If NOT EXISTS M1RUN:results/notes.txt
+  Copy M1RUN:notes-template.txt M1RUN:results/notes.txt
+EndIf
+List M1RUN:results >M1RUN:results/99-files.txt
+Echo "finished" >>M1RUN:results/00-progress.txt
+Date >>M1RUN:results/00-progress.txt
+Assign M1RUN:
+Echo ""
+Echo "Done. Please add a few words to results/notes.txt and send the results directory back."

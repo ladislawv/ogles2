@@ -1,0 +1,82 @@
+diff --git a/library/include/time.h b/library/include/time.h
+index 47b9481..36f5bef 100644
+--- a/library/include/time.h
++++ b/library/include/time.h
+@@ -107,14 +107,25 @@ extern size_t strftime(char *s, size_t maxsize, const char *format,
+ /****************************************************************************/
+ 
+ /* Timespec declaration */
++#ifdef tv_sec
++/* <sys/time.h> already maps tv_sec to tv_secs. */
+ struct timespec
+ {
+ 	time_t tv_secs;
+ 	long tv_nsec;
+ };
+-
+-#ifndef tv_sec
+-#define tv_sec tv_secs
++#else
++/* Both names, without a tv_sec macro: NDK 3.2's <devices/timer.h> declares
++   union { tv_sec; tv_secs; } and a macro would make that a duplicate member. */
++struct timespec
++{
++	union
++	{
++		time_t tv_sec;
++		time_t tv_secs;
++	};
++	long tv_nsec;
++};
+ #endif /* tv_sec */
+ 
+ /****************************************************************************/
+diff --git a/library/stdlib_assertion_failure.c b/library/stdlib_assertion_failure.c
+index ef5043f..fe5cf58 100644
+--- a/library/stdlib_assertion_failure.c
++++ b/library/stdlib_assertion_failure.c
+@@ -39,6 +39,8 @@
+ #define __NOGLOBALIFACE__
+ 
+ #ifndef PROTO_INTUITION_H
++/* NDK 3.2's inline varargs wrappers name the global base. */
++extern struct Library * IntuitionBase;
+ #include <proto/intuition.h>
+ #endif /* PROTO_INTUITION_H */
+ 
+diff --git a/library/stdlib_constructor.h b/library/stdlib_constructor.h
+index a04bc6f..ee81208 100644
+--- a/library/stdlib_constructor.h
++++ b/library/stdlib_constructor.h
+@@ -83,14 +83,14 @@
+ #define CONSTRUCTOR(name,pri) \
+ 	asm(".stabs \"___INIT_LIST__\",22,0,0,___ctor_" #name); \
+ 	asm(".stabs \"___INIT_LIST__\",20,0,0," #pri); \
+-	VOID __ctor_##name##(VOID); \
+-	VOID __ctor_##name##(VOID)
++	VOID __ctor_##name(VOID); \
++	VOID __ctor_##name(VOID)
+ 
+ #define DESTRUCTOR(name,pri) \
+ 	asm(".stabs \"___EXIT_LIST__\",22,0,0,___dtor_" #name); \
+ 	asm(".stabs \"___EXIT_LIST__\",20,0,0," #pri); \
+-	VOID __dtor_##name##(VOID); \
+-	VOID __dtor_##name##(VOID)
++	VOID __dtor_##name(VOID); \
++	VOID __dtor_##name(VOID)
+ 
+ #endif /* __amigaos4__ */
+ 
+diff --git a/library/stdlib_showerror.c b/library/stdlib_showerror.c
+index 98ab1be..28b87f4 100644
+--- a/library/stdlib_showerror.c
++++ b/library/stdlib_showerror.c
+@@ -57,6 +57,8 @@
+ #define __NOGLOBALIFACE__
+ 
+ #ifndef PROTO_INTUITION_H
++/* NDK 3.2's inline varargs wrappers name the global base. */
++extern struct Library * IntuitionBase;
+ #include <proto/intuition.h>
+ #endif /* PROTO_INTUITION_H */
+ 

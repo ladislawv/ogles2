@@ -1,0 +1,24 @@
+ogles2 M1 colour probe
+1. CPU float to byte, (v/255)*255+0.5 truncated: 00>00 01>01 3f>3f 40>40 7f>7f 80>80 bf>bf c0>c0 fe>fe ff>ff
+     (int)191.75 = 191, (int)255.5 = 255, (int)-1.5 = -1
+PASS: CPU conversion
+2. ReadRGBPixel of bytes the CPU wrote
+     readback B: 0 of 256 values changed
+     readback G: 0 of 256 values changed
+     readback R: 0 of 256 values changed
+     readback A: 0 of 256 values changed
+PASS: readback (colour; alpha is not checked)
+3. GPU load and store of bytes the CPU wrote (row 0; 0 of 128 rows differ)
+     load/store B: 0 of 256 values changed
+     load/store G: 0 of 256 values changed
+     load/store R: 0 of 256 values changed
+     load/store A: 0 of 256 values changed
+PASS: load/store
+4. GPU clear, every value in every channel
+     clear B: 0 of 256 values changed
+     clear G: 0 of 256 values changed
+     clear R: 0 of 256 values changed
+     clear A: 0 of 256 values changed
+PASS: clear
+     GL error 0x0
+done

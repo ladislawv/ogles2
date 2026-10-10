@@ -1,0 +1,53 @@
+diff --git a/src/gallium/drivers/v3d/v3d_program.c b/src/gallium/drivers/v3d/v3d_program.c
+index c78eb184fe5..80dedb5f20c 100644
+--- a/src/gallium/drivers/v3d/v3d_program.c
++++ b/src/gallium/drivers/v3d/v3d_program.c
+@@ -458,6 +458,17 @@ struct v3d_cache_key {
+         unsigned char blake3[BLAKE3_KEY_LEN];
+ };
+ 
++/* ogles2 offline compiler (.v3dp writer): called with every variant this
++ * driver compiles. While it is set, the RAM and disk caches are bypassed, so
++ * each request compiles and is reported, also when another program already
++ * compiled the same shader with the same key.
++ */
++void (*v3d_compiled_variant_hook)(mesa_shader_stage stage,
++                                  const struct v3d_key *key, size_t key_size,
++                                  const struct v3d_prog_data *prog_data,
++                                  const uint64_t *qpu_insts,
++                                  uint32_t qpu_size);
++
+ struct v3d_compiled_shader *
+ v3d_get_compiled_shader(struct v3d_context *v3d,
+                         struct v3d_key *key,
+@@ -470,7 +481,7 @@ v3d_get_compiled_shader(struct v3d_context *v3d,
+         cache_key.key = key;
+         memcpy(cache_key.blake3, uncompiled->blake3, sizeof(cache_key.blake3));
+         struct hash_entry *entry = _mesa_hash_table_search(ht, &cache_key);
+-        if (entry)
++        if (entry && !v3d_compiled_variant_hook)
+                 return entry->data;
+ 
+         int variant_id =
+@@ -479,7 +490,8 @@ v3d_get_compiled_shader(struct v3d_context *v3d,
+         struct v3d_compiled_shader *shader = NULL;
+ 
+ #ifdef ENABLE_SHADER_CACHE
+-        shader = v3d_disk_cache_retrieve(v3d, key, uncompiled);
++        if (!v3d_compiled_variant_hook)
++                shader = v3d_disk_cache_retrieve(v3d, key, uncompiled);
+ #endif
+         if (!shader) {
+                 shader = rzalloc(NULL, struct v3d_compiled_shader);
+@@ -512,6 +524,11 @@ v3d_get_compiled_shader(struct v3d_context *v3d,
+                 v3d_disk_cache_store(v3d, key, uncompiled,
+                                      shader, qpu_insts, shader->qpu_size);
+ #endif
++                if (v3d_compiled_variant_hook && qpu_insts) {
++                        v3d_compiled_variant_hook(s->info.stage, key, key_size,
++                                                  shader->prog_data.base,
++                                                  qpu_insts, shader->qpu_size);
++                }
+ 
+                 free(qpu_insts);
+         }

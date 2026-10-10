@@ -1,0 +1,14 @@
+ogles2 M1 step 1: clear and present
+     GL_RENDERER (first context decides): see the log
+PASS: application window: create (WINDOW tag)
+PASS: application window: clear to 000000 shows 000000
+PASS: application window: clear to 1000000 shows 000000
+PASS: application window: clear to 010000 shows 000000
+PASS: application window: clear to 000100 shows 000000
+PASS: application window: clear to 1010100 shows 000000
+PASS: application window: clear to 4080c0 shows 4080c0
+FAIL: application window: a frame without glClear keeps the picture (000000)
+PASS: application window: no GL error
+     application window: 100 clear+swap frames in 57 ms (1.6 ms per frame)
+PASS: application window: destroy returns the memory (-776 bytes difference)
+FAILED: 9 of 10 checks passed

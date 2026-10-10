@@ -1,0 +1,63 @@
+; Run-M1 - ogles2 M1 run 8: hardware probes and the 10,000-frame soak. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m1-8 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M1R8: ""
+If NOT EXISTS M1R8:results
+  MakeDir M1R8:results
+EndIf
+Echo "ogles2 M1 run 8, starting at step {FROM}" >>M1R8:results/00-progress.txt
+Date >>M1R8:results/00-progress.txt
+Assign LIBS: M1R8:libs ADD
+; Expunge libraries nobody has open: an ogles2.library left in memory by an
+; earlier run would otherwise be used instead of this package's.
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M1R8:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 3: hardware probes on a hidden bitmap (nothing to see, a few seconds)."
+  Echo "  The last probe may hang the GPU; if the machine stops, reset it and"
+  Echo "  continue with FROM=2."
+  M1R8:bin/m1_hwprobe >M1R8:results/1-hwprobe.txt
+  Echo "step 1 done" >>M1R8:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 3: the soak, 10,000 frames in a window titled ogles2, about half a"
+  Echo "  minute: a spinning red/green/blue triangle in a ring of small ones, with"
+  Echo "  yellow boxes and grey flashes. It closes by itself."
+  Wait 3
+  M1R8:bin/m1_soak >M1R8:results/2-soak.txt
+  Echo "step 2 done" >>M1R8:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 3: the step 2 test again on a hidden bitmap (nothing to see)"
+  M1R8:bin/m1_draw BITMAP QUICK >M1R8:results/3-draw.txt
+  Echo "step 3 done" >>M1R8:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M1R8:libs REMOVE
+If NOT EXISTS M1R8:results/notes.txt
+  Copy M1R8:notes-template.txt M1R8:results/notes.txt
+EndIf
+List M1R8:results >M1R8:results/99-files.txt
+Echo "finished" >>M1R8:results/00-progress.txt
+Date >>M1R8:results/00-progress.txt
+Assign M1R8:
+Echo ""
+Echo "Done. Results are in results/."
