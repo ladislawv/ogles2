@@ -244,6 +244,35 @@ void ogles2_aglSetBitmap(struct OGLES2Context *ctx, struct BitMap *bitmap)
     ogles2_log("aglSetBitmap: bitmap 0x%08lx, %ldx%ld", (ULONG)bitmap, ctx->width, ctx->height);
 }
 
+/* aglSetParams2(OGLES2_CCT_WINDOW): another window, or the same one
+ * resized; the default framebuffer follows its size, as aglSetBitmap. */
+static void set_window(struct OGLES2Context *ctx, struct Window *w)
+{
+    struct OGLES2Display old;
+    if (!has_surface(ctx))
+        return;
+    ogles2_job_flush(ctx, TRUE);
+    ogles2_job_finish(ctx);
+    old = ctx->display;
+    if (!ogles2_display_set_window(&ctx->display, w))
+        return;
+    if (ctx->display.bitmap == old.bitmap)
+        return; /* the same window at the same size */
+    if (ctx->display.width != old.width || ctx->display.height != old.height) {
+        ogles2_job_free(ctx); /* the depth/stencil save is the old size */
+        if (!ogles2_device_context_resize(ctx->v3d, ctx->display.width, ctx->display.height)) {
+            ogles2_display_drop(&ctx->display); /* the new bitmap; the old display stays */
+            ctx->display = old;
+            return;
+        }
+        ctx->width = ctx->display.width;
+        ctx->height = ctx->display.height;
+    }
+    ogles2_display_drop(&old);
+    ogles2_fb_update(ctx);
+    ogles2_log("aglSetParams2: window 0x%08lx, %ldx%ld", (ULONG)w, ctx->width, ctx->height);
+}
+
 void ogles2_aglSetParams2(struct OGLES2Context *ctx, struct TagItem *tags)
 {
     struct TagItem *state = tags, *t;
@@ -253,6 +282,9 @@ void ogles2_aglSetParams2(struct OGLES2Context *ctx, struct TagItem *tags)
         switch (t->ti_Tag) {
         case OGLES2_CCT_VSYNC:
             ctx->display.vsync = t->ti_Data ? TRUE : FALSE;
+            break;
+        case OGLES2_CCT_WINDOW:
+            set_window(ctx, (struct Window *)t->ti_Data);
             break;
         case OGLES2_CCT_GET_WIDTH:
             if (t->ti_Data)

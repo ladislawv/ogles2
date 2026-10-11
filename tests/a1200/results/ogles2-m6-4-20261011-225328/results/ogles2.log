@@ -1,0 +1,47 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x08F2C390
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D16, 18196864 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08F2C974, 640x480
+    15 compiler: started (1 s)
+    16 compiler: shader compiled in 2040 ms
+    17 compiler: shader compiled in 40 ms
+    18 compiler: shader compiled in 20 ms
+    19 compiler: shader compiled in 40 ms
+    20 compiler: shader compiled in 40 ms
+    21 compiler: shader compiled in 20 ms
+    22 compiler: shader compiled in 40 ms
+    23 compiler: shader compiled in 40 ms
+    24 compiler: shader compiled in 20 ms
+    25 compiler: shader compiled in 20 ms
+    26 compiler: shader compiled in 40 ms
+    27 compiler: shader compiled in 40 ms
+    28 compiler: shader compiled in 20 ms
+    29 compiler: shader compiled in 40 ms
+    30 compiler: shader compiled in 40 ms
+    31 compiler: shader compiled in 20 ms
+    32 compiler: shader compiled in 20 ms
+    33 compiler: shader compiled in 40 ms
+    34 compiler: shader compiled in 20 ms
+    35 compiler: shader compiled in 40 ms
+    36 compiler: shader compiled in 40 ms
+    37 compiler: program compiled in 220 ms, OGLES2Cache:32601cbdaebe715ed81b94a8.v3dp
+    38 glLinkProgram: OGLES2Cache:32601cbdaebe715ed81b94a8.v3dp (7 variants, 1432 bytes of code)
+    39 compiler: program compiled in 200 ms, OGLES2Cache:5c9895199f809ad947895479.v3dp
+    40 glLinkProgram: OGLES2Cache:5c9895199f809ad947895479.v3dp (7 variants, 1696 bytes of code)
+    41 aglDestroyContext: context 0x08F2C974: freeing
+    42 device: context freed, 0 bytes of GPU memory still in use
+    43 aglDestroyContext: context 0x08F2C974 (1494 frames, 0 dropped, 0 binning blocks added)
+    44 timing: 1494 jobs, each on average: 765 us of CPU work before its flush, 39 us waiting for binning, 535 us for the render
+    45 timing: and in each flush 74 us building the render list, 79 us for the CPU cache before the GPU, 73 us after
+    46 timing: 1494 swaps, 4019 us from one to the next on average, 1143 us of it presenting
+    47 timing: per frame 11 draws, 317 us in them; in all 0 ms in glBuffer(Sub)Data, 6 ms in glTex(Sub)Image2D

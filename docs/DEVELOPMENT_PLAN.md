@@ -6,7 +6,7 @@
 | Status | In development: M0 to M5 done (real GLES2 programs, shaders compiled on the Amiga, the whole GLES2 core with framebuffer objects, faster than MiniGL); M6 (ecosystem, sharing, performance) next (§13) |
 | Baseline | PiStorm3D / minigl.library 29.1 (`MiniGL_Library_68k`, branch `PiStorm3D` @ `01f5a3e`) |
 | Target | AmigaOS 3.x, 68k under Emu68 on PiStorm with Raspberry Pi 4B / CM4 (the hardware PiStorm3D supports), RTG (Picasso96 or CyberGraphX) |
-| Team | One developer plus an AI assistant (§2.4) |
+| Team | Ladislawv, R-Typer plus an AI assistant (§2.4) |
 | Test machine | Amiga 1200 with PiStorm, Raspberry Pi 4B, Emu68 v1.1.0-beta.1; no serial capture (§2.4) |
 | Build machine | Ubuntu 24.04 (here in WSL on Windows 10) with both m68k toolchains and a host Mesa build (§2.4, `dev/host-setup`) |
 | Priority | GLSL first: runtime shader compilation on the Amiga is M3 |
@@ -1242,14 +1242,26 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
 - **Loading:** `glTexImage2D` rebuilt the GPU texture at every new mip level, so level 0 was tiled and stored once for each level after it; the GPU copy is now built at the texture's first use. Quake's `CL_InitCGame` 21.5 to 10.2 s; the run's texture uploads 11 s to 0.4 s.
 - **A1200 runs (`ogles2-m6-2-*`):** the timedemo 8.2 to 9.4 to 12.1 fps (1260 frames, 82.8 ms a frame; `ogles2-m6-2-20261011-180137`, probes on): per frame ogles2's draws 26 ms, gl4es about 38 ms (18 us a draw), Quake about 19 ms. The gears through gl4es (`ogles2-m6-1-20261011-175936`, the same pixel counts as before): immediate mode 157 to 351 fps, vertex arrays 548 to 707, 8,000 triangles 148 to 327, full screen 714 to 893; every run exits cleanly; GPU memory constant (59 MB), no textures renamed. The package runs about 230 frames by default (`FRAMES=400`, a 42 s run; `FRAMES=0` the whole demo). The user saw a few floor and wall polygons flicker to black in some places; no texture is sampled while incomplete (logged once a texture if one is), so the cause is still open.
 
+**Done (2026-10-11): M6, fourth part: SDL2** (`ports/sdl2`, its README; package `m6-3`).
+- The base is Steffen Haeuser's SDL2_68k (Aminet `dev/lib/SDL_68k`, SDL 2.33.0, MiniGL backend) at a pinned commit; `ports/sdl2/build.sh` clones it, applies `patches/`, adds `SDL_os3opengles2.c` (from AmigaOS 4's `SDL_os4opengles2.c`) and builds `libSDL2.a` with clib2. The GL backend is chosen when SDL loads the GL library, by the profile asked for: ES 2.x gets ogles2.library, anything else minigl.library. SDL's GLES2 renderer is built in.
+- **ogles2:** `aglSetParams2(OGLES2_CCT_WINDOW)` moves a context to another window or a resized one (a new offscreen bitmap and, when the size changes, new pools; the old ones kept until the new ones exist). A GimmeZeroZero window (SDL's) is blitted at its RastPort's origin; before, the picture came out a border lower.
+- **Three crashes found on the way:** the test wrapper's first `SDL_AddTimer` thread outlived a program that left without `SDL_Quit` (now a thread-free `--wrap` of the present calls, `tests/run_for.c`); SDL emulated the window surface with a GLES2 texture inside the software renderer's creation (off on AmigaOS 3); and **bebbo GCC 6.5's inline headers load A6 before evaluating the arguments**, so a library call nested in another's arguments calls the outer one through the inner library's base: SDL2_68k's `AllocBitMap(..., GetCyberMapAttr(...), ...)` ran through CyberGfxBase (unpatched SDL2_68k built with this toolchain crashes the same way). Inner calls must be hoisted into locals; no other case in SDL2_68k's sources or ours.
+- **A1200 run `ogles2-m6-3-20261011-222733`** (6 s a step, every step exits cleanly, 0 bytes of GPU memory left): `testgles2` in a window 450.6 fps, full screen 435.5; `testsprite2` GLES2 renderer 157.3 (software renderer 23.5); `testdraw2` 60.9 (478 draws a frame); `testrendercopyex` 19.6.
+- **Render targets made and deleted every frame** (`testrendercopyex`: a new 640x480 target texture a frame; `tests/perf/rtt_churn`, step 7 of `m6-3`, makes the same GL calls and times each): `glDeleteTextures` took 38 ms. It cleared the texture's "rendered" marks and then waited for the job drawing into it, whose completion set them again, so the whole image was read back from the GPU just before it was freed; the wait now comes first. And a level made by `glTexImage2D` without pixels is "blank": the GPU copy, which starts cleared, is not stored from the zeroed RAM copy (1.2 MB). `rtt_churn` 20.4 to 144 fps (one target kept: 316); what is left is allocating and clearing the two copies (about 1.8 ms each).
+- **A1200 runs:** `ogles2-m6-3-20261011-224131`: `testrendercopyex` **108.0 fps** (was 19.6), the rest as before (`testgles2` 472.2, sprites 167.0, software 25.1, `testdraw2` 59.9, full screen 464.0); `ogles2-m5-1-20261011-224244`: every test passes (`m5_fbo` 44/44).
+
+**Done (2026-10-11): M6, fifth part: SDL3** (`ports/sdl3`, its README; package `m6-4`). M6's SDL criterion is met for both SDL versions.
+- Steffen Haeuser's SDL3_68k (SDL 3.4.14, from capehill's AmigaOS 4 port, MiniGL backend) at a pinned commit, patched as SDL2_68k: the same backend with SDL3's API (`SDL_os3opengles2.c`), the backend chosen by profile at `GL_LoadLibrary`, SDL's GLES2 renderer built in. SDL3_68k's driver already keeps the window surface its own (no texture framebuffer).
+- This toolchain's clib2 has a 2-byte `wchar_t` and GCC a 4-byte one, which SDL3's `SDL_string.c` rejects: clib2 objects are built with `-fshort-wchar`. On AmigaOS 3 `SDL_main.h` makes a `main()` only for programs with SDL3's main callbacks, so `run_for.c` starts those through a wrapped `SDL_RunApp` and the others as `main()`; SDL3's `testgles2` needs `HAVE_OPENGLES2`, as SDL2's.
+- **A1200 run `ogles2-m6-4-20261011-225640`** (every step exits cleanly, 0 bytes of GPU memory left): `testgles2` in a window 453.7 fps, full screen 432.0 (SDL3_68k's fullscreen screen keeps its title bar: a 640x466 window); `testsprite` GLES2 renderer 250.7 (software 199.7); `testrendercopyex` 88.8; `testdraw` 109.8.
+
 **Next, in order (M6: ecosystem, sharing and performance, §9):**
 1. **Per-draw CPU time:** with `r_primitives 0` the gap to MiniGL (60.8 fps) is about 9 ms a frame: gl4es about 6.5 (above; patches to gl4es, kept in `ports/gl4es`, would be next: skip `fpe_program` and the texture realisation when nothing changed, hash the fpe state a long word at a time), ogles2 3.6 (its bookkeeping is memory accesses: fewer of them, `movem` where it copies); the black flicker in Quake (seen with `r_primitives 1`).
 2. **Quake III without gl4es:** ioquake3's GLES2 renderer (`renderergl2`, upstream since 2024) on ogles2 directly: its own plan, `docs/IOQ3_GLES2_PORT_PLAN.md`.
-3. **SDL2:** the ogles2 GL-context backend and SDL's GLES2 renderer, once an SDL2_68k build is at hand; then `testgles2`.
-4. **Sharing:** `OGLES2_CCT_SHARE_WITH`, several contexts in one program; with it, phase 2 of the submission lock (fair, so overlap can stay on with several contexts).
-5. **CPU time per job:** building the render list (60 us); texture uploads still make one exec cache call each (v3dcore's `v3d_texture_store`); gl4es's immediate mode.
-6. **minigl.library coexistence** (D3): with PiStorm3D's maintainers.
-7. **Extensions** (Appendix B.3) as programs need them; optional: native ETC1 sampling; the large-reply stall (`amictld`).
+3. **Sharing:** `OGLES2_CCT_SHARE_WITH`, several contexts in one program; with it, phase 2 of the submission lock (fair, so overlap can stay on with several contexts).
+4. **CPU time per job:** building the render list (60 us); texture uploads still make one exec cache call each (v3dcore's `v3d_texture_store`); gl4es's immediate mode.
+5. **minigl.library coexistence** (D3): with PiStorm3D's maintainers.
+6. **Extensions** (Appendix B.3) as programs need them; optional: native ETC1 sampling; the large-reply stall (`amictld`).
 
 ---
 

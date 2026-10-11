@@ -175,6 +175,9 @@ $(B)/tests/gears_gles2: tests/perf/gears_gles2.c tests/perf/perf_gears.h tests/p
                        tests/common/lit_shaders.h $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -fno-builtin $(INC) $< -L$(B) -logles2 -lm881 -o $@
+$(B)/tests/rtt_churn: tests/perf/rtt_churn.c tests/perf/perf_gears.h tests/perf/perf_target.h $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -fno-builtin $(INC) $< -L$(B) -logles2 -lm881 -o $@
 
 # ---- gl4es (desktop OpenGL on GLES2, M6): ports/gl4es builds libgl4es.a from
 # gl4es's sources (cloned into GL4ES_SRC); gears_gl4es is gears_mgl.c on it.

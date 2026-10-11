@@ -1,0 +1,94 @@
+; Run-M1 - ogles2 M6 run 4: SDL3 on ogles2.library. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end; OGLES2Cache: points at cache/ for the run. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m6-4 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M6R4: ""
+If NOT EXISTS M6R4:results
+  MakeDir M6R4:results
+EndIf
+If NOT EXISTS M6R4:cache
+  MakeDir M6R4:cache
+EndIf
+Echo "ogles2 M6 run 4, starting at step {FROM}" >>M6R4:results/00-progress.txt
+Date >>M6R4:results/00-progress.txt
+Assign LIBS: M6R4:libs ADD
+Assign OGLES2Cache: M6R4:cache
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M6R4:results/ogles2.log
+; The tests load icon.png and sample.png from the current directory.
+CD M6R4:bin
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 6: SDL3 testgles2 in a window, 6 seconds: a spinning cube"
+  Echo "  with coloured faces. The first run compiles its shaders: wait a little."
+  Wait 2
+  M6R4:bin/testgles2 --seconds 6 >M6R4:results/1-testgles2.txt
+  Echo "step 1 done" >>M6R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 6: SDL3 testsprite on SDL's GLES2 renderer, 6 seconds: many"
+  Echo "  small smiley faces bouncing around a window."
+  Wait 2
+  M6R4:bin/testsprite --renderer opengles2 --info render --seconds 6 >M6R4:results/2-sprites-gles2.txt
+  Echo "step 2 done" >>M6R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 6: the same on SDL's software renderer, for comparison."
+  Wait 2
+  M6R4:bin/testsprite --renderer software --info render --seconds 6 >M6R4:results/3-sprites-software.txt
+  Echo "step 3 done" >>M6R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 6: SDL3 testrendercopyex on the GLES2 renderer, 6 seconds:"
+  Echo "  a picture with a smiley turning and flipping in its middle."
+  Wait 2
+  M6R4:bin/testrendercopyex --renderer opengles2 --seconds 6 >M6R4:results/4-copyex.txt
+  Echo "step 4 done" >>M6R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 6: SDL3 testdraw on the GLES2 renderer, 6 seconds: coloured"
+  Echo "  lines, rectangles and points changing all the time."
+  Wait 2
+  M6R4:bin/testdraw --renderer opengles2 --seconds 6 >M6R4:results/5-draw.txt
+  Echo "step 5 done" >>M6R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 6 VAL
+  Echo "Step 6 of 6: SDL3 testgles2 full screen, 6 seconds: the screen switches"
+  Echo "  to the spinning cube and back."
+  Wait 2
+  M6R4:bin/testgles2 --fullscreen --seconds 6 >M6R4:results/6-testgles2-fullscreen.txt
+  Echo "step 6 done" >>M6R4:results/00-progress.txt
+EndIf
+
+CD M6R4:
+UnSetEnv OGLES2/LogFile
+Assign OGLES2Cache:
+Assign LIBS: M6R4:libs REMOVE
+If NOT EXISTS M6R4:results/notes.txt
+  Copy M6R4:notes-template.txt M6R4:results/notes.txt
+EndIf
+List M6R4:cache >M6R4:results/98-cache.txt
+List M6R4:results >M6R4:results/99-files.txt
+Echo "finished" >>M6R4:results/00-progress.txt
+Date >>M6R4:results/00-progress.txt
+Assign M6R4:
+Echo ""
+Echo "Done. Results are in results/."

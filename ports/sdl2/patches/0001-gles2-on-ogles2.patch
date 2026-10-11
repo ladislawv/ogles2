@@ -1,0 +1,220 @@
+ogles2 (ports/sdl2): OpenGL ES 2.0 on ogles2.library for SDL2_68k.
+
+- The configuration enables SDL_VIDEO_OPENGL_ES2 and SDL's GLES2 renderer.
+- The video device's GL_LoadLibrary chooses the backend by the profile
+  asked for (as AmigaOS 4's driver): ES 2.x gets ogles2.library
+  (SDL_os3opengles2.c, from ports/sdl2), anything else minigl.library.
+- The window data notes an ogles2 context (gl_es); MiniGL's resize and
+  delete, which the window and event code call directly, hand those over.
+- The window surface stays the driver's framebuffer by default (as on
+  Windows): with the GLES2 renderer present SDL would otherwise emulate it
+  with a GLES2 texture, inside the software renderer's creation (a crash).
+- SDL_os3framebuffer.c: GetCyberMapAttr moved out of AllocBitMap's
+  arguments (with GCC 6.5's inline headers A6 is loaded first, so
+  AllocBitMap was called through CyberGfxBase: the software renderer
+  crashed when a window is larger than its surface).
+- Both Makefiles build the new backend and the GLES2 renderer, with
+  $(OGLES2_CFLAGS) for ogles2's headers.
+
+diff --git a/libSDL2-amigaos3-main/Makefile b/libSDL2-amigaos3-main/Makefile
+index d7ef54e1..349adfbf 100644
+--- a/libSDL2-amigaos3-main/Makefile
++++ b/libSDL2-amigaos3-main/Makefile
+@@ -19,6 +19,8 @@ CFLAGS = -std=gnu99 -O2 -m68040 -mcrt=clib2 -mhard-float \
+          -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare \
+          -I./include -I./src \
+          -D__AMIGAOS3__ -DSDL_OS3_DEBUG
++# ogles2 (ports/sdl2): its headers (include/ and the generated proto/ogles2.h)
++CFLAGS += $(OGLES2_CFLAGS)
+ 
+ # --- SDL2 Core Source Files (platform-independent) ---
+ # Enumerated from SDL2 CMakeLists.txt (SDL2 branch, commit f9e8203)
+@@ -123,6 +125,7 @@ SRCS_VIDEO_CORE = \
+ SRCS_VIDEO_OS3 = \
+ 	src/video/amigaos3/SDL_os3video.c \
+ 	src/video/amigaos3/SDL_os3opengl.c \
++	src/video/amigaos3/SDL_os3opengles2.c \
+ 	src/video/amigaos3/SDL_os3window.c \
+ 	src/video/amigaos3/SDL_os3framebuffer.c \
+ 	src/video/amigaos3/SDL_os3events.c \
+@@ -215,7 +218,12 @@ SRCS_RENDER_SW = \
+ 	src/render/software/SDL_rotate.c \
+ 	src/render/software/SDL_triangle.c
+ 
+-SRCS_RENDER = $(SRCS_RENDER_CORE) $(SRCS_RENDER_SW)
++# ogles2 (ports/sdl2): SDL's GLES2 renderer on ogles2.library
++SRCS_RENDER_GLES2 = \
++	src/render/opengles2/SDL_render_gles2.c \
++	src/render/opengles2/SDL_shaders_gles2.c
++
++SRCS_RENDER = $(SRCS_RENDER_CORE) $(SRCS_RENDER_SW) $(SRCS_RENDER_GLES2)
+ 
+ # --- Filesystem: AmigaOS3 (PROGDIR: / ENVARC:) ---
+ SRCS_FILESYS = \
+diff --git a/libSDL2-amigaos3-main/Makefile.libnix b/libSDL2-amigaos3-main/Makefile.libnix
+index 085f6b2f..c13cd4d2 100644
+--- a/libSDL2-amigaos3-main/Makefile.libnix
++++ b/libSDL2-amigaos3-main/Makefile.libnix
+@@ -19,6 +19,8 @@ CFLAGS = -std=gnu99 -O2 -m68040 -noixemul -mhard-float \
+          -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare \
+          -I./include -I./src \
+          -D__AMIGAOS3__ -DSDL_OS3_DEBUG
++# ogles2 (ports/sdl2): its headers (include/ and the generated proto/ogles2.h)
++CFLAGS += $(OGLES2_CFLAGS)
+ 
+ # --- SDL2 Core Source Files (platform-independent) ---
+ # Enumerated from SDL2 CMakeLists.txt (SDL2 branch, commit f9e8203)
+@@ -123,6 +125,7 @@ SRCS_VIDEO_CORE = \
+ SRCS_VIDEO_OS3 = \
+ 	src/video/amigaos3/SDL_os3video.c \
+ 	src/video/amigaos3/SDL_os3opengl.c \
++	src/video/amigaos3/SDL_os3opengles2.c \
+ 	src/video/amigaos3/SDL_os3window.c \
+ 	src/video/amigaos3/SDL_os3framebuffer.c \
+ 	src/video/amigaos3/SDL_os3events.c \
+@@ -215,7 +218,12 @@ SRCS_RENDER_SW = \
+ 	src/render/software/SDL_rotate.c \
+ 	src/render/software/SDL_triangle.c
+ 
+-SRCS_RENDER = $(SRCS_RENDER_CORE) $(SRCS_RENDER_SW)
++# ogles2 (ports/sdl2): SDL's GLES2 renderer on ogles2.library
++SRCS_RENDER_GLES2 = \
++	src/render/opengles2/SDL_render_gles2.c \
++	src/render/opengles2/SDL_shaders_gles2.c
++
++SRCS_RENDER = $(SRCS_RENDER_CORE) $(SRCS_RENDER_SW) $(SRCS_RENDER_GLES2)
+ 
+ # --- Filesystem: AmigaOS3 (PROGDIR: / ENVARC:) ---
+ SRCS_FILESYS = \
+diff --git a/libSDL2-amigaos3-main/include/SDL_config_amigaos3.h b/libSDL2-amigaos3-main/include/SDL_config_amigaos3.h
+index 864ee533..87d41a7e 100644
+--- a/libSDL2-amigaos3-main/include/SDL_config_amigaos3.h
++++ b/libSDL2-amigaos3-main/include/SDL_config_amigaos3.h
+@@ -180,6 +180,10 @@
+ #if !defined(WARPUP)
+ #if !defined(SDL_AMIGAOS3_SW_ONLY)
+ #define SDL_VIDEO_OPENGL            1   /* minigl.library backend (68k) */
++/* ogles2 (ports/sdl2): OpenGL ES 2.0 through ogles2.library for windows whose
++ * GL profile is ES 2.x, and SDL's GLES2 renderer on it (SDL_os3opengles2.c). */
++#define SDL_VIDEO_OPENGL_ES2        1
++#define SDL_VIDEO_RENDER_OGL_ES2    1
+ #endif
+ #endif
+ #define SDL_VIDEO_DRIVER_DUMMY      1   /* fallback */
+diff --git a/libSDL2-amigaos3-main/src/video/SDL_video.c b/libSDL2-amigaos3-main/src/video/SDL_video.c
+index 228ba6ad..cb6ad2a0 100644
+--- a/libSDL2-amigaos3-main/src/video/SDL_video.c
++++ b/libSDL2-amigaos3-main/src/video/SDL_video.c
+@@ -2717,6 +2717,14 @@ static SDL_bool ShouldAttemptTextureFramebuffer(void)
+ #endif
+ #if defined(__EMSCRIPTEN__)
+         attempt_texture_framebuffer = SDL_FALSE;
++#endif
++#if defined(__AMIGAOS3__)
++        /* ogles2 (ports/sdl2): the driver writes the window surface straight
++           into the RTG bitmap; a GLES2 texture framebuffer would make a GLES2
++           renderer in the middle of the software renderer's creation. */
++        if (_this->CreateWindowFramebuffer) {
++            attempt_texture_framebuffer = SDL_FALSE;
++        }
+ #endif
+     }
+     return attempt_texture_framebuffer;
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3framebuffer.c b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3framebuffer.c
+index e1955cc6..e8b262f9 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3framebuffer.c
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3framebuffer.c
+@@ -226,9 +226,11 @@ int OS3_CreateWindowFramebuffer(_THIS, SDL_Window *window,
+         int win_h = data->window->Height;
+         if (win_w > w || win_h > h) {
+             struct BitMap *friend_bm = data->window->RPort->BitMap;
+-            struct BitMap *scale_bm = AllocBitMap(w, h,
+-                GetCyberMapAttr(friend_bm, CYBRMATTR_DEPTH),
+-                BMF_MINPLANES, friend_bm);
++            /* ogles2 (ports/sdl2): the depth first. A library call in
++               another's arguments breaks GCC 6.5's inline headers (A6 is
++               loaded before the arguments are evaluated). */
++            ULONG friend_depth = GetCyberMapAttr(friend_bm, CYBRMATTR_DEPTH);
++            struct BitMap *scale_bm = AllocBitMap(w, h, friend_depth, BMF_MINPLANES, friend_bm);
+ 
+             if (scale_bm) {
+                 struct RastPort *scale_rp;
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3opengl.c b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3opengl.c
+index bac87123..f182e46c 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3opengl.c
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3opengl.c
+@@ -16,6 +16,9 @@
+ #include "SDL_os3video.h"
+ #include "SDL_os3window.h"
+ #include "SDL_os3opengl.h"
++#if defined(SDL_VIDEO_OPENGL_ES2)
++#include "SDL_os3opengles2.h"
++#endif
+ 
+ static int os3_minigl_open = 0;
+ static int os3_swap_interval = 0;
+@@ -166,6 +169,13 @@ void OS3_GL_ResizeWindow(_THIS, SDL_Window *window, int w, int h)
+     OS3_WindowData *data = window ? (OS3_WindowData *)window->driverdata : NULL;
+     (void)_this;
+ 
++#if defined(SDL_VIDEO_OPENGL_ES2)
++    if (OS3_GLES2_OwnsWindow(window)) {
++        OS3_GLES2_ResizeWindow(_this, window, w, h);
++        return;
++    }
++#endif
++
+     if (!data || !data->gl_context || w <= 0 || h <= 0) {
+         return;
+     }
+@@ -233,6 +243,12 @@ void OS3_GL_DeleteContext(_THIS, SDL_GLContext context)
+     if (!context) {
+         return;
+     }
++#if defined(SDL_VIDEO_OPENGL_ES2)
++    if (OS3_GLES2_OwnsContext(_this, context)) {
++        OS3_GLES2_DeleteContext(_this, context);
++        return;
++    }
++#endif
+ 
+     previous = *MiniGLDispatch->currentContext;
+     /* Delete only the context; the native window remains valid. */
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.c b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.c
+index 4d8016c8..588b6de4 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.c
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.c
+@@ -28,6 +28,9 @@
+ #if defined(SDL_VIDEO_OPENGL)
+ #include "SDL_os3opengl.h"
+ #endif
++#if defined(SDL_VIDEO_OPENGL_ES2)
++#include "SDL_os3opengles2.h"
++#endif
+ #include "../SDL_sysvideo.h"
+ #include "../../events/SDL_events_c.h"
+ 
+@@ -96,7 +99,11 @@ static SDL_VideoDevice *OS3_CreateDevice(void)
+ 
+ #if defined(SDL_VIDEO_OPENGL)
+     /* OpenGL via shared minigl.library */
++#if defined(SDL_VIDEO_OPENGL_ES2)
++    device->GL_LoadLibrary      = OS3_GL_LoadLibraryAny; /* ogles2 for an ES 2 profile */
++#else
+     device->GL_LoadLibrary      = OS3_GL_LoadLibrary;
++#endif
+     device->GL_UnloadLibrary    = OS3_GL_UnloadLibrary;
+     device->GL_GetProcAddress   = OS3_GL_GetProcAddress;
+     device->GL_CreateContext    = OS3_GL_CreateContext;
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.h b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.h
+index dcbf5140..db126c4a 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.h
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.h
+@@ -52,6 +52,7 @@ typedef struct OS3_WindowData {
+     int            external_window; /* native Window and screen belong to caller */
+     int            gl_width, gl_height; /* current MiniGL drawable size */
+     void          *gl_context;    /* MiniGL context associated with this SDL window */
++    int            gl_es;         /* ogles2: gl_context is an ogles2.library context */
+     /* AGA palette shadow for dirty detection (used when CyberGfxBase == NULL) */
+     SDL_Color      aga_palette[256];
+     int            aga_palette_set; /* 0 = never synced */

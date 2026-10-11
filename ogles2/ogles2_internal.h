@@ -440,6 +440,8 @@ BOOL ogles2_display_libs_open(void);
 void ogles2_display_libs_close(void);
 BOOL ogles2_display_open(struct OGLES2Display *d, struct TagItem *tags, ULONG *why);
 void ogles2_display_close(struct OGLES2Display *d);
+BOOL ogles2_display_set_window(struct OGLES2Display *d, struct Window *w);
+void ogles2_display_drop(struct OGLES2Display *d);
 BOOL ogles2_display_set_bitmap(struct OGLES2Display *d, struct BitMap *bitmap);
 /* Locked: the CPU cache around the GPU's write of the bitmap (before: clean;
  * after: invalidate), where the CPU reads it. */

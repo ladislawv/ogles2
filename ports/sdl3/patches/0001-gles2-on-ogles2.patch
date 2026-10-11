@@ -1,0 +1,113 @@
+ogles2 (ports/sdl3): OpenGL ES 2.0 on ogles2.library for SDL3_68k.
+
+- The configuration enables SDL_VIDEO_OPENGL_ES2 and SDL's GLES2 renderer
+  (not in the software-only variant).
+- The video device's GL_LoadLibrary chooses the backend by the profile
+  asked for (as AmigaOS 4's driver): ES 2.x gets ogles2.library
+  (SDL_os3opengles2.c, from ports/sdl3), anything else minigl.library.
+- The window data notes an ogles2 context (gl_es); MiniGL's resize and
+  destroy, which the window and event code call directly, hand those over.
+- Makefile.amigaos3 builds the GLES2 renderer, takes $(OGLES2_CFLAGS) for
+  ogles2's and MiniGL's headers, and compiles clib2 objects with
+  -fshort-wchar (clib2's wchar_t is 2 bytes; SDL_string.c asserts the
+  compiler agrees).
+
+diff --git a/SDL3/Makefile.amigaos3 b/SDL3/Makefile.amigaos3
+index 8a3f476..e07e6e6 100644
+--- a/SDL3/Makefile.amigaos3
++++ b/SDL3/Makefile.amigaos3
+@@ -2,9 +2,11 @@ CC=m68k-amigaos-gcc
+ AR=m68k-amigaos-ar
+ RANLIB=m68k-amigaos-ranlib
+ COMMON=-std=gnu99 -O2 -mcpu=68040 -mhard-float -Wall -Wextra -Wno-unused-parameter -I./include -I./include/build_config -I./include/SDL3 -I./src -D__AMIGAOS3__
+-CLIB2=$(COMMON) -mcrt=clib2 -DNOIXEMUL
++# ogles2 (ports/sdl3): clib2's wchar_t is unsigned short (SDL_string.c checks
++# it against the compiler's); ogles2's and MiniGL's headers.
++CLIB2=$(COMMON) -mcrt=clib2 -DNOIXEMUL -fshort-wchar $(OGLES2_CFLAGS)
+ LIBNIX=$(COMMON) -noixemul -DNOIXEMUL
+-SOURCES=$(wildcard ./src/*.c ./src/atomic/*.c ./src/audio/*.c ./src/audio/amigaos3/*.c ./src/camera/*.c ./src/camera/dummy/*.c ./src/cpuinfo/*.c ./src/dialog/*.c ./src/dialog/amigaos3/*.c ./src/events/*.c ./src/gpu/SDL_gpu.c ./src/haptic/*.c ./src/io/*.c ./src/io/generic/SDL_asyncio_generic.c ./src/joystick/*.c ./src/joystick/amigaos3/*.c ./src/libm/*.c ./src/loadso/dummy/*.c ./src/locale/*.c ./src/locale/amigaos3/*.c ./src/main/generic/*.c ./src/main/SDL_main_callbacks.c ./src/main/SDL_runapp.c ./src/misc/*.c ./src/power/*.c ./src/process/*.c ./src/process/dummy/*.c ./src/render/*.c ./src/render/software/*.c ./src/sensor/*.c ./src/sensor/dummy/*.c ./src/stdlib/*.c ./src/storage/SDL_storage.c ./src/storage/generic/SDL_genericstorage.c ./src/thread/*.c ./src/thread/amigaos3/*.c ./src/thread/generic/SDL_syscond.c ./src/thread/generic/SDL_sysrwlock.c ./src/time/SDL_time.c ./src/time/amigaos3/SDL_systime.c ./src/timer/*.c ./src/timer/amigaos3/*.c ./src/tray/SDL_tray_utils.c ./src/tray/dummy/*.c ./src/video/*.c ./src/video/yuv2rgb/yuv_rgb_std.c ./src/video/amigaos3/*.c ./src/video/dummy/*.c ./src/filesystem/SDL_filesystem.c ./src/filesystem/amigaos3/*.c)
++SOURCES=$(wildcard ./src/*.c ./src/atomic/*.c ./src/audio/*.c ./src/audio/amigaos3/*.c ./src/camera/*.c ./src/camera/dummy/*.c ./src/cpuinfo/*.c ./src/dialog/*.c ./src/dialog/amigaos3/*.c ./src/events/*.c ./src/gpu/SDL_gpu.c ./src/haptic/*.c ./src/io/*.c ./src/io/generic/SDL_asyncio_generic.c ./src/joystick/*.c ./src/joystick/amigaos3/*.c ./src/libm/*.c ./src/loadso/dummy/*.c ./src/locale/*.c ./src/locale/amigaos3/*.c ./src/main/generic/*.c ./src/main/SDL_main_callbacks.c ./src/main/SDL_runapp.c ./src/misc/*.c ./src/power/*.c ./src/process/*.c ./src/process/dummy/*.c ./src/render/*.c ./src/render/software/*.c ./src/render/opengles2/*.c ./src/sensor/*.c ./src/sensor/dummy/*.c ./src/stdlib/*.c ./src/storage/SDL_storage.c ./src/storage/generic/SDL_genericstorage.c ./src/thread/*.c ./src/thread/amigaos3/*.c ./src/thread/generic/SDL_syscond.c ./src/thread/generic/SDL_sysrwlock.c ./src/time/SDL_time.c ./src/time/amigaos3/SDL_systime.c ./src/timer/*.c ./src/timer/amigaos3/*.c ./src/tray/SDL_tray_utils.c ./src/tray/dummy/*.c ./src/video/*.c ./src/video/yuv2rgb/yuv_rgb_std.c ./src/video/amigaos3/*.c ./src/video/dummy/*.c ./src/filesystem/SDL_filesystem.c ./src/filesystem/amigaos3/*.c)
+ REL=$(patsubst ./%,%,$(SOURCES:.c=.o))
+ CLOBJ=$(addprefix build/clib2/,$(REL))
+ LNOBJ=$(addprefix build/libnix/,$(REL))
+diff --git a/SDL3/include/build_config/SDL_build_config_amigaos3.h b/SDL3/include/build_config/SDL_build_config_amigaos3.h
+index 25651d5..7367ab7 100644
+--- a/SDL3/include/build_config/SDL_build_config_amigaos3.h
++++ b/SDL3/include/build_config/SDL_build_config_amigaos3.h
+@@ -60,6 +60,10 @@
+ #define SDL_VIDEO_DRIVER_DUMMY 1
+ #if !defined(SDL_AMIGAOS3_SW_ONLY)
+ #define SDL_VIDEO_OPENGL 1
++/* ogles2 (ports/sdl3): OpenGL ES 2.0 through ogles2.library for windows whose
++ * GL profile is ES 2.x, and SDL's GLES2 renderer on it (SDL_os3opengles2.c). */
++#define SDL_VIDEO_OPENGL_ES2 1
++#define SDL_VIDEO_RENDER_OGL_ES2 1
+ #endif
+ #define SDL_VIDEO_RENDER_SW 1
+ #define SDL_AUDIO_DRIVER_AMIGAOS3 1
+diff --git a/SDL3/src/video/amigaos3/SDL_os3opengl.c b/SDL3/src/video/amigaos3/SDL_os3opengl.c
+index 957a92a..200c2de 100644
+--- a/SDL3/src/video/amigaos3/SDL_os3opengl.c
++++ b/SDL3/src/video/amigaos3/SDL_os3opengl.c
+@@ -4,6 +4,7 @@
+ #include <proto/minigl.h>
+ #include "SDL_os3opengl.h"
+ #include "SDL_os3window.h"
++#include "SDL_os3opengles2.h"
+ 
+ static bool opened = false;
+ static int swap_interval = 0;
+@@ -97,6 +98,10 @@ void OS3_GL_ResizeWindow(SDL_VideoDevice *_this, SDL_Window *window, int width,
+     SDL_WindowData *d = window ? window->internal : NULL;
+     GLcontext previous;
+     (void)_this;
++    if (OS3_GLES2_OwnsWindow(window)) { /* ogles2 (ports/sdl3) */
++        OS3_GLES2_ResizeWindow(_this, window, width, height);
++        return;
++    }
+     if (!d || !d->gl_context || width <= 0 || height <= 0) return;
+     if (width == d->gl_width && height == d->gl_height) return;
+     previous = *MiniGLDispatch->currentContext;
+@@ -152,6 +157,8 @@ bool OS3_GL_DestroyContext(SDL_VideoDevice *_this, SDL_GLContext c)
+     SDL_Window *window;
+     GLcontext previous;
+     if (!c) return true;
++    if (OS3_GLES2_OwnsContext(_this, c)) /* ogles2 (ports/sdl3) */
++        return OS3_GLES2_DestroyContext(_this, c);
+     previous = *MiniGLDispatch->currentContext;
+     for (window = _this->windows; window; window = window->next) {
+         SDL_WindowData *d = window->internal;
+diff --git a/SDL3/src/video/amigaos3/SDL_os3video.c b/SDL3/src/video/amigaos3/SDL_os3video.c
+index 594bb80..9b32cea 100644
+--- a/SDL3/src/video/amigaos3/SDL_os3video.c
++++ b/SDL3/src/video/amigaos3/SDL_os3video.c
+@@ -11,6 +11,7 @@
+ #include <proto/keymap.h>
+ #if !defined(SDL_AMIGAOS3_SW_ONLY)
+ #include "SDL_os3opengl.h"
++#include "SDL_os3opengles2.h"
+ #endif
+ 
+ struct Library *CyberGfxBase = NULL;
+@@ -150,7 +151,8 @@ static SDL_VideoDevice *OS3_CreateDevice(void)
+     device->PumpEvents=OS3_PumpEvents;
+     device->StartTextInput=OS3_StartTextInput; device->StopTextInput=OS3_StopTextInput;
+ #if !defined(SDL_AMIGAOS3_SW_ONLY)
+-    device->GL_LoadLibrary=OS3_GL_LoadLibrary; device->GL_GetProcAddress=OS3_GL_GetProcAddress; device->GL_UnloadLibrary=OS3_GL_UnloadLibrary;
++    /* ogles2 (ports/sdl3): an ES 2 profile gets ogles2.library */
++    device->GL_LoadLibrary=OS3_GL_LoadLibraryAny; device->GL_GetProcAddress=OS3_GL_GetProcAddress; device->GL_UnloadLibrary=OS3_GL_UnloadLibrary;
+     device->GL_CreateContext=OS3_GL_CreateContext; device->GL_MakeCurrent=OS3_GL_MakeCurrent; device->GL_SetSwapInterval=OS3_GL_SetSwapInterval;
+     device->GL_GetSwapInterval=OS3_GL_GetSwapInterval; device->GL_SwapWindow=OS3_GL_SwapWindow; device->GL_DestroyContext=OS3_GL_DestroyContext;
+     device->GL_DefaultProfileConfig=OS3_GL_DefaultProfileConfig;
+diff --git a/SDL3/src/video/amigaos3/SDL_os3video.h b/SDL3/src/video/amigaos3/SDL_os3video.h
+index cf2c071..1c76db7 100644
+--- a/SDL3/src/video/amigaos3/SDL_os3video.h
++++ b/SDL3/src/video/amigaos3/SDL_os3video.h
+@@ -43,6 +43,7 @@ struct SDL_WindowData {
+     bool external_window; /* native window and screen are borrowed */
+     int gl_width, gl_height;
+     SDL_GLContext gl_context;
++    bool gl_es;           /* ogles2: gl_context is an ogles2.library context */
+     void *fb_pixels;
+     int fb_pitch;
+     Uint32 fb_format;

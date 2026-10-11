@@ -46,6 +46,8 @@ struct OGLES2Face
     GLenum type[MAX_LEVELS];        /* and the type it was given in (picks the stored format) */
     UBYTE *shadow[MAX_LEVELS];      /* RGBA8 copy of each level */
     ULONG rendered;                 /* levels the GPU drew into since: the copy is stale */
+    ULONG blank;                    /* levels never given texels (glTexImage2D without pixels):
+                                     * the copy is zeros, as a new GPU copy is (MEMF_CLEAR) */
 };
 
 struct OGLES2Texture
@@ -130,6 +132,7 @@ static void free_levels(struct OGLES2Texture *t)
             t->f[k].shadow[l] = 0;
         }
         t->f[k].defined = 0;
+        t->f[k].blank = 0;
     }
     free_gpu(t);
 }
@@ -277,9 +280,11 @@ void ogles2_glDeleteTextures(struct OGLES2Context *ctx, GLsizei n, const GLuint 
         struct OGLES2Texture *t = by_name(ts, textures[k]);
         if (!t)
             continue;
-        for (u = 0; u < 6; u++)
-            t->f[u].rendered = 0; /* going: nothing to read back */
+        /* First the jobs drawing into it: a finished render marks what it
+         * drew as to be read back. */
         ogles2_fbo_texture_deleted(ctx, t);
+        for (u = 0; u < 6; u++)
+            t->f[u].rendered = 0; /* going: nothing to read back (SDL's render targets: 38 ms) */
         before_change(ctx, ts, t); /* its memory goes: a queued draw must not read it */
         for (u = 0; u < OGLES2_MAX_TEXTURE_UNITS; u++) { /* deleting unbinds (GLES 2.0 3.7.13) */
             if (ts->unit2d[u] == t)
@@ -772,8 +777,10 @@ static void sync(struct OGLES2Texture *t)
         if (!f->rendered)
             continue;
         for (l = 0; l < MAX_LEVELS; l++)
-            if ((f->rendered & (1UL << l)) && f->shadow[l])
+            if ((f->rendered & (1UL << l)) && f->shadow[l]) {
                 load_box(t, k, l, 0, 0, f->w[l], f->h[l], f->shadow[l], (ULONG)f->w[l] * 4);
+                f->blank &= ~(1UL << l);
+            }
         f->rendered = 0;
     }
 }
@@ -859,9 +866,12 @@ static BOOL upload_all(struct OGLES2Texture *t)
             ogles2_log("texture: v3dcore's direct UIF store differed from its general one: not used");
         }
     }
+    /* A blank level is in the new copy already: its memory starts cleared
+     * (SDL's testrendercopyex makes a render target a frame: 1.2 MB of
+     * zeros stored at 640x480). */
     for (k = 0; k < faces(t); k++)
         for (l = 0; l < n; l++)
-            if (l == 0 || consistent(&t->f[k], l))
+            if ((l == 0 || consistent(&t->f[k], l)) && !(t->f[k].blank & (1UL << l)))
                 upload_level(t, k, l);
     return TRUE;
 }
@@ -951,6 +961,7 @@ BOOL ogles2_texture_surface(struct OGLES2Context *ctx, struct OGLES2Texture *t, 
 void ogles2_texture_rendered(struct OGLES2Texture *t, int k, int l)
 {
     t->f[k].rendered |= 1UL << l;
+    t->f[k].blank &= ~(1UL << l);
 }
 
 BOOL ogles2_texture_read(struct OGLES2Texture *t, int k, int l, int x, int y, int w, int h,
@@ -981,6 +992,7 @@ struct OGLES2Texture *ogles2_texture_hidden(struct OGLES2Context *ctx, UWORD w, 
     t->f[0].format[0] = format;
     t->f[0].type[0] = type;
     t->f[0].defined = 1;
+    t->f[0].blank = 1;
     if (!t->f[0].shadow[0] || (ctx->v3d && (!upload_all(t) || !t->gpu))) {
         ogles2_texture_hidden_free(ctx, t);
         return 0;
@@ -1049,6 +1061,10 @@ static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLi
     f->format[level] = format;
     f->type[level] = type;
     f->defined |= 1UL << level;
+    if (img && pixels)
+        f->blank &= ~(1UL << level);
+    else
+        f->blank |= 1UL << level;
     if (!ctx->v3d)
         return; /* a state-only context keeps the images only */
     /* No GPU texture yet, a new level 0, or a level the chain has no room
@@ -1122,6 +1138,7 @@ static void tex_sub_image(struct OGLES2Context *ctx, GLenum target, GLint level,
     for (y = 0; y < height; y++)
         memcpy(f->shadow[level] + ((ULONG)(yoffset + y) * f->w[level] + xoffset) * 4,
                sub + (ULONG)y * width * 4, (ULONG)width * 4);
+    f->blank &= ~(1UL << level);
     if (t->gpu && level < t->gpu->num_levels && consistent(f, level))
         store_box(t, k, level, sub, xoffset, yoffset, width, height);
     else if (!t->gpu && ctx->v3d && !upload_all(t)) /* renamed: a new copy, whole */
@@ -1379,6 +1396,7 @@ void ogles2_glGenerateMipmap(struct OGLES2Context *ctx, GLenum target)
             f->format[l] = f->format[l - 1];
             f->type[l] = f->type[l - 1];
             f->defined |= 1UL << l;
+            f->blank &= ~(1UL << l);
         }
     }
     if (ctx->v3d && !upload_all(t))

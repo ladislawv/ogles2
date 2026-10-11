@@ -247,6 +247,46 @@ BOOL ogles2_display_set_bitmap(struct OGLES2Display *d, struct BitMap *bitmap)
     return TRUE;
 }
 
+/* aglSetParams2(OGLES2_CCT_WINDOW): a window-mode display renders into
+ * another window, or into the same one at its new size, from the next frame
+ * (SDL does this when it recreates or resizes its window). A new offscreen
+ * bitmap of the window's inner size; on failure the display is as before.
+ * The old bitmap is not freed: the caller frees it (ogles2_display_drop) or
+ * goes back to the old display. Between jobs (the caller finishes the
+ * running one). */
+BOOL ogles2_display_set_window(struct OGLES2Display *d, struct Window *w)
+{
+    struct OGLES2Display old = *d;
+    if (!w || !d->window || d->own_window || d->own_screen || !d->own_bitmap) {
+        ogles2_log("aglSetParams2: OGLES2_CCT_WINDOW: %s",
+                   (ULONG)(w ? "the context was not created with OGLES2_CCT_WINDOW" : "no window"));
+        return FALSE;
+    }
+    if (w == d->window && (UWORD)(w->Width - w->BorderLeft - w->BorderRight) == d->width &&
+        (UWORD)(w->Height - w->BorderTop - w->BorderBottom) == d->height)
+        return TRUE; /* the same window at the same size */
+    d->bitmap = 0;
+    d->own_bitmap = FALSE;
+    if (!open_window_target(d, w) || d->width < 1 || d->height < 1 || d->width > 4096 ||
+        d->height > 4096 || !probe_bitmap(d)) {
+        ogles2_log("aglSetParams2: window 0x%08lx (%ldx%ld) refused, the old one stays", (ULONG)w,
+                   (ULONG)d->width, (ULONG)d->height);
+        if (d->own_bitmap && d->bitmap)
+            FreeBitMap(d->bitmap);
+        *d = old;
+        return FALSE;
+    }
+    return TRUE;
+}
+
+/* The offscreen bitmap of a display left behind (ogles2_display_set_window). */
+void ogles2_display_drop(struct OGLES2Display *d)
+{
+    if (d->own_bitmap && d->bitmap)
+        FreeBitMap(d->bitmap);
+    d->bitmap = 0;
+}
+
 void ogles2_display_close(struct OGLES2Display *d)
 {
     ogles2_display_unlock(d);
@@ -381,7 +421,12 @@ void ogles2_display_present(struct OGLES2Display *d)
     if (!w || !d->own_bitmap)
         return; /* fullscreen draws into the screen; an application bitmap is the
                  * application's to present */
-    ClipBlit(&d->rastport, 0, 0, w->RPort, w->BorderLeft, w->BorderTop,
-             w->Width - w->BorderLeft - w->BorderRight, w->Height - w->BorderTop - w->BorderBottom,
-             0xC0);
+    /* A GimmeZeroZero window's RPort is its inner area already (SDL opens
+     * its windows so): its origin is inside the borders. */
+    if (w->Flags & WFLG_GIMMEZEROZERO)
+        ClipBlit(&d->rastport, 0, 0, w->RPort, 0, 0, d->width, d->height, 0xC0);
+    else
+        ClipBlit(&d->rastport, 0, 0, w->RPort, w->BorderLeft, w->BorderTop,
+                 w->Width - w->BorderLeft - w->BorderRight, w->Height - w->BorderTop - w->BorderBottom,
+                 0xC0);
 }
