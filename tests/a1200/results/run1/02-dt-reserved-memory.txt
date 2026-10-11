@@ -1,0 +1,30 @@
+/reserved-memory/
+/reserved-memory/#address-cells: long = 0x00000002 (2)
+/reserved-memory/#size-cells: long = 0x00000001 (1)
+/reserved-memory/ranges: empty = -
+/reserved-memory/phandle: long = 0x0000005C (92)
+/reserved-memory/linux,cma/
+/reserved-memory/linux,cma/compatible: string = shared-dma-pool
+/reserved-memory/linux,cma/size: long = 0x04000000 (67108864)
+/reserved-memory/linux,cma/reusable: empty = -
+/reserved-memory/linux,cma/linux,cma-default: empty = -
+/reserved-memory/linux,cma/alloc-ranges: blob = 00 00 00 00 00 00 00 00 30 00 00 00
+/reserved-memory/linux,cma/phandle: long = 0x0000005D (93)
+/reserved-memory/nvram@0/
+/reserved-memory/nvram@0/compatible: string list = raspberrypi,bootloader-config
+nvmem-rmem
+/reserved-memory/nvram@0/#address-cells: long = 0x00000001 (1)
+/reserved-memory/nvram@0/#size-cells: long = 0x00000001 (1)
+/reserved-memory/nvram@0/reg: blob = 00 00 00 00 3E F6 68 60 00 00 00 48
+/reserved-memory/nvram@0/no-map: empty = -
+/reserved-memory/nvram@0/status: string = okay
+/reserved-memory/nvram@0/phandle: long = 0x0000005E (94)
+/reserved-memory/nvram@1/
+/reserved-memory/nvram@1/compatible: string list = raspberrypi,bootloader-public-key
+nvmem-rmem
+/reserved-memory/nvram@1/#address-cells: long = 0x00000001 (1)
+/reserved-memory/nvram@1/#size-cells: long = 0x00000001 (1)
+/reserved-memory/nvram@1/reg: blob = 00 00 00 00 3E F6 64 20 00 00 04 00
+/reserved-memory/nvram@1/no-map: empty = -
+/reserved-memory/nvram@1/status: string = okay
+/reserved-memory/nvram@1/phandle: long = 0x0000005F (95)

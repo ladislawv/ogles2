@@ -1,0 +1,16 @@
+(
+(declare (location=2 shader_out mediump ) vec4 gl_FragColor)
+(declare (location=25 shader_in mediump ) vec2 gl_PointCoord)
+(declare (location=24 shader_in flat) bool gl_FrontFacing)
+(declare (location=0 shader_in mediump ) vec4 gl_FragCoord)
+( function main
+  (signature void
+    (parameters
+    )
+    (
+      (assign  (xyzw) (var_ref gl_FragColor)  (constant vec4 (1.000000 1.000000 1.000000 1.000000)) ) 
+    ))
+
+)
+
+)

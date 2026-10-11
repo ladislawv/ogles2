@@ -1,0 +1,18 @@
+diff --git a/src/compiler/nir/nir_opt_vectorize_io.c b/src/compiler/nir/nir_opt_vectorize_io.c
+index 0669b6e9a11..924576126b3 100644
+--- a/src/compiler/nir/nir_opt_vectorize_io.c
++++ b/src/compiler/nir/nir_opt_vectorize_io.c
+@@ -120,7 +120,12 @@ compare_intr(const void *xa, const void *xb)
+    if (comp)
+       return comp;
+ 
+-   /* qsort isn't stable. This ensures that later stores aren't moved before earlier stores. */
++   /* qsort isn't stable. This ensures that later stores aren't moved before earlier stores.
++    * Return 0 for an element compared with itself: qsort implementations that compare
++    * the pivot with itself (e.g. libnix's) otherwise partition past the array.
++    */
++   if (a->instr.index == b->instr.index)
++      return 0;
+    return a->instr.index > b->instr.index ? 1 : -1;
+ }
+ 

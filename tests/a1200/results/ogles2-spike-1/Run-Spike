@@ -1,0 +1,93 @@
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+; Run-Spike - times Mesa's GLSL compiler (built for 68k) on the A1200. See ReadMe.txt.
+;   CD to this directory, then:        Execute Run-Spike
+;   After a reboot in the middle:      Execute Run-Spike FROM=<step>
+; Each run's time goes to results/times.txt, its output to results/<name>.txt.
+; Nothing outside this directory is changed.
+
+FailAt 21
+If NOT EXISTS bin/glsl_compiler
+  Echo "Please CD into the ogles2-spike-1 directory first,"
+  Echo "then run:  Execute Run-Spike"
+  Quit 20
+EndIf
+
+Assign SPIKE: ""
+If NOT EXISTS SPIKE:results
+  MakeDir SPIKE:results
+EndIf
+Echo "ogles2 spike run 1, starting at step {FROM}" >>SPIKE:results/00-progress.txt
+Date >>SPIKE:results/00-progress.txt
+Echo "== starting at step {FROM}" >>SPIKE:results/times.txt
+Avail >SPIKE:results/01-avail-before.txt
+
+; Mesa's compiler recurses deeply; give it 2 MB of stack.
+Stack 2000000
+CD SPIKE:shaders
+
+; ---------------------------------------------------------------- steps 1-2
+; An empty shader: the time to load the 11 MB program and build Mesa's
+; built-in function table, which every run below includes.
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 6: empty shader, first run (includes loading from disk)"
+  SPIKE:bin/timeit SPIKE:results/times.txt empty_first SPIKE:bin/glsl_compiler --version 100 --dump-lir empty.frag >SPIKE:results/empty_first.txt
+  Echo "step 1 done" >>SPIKE:results/00-progress.txt
+EndIf
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 6: empty shader, second run"
+  SPIKE:bin/timeit SPIKE:results/times.txt empty_second SPIKE:bin/glsl_compiler --version 100 --dump-lir empty.frag >SPIKE:results/empty_second.txt
+  Echo "step 2 done" >>SPIKE:results/00-progress.txt
+EndIf
+
+; ---------------------------------------------------------------- step 3
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 6: compile each shader on its own (7 runs)"
+  SPIKE:bin/timeit SPIKE:results/times.txt tex_vert_lir SPIKE:bin/glsl_compiler --version 100 --dump-lir tex.vert >SPIKE:results/tex_vert_lir.txt
+  SPIKE:bin/timeit SPIKE:results/times.txt tex_frag_lir SPIKE:bin/glsl_compiler --version 100 --dump-lir tex.frag >SPIKE:results/tex_frag_lir.txt
+  SPIKE:bin/timeit SPIKE:results/times.txt light_vert_lir SPIKE:bin/glsl_compiler --version 100 --dump-lir light.vert >SPIKE:results/light_vert_lir.txt
+  SPIKE:bin/timeit SPIKE:results/times.txt light_frag_lir SPIKE:bin/glsl_compiler --version 100 --dump-lir light.frag >SPIKE:results/light_frag_lir.txt
+  SPIKE:bin/timeit SPIKE:results/times.txt skin_vert_lir SPIKE:bin/glsl_compiler --version 100 --dump-lir skin.vert >SPIKE:results/skin_vert_lir.txt
+  SPIKE:bin/timeit SPIKE:results/times.txt skin_frag_lir SPIKE:bin/glsl_compiler --version 100 --dump-lir skin.frag >SPIKE:results/skin_frag_lir.txt
+  SPIKE:bin/timeit SPIKE:results/times.txt proc_frag_lir SPIKE:bin/glsl_compiler --version 100 --dump-lir proc.frag >SPIKE:results/proc_frag_lir.txt
+  Echo "step 3 done" >>SPIKE:results/00-progress.txt
+EndIf
+
+; ---------------------------------------------------------------- step 4
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 6: compile and link vertex+fragment pairs (3 runs)"
+  SPIKE:bin/timeit SPIKE:results/times.txt tex_link_lir SPIKE:bin/glsl_compiler --version 100 --link --dump-lir tex.vert tex.frag >SPIKE:results/tex_link_lir.txt
+  SPIKE:bin/timeit SPIKE:results/times.txt light_link_lir SPIKE:bin/glsl_compiler --version 100 --link --dump-lir light.vert light.frag >SPIKE:results/light_link_lir.txt
+  SPIKE:bin/timeit SPIKE:results/times.txt skin_link_lir SPIKE:bin/glsl_compiler --version 100 --link --dump-lir skin.vert skin.frag >SPIKE:results/skin_link_lir.txt
+  Echo "step 4 done" >>SPIKE:results/00-progress.txt
+EndIf
+
+; ---------------------------------------------------------------- step 5
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 6: the three pairs again, to see how much times vary"
+  SPIKE:bin/timeit SPIKE:results/times.txt tex_link_again SPIKE:bin/glsl_compiler --version 100 --link tex.vert tex.frag >NIL:
+  SPIKE:bin/timeit SPIKE:results/times.txt light_link_again SPIKE:bin/glsl_compiler --version 100 --link light.vert light.frag >NIL:
+  SPIKE:bin/timeit SPIKE:results/times.txt skin_link_again SPIKE:bin/glsl_compiler --version 100 --link skin.vert skin.frag >NIL:
+  Echo "step 5 done" >>SPIKE:results/00-progress.txt
+EndIf
+
+; ---------------------------------------------------------------- step 6
+If NOT {FROM} GT 6 VAL
+  Echo "Step 6 of 6: system state after the runs"
+  Avail >SPIKE:results/99-avail-after.txt
+  Version >>SPIKE:results/99-avail-after.txt
+  Echo "step 6 done" >>SPIKE:results/00-progress.txt
+EndIf
+
+CD SPIKE:
+If NOT EXISTS SPIKE:results/notes.txt
+  Copy SPIKE:notes-template.txt SPIKE:results/notes.txt
+EndIf
+List SPIKE:results >SPIKE:results/99-files.txt
+Echo "finished" >>SPIKE:results/00-progress.txt
+Date >>SPIKE:results/00-progress.txt
+Echo ""
+Echo "Done. The times are in results/times.txt."
+Echo "Please add a few words to results/notes.txt and send the whole results directory back."

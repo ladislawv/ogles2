@@ -1,0 +1,75 @@
+ogles2.library licensing
+========================
+
+This repository holds code under two licences, plus third-party code that
+keeps its own.
+
+1. ogles2.library and everything built with PiStorm3D's V3D backend
+   (ogles2/, v3dcore/, client/, cmd/, include/libraries, include/clib,
+   tests/ except tests/corpus/, tools/builtin_shaders/) are under the
+   Hyperion MiniGL Open Source License below, because v3dcore/ is
+   PiStorm3D's backend (minigl.library 29.1, see v3dcore/PROVENANCE.md).
+   In short: the library may only be built for AmigaOS, and the source of
+   all modifications must be published to the Amiga developer community.
+
+2. The parts that incorporate no MiniGL code are under the MIT License
+   below: v3dp/, tools/v3dglslc/, tools/amictl/, tools/v3dp_tests/,
+   tools/blake3_test/, tools/check_fpconv.py, gen/ (except gen/khronos/),
+   tests/corpus/, dev/.
+
+3. Third-party code keeps its own licence and notices:
+   - include/GLES2/, include/KHR/: Khronos headers (MIT / Apache-2.0, see
+     the file headers); gen/khronos/gl.xml: Apache-2.0.
+   - v3dcore/: code by Macoy Madson and code derived from Mesa (Broadcom,
+     VMware): licences/License_V3D_ThirdParty.txt.
+   - ogles2/blake3.c follows the BLAKE3 reference implementation (CC0 /
+     Apache-2.0); tools/v3dglslc builds Mesa (MIT) with the patches in
+     tools/v3dglslc/patches.
+   - The corpus programs (Mesa demos, the OpenGL ES 2.0 Programming Guide
+     samples) are not in this repository: tests/corpus/build_corpus.sh
+     fetches them.
+
+
+Hyperion MiniGL Open Source License
+-----------------------------------
+
+(C) 2000-2002 Hyperion
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will Hyperion or the authors be held liable for
+any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, subject to the following conditions:
+
+1. MiniGL may only be compiled for/incorporated in code running on
+   AmigaOS. This only applies to MiniGL, you are free to port an
+   application using MiniGL to another OpenGL implementation on other
+   platforms.
+
+2. The functional source-code of all and any modifications and improvements
+   must be made publically available to the Amiga developer community.
+
+
+MIT License
+-----------
+
+Copyright (c) 2026 the ogles2 authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

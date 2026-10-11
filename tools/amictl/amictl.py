@@ -41,13 +41,16 @@ class StationError(Exception):
 
 
 def config():
-    cfg = {"host": "192.168.1.128", "port": 6800, "token": None}
+    cfg = {"host": None, "port": 6800, "token": None}
     p = os.path.join(HERE, "station.local")
     if os.path.exists(p):
         cfg.update(json.load(open(p)))
     cfg["host"] = os.environ.get("AMICTL_HOST", cfg["host"])
     cfg["port"] = int(os.environ.get("AMICTL_PORT", cfg["port"]))
     cfg["token"] = os.environ.get("AMICTL_TOKEN", cfg["token"])
+    if not cfg["host"]:
+        sys.exit("amictl: no station address (tools/amictl/station.local, see "
+                 "station.local.example, or AMICTL_HOST)")
     if not cfg["token"]:
         sys.exit("amictl: no token (tools/amictl/station.local or AMICTL_TOKEN)")
     return cfg

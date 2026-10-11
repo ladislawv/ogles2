@@ -1,0 +1,43 @@
+; Run-V3DP - the shader compiler writes its GPU program files (.v3dp) on the A1200.
+; See ReadMe.txt.
+;   CD to this directory, then:        Execute Run-V3DP
+; Output goes to results/. Nothing outside this directory is changed.
+
+FailAt 21
+If NOT EXISTS bin/v3dc
+  Echo "Please CD into the ogles2-v3dp-1 directory first,"
+  Echo "then run:  Execute Run-V3DP"
+  Quit 20
+EndIf
+
+Assign V3DP1: ""
+If NOT EXISTS V3DP1:results
+  MakeDir V3DP1:results
+EndIf
+If NOT EXISTS V3DP1:results/v3dp
+  MakeDir V3DP1:results/v3dp
+EndIf
+Echo "ogles2 v3dp run 1" >V3DP1:results/00-progress.txt
+Date >>V3DP1:results/00-progress.txt
+Echo "== before" >V3DP1:results/memory.txt
+Avail FAST >>V3DP1:results/memory.txt
+
+Stack 4000000
+CD V3DP1:shaders
+
+Echo "Writing four GPU program files (takes a few seconds)"
+V3DP1:bin/timeit V3DP1:results/times.txt write_four V3DP1:bin/v3dc -o V3DP1:results/v3dp tex.vert tex.frag light.vert light.frag skin.vert skin.frag tex.vert proc.frag >V3DP1:results/write_four.txt
+Echo "after write_four" >>V3DP1:results/memory.txt
+Avail FAST >>V3DP1:results/memory.txt
+Echo "run done" >>V3DP1:results/00-progress.txt
+
+CD V3DP1:
+If NOT EXISTS V3DP1:results/notes.txt
+  Copy V3DP1:notes-template.txt V3DP1:results/notes.txt
+EndIf
+List V3DP1:results ALL >V3DP1:results/99-files.txt
+Echo "finished" >>V3DP1:results/00-progress.txt
+Date >>V3DP1:results/00-progress.txt
+Echo ""
+Echo "Done. results/v3dp should now hold four .v3dp files."
+Echo "Please add a few words to results/notes.txt and send the whole results directory back."

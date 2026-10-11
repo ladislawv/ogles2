@@ -1,0 +1,86 @@
+(
+(declare (temporary ) float assignment_tmp)
+(declare (location=12 shader_out mediump ) float gl_PointSize)
+(declare (location=0 shader_out highp ) vec4 gl_Position)
+(declare (shader_in highp ) vec3 position)
+(declare (shader_in highp ) vec3 normal)
+(declare (uniform highp ) mat4 mvp)
+(declare (uniform highp ) mat3 normal_matrix)
+(declare (uniform highp ) (array vec3 4) light_dir)
+(declare (uniform highp ) (array vec3 4) light_col)
+(declare (uniform highp ) int light_count)
+(declare (shader_out highp ) vec3 color)
+(declare (highp ) float ambient) (constant float (0.250000))  (constant float (0.250000)) 
+(assign  (x) (var_ref assignment_tmp)  (constant float (0.250000)) ) 
+(assign  (x) (var_ref ambient)  (var_ref assignment_tmp) ) 
+( function main
+  (signature void
+    (parameters
+    )
+    (
+      (declare (highp ) int i) (constant int (0)) 
+      (declare (highp ) vec3 c) (constant vec3 (0.250000 0.250000 0.250000)) 
+      (declare (highp ) vec3 n)
+      (declare (temporary ) vec3 normalize_retval)
+      (declare (temporary ) vec3 assignment_tmp)
+      (declare (temporary ) vec3 flattening_tmp)
+      (assign  (xyz) (var_ref flattening_tmp)  (expression vec3 + (expression vec3 + (expression vec3 * (array_ref (var_ref normal_matrix) (constant int (0)) ) (swiz x (var_ref normal) )) (expression vec3 * (array_ref (var_ref normal_matrix) (constant int (1)) ) (swiz y (var_ref normal) )) ) (expression vec3 * (array_ref (var_ref normal_matrix) (constant int (2)) ) (swiz z (var_ref normal) )) ) ) 
+      (declare (temporary ) vec3 flattening_tmp@2)
+      (assign  (xyz) (var_ref flattening_tmp@2)  (expression vec3 + (expression vec3 + (expression vec3 * (array_ref (var_ref normal_matrix) (constant int (0)) ) (swiz x (var_ref normal) )) (expression vec3 * (array_ref (var_ref normal_matrix) (constant int (1)) ) (swiz y (var_ref normal) )) ) (expression vec3 * (array_ref (var_ref normal_matrix) (constant int (2)) ) (swiz z (var_ref normal) )) ) ) 
+      (declare (temporary ) vec3 flattening_tmp@3)
+      (assign  (xyz) (var_ref flattening_tmp@3)  (expression vec3 + (expression vec3 + (expression vec3 * (array_ref (var_ref normal_matrix) (constant int (0)) ) (swiz x (var_ref normal) )) (expression vec3 * (array_ref (var_ref normal_matrix) (constant int (1)) ) (swiz y (var_ref normal) )) ) (expression vec3 * (array_ref (var_ref normal_matrix) (constant int (2)) ) (swiz z (var_ref normal) )) ) ) 
+      (assign  (xyz) (var_ref n)  (expression vec3 * (var_ref flattening_tmp@3) (expression float rsq (expression float dot (var_ref flattening_tmp) (var_ref flattening_tmp@2) ) ) ) ) 
+      (declare (temporary ) vec3 assignment_tmp@4)
+      (assign  (xyz) (var_ref c)  (constant vec3 (0.250000 0.250000 0.250000)) ) 
+      (declare (temporary ) int assignment_tmp@5)
+      (assign  (x) (var_ref i)  (constant int (0)) ) 
+      (loop (
+        (if (expression bool ! (expression bool < (var_ref i) (constant int (4)) ) ) (
+          break
+        )
+        ())
+
+        (if (expression bool >= (var_ref i) (var_ref light_count) ) (
+          break
+        )
+        ())
+
+        (declare (temporary ) float dot_retval)
+        (declare (temporary ) float max_retval)
+        (assign  (xyz) (var_ref c)  (expression vec3 + (var_ref c) (expression vec3 * (array_ref (var_ref light_col) (var_ref i) ) (expression float max (expression float dot (var_ref n) (array_ref (var_ref light_dir) (var_ref i) ) ) (constant float (0.000000)) ) ) ) ) 
+        (assign  (x) (var_ref i)  (expression int + (var_ref i) (constant int (1)) ) ) 
+      ))
+
+      (declare (temporary ) vec3 clamp_retval)
+      (assign  (xyz) (var_ref color)  (expression vec3 sat (var_ref c) ) ) 
+      (declare (temporary ) vec4 vec_ctor)
+      (assign  (w) (var_ref vec_ctor)  (constant float (1.000000)) ) 
+      (assign  (xyz) (var_ref vec_ctor)  (swiz xyz (var_ref position) )) 
+      (declare (temporary ) vec4 flattening_tmp@6)
+      (assign  (xyzw) (var_ref flattening_tmp@6)  (expression vec4 + (expression vec4 + (expression vec4 + (expression vec4 * (array_ref (var_ref mvp) (constant int (0)) ) (swiz x (var_ref vec_ctor) )) (expression vec4 * (array_ref (var_ref mvp) (constant int (1)) ) (swiz y (var_ref vec_ctor) )) ) (expression vec4 * (array_ref (var_ref mvp) (constant int (2)) ) (swiz z (var_ref vec_ctor) )) ) (expression vec4 * (array_ref (var_ref mvp) (constant int (3)) ) (swiz w (var_ref vec_ctor) )) ) ) 
+      (assign  (xyzw) (var_ref gl_Position)  (var_ref flattening_tmp@6) ) 
+    ))
+
+)
+
+)
+(
+(declare (location=2 shader_out mediump ) vec4 gl_FragColor)
+(declare (location=25 shader_in mediump ) vec2 gl_PointCoord)
+(declare (location=24 shader_in flat) bool gl_FrontFacing)
+(declare (location=0 shader_in mediump ) vec4 gl_FragCoord)
+(declare (shader_in mediump ) vec3 color)
+( function main
+  (signature void
+    (parameters
+    )
+    (
+      (declare (temporary ) vec4 vec_ctor)
+      (assign  (w) (var_ref vec_ctor)  (constant float (1.000000)) ) 
+      (assign  (xyz) (var_ref vec_ctor)  (swiz xyz (var_ref color) )) 
+      (assign  (xyzw) (var_ref gl_FragColor)  (var_ref vec_ctor) ) 
+    ))
+
+)
+
+)

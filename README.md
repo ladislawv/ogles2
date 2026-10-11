@@ -1,55 +1,123 @@
-# ogles2.library for AmigaOS 3.x on PiStorm (Raspberry Pi 4, V3D 4.2)
+# ogles2.library for AmigaOS 3.x on PiStorm
 
-OpenGL ES 2.0 for 68k AmigaOS, running on the Pi 4's GPU through PiStorm/Emu68, source-compatible
-with AmigaOS 4's `ogles2.library`. The development plan is
-`C:\- CPP\pistorm3d\OGLES2_DEVELOPMENT_PLAN.md` (outside this repository).
+OpenGL ES 2.0 for 68k AmigaOS, drawn by the Raspberry Pi 4's GPU (Broadcom V3D 4.2) through
+[PiStorm](https://github.com/captain-amygdala/pistorm) and
+[Emu68](https://github.com/michalsc/Emu68). The API is source-compatible with AmigaOS 4's
+`ogles2.library`: the GLES2 functions plus the `agl*` context calls.
 
-Status: milestone M0 (foundations), in progress.
+**Status: milestone M2 of 8 is complete** (see [the development plan](docs/DEVELOPMENT_PLAN.md),
+§9 for the milestones and §13 for the current state and next steps).
+
+- 129 of the 148 entry points are implemented. The 19 left are framebuffer objects (M5),
+  `glCopyTex(Sub)Image2D`, `glCompressedTex(Sub)Image2D` and `aglSetBitmap`.
+- Real programs run unmodified: es2gears and ten samples from the *OpenGL ES 2.0 Programming
+  Guide* match Mesa's reference images on a real A1200 (`tests/corpus`, 11 of 11).
+- **Shaders are compiled offline for now.** The library loads a program's compiled shaders
+  from a `.v3dp` file found by the hash of its GLSL sources. Compiling GLSL on the Amiga is
+  the next milestone (M3). A program whose `.v3dp` is missing fails to link and its sources
+  are written to `T:ogles2_missing_shaders.txt` for the offline compiler.
+- Not yet: framebuffer objects, native (non-RGBA8) texture formats, multisampling, depth and
+  stencil kept across a frame boundary. This is development software, not a release.
+
+## Requirements
+
+| | |
+|---|---|
+| Hardware | An Amiga with a PiStorm and a Raspberry Pi 4B or CM4 (the GPU is the Pi's) |
+| CPU emulation | Emu68 (tested: 1.1.0-beta.1) |
+| OS | AmigaOS 3.x with an RTG system (Picasso96 or CyberGraphX); tested on 3.2 |
+| Display | A 32-bit RTG screen (the library renders into 32-bit bitmaps) |
+
+## Using it in a program
+
+```c
+#include <proto/ogles2.h>        /* GL ES 2.0 and agl*, through the library */
+
+if (OGLES2Open()) {              /* libogles2.a: opens ogles2.library */
+    ULONG err;
+    void *ctx = aglCreateContextTags2(&err, OGLES2_CCT_DEPTH, 24, TAG_DONE);
+    aglMakeCurrent(ctx);
+    /* ... GLES2 calls, aglSwapBuffers() per frame ... */
+    aglDestroyContext(ctx);
+    OGLES2Close();
+}
+```
+
+Link with `libogles2.a` (GCC) or `ogles2.lib` (vbcc). With clib2 and `-m68881`, link maths
+with `-lm881`, not `-lm` (see [CONTRIBUTING.md](CONTRIBUTING.md#traps)). Without a window or
+screen tag the library opens its own window; `OGLES2_CCT_WINDOW`, `OGLES2_CCT_MODEID` and
+`OGLES2_CCT_BITMAP` render into yours (`include/libraries/ogles2.h`).
+
+**Shaders:** run the program once; the library appends each missing program's sources to
+`T:ogles2_missing_shaders.txt`. On the PC, `v3dp/split_shaders.py` splits that file,
+`v3dglslc` (`tools/v3dglslc`) compiles each pair to `.v3dp`, and `v3dp/v3dp_hashname.py`
+names the files by hash. Put them next to the program (`PROGDIR:`) or in `OGLES2Cache:`.
+
+**Logging:** the library logs to `T:ogles2.log`, or to the file named in `ENV:OGLES2/LogFile`;
+`OGLES2Log` (in `cmd/`) writes the buffered log while a program is still running.
+
+## Building
+
+Everything builds on Linux (Ubuntu 24.04; on Windows inside WSL). The m68k toolchains, Mesa
+(for the shader compiler) and the host tools are set up by the scripts in
+[`dev/host-setup/`](dev/host-setup/README.md); the toolchains are pinned to the commits
+ogles2 was tested with.
+
+```sh
+make -j8                                   # ~/ogles2-build/m68k: ogles2.library, libogles2.a, tests, OGLES2Log
+make amictl-test                           # host test of the remote test station (no Amiga needed)
+bash tests/a1200/build_package.sh m2-4     # an A1200 test package -> tests/a1200/out/ogles2-m2-4.lha
+bash tests/corpus/build_corpus.sh          # the corpus: Amiga and PC builds, reference images, .v3dp files
+
+# The shader compiler (needs the Mesa build with tools/v3dglslc/patches applied)
+python3 tools/v3dglslc/replay.py           # Mesa for 68k (GCC 16.2), ~900 files
+bash tools/v3dglslc/build_m68k.sh          # -> ~/ogles2-build/v3dglslc/v3dglslc
+bash tools/v3dglslc/build_host.sh          # -> ~/ogles2-build/v3dglslc/host/v3dglslc (the offline compiler)
+bash tools/v3dglslc/test/compare_v3dp.sh   # x86-64 and 68k .v3dp files must be identical
+```
+
+The library is built with GCC 6.5.0b (the compiler PiStorm3D is built with), the shader
+compiler with GCC 16.2 and software floating point. GCC 16.1 miscompiles and must not be used.
+
+## Testing
+
+Tests run on a real A1200, either by hand (copy a package from `tests/a1200/out/`, run its
+`Run-*` script, send back `results/`) or remotely through the test station in `tools/amictl`
+(a small server on the Amiga, reached over the LAN with a token and an address allow list).
+Each package's `ReadMe.txt` says what it does and what to look for. Results of every run so
+far are in `tests/a1200/results/`. [CONTRIBUTING.md](CONTRIBUTING.md) describes the workflow.
 
 ## Layout
 
 | Path | What |
 |---|---|
-| `ogles2/` | The library: resident tag and vectors (`library.c`), file log (`log.c`), contexts (`context.c`) |
+| `ogles2/` | The library: contexts, state, programs, uniforms, draws, textures, buffers, jobs, display |
+| `v3dcore/` | PiStorm3D's V3D layer (control lists, memory, textures, submission), see `v3dcore/PROVENANCE.md` |
 | `client/` | `libogles2.a`, the import library: `OGLES2Open/Close`, current context, `agl*` |
-| `include/` | Public headers: `libraries/ogles2.h`, `clib/ogles2_protos.h`; Khronos `GLES2/` and `KHR/` verbatim (registry `6af574a`, `db3425b`) |
-| `gen/` | `gen_ogles2.py`: dispatch table, client wrappers, `aglGetProcAddress` thunks, stubs and ABI test, from `khronos/gl.xml`, `api.txt`, `agl.txt` and the append-only `abi_order.txt` |
-| `cmd/` | `OGLES2Log`: writes the library's buffered log now |
-| `v3dp/` | The `.v3dp` program-binary format (`FORMAT.md`, frozen at 1.0), writer and independent reader |
-| `tools/v3dglslc/` | The GLSL compiler: Mesa's GL + V3D driver on a fake DRM device, built natively (offline compiler, S1) and for 68k (seed of the on-target compiler, S2); Mesa patches; tests |
-| `tests/` | `smoke/` (Amiga smoke test), `a1200/` (test packages for the A1200) |
-| `dev/host-setup/` | Build-machine setup: toolchains, Mesa, Emu68 |
+| `include/` | Public headers: `libraries/ogles2.h`, `clib/ogles2_protos.h`; Khronos `GLES2/` and `KHR/` |
+| `gen/` | `gen_ogles2.py`: dispatch table, client wrappers, `aglGetProcAddress` thunks, stubs and ABI test, from Khronos `gl.xml` and the append-only `abi_order.txt` |
+| `v3dp/` | The `.v3dp` program-binary format (`FORMAT.md`, frozen at 1.0), writer, reader, helpers |
+| `tools/v3dglslc/` | The GLSL compiler: Mesa's GL front end and V3D driver on a fake DRM device, built for the PC (offline compiler) and for 68k (the seed of M3's on-target compiler) |
+| `tools/amictl/` | The remote test station: `amictld` (Amiga server) and `amictl` (PC client) |
+| `tests/` | Unit and hardware tests, `a1200/` test packages and results, `corpus/` (real programs against reference images) |
+| `cmd/` | `OGLES2Log` |
+| `dev/` | Build-machine setup (`host-setup/`), the reference sources fetcher, the stream C spike (`spike-c/`: the compiler's feasibility study) |
+| `docs/` | The development plan |
 | `licences/` | Licence texts and third-party notices |
-
-## Building (WSL Ubuntu 24.04, toolchains from `dev/host-setup/`)
-
-```sh
-make -j8                                   # -> ~/ogles2-build/m68k: ogles2.library, libogles2.a, tests, OGLES2Log
-make vbcc                                  # vbcc clients: ogles2.lib, smoke and abi_probe built with vbcc (dev/host-setup/build_vbcc.sh)
-bash tests/a1200/build_package.sh m0-1     # -> tests/a1200/out/ogles2-m0-1.lha
-
-# Shader compiler (needs the host Mesa build with tools/v3dglslc/patches applied)
-python3 tools/v3dglslc/replay.py           # Mesa for 68k (GCC 16.2), ~900 files
-bash tools/v3dglslc/build_m68k.sh          # -> ~/ogles2-build/v3dglslc/v3dglslc
-bash tools/v3dglslc/build_host.sh          # -> ~/ogles2-build/v3dglslc/host/v3dglslc
-bash tools/v3dglslc/test/compare_v3dp.sh   # x86-64 and 68k .v3dp files must be identical
-```
-
-The library uses GCC 6.5.0b (the compiler PiStorm3D 29.1 is built with); the compiler code uses
-GCC 16.2 with software floating point. GCC 16.1 miscompiles and must not be used.
-
-The smoke test and the ABI probe also run on the PC under vamos, with the real library loaded
-(`NOGPU`: vamos has no V3D, so the context is state-only):
-`vamos -C 68040 -V work:<dir> -a libs:work:libs -a T:work:t -O ogles2.library=mode:amiga -- abi_probe NOGPU`.
-
-Clients can be built with GCC (`libogles2.a`) or vbcc (`ogles2.lib`, compile with `-c99`); the
-argument passing of both is verified against the GCC-built library (`tests/abi_probe`).
 
 ## Licence
 
 `ogles2.library` incorporates PiStorm3D's V3D backend (`v3dcore/`), which is under the Hyperion
-MiniGL Open Source License (`licences/License_MiniGL_Library.txt`): the library is for AmigaOS,
-and the source of all modifications is published to the Amiga developer community. Third-party
-code keeps its own licence and notices (`licences/License_V3D_ThirdParty.txt`; Khronos headers
-MIT, `gl.xml` Apache-2.0; Mesa MIT). The parts that incorporate no MiniGL code (`v3dp/`,
-`tools/v3dglslc/`, `gen/`) are MIT.
+MiniGL Open Source License ([`LICENSE`](LICENSE), `licences/License_MiniGL_Library.txt`): the
+library may only be built for AmigaOS, and the source of all modifications must be published
+to the Amiga developer community. The parts that incorporate no MiniGL code (`v3dp/`,
+`tools/v3dglslc/`, `tools/amictl/`, `gen/`, `tests/corpus/`) are MIT. Third-party code keeps
+its own licence and notices (`licences/License_V3D_ThirdParty.txt`; Khronos headers MIT,
+`gl.xml` Apache-2.0; Mesa MIT).
+
+## Credits
+
+PiStorm3D (`minigl.library` for PiStorm) by Steffen "MagicSN" Haeuser, whose V3D backend this
+library builds on; the V3D assembler and V3D documentation by Macoy Madson; Mesa's V3D driver
+and compiler (Broadcom, VMware and the Mesa contributors); Emu68 by Michal Schulz; PiStorm by
+Claude Schwarz and contributors; bebbo's amiga-gcc.

@@ -1,0 +1,25 @@
+/chosen/
+/chosen/linux,initrd-end: long = 0x2F000000 (788529152)
+/chosen/linux,initrd-start: long = 0x2EF80000 (788004864)
+/chosen/rng-seed: blob = 83 3E 0E 6D 38 A4 FE 2B B7 A0 CE 4A 66 1A 27 CB
+FE A9 77 8D 16 98 06 45 FD F5 13 DB AC EC 57 17
+A7 17 5E D1 EF 3F FE DA FB 5C 32 3D 60 34 65 C2
+56 BC DC 4F B5 30 62 8F 21 16 C6 4E 4A 49 B8 E4
+/chosen/kaslr-seed: quad = 0x811568A489BFA16A
+/chosen/os_prefix: blob = 00
+/chosen/overlay_prefix: string = overlays/
+/chosen/rpi-boardrev-ext: long = 0x00000000 (0)
+/chosen/rpi-serial64: string = a50c5bf9b090a2e2
+/chosen/log: quad = 0x3FF800000007FFE0
+/chosen/stdout-path: string = serial0:115200n8
+/chosen/bootargs: string = coherent_pool=1M 8250.nr_uarts=0 snd_bcm2835.enable_headphones=0 cgroup_disable=memory numa_policy=interleave nvme.max_host_mem_size_mb=0 bcm2708_fb.fbwidth=1920 bcm2708_fb.fbheight=1080 bcm2708_fb.fbswap=1 smsc95xx.macaddr=E4:5F:01:11:E1:AB vc_mem.mem_base=0x3ec00000 vc_mem.mem_size=0x40000000  logo=purple vc4.mem=16 sd.low_speed sd.unit0=rw emmc.unit0=rw enable_c0_slow dbf_slowdown
+/chosen/phandle: long = 0x00000054 (84)
+/chosen/bootloader/
+/chosen/bootloader/boot-mode: long = 0x00000001 (1)
+/chosen/bootloader/version: string = 8ba17717fbcedd4c3b6d4bce7e50c7af4155cba9
+/chosen/bootloader/capabilities: long = 0x0000007F (127)
+/chosen/bootloader/update-timestamp: long = 0x63C81FD8 (1674059736)
+/chosen/bootloader/build-timestamp: long = 0x63BEF4A4 (1673458852)
+/chosen/bootloader/tryboot: long = 0x00000000 (0)
+/chosen/bootloader/rsts: long = 0x00000020 (32)
+/chosen/bootloader/partition: long = 0x00000000 (0)

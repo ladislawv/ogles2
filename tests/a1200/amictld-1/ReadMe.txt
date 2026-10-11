@@ -3,10 +3,10 @@ amictld - the remote test station
 
 What this is
 ------------
-A small server that lets the development PC (192.168.1.32) send test
-programs to this Amiga, run them, and fetch their results, logs and
-screenshots over the network, so you no longer have to copy packages and
-send results back by hand.
+A small server that lets the development PC (the address in
+amictld.allow) send test programs to this Amiga, run them, and fetch
+their results, logs and screenshots over the network, so you no longer
+have to copy packages and send results back by hand.
 
 It only accepts connections from the address in amictld.allow, and only
 with the secret in amictld.token. Every command it receives is written to
@@ -38,10 +38,10 @@ If something is wrong
 ---------------------
 - Look at Stuff:amictld/amictld.log: it records each start, each
   connection (refused ones too) and each command.
-- If the PC's address ever changes (192.168.1.32 now), the server refuses
-  it: put the new address into amictld.allow, one address per line, and
-  restart the server (or reboot). A fixed address for the PC in your
-  router avoids this.
+- If the PC's address ever changes, the server refuses it: put the new
+  address into amictld.allow, one address per line, and restart the
+  server (or reboot). A fixed address for the PC in your router avoids
+  this.
 
 Uninstall
 ---------

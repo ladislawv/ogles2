@@ -1,6 +1,6 @@
 #!/bin/bash
 # Builds Emu68 for PiStorm (Pi 4) from source: the base for the shader-compiler worker
-# (OGLES2_DEVELOPMENT_PLAN.md §8.4). Run inside WSL as the normal user.
+# (docs/DEVELOPMENT_PLAN.md §8.4). Run inside WSL as the normal user.
 # Packages (once, as root):
 #   apt-get install cmake device-tree-compiler gcc-14-aarch64-linux-gnu g++-14-aarch64-linux-gnu \
 #     gcc-14-powerpc-linux-gnu g++-14-powerpc-linux-gnu qemu-user

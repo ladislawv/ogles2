@@ -5,3 +5,13 @@ __pycache__/
 /out/
 tests/a1200/out/
 tools/amictl/station.local
+
+# reference sources (dev/fetch_external.sh)
+/external/
+# CI and local scratch builds
+/build/
+/mesa/
+# screenshots of the test machine's screen (amictl --shots, photos of requesters): kept local
+tests/a1200/results/**/shots/
+tests/a1200/results/**/*.png
+tests/a1200/results/**/*.jpg

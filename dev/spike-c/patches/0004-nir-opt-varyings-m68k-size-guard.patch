@@ -1,0 +1,15 @@
+diff --git a/src/compiler/nir/nir_opt_varyings.c b/src/compiler/nir/nir_opt_varyings.c
+index cc477fdd2eb..de8f4767926 100644
+--- a/src/compiler/nir/nir_opt_varyings.c
++++ b/src/compiler/nir/nir_opt_varyings.c
+@@ -3205,8 +3205,10 @@ print_dedup_entry(const char *place, struct set *set, dedup_entry *entry)
+  * over the full struct are correct and efficient.
+  * If this assert fires, audit all nir_scalar assignments below.
+  */
++#if !defined(__m68k__) /* m68k aligns 32-bit fields to 2 bytes: less padding, same invariant */
+ static_assert(sizeof(dedup_entry) == (sizeof(void *) == 8 ? 48 : 28),
+               "dedup_entry layout changed");
++#endif
+ 
+ static uint32_t
+ dedup_entry_hash_accum(const void *key, uint32_t hash)

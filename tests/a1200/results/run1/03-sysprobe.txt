@@ -1,0 +1,15 @@
+sysprobe 1 (Oct  9 2026 21:09:41)
+exec.library 47.13, AttnFlags 0x807f
+free: fast 1916028472, chip 1983304, largest fast block 954204128
+memory regions (5):
+  0x08000020..0x3c9fffff free  843860352 pri   40 "expansion memory" PUBLIC FAST LOCAL KICK
+  0x01000020..0x07ffffff free  117440480 pri   40 "expansion memory" PUBLIC FAST LOCAL KICK
+  0x41000020..0x79dfffff free  954204128 pri   40 "expansion memory" PUBLIC FAST LOCAL KICK
+  0x00c00020..0x00c7ffff free     523512 pri   -5 "memory" PUBLIC FAST LOCAL 24BITDMA KICK
+  0x00001020..0x001fffff free    1983304 pri  -10 "chip memory" PUBLIC CHIP LOCAL 24BITDMA KICK
+1 MB test allocations:
+  MEMF_FAST                -> 0x0a646334..0x0a746333
+  MEMF_PUBLIC|MEMF_REVERSE -> 0x3c8ff8f4..0x3c9ff8f3
+  MEMF_ANY                 -> 0x0a646334..0x0a746333
+  MEMF_CHIP                -> 0x0001be34..0x0011be33
+sent 66 lines (about 4 KB) through KPrintF

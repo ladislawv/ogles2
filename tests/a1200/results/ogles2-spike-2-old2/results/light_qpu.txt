@@ -1,0 +1,209 @@
+v3dc: renderer V3D 4.2.14.0
+v3dc: ==== program light.vert + light.frag
+v3dc: compile light.vert: ok
+v3dc: compile light.frag: ok
+MESA: info: MESA_SHADER_VERTEX prog 0/1 QPU:
+MESA: info: 0x3d81b186bb800000 nop                           ; nop                         ; ldunifrf.rf6 (0x00000000 / 0.000000)
+MESA: info: 0x3c403186bb800000 nop                           ; nop                         ; ldunif (0x00000003 / 0.000000)
+MESA: info: 0x3c402187bc805000 ldvpmv_in rf7, r5             ; nop                         ; ldunif (0x00000004 / 0.000000)
+MESA: info: 0x3c402188bc805000 ldvpmv_in rf8, r5             ; nop                         ; ldunif (0x00000005 / 0.000000)
+MESA: info: 0x3c402189bc805000 ldvpmv_in rf9, r5             ; nop                         ; ldunif (push[16])
+MESA: info: 0x55901286bbd401c0 nop                           ; fmul rf10, r5, rf7          ; ldunifrf.r0 (push[17])
+MESA: info: 0x55907086bbc001c0 nop                           ; fmul r2, r0, rf7            ; ldunifrf.r1 (push[18])
+MESA: info: 0x559130c6bbc401c0 nop                           ; fmul r3, r1, rf7            ; ldunifrf.r4 (push[20])
+MESA: info: 0x55903106bbd00200 nop                           ; fmul r4, r4, rf8            ; ldunifrf.r0 (push[21])
+MESA: info: 0x55907006bbc00200 nop                           ; fmul r0, r0, rf8            ; ldunifrf.r1 (push[22])
+MESA: info: 0x5440304005c50200 fadd r0, r0, r2               ; fmul r1, r1, rf8            ; ldunif (push[24])
+MESA: info: 0x5582f08105d59240 fadd r1, r1, r3               ; fmul r2, r5, rf9            ; ldunifrf.rf11 (push[25])
+MESA: info: 0x3d83318305834280 fadd r3, r4, rf10             ; nop                         ; ldunifrf.rf12 (push[26])
+MESA: info: 0x55845346bbf802c9 nop                           ; fmul rf13, rf11, rf9        ; ldunifrf.rf17 (push[60])
+MESA: info: 0x55855386bbf80309 nop                           ; fmul rf14, rf12, rf9        ; ldunifrf.rf21 (0x3e800000 / 0.250000)
+MESA: info: 0x3c00318405830340 fadd r4, r0, rf13             ; nop
+MESA: info: 0x3c00318005831380 fadd r0, r1, rf14             ; nop
+MESA: info: 0x540030c10501a000 fadd r1, r2, r3               ; fmul r3, r0, r0
+MESA: info: 0x5400f08678937191 min.pushc -, rf17, rf6        ; fmul r2, r4, r4
+MESA: info: 0x540013c20525a000 fadd r2, r2, r3               ; fmul rf15, r1, r1
+MESA: info: 0x3c003183058323c0 fadd r3, r2, rf15             ; nop
+MESA: info: 0x3c002190bc81b000 rsqrt rf16, r3                ; nop
+MESA: info: 0x020001a50020d000 bu.anynap  416, r:unif (0x00000074 / 0.000000)
+MESA: info: 0x54001486bbc40400 nop                           ; fmul rf18, r1, rf16
+MESA: info: 0x540014c6bbd00400 nop                           ; fmul rf19, r4, rf16
+MESA: info: 0x54001506bbc00400 nop                           ; fmul rf20, r0, rf16
+MESA: info: 0x3c403186bb800000 nop                           ; nop                         ; ldunif (push[28])
+MESA: info: 0x559130c6bbb80480 nop                           ; fmul r3, rf18, r5           ; ldunifrf.r4 (push[29])
+MESA: info: 0x55903086bb9804c0 nop                           ; fmul r2, rf19, r4           ; ldunifrf.r0 (push[30])
+MESA: info: 0x54403046bb180500 nop                           ; fmul r1, rf20, r0           ; ldunif (push[44])
+MESA: info: 0x3d90b18405811000 fadd r4, r1, r2               ; nop                         ; ldunifrf.r2 (push[45])
+MESA: info: 0x3d90f18005823000 fadd r0, r3, r4               ; nop                         ; ldunifrf.r3 (push[46])
+MESA: info: 0x3c00318185806180 fmax r1, rf6, r0              ; nop
+MESA: info: 0x54403106bb340000 nop                           ; fmul r4, r5, r1             ; ldunif (0x00000001 / 0.000000)
+MESA: info: 0x5400f006782ae440 min.pushc -, rf17, r5         ; fmul r0, r2, r1
+MESA: info: 0x0200011d0020d000 bu.anynap  280, r:unif (0x00000050 / 0.000000)
+MESA: info: 0x54002043052f4540 fadd rf3, r4, rf21            ; fmul r1, r3, r1
+MESA: info: 0x3c00218405830540 fadd rf4, r0, rf21            ; nop
+MESA: info: 0x3c00218505831540 fadd rf5, r1, rf21            ; nop
+MESA: info: 0x3c403186bb800000 nop                           ; nop                         ; ldunif (push[32])
+MESA: info: 0x5590b046bbb80480 nop                           ; fmul r1, rf18, r5           ; ldunifrf.r2 (push[33])
+MESA: info: 0x5590f006bb5804c0 nop                           ; fmul r0, rf19, r2           ; ldunifrf.r3 (push[34])
+MESA: info: 0x54403106bb780500 nop                           ; fmul r4, rf20, r3           ; ldunif (push[36])
+MESA: info: 0x5590b00405ba0480 fadd r4, r0, r4               ; fmul r0, rf18, r5           ; ldunifrf.r2 (push[37])
+MESA: info: 0x5590f084055a14c0 fadd r4, r1, r4               ; fmul r2, rf19, r2           ; ldunifrf.r3 (push[38])
+MESA: info: 0x544030c4857e6194 fmax r4, rf6, r4              ; fmul r3, rf20, r3           ; ldunif (push[40])
+MESA: info: 0x5590f04205b9a480 fadd r2, r2, r3               ; fmul r1, rf18, r5           ; ldunifrf.r3 (push[41])
+MESA: info: 0x5585b0c2057904c0 fadd r2, r0, r2               ; fmul r3, rf19, r3           ; ldunifrf.rf22 (push[42])
+MESA: info: 0x544015c6bbf80516 nop                           ; fmul rf23, rf20, rf22       ; ldunif (push[48])
+MESA: info: 0x5590960085956180 fmax r0, rf6, r2              ; fmul rf24, r5, r4           ; ldunifrf.r2 (push[49])
+MESA: info: 0x54003083058b35c0 fadd r3, r3, rf23             ; fmul r2, r2, r4
+MESA: info: 0x3d90f18105819000 fadd r1, r1, r3               ; nop                         ; ldunifrf.r3 (push[50])
+MESA: info: 0x544020dc058f2100 fadd rf28, r2, rf4            ; fmul r3, r3, r4             ; ldunif (push[52])
+MESA: info: 0x5591069d05173140 fadd rf29, r3, rf5            ; fmul rf26, r5, r0           ; ldunifrf.r4 (push[53])
+MESA: info: 0x558671018510e180 fmax r1, rf6, r1              ; fmul r4, r4, r0             ; ldunifrf.rf25 (push[54])
+MESA: info: 0x3c40219b0583e0d8 fadd rf27, rf3, rf24          ; nop                         ; ldunif (push[56])
+MESA: info: 0x5590b004051bc65c fadd r4, r4, rf28             ; fmul r0, rf25, r0           ; ldunifrf.r2 (push[57])
+MESA: info: 0x5590d78005370740 fadd r0, r0, rf29             ; fmul rf30, r5, r1           ; ldunifrf.r3 (push[58])
+MESA: info: 0x54403086bb280000 nop                           ; fmul r2, r2, r1             ; ldunif (0x00000003 / 0.000000)
+MESA: info: 0x540030c1052fe69b fadd r1, rf26, rf27           ; fmul r3, r3, r1
+MESA: info: 0x3c00318205822000 fadd r2, r2, r4               ; nop
+MESA: info: 0x3c40f1867882e440 min.pushc -, rf17, r5         ; nop                         ; ldunif (0x00000002 / 0.000000)
+MESA: info: 0x3c0c310305e98000 fadd r3, r0, r3               ; mov.ifa r4, r2
+MESA: info: 0x3c0c201f05ef1780 fadd rf31, r1, rf30           ; mov.ifa r0, r3
+MESA: info: 0x3c0cf04678fee45f min.pushc -, rf17, r5         ; mov.ifa r1, rf31
+MESA: info: 0x3c0030c6bbf80700 nop                           ; mov r3, rf28
+MESA: info: 0x3c0c30c6bbf00000 nop                           ; mov.ifa r3, r4
+MESA: info: 0x3c003086bbf806c0 nop                           ; mov r2, rf27
+MESA: info: 0x3c003106bbf80740 nop                           ; mov r4, rf29
+MESA: info: 0x3c0c3086bbe40000 nop                           ; mov.ifa r2, r1
+MESA: info: 0x3c0c3106bbe00000 nop                           ; mov.ifa r4, r0
+MESA: info: 0x3c001106bbec0000 nop                           ; mov rf4, r3
+MESA: info: 0x3c0010c6bbe80000 nop                           ; mov rf3, r2
+MESA: info: 0x3c001146bbf00000 nop                           ; mov rf5, r4
+MESA: info: 0x020000180000d000 bu  24, r:unif (0x00000000 / 0.000000)
+MESA: info: 0x3c003186bb800000 nop                           ; nop
+MESA: info: 0x3c003186bb800000 nop                           ; nop
+MESA: info: 0x3c003186bb800000 nop                           ; nop
+MESA: info: 0x3c001146bbf80540 nop                           ; mov rf5, rf21
+MESA: info: 0x3c001106bbf80540 nop                           ; mov rf4, rf21
+MESA: info: 0x3c0010c6bbf80540 nop                           ; mov rf3, rf21
+MESA: info: 0x3c403180858370c6 fmax r0, rf6, rf3             ; nop                         ; ldunif (0x00000000 / 0.000000)
+MESA: info: 0x3c402180bc805000 ldvpmv_in rf0, r5             ; nop                         ; ldunif (0x00000001 / 0.000000)
+MESA: info: 0x3c402181bc805000 ldvpmv_in rf1, r5             ; nop                         ; ldunif (0x00000002 / 0.000000)
+MESA: info: 0x3c402182bc805000 ldvpmv_in rf2, r5             ; nop                         ; ldunif (push[0])
+MESA: info: 0x55907106bbd40000 nop                           ; fmul r4, r5, rf0            ; ldunifrf.r1 (push[1])
+MESA: info: 0x3d90a19285837146 fmax rf18, rf6, rf5           ; nop                         ; ldunifrf.r2 (push[2])
+MESA: info: 0x5590f046bbc40000 nop                           ; fmul r1, r1, rf0            ; ldunifrf.r3 (push[3])
+MESA: info: 0x544030c6bbcc0000 nop                           ; fmul r3, r3, rf0            ; ldunif (push[4])
+MESA: info: 0x5580d246bbd40040 nop                           ; fmul rf9, r5, rf1           ; ldunifrf.rf3 (push[5])
+MESA: info: 0x5581e08b05cbc009 fadd rf11, r4, rf9            ; fmul r2, r2, rf0            ; ldunifrf.rf7 (push[6])
+MESA: info: 0x558214c6bbdc0047 nop                           ; fmul rf19, rf7, rf1         ; ldunifrf.rf8 (push[7])
+MESA: info: 0x55831286bbdc0048 nop                           ; fmul rf10, rf8, rf1         ; ldunifrf.rf12 (0x3f800000 / 1.000000)
+MESA: info: 0x3c40318485830300 fmin r4, r0, rf12             ; nop                         ; ldunif (0x00000008 / 0.000000)
+MESA: info: 0x54402100f8de5043 stvpmv r5, r4                 ; fmul r4, rf3, rf1           ; ldunif (push[8])
+MESA: info: 0x3d83718085837106 fmax r0, rf6, rf4             ; nop                         ; ldunifrf.rf13 (push[9])
+MESA: info: 0x5583940085d7808c fmin r0, r0, rf12             ; fmul rf16, r5, rf2          ; ldunifrf.rf14 (push[10])
+MESA: info: 0x3d83f18305833280 fadd r3, r3, rf10             ; nop                         ; ldunifrf.rf15 (push[11])
+MESA: info: 0x5440144105de108f fadd r1, r1, r4               ; fmul rf17, rf15, rf2        ; ldunif (0x00000009 / 0.000000)
+MESA: info: 0x54400500f8dc508d stvpmv r5, r0                 ; fmul rf20, rf13, rf2        ; ldunif (vp_x_scale)
+MESA: info: 0x3d85b18305833440 fadd r3, r3, rf17             ; nop                         ; ldunifrf.rf22 (push[12])
+MESA: info: 0x3d85f1808583e312 fmin r0, rf12, rf18           ; nop                         ; ldunifrf.rf23 (push[13])
+MESA: info: 0x3d8631840583e2d0 fadd r4, rf11, rf16           ; nop                         ; ldunifrf.rf24 (push[14])
+MESA: info: 0x3d86718105831500 fadd r1, r1, rf20             ; nop                         ; ldunifrf.rf25 (push[15])
+MESA: info: 0x3d90e19a05833640 fadd rf26, r3, rf25           ; nop                         ; ldunifrf.r3 (0x0000000a / 0.000000)
+MESA: info: 0x55900540f8dc308e stvpmv r3, r0                 ; fmul rf21, rf14, rf2        ; ldunifrf.r0 (vp_y_scale)
+MESA: info: 0x3c00318405834580 fadd r4, r4, rf22             ; nop
+MESA: info: 0x5440304305b315c0 fadd r3, r1, rf23             ; fmul r1, r4, r5             ; ldunif (0x00000004 / 0.000000)
+MESA: info: 0x3c00219bba82e680 recip rf27, rf26              ; nop
+MESA: info: 0x54402100f80e5000 stvpmv r5, r4                 ; fmul r4, r3, r0             ; ldunif (0x00000005 / 0.000000)
+MESA: info: 0x5400300205e724db fadd r2, r2, rf19             ; fmul r0, r1, rf27
+MESA: info: 0x54402040f8d1d6c0 stvpmv r5, r3                 ; fmul r1, r4, rf27           ; ldunif (vp_z_scale)
+MESA: info: 0x3d91318205832540 fadd r2, r2, rf21             ; nop                         ; ldunifrf.r4 (0x00000006 / 0.000000)
+MESA: info: 0x3c003183f6800000 ffloor r3, r0                 ; nop
+MESA: info: 0x3c00318205832600 fadd r2, r2, rf24             ; nop
+MESA: info: 0x54402000f8a94000 stvpmv r4, r2                 ; fmul r0, r2, r5             ; ldunif (0x00000007 / 0.000000)
+MESA: info: 0x3c003181f6801000 ffloor r1, r1                 ; nop
+MESA: info: 0x540030c2f5c3b6c0 ftoiz r2, r3                  ; fmul r3, r0, rf27
+MESA: info: 0x3c402180f8835680 stvpmv r5, rf26               ; nop                         ; ldunif (vp_z_offset)
+MESA: info: 0x3d903184f5839000 ftoiz r4, r1                  ; nop                         ; ldunifrf.r0 (0x00000000 / 0.000000)
+MESA: info: 0x3c4031810582b000 fadd r1, r3, r5               ; nop                         ; ldunif (0x00000001 / 0.000000)
+MESA: info: 0x3c002180f8810000 stvpmv r0, r2                 ; nop
+MESA: info: 0x3c402180f8825000 stvpmv r5, r4                 ; nop                         ; ldunif (0x00000002 / 0.000000)
+MESA: info: 0x3c402180f880d000 stvpmv r5, r1                 ; nop                         ; ldunif (0x00000003 / 0.000000)
+MESA: info: 0x3c002180f88356c0 stvpmv r5, rf27               ; nop
+MESA: info: 0x3c003186bb816000 vpmwt -                       ; nop
+MESA: info: 0x3c203186bb800000 nop                           ; nop                         ; thrsw
+MESA: info: 0x3c003186bb800000 nop                           ; nop
+MESA: info: 0x3c003186bb800000 nop                           ; nop
+MESA: info: 
+MESA: info: SHADER-DB-GLSL3 - MESA_SHADER_VERTEX shader: 129 inst, 4 threads, 0 loops, 80 uniforms, 16 max-temps, 0:0 spills:fills, 1 sfu-stalls, 130 inst-and-stalls, 5 nops
+MESA: info: MESA_SHADER_VERTEX_BIN prog 0/2 QPU:
+MESA: info: 0x3c403186bb800000 nop                           ; nop                         ; ldunif (0x00000000 / 0.000000)
+MESA: info: 0x3c402183bc805000 ldvpmv_in rf3, r5             ; nop                         ; ldunif (0x00000001 / 0.000000)
+MESA: info: 0x3c402184bc805000 ldvpmv_in rf4, r5             ; nop                         ; ldunif (0x00000002 / 0.000000)
+MESA: info: 0x3c402185bc805000 ldvpmv_in rf5, r5             ; nop                         ; ldunif (push[0])
+MESA: info: 0x559030c6bbd400c0 nop                           ; fmul r3, r5, rf3            ; ldunifrf.r0 (push[1])
+MESA: info: 0x55907006bbc000c0 nop                           ; fmul r0, r0, rf3            ; ldunifrf.r1 (push[2])
+MESA: info: 0x5590b046bbc400c0 nop                           ; fmul r1, r1, rf3            ; ldunifrf.r2 (push[3])
+MESA: info: 0x54403086bbc800c0 nop                           ; fmul r2, r2, rf3            ; ldunif (push[4])
+MESA: info: 0x55911206bbd40100 nop                           ; fmul rf8, r5, rf4           ; ldunifrf.r4 (push[5])
+MESA: info: 0x5581b10305d3b108 fadd r3, r3, rf8              ; fmul r4, r4, rf4            ; ldunifrf.rf6 (push[6])
+MESA: info: 0x5581d34405de0106 fadd r4, r0, r4               ; fmul rf13, rf6, rf4         ; ldunifrf.rf7 (push[7])
+MESA: info: 0x3c40318105831340 fadd r1, r1, rf13             ; nop                         ; ldunif (push[8])
+MESA: info: 0x55825306bbd40140 nop                           ; fmul rf12, r5, rf5          ; ldunifrf.rf9 (push[9])
+MESA: info: 0x3d82b18005833300 fadd r0, r3, rf12             ; nop                         ; ldunifrf.rf10 (push[10])
+MESA: info: 0x5582d386bbdc0149 nop                           ; fmul rf14, rf9, rf5         ; ldunifrf.rf11 (push[11])
+MESA: info: 0x544030c6bbdc0107 nop                           ; fmul r3, rf7, rf4           ; ldunif (push[12])
+MESA: info: 0x558403d305de814a fadd rf19, r0, r5             ; fmul rf15, rf10, rf5        ; ldunifrf.rf16 (push[13])
+MESA: info: 0x3d84718405834380 fadd r4, r4, rf14             ; nop                         ; ldunifrf.rf17 (push[14])
+MESA: info: 0x5584b00205dda14b fadd r2, r2, r3               ; fmul r0, rf11, rf5          ; ldunifrf.rf18 (push[15])
+MESA: info: 0x3c40219405834400 fadd rf20, r4, rf16           ; nop                         ; ldunif (0x00000006 / 0.000000)
+MESA: info: 0x3c402180f88354c0 stvpmv r5, rf19               ; nop                         ; ldunif (0x00000007 / 0.000000)
+MESA: info: 0x3c003183058313c0 fadd r3, r1, rf15             ; nop
+MESA: info: 0x3c402180f8835500 stvpmv r5, rf20               ; nop                         ; ldunif (0x00000008 / 0.000000)
+MESA: info: 0x3c00219505833440 fadd rf21, r3, rf17           ; nop
+MESA: info: 0x3c402180f8835540 stvpmv r5, rf21               ; nop                         ; ldunif (vp_x_scale)
+MESA: info: 0x5590304405b904c0 fadd r4, r0, r2               ; fmul r1, rf19, r5           ; ldunifrf.r0 (0x00000009 / 0.000000)
+MESA: info: 0x3c40219605834480 fadd rf22, r4, rf18           ; nop                         ; ldunif (vp_y_scale)
+MESA: info: 0x5590a100f8bb8516 stvpmv r0, rf22               ; fmul r4, rf20, r5           ; ldunifrf.r2 (0x00000000 / 0.000000)
+MESA: info: 0x3c402180f88324c0 stvpmv r2, rf19               ; nop                         ; ldunif (0x00000001 / 0.000000)
+MESA: info: 0x3c402180f8835500 stvpmv r5, rf20               ; nop                         ; ldunif (0x00000002 / 0.000000)
+MESA: info: 0x3c002197ba82e580 recip rf23, rf22              ; nop
+MESA: info: 0x3c402180f8835540 stvpmv r5, rf21               ; nop                         ; ldunif (0x00000003 / 0.000000)
+MESA: info: 0x544020c0f8e75597 stvpmv r5, rf22               ; fmul r3, r1, rf23           ; ldunif (0x00000004 / 0.000000)
+MESA: info: 0x54003040f6d035c0 ffloor r0, r3                 ; fmul r1, r4, rf23
+MESA: info: 0x3c003182f5838000 ftoiz r2, r0                  ; nop
+MESA: info: 0x3c003183f6801000 ffloor r3, r1                 ; nop
+MESA: info: 0x3c402180f8815000 stvpmv r5, r2                 ; nop                         ; ldunif (0x00000005 / 0.000000)
+MESA: info: 0x3c003184f583b000 ftoiz r4, r3                  ; nop
+MESA: info: 0x3c002180f8825000 stvpmv r5, r4                 ; nop
+MESA: info: 0x3c003186bb816000 vpmwt -                       ; nop
+MESA: info: 0x3c203186bb800000 nop                           ; nop                         ; thrsw
+MESA: info: 0x3c003186bb800000 nop                           ; nop
+MESA: info: 0x3c003186bb800000 nop                           ; nop
+MESA: info: 
+MESA: info: SHADER-DB-GLSL3 - MESA_SHADER_VERTEX_BIN shader: 43 inst, 4 threads, 0 loops, 31 uniforms, 15 max-temps, 0:0 spills:fills, 0 sfu-stalls, 43 inst-and-stalls, 2 nops
+MESA: info: MESA_SHADER_FRAGMENT prog 1/1 QPU:
+MESA: info: 0x3d103186bb800000 nop                           ; nop                         ; ldvary.r0
+MESA: info: 0x5510b046bbc00000 nop                           ; fmul r1, r0, rf0            ; ldvary.r2
+MESA: info: 0x553120c305ca9000 fadd rf3, r1, r5              ; fmul r3, r2, rf0            ; thrsw; ldvary.r4
+MESA: info: 0x5420200405d2b000 fadd rf4, r3, r5              ; fmul r0, r4, rf0            ; thrsw
+MESA: info: 0x3c00218505828000 fadd rf5, r0, r5              ; nop
+MESA: info: 0x3c0031873583e0c4 vfpack tlb, rf3, rf4          ; nop
+MESA: info: 0x3de031873583e168 vfpack tlb, rf5, 0x3f800000   ; nop
+MESA: info: 0x3c0031883583e0c4 vfpack tlbu, rf3, rf4         ; nop (0xfffffff7 / NaN)
+MESA: info: 0x3de031873583e168 vfpack tlb, rf5, 0x3f800000   ; nop
+MESA: info: 0x3c0031883583e0c4 vfpack tlbu, rf3, rf4         ; nop (0xffffffef / NaN)
+MESA: info: 0x3de031873583e168 vfpack tlb, rf5, 0x3f800000   ; nop
+MESA: info: 0x3c0031883583e0c4 vfpack tlbu, rf3, rf4         ; nop (0xffffffe7 / NaN)
+MESA: info: 0x3de031873583e168 vfpack tlb, rf5, 0x3f800000   ; nop
+MESA: info: 0x3c0031883583e0c4 vfpack tlbu, rf3, rf4         ; nop (0xffffffdf / NaN)
+MESA: info: 0x3de031873583e168 vfpack tlb, rf5, 0x3f800000   ; nop
+MESA: info: 0x3c0031883583e0c4 vfpack tlbu, rf3, rf4         ; nop (0xffffffd7 / NaN)
+MESA: info: 0x3de031873583e168 vfpack tlb, rf5, 0x3f800000   ; nop
+MESA: info: 0x3c0031883583e0c4 vfpack tlbu, rf3, rf4         ; nop (0xffffffcf / NaN)
+MESA: info: 0x3de031873583e168 vfpack tlb, rf5, 0x3f800000   ; nop
+MESA: info: 0x3c2031883583e0c4 vfpack tlbu, rf3, rf4         ; nop                         ; thrsw (0xffffffc7 / NaN)
+MESA: info: 0x3de031873583e168 vfpack tlb, rf5, 0x3f800000   ; nop
+MESA: info: 0x3c003186bb800000 nop                           ; nop
+MESA: info: 
+MESA: info: SHADER-DB-GLSL3 - MESA_SHADER_FRAGMENT shader: 22 inst, 4 threads, 0 loops, 7 uniforms, 4 max-temps, 0:0 spills:fills, 0 sfu-stalls, 22 inst-and-stalls, 1 nops
+v3dc: link: ok
+v3dc: done, 0 program(s) failed

@@ -1,0 +1,20 @@
+# The commits build_toolchains.sh checks out (PINNED=1, the default): the
+# toolchains ogles2 was built and tested with on 2026-10-09/10. Lines:
+#   <target> <project> <commit>
+# target: gcc6, gcc162 or "all"; project: "amiga-gcc" (bebbo's build system)
+# or a directory under its projects/. After updating a toolchain on purpose
+# (PINNED=0), run tools/v3dglslc/scan_asm.sh (GCC 16) and the fintrz check
+# (make: tools/check_fpconv.py), then record the new commits here.
+all    amiga-gcc        6a2b3fb329e98273af88721110a0f6d393057917
+all    amiga-netinclude 48b0f9ab4cc6d10b2f5c035d556a2169bdbe6875
+all    aros-stuff       c0a06b4ccd13f52d1518540aa88a450d70581458
+all    binutils         9c09d7d33c8ecd54cc6b0f49d8c05feb4160ce55
+all    fd2pragma        8c0f352c348a3252f84170eab737919372562e82
+all    fd2sfd           7b73220f99b9bbb94152e8bd673f0f134ad90e11
+all    libnix           61726a7158906ce70f1ffff5a00cdc820f198d86
+all    newlib-cygwin    998257d551c8b701f79de2a53579fbffbb08cd50
+all    sfdc             db0b1d86c7152ec919fdd119bad707aa04a7f775
+all    vasm             bb048d9d3cf54d5e38c643182a0ff55b552f65be
+gcc6   gcc              eb241170d15d06ed7662ad53bf371f717f28e980
+gcc6   clib2            c02665938f32edcf3c4c921e2e9582ff45773475
+gcc162 gcc              134541b36861c551aa9b37ec80a3e57ac1382328

@@ -1,0 +1,59 @@
+; Run-M0 - first ogles2.library test on the A1200. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M0
+; Nothing is installed: libs/ is added to LIBS: for the run and removed
+; again at the end. Output goes to results/.
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m0-1 directory first,"
+  Echo "then run:  Execute Run-M0"
+  Quit 20
+EndIf
+
+Assign M0RUN: ""
+If NOT EXISTS M0RUN:results
+  MakeDir M0RUN:results
+EndIf
+Echo "ogles2 M0 run 1" >M0RUN:results/00-progress.txt
+Date >>M0RUN:results/00-progress.txt
+Version >M0RUN:results/01-system.txt
+Avail >>M0RUN:results/01-system.txt
+
+; Use this directory's library for the run, and log into results/.
+Assign LIBS: M0RUN:libs ADD
+SetEnv OGLES2/LogFile M0RUN:results/ogles2.log
+
+Echo "Step 1 of 4: dispatch table layout"
+M0RUN:bin/abi_layout >M0RUN:results/abi_layout.txt
+Echo "step 1 done" >>M0RUN:results/00-progress.txt
+
+Echo "Step 2 of 4: smoke test (library loads here)"
+Echo "== before step 2" >M0RUN:results/memory.txt
+Avail FAST >>M0RUN:results/memory.txt
+M0RUN:bin/smoke >M0RUN:results/smoke_1.txt
+Echo "step 2 done" >>M0RUN:results/00-progress.txt
+
+Echo "Step 3 of 4: smoke test again (library already in memory), then OGLES2Log"
+M0RUN:bin/smoke >M0RUN:results/smoke_2.txt
+M0RUN:bin/OGLES2Log >M0RUN:results/ogles2log.txt
+Echo "== after step 3" >>M0RUN:results/memory.txt
+Avail FAST >>M0RUN:results/memory.txt
+Echo "step 3 done" >>M0RUN:results/00-progress.txt
+
+Echo "Step 4 of 4: remove the library from memory"
+Avail FLUSH >NIL:
+Echo "== after Avail FLUSH" >>M0RUN:results/memory.txt
+Avail FAST >>M0RUN:results/memory.txt
+Echo "step 4 done" >>M0RUN:results/00-progress.txt
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M0RUN:libs REMOVE
+If NOT EXISTS M0RUN:results/notes.txt
+  Copy M0RUN:notes-template.txt M0RUN:results/notes.txt
+EndIf
+List M0RUN:results >M0RUN:results/99-files.txt
+Echo "finished" >>M0RUN:results/00-progress.txt
+Date >>M0RUN:results/00-progress.txt
+Assign M0RUN:
+Echo ""
+Echo "Done. Please add a few words to results/notes.txt and send the results directory back."

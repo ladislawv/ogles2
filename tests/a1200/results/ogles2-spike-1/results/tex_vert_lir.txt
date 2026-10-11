@@ -1,0 +1,21 @@
+(
+(declare (location=12 shader_out mediump ) float gl_PointSize)
+(declare (location=0 shader_out highp ) vec4 gl_Position)
+(declare (shader_in highp ) vec4 pos)
+(declare (shader_in highp ) vec2 tc)
+(declare (uniform highp ) mat4 mvp)
+(declare (shader_out highp ) vec2 uv)
+( function main
+  (signature void
+    (parameters
+    )
+    (
+      (assign  (xy) (var_ref uv)  (var_ref tc) ) 
+      (declare (temporary ) vec4 flattening_tmp)
+      (assign  (xyzw) (var_ref flattening_tmp)  (expression vec4 + (expression vec4 + (expression vec4 + (expression vec4 * (array_ref (var_ref mvp) (constant int (0)) ) (swiz x (var_ref pos) )) (expression vec4 * (array_ref (var_ref mvp) (constant int (1)) ) (swiz y (var_ref pos) )) ) (expression vec4 * (array_ref (var_ref mvp) (constant int (2)) ) (swiz z (var_ref pos) )) ) (expression vec4 * (array_ref (var_ref mvp) (constant int (3)) ) (swiz w (var_ref pos) )) ) ) 
+      (assign  (xyzw) (var_ref gl_Position)  (var_ref flattening_tmp) ) 
+    ))
+
+)
+
+)

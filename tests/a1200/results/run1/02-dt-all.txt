@@ -1,0 +1,2663 @@
+/
+/memreserve: quad = 0x3E00000002000000
+/serial-number: string = 10000000b090a2e2
+/compatible: string list = raspberrypi,4-model-b
+brcm,bcm2711
+/model: string = Raspberry Pi 4 Model B Rev 1.4
+/#address-cells: long = 0x00000002 (2)
+/#size-cells: long = 0x00000001 (1)
+/interrupt-parent: long = 0x00000001 (1)
+/system/
+/system/linux,serial: quad = 0x10000000B090A2E2
+/system/linux,revision: long = 0x00B03114 (11546900)
+/axi/
+/axi/vc_mem/
+/axi/vc_mem/reg: blob = 3E C0 00 00 40 00 00 00 C0 00 00 00
+/aliases/
+/aliases/serial0: string = /soc/serial@7e215040
+/aliases/serial1: string = /soc/serial@7e201000
+/aliases/emmc2bus: string = /emmc2bus
+/aliases/ethernet0: string = /scb/ethernet@7d580000
+/aliases/pcie0: string = /scb/pcie@7d500000
+/aliases/blconfig: string = /reserved-memory/nvram@0
+/aliases/blpubkey: string = /reserved-memory/nvram@1
+/aliases/bluetooth: string = /soc/serial@7e201000/bluetooth
+/aliases/aux: string = /soc/aux@7e215000
+/aliases/sound: string = /soc/sound
+/aliases/soc: string = /soc
+/aliases/dma: string = /soc/dma-controller@7e007000
+/aliases/watchdog: string = /soc/watchdog@7e100000
+/aliases/random: string = /soc/rng@7e104000
+/aliases/mailbox: string = /soc/mailbox@7e00b880
+/aliases/gpio: string = /soc/gpio@7e200000
+/aliases/uart0: string = /soc/serial@7e201000
+/aliases/uart1: string = /soc/serial@7e215040
+/aliases/sdhost: string = /soc/mmc@7e202000
+/aliases/mmc: string = /soc/mmc@7e300000
+/aliases/mmc1: string = /soc/mmcnr@7e300000
+/aliases/mmc0: string = /emmc2bus/mmc@7e340000
+/aliases/i2s: string = /soc/i2s@7e203000
+/aliases/i2c0: string = /soc/i2c0mux/i2c@0
+/aliases/i2c1: string = /soc/i2c@7e804000
+/aliases/i2c10: string = /soc/i2c0mux/i2c@1
+/aliases/i2c: string = /soc/i2c@7e804000
+/aliases/spi0: string = /soc/spi@7e204000
+/aliases/spi1: string = /soc/spi@7e215080
+/aliases/spi2: string = /soc/spi@7e2150c0
+/aliases/usb: string = /soc/usb@7e980000
+/aliases/leds: string = /leds
+/aliases/fb: string = /soc/fb
+/aliases/thermal: string = /soc/avs-monitor@7d5d2000/thermal
+/aliases/axiperf: string = /soc/axiperf
+/aliases/uart2: string = /soc/serial@7e201400
+/aliases/uart3: string = /soc/serial@7e201600
+/aliases/uart4: string = /soc/serial@7e201800
+/aliases/uart5: string = /soc/serial@7e201a00
+/aliases/serial2: string = /soc/serial@7e201400
+/aliases/serial3: string = /soc/serial@7e201600
+/aliases/serial4: string = /soc/serial@7e201800
+/aliases/serial5: string = /soc/serial@7e201a00
+/aliases/mmc2: string = /soc/mmc@7e202000
+/aliases/i2c3: string = /soc/i2c@7e205600
+/aliases/i2c4: string = /soc/i2c@7e205800
+/aliases/i2c5: string = /soc/i2c@7e205a00
+/aliases/i2c6: string = /soc/i2c@7e205c00
+/aliases/i2c20: string = /soc/i2c@7ef04500
+/aliases/i2c21: string = /soc/i2c@7ef09500
+/aliases/spi3: string = /soc/spi@7e204600
+/aliases/spi4: string = /soc/spi@7e204800
+/aliases/spi5: string = /soc/spi@7e204a00
+/aliases/spi6: string = /soc/spi@7e204c00
+/aliases/phandle: long = 0x0000004F (79)
+/chosen/
+/chosen/linux,initrd-end: long = 0x2F000000 (788529152)
+/chosen/linux,initrd-start: long = 0x2EF80000 (788004864)
+/chosen/rng-seed: blob = 83 3E 0E 6D 38 A4 FE 2B B7 A0 CE 4A 66 1A 27 CB
+FE A9 77 8D 16 98 06 45 FD F5 13 DB AC EC 57 17
+A7 17 5E D1 EF 3F FE DA FB 5C 32 3D 60 34 65 C2
+56 BC DC 4F B5 30 62 8F 21 16 C6 4E 4A 49 B8 E4
+/chosen/kaslr-seed: quad = 0x811568A489BFA16A
+/chosen/os_prefix: blob = 00
+/chosen/overlay_prefix: string = overlays/
+/chosen/rpi-boardrev-ext: long = 0x00000000 (0)
+/chosen/rpi-serial64: string = a50c5bf9b090a2e2
+/chosen/log: quad = 0x3FF800000007FFE0
+/chosen/stdout-path: string = serial0:115200n8
+/chosen/bootargs: string = coherent_pool=1M 8250.nr_uarts=0 snd_bcm2835.enable_headphones=0 cgroup_disable=memory numa_policy=interleave nvme.max_host_mem_size_mb=0 bcm2708_fb.fbwidth=1920 bcm2708_fb.fbheight=1080 bcm2708_fb.fbswap=1 smsc95xx.macaddr=E4:5F:01:11:E1:AB vc_mem.mem_base=0x3ec00000 vc_mem.mem_size=0x40000000  logo=purple vc4.mem=16 sd.low_speed sd.unit0=rw emmc.unit0=rw enable_c0_slow dbf_slowdown
+/chosen/phandle: long = 0x00000054 (84)
+/chosen/bootloader/
+/chosen/bootloader/boot-mode: long = 0x00000001 (1)
+/chosen/bootloader/version: string = 8ba17717fbcedd4c3b6d4bce7e50c7af4155cba9
+/chosen/bootloader/capabilities: long = 0x0000007F (127)
+/chosen/bootloader/update-timestamp: long = 0x63C81FD8 (1674059736)
+/chosen/bootloader/build-timestamp: long = 0x63BEF4A4 (1673458852)
+/chosen/bootloader/tryboot: long = 0x00000000 (0)
+/chosen/bootloader/rsts: long = 0x00000020 (32)
+/chosen/bootloader/partition: long = 0x00000000 (0)
+/reserved-memory/
+/reserved-memory/#address-cells: long = 0x00000002 (2)
+/reserved-memory/#size-cells: long = 0x00000001 (1)
+/reserved-memory/ranges: empty = -
+/reserved-memory/phandle: long = 0x0000005C (92)
+/reserved-memory/linux,cma/
+/reserved-memory/linux,cma/compatible: string = shared-dma-pool
+/reserved-memory/linux,cma/size: long = 0x04000000 (67108864)
+/reserved-memory/linux,cma/reusable: empty = -
+/reserved-memory/linux,cma/linux,cma-default: empty = -
+/reserved-memory/linux,cma/alloc-ranges: blob = 00 00 00 00 00 00 00 00 30 00 00 00
+/reserved-memory/linux,cma/phandle: long = 0x0000005D (93)
+/reserved-memory/nvram@0/
+/reserved-memory/nvram@0/compatible: string list = raspberrypi,bootloader-config
+nvmem-rmem
+/reserved-memory/nvram@0/#address-cells: long = 0x00000001 (1)
+/reserved-memory/nvram@0/#size-cells: long = 0x00000001 (1)
+/reserved-memory/nvram@0/reg: blob = 00 00 00 00 3E F6 68 60 00 00 00 48
+/reserved-memory/nvram@0/no-map: empty = -
+/reserved-memory/nvram@0/status: string = okay
+/reserved-memory/nvram@0/phandle: long = 0x0000005E (94)
+/reserved-memory/nvram@1/
+/reserved-memory/nvram@1/compatible: string list = raspberrypi,bootloader-public-key
+nvmem-rmem
+/reserved-memory/nvram@1/#address-cells: long = 0x00000001 (1)
+/reserved-memory/nvram@1/#size-cells: long = 0x00000001 (1)
+/reserved-memory/nvram@1/reg: blob = 00 00 00 00 3E F6 64 20 00 00 04 00
+/reserved-memory/nvram@1/no-map: empty = -
+/reserved-memory/nvram@1/status: string = okay
+/reserved-memory/nvram@1/phandle: long = 0x0000005F (95)
+/thermal-zones/
+/thermal-zones/cpu-thermal/
+/thermal-zones/cpu-thermal/polling-delay-passive: long = 0x00000000 (0)
+/thermal-zones/cpu-thermal/polling-delay: long = 0x000003E8 (1000)
+/thermal-zones/cpu-thermal/coefficients: quad = 0xFFFFFE19000641B8
+/thermal-zones/cpu-thermal/thermal-sensors: long = 0x00000002 (2)
+/thermal-zones/cpu-thermal/phandle: long = 0x00000060 (96)
+/thermal-zones/cpu-thermal/trips/
+/thermal-zones/cpu-thermal/trips/phandle: long = 0x00000061 (97)
+/thermal-zones/cpu-thermal/trips/cpu-crit/
+/thermal-zones/cpu-thermal/trips/cpu-crit/temperature: long = 0x0001ADB0 (110000)
+/thermal-zones/cpu-thermal/trips/cpu-crit/hysteresis: long = 0x00000000 (0)
+/thermal-zones/cpu-thermal/trips/cpu-crit/type: string = critical
+/thermal-zones/cpu-thermal/cooling-maps/
+/thermal-zones/cpu-thermal/cooling-maps/phandle: long = 0x00000062 (98)
+/soc/
+/soc/compatible: string = simple-bus
+/soc/#address-cells: long = 0x00000001 (1)
+/soc/#size-cells: long = 0x00000001 (1)
+/soc/ranges: blob = 7E 00 00 00 00 00 00 00 F2 00 00 00 01 80 00 00
+7C 00 00 00 00 00 00 00 F3 80 00 00 02 00 00 00
+40 00 00 00 00 00 00 00 F5 80 00 00 00 80 00 00
+/soc/dma-ranges: blob = C0 00 00 00 00 00 00 00 00 00 00 00 40 00 00 00
+7C 00 00 00 00 00 00 00 FC 00 00 00 03 80 00 00
+/soc/phandle: long = 0x00000063 (99)
+/soc/timer@7e003000/
+/soc/timer@7e003000/compatible: string = brcm,bcm2835-system-timer
+/soc/timer@7e003000/reg: quad = 0x7E00300000001000
+/soc/timer@7e003000/interrupts: blob = 00 00 00 00 00 00 00 40 00 00 00 04 00 00 00 00
+00 00 00 41 00 00 00 04 00 00 00 00 00 00 00 42
+00 00 00 04 00 00 00 00 00 00 00 43 00 00 00 04
+/soc/timer@7e003000/clock-frequency: long = 0x000F4240 (1000000)
+/soc/timer@7e003000/status: string = disabled
+/soc/timer@7e003000/phandle: long = 0x00000064 (100)
+/soc/txp@7e004000/
+/soc/txp@7e004000/compatible: string = brcm,bcm2835-txp
+/soc/txp@7e004000/reg: quad = 0x7E00400000000020
+/soc/txp@7e004000/interrupts: blob = 00 00 00 00 00 00 00 4B 00 00 00 04
+/soc/txp@7e004000/status: string = disabled
+/soc/txp@7e004000/phandle: long = 0x00000065 (101)
+/soc/cprman@7e101000/
+/soc/cprman@7e101000/compatible: string = brcm,bcm2711-cprman
+/soc/cprman@7e101000/#clock-cells: long = 0x00000001 (1)
+/soc/cprman@7e101000/reg: quad = 0x7E10100000002000
+/soc/cprman@7e101000/clocks: blob = 00 00 00 03 00 00 00 04 00 00 00 00 00 00 00 04
+00 00 00 01 00 00 00 04 00 00 00 02 00 00 00 05
+00 00 00 00 00 00 00 05 00 00 00 01 00 00 00 05
+00 00 00 02
+/soc/cprman@7e101000/firmware: long = 0x00000006 (6)
+/soc/cprman@7e101000/phandle: long = 0x00000008 (8)
+/soc/mailbox@7e00b880/
+/soc/mailbox@7e00b880/compatible: string = brcm,bcm2835-mbox
+/soc/mailbox@7e00b880/reg: quad = 0x7E00B88000000040
+/soc/mailbox@7e00b880/interrupts: blob = 00 00 00 00 00 00 00 21 00 00 00 04
+/soc/mailbox@7e00b880/#mbox-cells: long = 0x00000000 (0)
+/soc/mailbox@7e00b880/phandle: long = 0x00000031 (49)
+/soc/gpio@7e200000/
+/soc/gpio@7e200000/compatible: string = brcm,bcm2711-gpio
+/soc/gpio@7e200000/reg: quad = 0x7E200000000000B4
+/soc/gpio@7e200000/interrupts: blob = 00 00 00 00 00 00 00 71 00 00 00 04 00 00 00 00
+00 00 00 72 00 00 00 04
+/soc/gpio@7e200000/gpio-controller: empty = -
+/soc/gpio@7e200000/#gpio-cells: long = 0x00000002 (2)
+/soc/gpio@7e200000/interrupt-controller: empty = -
+/soc/gpio@7e200000/#interrupt-cells: long = 0x00000002 (2)
+/soc/gpio@7e200000/gpio-ranges: blob = 00 00 00 07 00 00 00 00 00 00 00 00 00 00 00 3A
+/soc/gpio@7e200000/gpio-line-names: string list = ID_SDA
+ID_SCL
+GPIO2
+GPIO3
+GPIO4
+GPIO5
+GPIO6
+GPIO7
+GPIO8
+GPIO9
+GPIO10
+GPIO11
+GPIO12
+GPIO13
+GPIO14
+GPIO15
+GPIO16
+GPIO17
+GPIO18
+GPIO19
+GPIO20
+GPIO21
+GPIO22
+GPIO23
+GPIO24
+GPIO25
+GPIO26
+GPIO27
+RGMII_MDIO
+RGMIO_MDC
+CTS0
+RTS0
+TXD0
+RXD0
+SD1_CLK
+SD1_CMD
+SD1_DATA0
+SD1_DATA1
+SD1_DATA2
+SD1_DATA3
+PWM0_MISO
+PWM1_MOSI
+STATUS_LED_G_CLK
+SPIFLASH_CE_N
+SDA0
+SCL0
+RGMII_RXCLK
+RGMII_RXCTL
+RGMII_RXD0
+RGMII_RXD1
+RGMII_RXD2
+RGMII_RXD3
+RGMII_TXCLK
+RGMII_TXCTL
+RGMII_TXD0
+RGMII_TXD1
+RGMII_TXD2
+RGMII_TXD3
+/soc/gpio@7e200000/phandle: long = 0x00000007 (7)
+/soc/gpio@7e200000/dpi-gpio0/
+/soc/gpio@7e200000/dpi-gpio0/brcm,pins: blob = 00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03
+00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07
+00 00 00 08 00 00 00 09 00 00 00 0A 00 00 00 0B
+00 00 00 0C 00 00 00 0D 00 00 00 0E 00 00 00 0F
+00 00 00 10 00 00 00 11 00 00 00 12 00 00 00 13
+00 00 00 14 00 00 00 15 00 00 00 16 00 00 00 17
+00 00 00 18 00 00 00 19 00 00 00 1A 00 00 00 1B
+/soc/gpio@7e200000/dpi-gpio0/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/dpi-gpio0/phandle: long = 0x00000066 (102)
+/soc/gpio@7e200000/emmc-gpio22/
+/soc/gpio@7e200000/emmc-gpio22/brcm,pins: blob = 00 00 00 16 00 00 00 17 00 00 00 18 00 00 00 19
+00 00 00 1A 00 00 00 1B
+/soc/gpio@7e200000/emmc-gpio22/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/emmc-gpio22/phandle: long = 0x00000067 (103)
+/soc/gpio@7e200000/emmc-gpio34/
+/soc/gpio@7e200000/emmc-gpio34/brcm,pins: blob = 00 00 00 22 00 00 00 23 00 00 00 24 00 00 00 25
+00 00 00 26 00 00 00 27
+/soc/gpio@7e200000/emmc-gpio34/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/emmc-gpio34/brcm,pull: blob = 00 00 00 00 00 00 00 02 00 00 00 02 00 00 00 02
+00 00 00 02 00 00 00 02
+/soc/gpio@7e200000/emmc-gpio34/phandle: long = 0x00000068 (104)
+/soc/gpio@7e200000/emmc-gpio48/
+/soc/gpio@7e200000/emmc-gpio48/brcm,pins: blob = 00 00 00 30 00 00 00 31 00 00 00 32 00 00 00 33
+00 00 00 34 00 00 00 35
+/soc/gpio@7e200000/emmc-gpio48/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/emmc-gpio48/phandle: long = 0x00000013 (19)
+/soc/gpio@7e200000/gpclk0-gpio4/
+/soc/gpio@7e200000/gpclk0-gpio4/brcm,pins: long = 0x00000004 (4)
+/soc/gpio@7e200000/gpclk0-gpio4/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/gpclk0-gpio4/phandle: long = 0x00000069 (105)
+/soc/gpio@7e200000/gpclk1-gpio5/
+/soc/gpio@7e200000/gpclk1-gpio5/brcm,pins: long = 0x00000005 (5)
+/soc/gpio@7e200000/gpclk1-gpio5/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/gpclk1-gpio5/phandle: long = 0x0000006A (106)
+/soc/gpio@7e200000/gpclk1-gpio42/
+/soc/gpio@7e200000/gpclk1-gpio42/brcm,pins: long = 0x0000002A (42)
+/soc/gpio@7e200000/gpclk1-gpio42/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/gpclk1-gpio42/phandle: long = 0x0000006B (107)
+/soc/gpio@7e200000/gpclk1-gpio44/
+/soc/gpio@7e200000/gpclk1-gpio44/brcm,pins: long = 0x0000002C (44)
+/soc/gpio@7e200000/gpclk1-gpio44/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/gpclk1-gpio44/phandle: long = 0x0000006C (108)
+/soc/gpio@7e200000/gpclk2-gpio6/
+/soc/gpio@7e200000/gpclk2-gpio6/brcm,pins: long = 0x00000006 (6)
+/soc/gpio@7e200000/gpclk2-gpio6/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/gpclk2-gpio6/phandle: long = 0x0000006D (109)
+/soc/gpio@7e200000/gpclk2-gpio43/
+/soc/gpio@7e200000/gpclk2-gpio43/brcm,pins: long = 0x0000002B (43)
+/soc/gpio@7e200000/gpclk2-gpio43/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/gpclk2-gpio43/brcm,pull: long = 0x00000000 (0)
+/soc/gpio@7e200000/gpclk2-gpio43/phandle: long = 0x0000006E (110)
+/soc/gpio@7e200000/i2c0if-gpio0/
+/soc/gpio@7e200000/i2c0if-gpio0/brcm,pins: quad = 0x00000001 (1)
+/soc/gpio@7e200000/i2c0if-gpio0/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/i2c0if-gpio0/phandle: long = 0x00000035 (53)
+/soc/gpio@7e200000/i2c0if-gpio28/
+/soc/gpio@7e200000/i2c0if-gpio28/brcm,pins: quad = 0x0000001C0000001D
+/soc/gpio@7e200000/i2c0if-gpio28/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/i2c0if-gpio28/phandle: long = 0x0000006F (111)
+/soc/gpio@7e200000/i2c0if-gpio44/
+/soc/gpio@7e200000/i2c0if-gpio44/brcm,pins: quad = 0x0000002C0000002D
+/soc/gpio@7e200000/i2c0if-gpio44/brcm,function: long = 0x00000005 (5)
+/soc/gpio@7e200000/i2c0if-gpio44/phandle: long = 0x00000036 (54)
+/soc/gpio@7e200000/i2c1-gpio2/
+/soc/gpio@7e200000/i2c1-gpio2/brcm,pins: quad = 0x0000000200000003
+/soc/gpio@7e200000/i2c1-gpio2/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/i2c1-gpio2/phandle: long = 0x00000070 (112)
+/soc/gpio@7e200000/i2c1-gpio44/
+/soc/gpio@7e200000/i2c1-gpio44/brcm,pins: quad = 0x0000002C0000002D
+/soc/gpio@7e200000/i2c1-gpio44/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/i2c1-gpio44/phandle: long = 0x00000071 (113)
+/soc/gpio@7e200000/jtag-gpio22/
+/soc/gpio@7e200000/jtag-gpio22/brcm,pins: blob = 00 00 00 16 00 00 00 17 00 00 00 18 00 00 00 19
+00 00 00 1A 00 00 00 1B
+/soc/gpio@7e200000/jtag-gpio22/brcm,function: long = 0x00000003 (3)
+/soc/gpio@7e200000/jtag-gpio22/phandle: long = 0x00000072 (114)
+/soc/gpio@7e200000/pcm-gpio18/
+/soc/gpio@7e200000/pcm-gpio18/brcm,pins: blob = 00 00 00 12 00 00 00 13 00 00 00 14 00 00 00 15
+/soc/gpio@7e200000/pcm-gpio18/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/pcm-gpio18/phandle: long = 0x00000073 (115)
+/soc/gpio@7e200000/pcm-gpio28/
+/soc/gpio@7e200000/pcm-gpio28/brcm,pins: blob = 00 00 00 1C 00 00 00 1D 00 00 00 1E 00 00 00 1F
+/soc/gpio@7e200000/pcm-gpio28/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/pcm-gpio28/phandle: long = 0x00000074 (116)
+/soc/gpio@7e200000/sdhost-gpio48/
+/soc/gpio@7e200000/sdhost-gpio48/brcm,pins: blob = 00 00 00 30 00 00 00 31 00 00 00 32 00 00 00 33
+00 00 00 34 00 00 00 35
+/soc/gpio@7e200000/sdhost-gpio48/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/sdhost-gpio48/phandle: long = 0x00000075 (117)
+/soc/gpio@7e200000/spi0-gpio7/
+/soc/gpio@7e200000/spi0-gpio7/brcm,pins: blob = 00 00 00 07 00 00 00 08 00 00 00 09 00 00 00 0A
+00 00 00 0B
+/soc/gpio@7e200000/spi0-gpio7/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/spi0-gpio7/phandle: long = 0x00000076 (118)
+/soc/gpio@7e200000/spi0-gpio35/
+/soc/gpio@7e200000/spi0-gpio35/brcm,pins: blob = 00 00 00 23 00 00 00 24 00 00 00 25 00 00 00 26
+00 00 00 27
+/soc/gpio@7e200000/spi0-gpio35/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/spi0-gpio35/phandle: long = 0x00000077 (119)
+/soc/gpio@7e200000/spi1-gpio16/
+/soc/gpio@7e200000/spi1-gpio16/brcm,pins: blob = 00 00 00 10 00 00 00 11 00 00 00 12 00 00 00 13
+00 00 00 14 00 00 00 15
+/soc/gpio@7e200000/spi1-gpio16/brcm,function: long = 0x00000003 (3)
+/soc/gpio@7e200000/spi1-gpio16/phandle: long = 0x00000078 (120)
+/soc/gpio@7e200000/spi2-gpio40/
+/soc/gpio@7e200000/spi2-gpio40/brcm,pins: blob = 00 00 00 28 00 00 00 29 00 00 00 2A 00 00 00 2B
+00 00 00 2C 00 00 00 2D
+/soc/gpio@7e200000/spi2-gpio40/brcm,function: long = 0x00000003 (3)
+/soc/gpio@7e200000/spi2-gpio40/phandle: long = 0x00000079 (121)
+/soc/gpio@7e200000/uart0-gpio14/
+/soc/gpio@7e200000/uart0-gpio14/brcm,pins: quad = 0x0000000E0000000F
+/soc/gpio@7e200000/uart0-gpio14/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/uart0-gpio14/phandle: long = 0x0000007A (122)
+/soc/gpio@7e200000/uart0-ctsrts-gpio16/
+/soc/gpio@7e200000/uart0-ctsrts-gpio16/brcm,pins: quad = 0x0000001000000011
+/soc/gpio@7e200000/uart0-ctsrts-gpio16/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/uart0-ctsrts-gpio16/phandle: long = 0x0000007B (123)
+/soc/gpio@7e200000/uart0-ctsrts-gpio30/
+/soc/gpio@7e200000/uart0-ctsrts-gpio30/brcm,pins: quad = 0x0000001E0000001F
+/soc/gpio@7e200000/uart0-ctsrts-gpio30/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/uart0-ctsrts-gpio30/brcm,pull: quad = 0x0000000200000000
+/soc/gpio@7e200000/uart0-ctsrts-gpio30/phandle: long = 0x0000007C (124)
+/soc/gpio@7e200000/uart0-gpio32/
+/soc/gpio@7e200000/uart0-gpio32/brcm,pins: quad = 0x0000002000000021
+/soc/gpio@7e200000/uart0-gpio32/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/uart0-gpio32/brcm,pull: quad = 0x00000002 (2)
+/soc/gpio@7e200000/uart0-gpio32/phandle: long = 0x0000007D (125)
+/soc/gpio@7e200000/uart0-gpio36/
+/soc/gpio@7e200000/uart0-gpio36/brcm,pins: quad = 0x0000002400000025
+/soc/gpio@7e200000/uart0-gpio36/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/uart0-gpio36/phandle: long = 0x0000007E (126)
+/soc/gpio@7e200000/uart0-ctsrts-gpio38/
+/soc/gpio@7e200000/uart0-ctsrts-gpio38/brcm,pins: quad = 0x0000002600000027
+/soc/gpio@7e200000/uart0-ctsrts-gpio38/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/uart0-ctsrts-gpio38/phandle: long = 0x0000007F (127)
+/soc/gpio@7e200000/uart1-gpio14/
+/soc/gpio@7e200000/uart1-gpio14/brcm,pins: quad = 0x0000000E0000000F
+/soc/gpio@7e200000/uart1-gpio14/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/uart1-gpio14/phandle: long = 0x00000080 (128)
+/soc/gpio@7e200000/uart1-ctsrts-gpio16/
+/soc/gpio@7e200000/uart1-ctsrts-gpio16/brcm,pins: quad = 0x0000001000000011
+/soc/gpio@7e200000/uart1-ctsrts-gpio16/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/uart1-ctsrts-gpio16/phandle: long = 0x00000081 (129)
+/soc/gpio@7e200000/uart1-gpio32/
+/soc/gpio@7e200000/uart1-gpio32/brcm,pins: quad = 0x0000002000000021
+/soc/gpio@7e200000/uart1-gpio32/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/uart1-gpio32/phandle: long = 0x00000082 (130)
+/soc/gpio@7e200000/uart1-ctsrts-gpio30/
+/soc/gpio@7e200000/uart1-ctsrts-gpio30/brcm,pins: quad = 0x0000001E0000001F
+/soc/gpio@7e200000/uart1-ctsrts-gpio30/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/uart1-ctsrts-gpio30/phandle: long = 0x00000083 (131)
+/soc/gpio@7e200000/uart1-gpio40/
+/soc/gpio@7e200000/uart1-gpio40/brcm,pins: quad = 0x0000002800000029
+/soc/gpio@7e200000/uart1-gpio40/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/uart1-gpio40/phandle: long = 0x00000084 (132)
+/soc/gpio@7e200000/uart1-ctsrts-gpio42/
+/soc/gpio@7e200000/uart1-ctsrts-gpio42/brcm,pins: quad = 0x0000002A0000002B
+/soc/gpio@7e200000/uart1-ctsrts-gpio42/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/uart1-ctsrts-gpio42/phandle: long = 0x00000085 (133)
+/soc/gpio@7e200000/gpclk0-gpio49/
+/soc/gpio@7e200000/gpclk0-gpio49/phandle: long = 0x00000086 (134)
+/soc/gpio@7e200000/gpclk0-gpio49/pin-gpclk/
+/soc/gpio@7e200000/gpclk0-gpio49/pin-gpclk/pins: string = gpio49
+/soc/gpio@7e200000/gpclk0-gpio49/pin-gpclk/function: string = alt1
+/soc/gpio@7e200000/gpclk0-gpio49/pin-gpclk/bias-disable: empty = -
+/soc/gpio@7e200000/gpclk1-gpio50/
+/soc/gpio@7e200000/gpclk1-gpio50/phandle: long = 0x00000087 (135)
+/soc/gpio@7e200000/gpclk1-gpio50/pin-gpclk/
+/soc/gpio@7e200000/gpclk1-gpio50/pin-gpclk/pins: string = gpio50
+/soc/gpio@7e200000/gpclk1-gpio50/pin-gpclk/function: string = alt1
+/soc/gpio@7e200000/gpclk1-gpio50/pin-gpclk/bias-disable: empty = -
+/soc/gpio@7e200000/gpclk2-gpio51/
+/soc/gpio@7e200000/gpclk2-gpio51/phandle: long = 0x00000088 (136)
+/soc/gpio@7e200000/gpclk2-gpio51/pin-gpclk/
+/soc/gpio@7e200000/gpclk2-gpio51/pin-gpclk/pins: string = gpio51
+/soc/gpio@7e200000/gpclk2-gpio51/pin-gpclk/function: string = alt1
+/soc/gpio@7e200000/gpclk2-gpio51/pin-gpclk/bias-disable: empty = -
+/soc/gpio@7e200000/i2c0if-gpio46/
+/soc/gpio@7e200000/i2c0if-gpio46/phandle: long = 0x00000089 (137)
+/soc/gpio@7e200000/i2c0if-gpio46/pin-sda/
+/soc/gpio@7e200000/i2c0if-gpio46/pin-sda/function: string = alt0
+/soc/gpio@7e200000/i2c0if-gpio46/pin-sda/pins: string = gpio46
+/soc/gpio@7e200000/i2c0if-gpio46/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c0if-gpio46/pin-scl/
+/soc/gpio@7e200000/i2c0if-gpio46/pin-scl/function: string = alt0
+/soc/gpio@7e200000/i2c0if-gpio46/pin-scl/pins: string = gpio47
+/soc/gpio@7e200000/i2c0if-gpio46/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c1-gpio46/
+/soc/gpio@7e200000/i2c1-gpio46/phandle: long = 0x0000008A (138)
+/soc/gpio@7e200000/i2c1-gpio46/pin-sda/
+/soc/gpio@7e200000/i2c1-gpio46/pin-sda/function: string = alt1
+/soc/gpio@7e200000/i2c1-gpio46/pin-sda/pins: string = gpio46
+/soc/gpio@7e200000/i2c1-gpio46/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c1-gpio46/pin-scl/
+/soc/gpio@7e200000/i2c1-gpio46/pin-scl/function: string = alt1
+/soc/gpio@7e200000/i2c1-gpio46/pin-scl/pins: string = gpio47
+/soc/gpio@7e200000/i2c1-gpio46/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c3-gpio2/
+/soc/gpio@7e200000/i2c3-gpio2/phandle: long = 0x0000008B (139)
+/soc/gpio@7e200000/i2c3-gpio2/pin-sda/
+/soc/gpio@7e200000/i2c3-gpio2/pin-sda/function: string = alt5
+/soc/gpio@7e200000/i2c3-gpio2/pin-sda/pins: string = gpio2
+/soc/gpio@7e200000/i2c3-gpio2/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c3-gpio2/pin-scl/
+/soc/gpio@7e200000/i2c3-gpio2/pin-scl/function: string = alt5
+/soc/gpio@7e200000/i2c3-gpio2/pin-scl/pins: string = gpio3
+/soc/gpio@7e200000/i2c3-gpio2/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c3-gpio4/
+/soc/gpio@7e200000/i2c3-gpio4/phandle: long = 0x0000008C (140)
+/soc/gpio@7e200000/i2c3-gpio4/pin-sda/
+/soc/gpio@7e200000/i2c3-gpio4/pin-sda/function: string = alt5
+/soc/gpio@7e200000/i2c3-gpio4/pin-sda/pins: string = gpio4
+/soc/gpio@7e200000/i2c3-gpio4/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c3-gpio4/pin-scl/
+/soc/gpio@7e200000/i2c3-gpio4/pin-scl/function: string = alt5
+/soc/gpio@7e200000/i2c3-gpio4/pin-scl/pins: string = gpio5
+/soc/gpio@7e200000/i2c3-gpio4/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c4-gpio6/
+/soc/gpio@7e200000/i2c4-gpio6/phandle: long = 0x0000008D (141)
+/soc/gpio@7e200000/i2c4-gpio6/pin-sda/
+/soc/gpio@7e200000/i2c4-gpio6/pin-sda/function: string = alt5
+/soc/gpio@7e200000/i2c4-gpio6/pin-sda/pins: string = gpio6
+/soc/gpio@7e200000/i2c4-gpio6/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c4-gpio6/pin-scl/
+/soc/gpio@7e200000/i2c4-gpio6/pin-scl/function: string = alt5
+/soc/gpio@7e200000/i2c4-gpio6/pin-scl/pins: string = gpio7
+/soc/gpio@7e200000/i2c4-gpio6/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c4-gpio8/
+/soc/gpio@7e200000/i2c4-gpio8/phandle: long = 0x0000008E (142)
+/soc/gpio@7e200000/i2c4-gpio8/pin-sda/
+/soc/gpio@7e200000/i2c4-gpio8/pin-sda/function: string = alt5
+/soc/gpio@7e200000/i2c4-gpio8/pin-sda/pins: string = gpio8
+/soc/gpio@7e200000/i2c4-gpio8/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c4-gpio8/pin-scl/
+/soc/gpio@7e200000/i2c4-gpio8/pin-scl/function: string = alt5
+/soc/gpio@7e200000/i2c4-gpio8/pin-scl/pins: string = gpio9
+/soc/gpio@7e200000/i2c4-gpio8/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c5-gpio10/
+/soc/gpio@7e200000/i2c5-gpio10/phandle: long = 0x0000008F (143)
+/soc/gpio@7e200000/i2c5-gpio10/pin-sda/
+/soc/gpio@7e200000/i2c5-gpio10/pin-sda/function: string = alt5
+/soc/gpio@7e200000/i2c5-gpio10/pin-sda/pins: string = gpio10
+/soc/gpio@7e200000/i2c5-gpio10/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c5-gpio10/pin-scl/
+/soc/gpio@7e200000/i2c5-gpio10/pin-scl/function: string = alt5
+/soc/gpio@7e200000/i2c5-gpio10/pin-scl/pins: string = gpio11
+/soc/gpio@7e200000/i2c5-gpio10/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c5-gpio12/
+/soc/gpio@7e200000/i2c5-gpio12/phandle: long = 0x00000090 (144)
+/soc/gpio@7e200000/i2c5-gpio12/pin-sda/
+/soc/gpio@7e200000/i2c5-gpio12/pin-sda/function: string = alt5
+/soc/gpio@7e200000/i2c5-gpio12/pin-sda/pins: string = gpio12
+/soc/gpio@7e200000/i2c5-gpio12/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c5-gpio12/pin-scl/
+/soc/gpio@7e200000/i2c5-gpio12/pin-scl/function: string = alt5
+/soc/gpio@7e200000/i2c5-gpio12/pin-scl/pins: string = gpio13
+/soc/gpio@7e200000/i2c5-gpio12/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c6-gpio0/
+/soc/gpio@7e200000/i2c6-gpio0/phandle: long = 0x00000091 (145)
+/soc/gpio@7e200000/i2c6-gpio0/pin-sda/
+/soc/gpio@7e200000/i2c6-gpio0/pin-sda/function: string = alt5
+/soc/gpio@7e200000/i2c6-gpio0/pin-sda/pins: string = gpio0
+/soc/gpio@7e200000/i2c6-gpio0/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c6-gpio0/pin-scl/
+/soc/gpio@7e200000/i2c6-gpio0/pin-scl/function: string = alt5
+/soc/gpio@7e200000/i2c6-gpio0/pin-scl/pins: string = gpio1
+/soc/gpio@7e200000/i2c6-gpio0/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c6-gpio22/
+/soc/gpio@7e200000/i2c6-gpio22/phandle: long = 0x00000092 (146)
+/soc/gpio@7e200000/i2c6-gpio22/pin-sda/
+/soc/gpio@7e200000/i2c6-gpio22/pin-sda/function: string = alt5
+/soc/gpio@7e200000/i2c6-gpio22/pin-sda/pins: string = gpio22
+/soc/gpio@7e200000/i2c6-gpio22/pin-sda/bias-pull-up: empty = -
+/soc/gpio@7e200000/i2c6-gpio22/pin-scl/
+/soc/gpio@7e200000/i2c6-gpio22/pin-scl/function: string = alt5
+/soc/gpio@7e200000/i2c6-gpio22/pin-scl/pins: string = gpio23
+/soc/gpio@7e200000/i2c6-gpio22/pin-scl/bias-disable: empty = -
+/soc/gpio@7e200000/i2c-slave-gpio8/
+/soc/gpio@7e200000/i2c-slave-gpio8/phandle: long = 0x00000093 (147)
+/soc/gpio@7e200000/i2c-slave-gpio8/pins-i2c-slave/
+/soc/gpio@7e200000/i2c-slave-gpio8/pins-i2c-slave/pins: string list = gpio8
+gpio9
+gpio10
+gpio11
+/soc/gpio@7e200000/i2c-slave-gpio8/pins-i2c-slave/function: string = alt3
+/soc/gpio@7e200000/jtag-gpio48/
+/soc/gpio@7e200000/jtag-gpio48/phandle: long = 0x00000094 (148)
+/soc/gpio@7e200000/jtag-gpio48/pins-jtag/
+/soc/gpio@7e200000/jtag-gpio48/pins-jtag/pins: string list = gpio48
+gpio49
+gpio50
+gpio51
+gpio52
+gpio53
+/soc/gpio@7e200000/jtag-gpio48/pins-jtag/function: string = alt4
+/soc/gpio@7e200000/mii-gpio28/
+/soc/gpio@7e200000/mii-gpio28/phandle: long = 0x00000095 (149)
+/soc/gpio@7e200000/mii-gpio28/pins-mii/
+/soc/gpio@7e200000/mii-gpio28/pins-mii/pins: string list = gpio28
+gpio29
+gpio30
+gpio31
+/soc/gpio@7e200000/mii-gpio28/pins-mii/function: string = alt4
+/soc/gpio@7e200000/mii-gpio36/
+/soc/gpio@7e200000/mii-gpio36/phandle: long = 0x00000096 (150)
+/soc/gpio@7e200000/mii-gpio36/pins-mii/
+/soc/gpio@7e200000/mii-gpio36/pins-mii/pins: string list = gpio36
+gpio37
+gpio38
+gpio39
+/soc/gpio@7e200000/mii-gpio36/pins-mii/function: string = alt5
+/soc/gpio@7e200000/pcm-gpio50/
+/soc/gpio@7e200000/pcm-gpio50/phandle: long = 0x00000097 (151)
+/soc/gpio@7e200000/pcm-gpio50/pins-pcm/
+/soc/gpio@7e200000/pcm-gpio50/pins-pcm/pins: string list = gpio50
+gpio51
+gpio52
+gpio53
+/soc/gpio@7e200000/pcm-gpio50/pins-pcm/function: string = alt2
+/soc/gpio@7e200000/pwm0-0-gpio12/
+/soc/gpio@7e200000/pwm0-0-gpio12/phandle: long = 0x00000098 (152)
+/soc/gpio@7e200000/pwm0-0-gpio12/pin-pwm/
+/soc/gpio@7e200000/pwm0-0-gpio12/pin-pwm/pins: string = gpio12
+/soc/gpio@7e200000/pwm0-0-gpio12/pin-pwm/function: string = alt0
+/soc/gpio@7e200000/pwm0-0-gpio12/pin-pwm/bias-disable: empty = -
+/soc/gpio@7e200000/pwm0-0-gpio18/
+/soc/gpio@7e200000/pwm0-0-gpio18/phandle: long = 0x00000099 (153)
+/soc/gpio@7e200000/pwm0-0-gpio18/pin-pwm/
+/soc/gpio@7e200000/pwm0-0-gpio18/pin-pwm/pins: string = gpio18
+/soc/gpio@7e200000/pwm0-0-gpio18/pin-pwm/function: string = alt5
+/soc/gpio@7e200000/pwm0-0-gpio18/pin-pwm/bias-disable: empty = -
+/soc/gpio@7e200000/pwm1-0-gpio40/
+/soc/gpio@7e200000/pwm1-0-gpio40/phandle: long = 0x00000028 (40)
+/soc/gpio@7e200000/pwm1-0-gpio40/pin-pwm/
+/soc/gpio@7e200000/pwm1-0-gpio40/pin-pwm/pins: string = gpio40
+/soc/gpio@7e200000/pwm1-0-gpio40/pin-pwm/function: string = alt0
+/soc/gpio@7e200000/pwm1-0-gpio40/pin-pwm/bias-disable: empty = -
+/soc/gpio@7e200000/pwm0-1-gpio13/
+/soc/gpio@7e200000/pwm0-1-gpio13/phandle: long = 0x0000009A (154)
+/soc/gpio@7e200000/pwm0-1-gpio13/pin-pwm/
+/soc/gpio@7e200000/pwm0-1-gpio13/pin-pwm/pins: string = gpio13
+/soc/gpio@7e200000/pwm0-1-gpio13/pin-pwm/function: string = alt0
+/soc/gpio@7e200000/pwm0-1-gpio13/pin-pwm/bias-disable: empty = -
+/soc/gpio@7e200000/pwm0-1-gpio19/
+/soc/gpio@7e200000/pwm0-1-gpio19/phandle: long = 0x0000009B (155)
+/soc/gpio@7e200000/pwm0-1-gpio19/pin-pwm/
+/soc/gpio@7e200000/pwm0-1-gpio19/pin-pwm/pins: string = gpio19
+/soc/gpio@7e200000/pwm0-1-gpio19/pin-pwm/function: string = alt5
+/soc/gpio@7e200000/pwm0-1-gpio19/pin-pwm/bias-disable: empty = -
+/soc/gpio@7e200000/pwm1-1-gpio41/
+/soc/gpio@7e200000/pwm1-1-gpio41/phandle: long = 0x00000029 (41)
+/soc/gpio@7e200000/pwm1-1-gpio41/pin-pwm/
+/soc/gpio@7e200000/pwm1-1-gpio41/pin-pwm/pins: string = gpio41
+/soc/gpio@7e200000/pwm1-1-gpio41/pin-pwm/function: string = alt0
+/soc/gpio@7e200000/pwm1-1-gpio41/pin-pwm/bias-disable: empty = -
+/soc/gpio@7e200000/pwm0-1-gpio45/
+/soc/gpio@7e200000/pwm0-1-gpio45/phandle: long = 0x0000009C (156)
+/soc/gpio@7e200000/pwm0-1-gpio45/pin-pwm/
+/soc/gpio@7e200000/pwm0-1-gpio45/pin-pwm/pins: string = gpio45
+/soc/gpio@7e200000/pwm0-1-gpio45/pin-pwm/function: string = alt0
+/soc/gpio@7e200000/pwm0-1-gpio45/pin-pwm/bias-disable: empty = -
+/soc/gpio@7e200000/pwm0-0-gpio52/
+/soc/gpio@7e200000/pwm0-0-gpio52/phandle: long = 0x0000009D (157)
+/soc/gpio@7e200000/pwm0-0-gpio52/pin-pwm/
+/soc/gpio@7e200000/pwm0-0-gpio52/pin-pwm/pins: string = gpio52
+/soc/gpio@7e200000/pwm0-0-gpio52/pin-pwm/function: string = alt1
+/soc/gpio@7e200000/pwm0-0-gpio52/pin-pwm/bias-disable: empty = -
+/soc/gpio@7e200000/pwm0-1-gpio53/
+/soc/gpio@7e200000/pwm0-1-gpio53/phandle: long = 0x0000009E (158)
+/soc/gpio@7e200000/pwm0-1-gpio53/pin-pwm/
+/soc/gpio@7e200000/pwm0-1-gpio53/pin-pwm/pins: string = gpio53
+/soc/gpio@7e200000/pwm0-1-gpio53/pin-pwm/function: string = alt1
+/soc/gpio@7e200000/pwm0-1-gpio53/pin-pwm/bias-disable: empty = -
+/soc/gpio@7e200000/rgmii-gpio35/
+/soc/gpio@7e200000/rgmii-gpio35/phandle: long = 0x0000009F (159)
+/soc/gpio@7e200000/rgmii-gpio35/pin-start-stop/
+/soc/gpio@7e200000/rgmii-gpio35/pin-start-stop/pins: string = gpio35
+/soc/gpio@7e200000/rgmii-gpio35/pin-start-stop/function: string = alt4
+/soc/gpio@7e200000/rgmii-gpio35/pin-rx-ok/
+/soc/gpio@7e200000/rgmii-gpio35/pin-rx-ok/pins: string = gpio36
+/soc/gpio@7e200000/rgmii-gpio35/pin-rx-ok/function: string = alt4
+/soc/gpio@7e200000/rgmii-irq-gpio34/
+/soc/gpio@7e200000/rgmii-irq-gpio34/phandle: long = 0x000000A0 (160)
+/soc/gpio@7e200000/rgmii-irq-gpio34/pin-irq/
+/soc/gpio@7e200000/rgmii-irq-gpio34/pin-irq/pins: string = gpio34
+/soc/gpio@7e200000/rgmii-irq-gpio34/pin-irq/function: string = alt5
+/soc/gpio@7e200000/rgmii-irq-gpio39/
+/soc/gpio@7e200000/rgmii-irq-gpio39/phandle: long = 0x000000A1 (161)
+/soc/gpio@7e200000/rgmii-irq-gpio39/pin-irq/
+/soc/gpio@7e200000/rgmii-irq-gpio39/pin-irq/pins: string = gpio39
+/soc/gpio@7e200000/rgmii-irq-gpio39/pin-irq/function: string = alt4
+/soc/gpio@7e200000/rgmii-mdio-gpio28/
+/soc/gpio@7e200000/rgmii-mdio-gpio28/phandle: long = 0x000000A2 (162)
+/soc/gpio@7e200000/rgmii-mdio-gpio28/pins-mdio/
+/soc/gpio@7e200000/rgmii-mdio-gpio28/pins-mdio/pins: string list = gpio28
+gpio29
+/soc/gpio@7e200000/rgmii-mdio-gpio28/pins-mdio/function: string = alt5
+/soc/gpio@7e200000/rgmii-mdio-gpio37/
+/soc/gpio@7e200000/rgmii-mdio-gpio37/phandle: long = 0x000000A3 (163)
+/soc/gpio@7e200000/rgmii-mdio-gpio37/pins-mdio/
+/soc/gpio@7e200000/rgmii-mdio-gpio37/pins-mdio/pins: string list = gpio37
+gpio38
+/soc/gpio@7e200000/rgmii-mdio-gpio37/pins-mdio/function: string = alt4
+/soc/gpio@7e200000/spi0-gpio46/
+/soc/gpio@7e200000/spi0-gpio46/phandle: long = 0x000000A4 (164)
+/soc/gpio@7e200000/spi0-gpio46/pins-spi/
+/soc/gpio@7e200000/spi0-gpio46/pins-spi/pins: string list = gpio46
+gpio47
+gpio48
+gpio49
+/soc/gpio@7e200000/spi0-gpio46/pins-spi/function: string = alt2
+/soc/gpio@7e200000/spi2-gpio46/
+/soc/gpio@7e200000/spi2-gpio46/phandle: long = 0x000000A5 (165)
+/soc/gpio@7e200000/spi2-gpio46/pins-spi/
+/soc/gpio@7e200000/spi2-gpio46/pins-spi/pins: string list = gpio46
+gpio47
+gpio48
+gpio49
+gpio50
+/soc/gpio@7e200000/spi2-gpio46/pins-spi/function: string = alt5
+/soc/gpio@7e200000/spi3-gpio0/
+/soc/gpio@7e200000/spi3-gpio0/phandle: long = 0x000000A6 (166)
+/soc/gpio@7e200000/spi3-gpio0/pins-spi/
+/soc/gpio@7e200000/spi3-gpio0/pins-spi/pins: string list = gpio0
+gpio1
+gpio2
+gpio3
+/soc/gpio@7e200000/spi3-gpio0/pins-spi/function: string = alt3
+/soc/gpio@7e200000/spi4-gpio4/
+/soc/gpio@7e200000/spi4-gpio4/phandle: long = 0x000000A7 (167)
+/soc/gpio@7e200000/spi4-gpio4/pins-spi/
+/soc/gpio@7e200000/spi4-gpio4/pins-spi/pins: string list = gpio4
+gpio5
+gpio6
+gpio7
+/soc/gpio@7e200000/spi4-gpio4/pins-spi/function: string = alt3
+/soc/gpio@7e200000/spi5-gpio12/
+/soc/gpio@7e200000/spi5-gpio12/phandle: long = 0x000000A8 (168)
+/soc/gpio@7e200000/spi5-gpio12/pins-spi/
+/soc/gpio@7e200000/spi5-gpio12/pins-spi/pins: string list = gpio12
+gpio13
+gpio14
+gpio15
+/soc/gpio@7e200000/spi5-gpio12/pins-spi/function: string = alt3
+/soc/gpio@7e200000/spi6-gpio18/
+/soc/gpio@7e200000/spi6-gpio18/phandle: long = 0x000000A9 (169)
+/soc/gpio@7e200000/spi6-gpio18/pins-spi/
+/soc/gpio@7e200000/spi6-gpio18/pins-spi/pins: string list = gpio18
+gpio19
+gpio20
+gpio21
+/soc/gpio@7e200000/spi6-gpio18/pins-spi/function: string = alt3
+/soc/gpio@7e200000/uart2-gpio0/
+/soc/gpio@7e200000/uart2-gpio0/phandle: long = 0x000000AA (170)
+/soc/gpio@7e200000/uart2-gpio0/pin-tx/
+/soc/gpio@7e200000/uart2-gpio0/pin-tx/pins: string = gpio0
+/soc/gpio@7e200000/uart2-gpio0/pin-tx/function: string = alt4
+/soc/gpio@7e200000/uart2-gpio0/pin-tx/bias-disable: empty = -
+/soc/gpio@7e200000/uart2-gpio0/pin-rx/
+/soc/gpio@7e200000/uart2-gpio0/pin-rx/pins: string = gpio1
+/soc/gpio@7e200000/uart2-gpio0/pin-rx/function: string = alt4
+/soc/gpio@7e200000/uart2-gpio0/pin-rx/bias-pull-up: empty = -
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/phandle: long = 0x000000AB (171)
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-cts/
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-cts/pins: string = gpio2
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-cts/function: string = alt4
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-cts/bias-pull-up: empty = -
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-rts/
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-rts/pins: string = gpio3
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-rts/function: string = alt4
+/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-rts/bias-disable: empty = -
+/soc/gpio@7e200000/uart3-gpio4/
+/soc/gpio@7e200000/uart3-gpio4/phandle: long = 0x000000AC (172)
+/soc/gpio@7e200000/uart3-gpio4/pin-tx/
+/soc/gpio@7e200000/uart3-gpio4/pin-tx/pins: string = gpio4
+/soc/gpio@7e200000/uart3-gpio4/pin-tx/function: string = alt4
+/soc/gpio@7e200000/uart3-gpio4/pin-tx/bias-disable: empty = -
+/soc/gpio@7e200000/uart3-gpio4/pin-rx/
+/soc/gpio@7e200000/uart3-gpio4/pin-rx/pins: string = gpio5
+/soc/gpio@7e200000/uart3-gpio4/pin-rx/function: string = alt4
+/soc/gpio@7e200000/uart3-gpio4/pin-rx/bias-pull-up: empty = -
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/phandle: long = 0x000000AD (173)
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-cts/
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-cts/pins: string = gpio6
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-cts/function: string = alt4
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-cts/bias-pull-up: empty = -
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-rts/
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-rts/pins: string = gpio7
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-rts/function: string = alt4
+/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-rts/bias-disable: empty = -
+/soc/gpio@7e200000/uart4-gpio8/
+/soc/gpio@7e200000/uart4-gpio8/phandle: long = 0x000000AE (174)
+/soc/gpio@7e200000/uart4-gpio8/pin-tx/
+/soc/gpio@7e200000/uart4-gpio8/pin-tx/pins: string = gpio8
+/soc/gpio@7e200000/uart4-gpio8/pin-tx/function: string = alt4
+/soc/gpio@7e200000/uart4-gpio8/pin-tx/bias-disable: empty = -
+/soc/gpio@7e200000/uart4-gpio8/pin-rx/
+/soc/gpio@7e200000/uart4-gpio8/pin-rx/pins: string = gpio9
+/soc/gpio@7e200000/uart4-gpio8/pin-rx/function: string = alt4
+/soc/gpio@7e200000/uart4-gpio8/pin-rx/bias-pull-up: empty = -
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/phandle: long = 0x000000AF (175)
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-cts/
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-cts/pins: string = gpio10
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-cts/function: string = alt4
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-cts/bias-pull-up: empty = -
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-rts/
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-rts/pins: string = gpio11
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-rts/function: string = alt4
+/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-rts/bias-disable: empty = -
+/soc/gpio@7e200000/uart5-gpio12/
+/soc/gpio@7e200000/uart5-gpio12/phandle: long = 0x000000B0 (176)
+/soc/gpio@7e200000/uart5-gpio12/pin-tx/
+/soc/gpio@7e200000/uart5-gpio12/pin-tx/pins: string = gpio12
+/soc/gpio@7e200000/uart5-gpio12/pin-tx/function: string = alt4
+/soc/gpio@7e200000/uart5-gpio12/pin-tx/bias-disable: empty = -
+/soc/gpio@7e200000/uart5-gpio12/pin-rx/
+/soc/gpio@7e200000/uart5-gpio12/pin-rx/pins: string = gpio13
+/soc/gpio@7e200000/uart5-gpio12/pin-rx/function: string = alt4
+/soc/gpio@7e200000/uart5-gpio12/pin-rx/bias-pull-up: empty = -
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/phandle: long = 0x000000B1 (177)
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-cts/
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-cts/pins: string = gpio14
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-cts/function: string = alt4
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-cts/bias-pull-up: empty = -
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-rts/
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-rts/pins: string = gpio15
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-rts/function: string = alt4
+/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-rts/bias-disable: empty = -
+/soc/gpio@7e200000/gpioout/
+/soc/gpio@7e200000/gpioout/brcm,pins: long = 0x00000006 (6)
+/soc/gpio@7e200000/gpioout/brcm,function: long = 0x00000001 (1)
+/soc/gpio@7e200000/gpioout/phandle: long = 0x000000B2 (178)
+/soc/gpio@7e200000/alt0/
+/soc/gpio@7e200000/alt0/brcm,pins: blob = 00 00 00 04 00 00 00 05 00 00 00 07 00 00 00 08
+00 00 00 09 00 00 00 0A 00 00 00 0B
+/soc/gpio@7e200000/alt0/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/alt0/phandle: long = 0x000000B3 (179)
+/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio0/
+/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio0/brcm,pins: blob = 00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03
+00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07
+00 00 00 08 00 00 00 09 00 00 00 0C 00 00 00 0D
+00 00 00 0E 00 00 00 0F 00 00 00 10 00 00 00 11
+00 00 00 14 00 00 00 15 00 00 00 16 00 00 00 17
+00 00 00 18 00 00 00 19
+/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio0/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio0/brcm,pull: long = 0x00000000 (0)
+/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio0/phandle: long = 0x000000B4 (180)
+/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio2/
+/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio2/brcm,pins: blob = 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05
+00 00 00 06 00 00 00 07 00 00 00 08 00 00 00 09
+00 00 00 0C 00 00 00 0D 00 00 00 0E 00 00 00 0F
+00 00 00 10 00 00 00 11 00 00 00 14 00 00 00 15
+00 00 00 16 00 00 00 17 00 00 00 18 00 00 00 19
+/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio2/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio2/phandle: long = 0x000000B5 (181)
+/soc/gpio@7e200000/dpi_18bit_gpio0/
+/soc/gpio@7e200000/dpi_18bit_gpio0/brcm,pins: blob = 00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03
+00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07
+00 00 00 08 00 00 00 09 00 00 00 0A 00 00 00 0B
+00 00 00 0C 00 00 00 0D 00 00 00 0E 00 00 00 0F
+00 00 00 10 00 00 00 11 00 00 00 12 00 00 00 13
+00 00 00 14 00 00 00 15
+/soc/gpio@7e200000/dpi_18bit_gpio0/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/dpi_18bit_gpio0/phandle: long = 0x000000B6 (182)
+/soc/gpio@7e200000/dpi_18bit_gpio2/
+/soc/gpio@7e200000/dpi_18bit_gpio2/brcm,pins: blob = 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05
+00 00 00 06 00 00 00 07 00 00 00 08 00 00 00 09
+00 00 00 0A 00 00 00 0B 00 00 00 0C 00 00 00 0D
+00 00 00 0E 00 00 00 0F 00 00 00 10 00 00 00 11
+00 00 00 12 00 00 00 13 00 00 00 14 00 00 00 15
+/soc/gpio@7e200000/dpi_18bit_gpio2/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/dpi_18bit_gpio2/phandle: long = 0x000000B7 (183)
+/soc/gpio@7e200000/dpi_16bit_gpio0/
+/soc/gpio@7e200000/dpi_16bit_gpio0/brcm,pins: blob = 00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03
+00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07
+00 00 00 08 00 00 00 09 00 00 00 0A 00 00 00 0B
+00 00 00 0C 00 00 00 0D 00 00 00 0E 00 00 00 0F
+00 00 00 10 00 00 00 11 00 00 00 12 00 00 00 13
+/soc/gpio@7e200000/dpi_16bit_gpio0/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/dpi_16bit_gpio0/phandle: long = 0x000000B8 (184)
+/soc/gpio@7e200000/dpi_16bit_gpio2/
+/soc/gpio@7e200000/dpi_16bit_gpio2/brcm,pins: blob = 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05
+00 00 00 06 00 00 00 07 00 00 00 08 00 00 00 09
+00 00 00 0A 00 00 00 0B 00 00 00 0C 00 00 00 0D
+00 00 00 0E 00 00 00 0F 00 00 00 10 00 00 00 11
+00 00 00 12 00 00 00 13
+/soc/gpio@7e200000/dpi_16bit_gpio2/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/dpi_16bit_gpio2/phandle: long = 0x000000B9 (185)
+/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio0/
+/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio0/brcm,pins: blob = 00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03
+00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07
+00 00 00 08 00 00 00 0C 00 00 00 0D 00 00 00 0E
+00 00 00 0F 00 00 00 10 00 00 00 11 00 00 00 14
+00 00 00 15 00 00 00 16 00 00 00 17 00 00 00 18
+/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio0/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio0/phandle: long = 0x000000BA (186)
+/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio2/
+/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio2/brcm,pins: blob = 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05
+00 00 00 06 00 00 00 07 00 00 00 08 00 00 00 0C
+00 00 00 0D 00 00 00 0E 00 00 00 0F 00 00 00 10
+00 00 00 11 00 00 00 14 00 00 00 15 00 00 00 16
+00 00 00 17 00 00 00 18
+/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio2/brcm,function: long = 0x00000006 (6)
+/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio2/phandle: long = 0x000000BB (187)
+/soc/gpio@7e200000/spi0_pins/
+/soc/gpio@7e200000/spi0_pins/brcm,pins: blob = 00 00 00 09 00 00 00 0A 00 00 00 0B
+/soc/gpio@7e200000/spi0_pins/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/spi0_pins/phandle: long = 0x0000000E (14)
+/soc/gpio@7e200000/spi0_cs_pins/
+/soc/gpio@7e200000/spi0_cs_pins/brcm,pins: quad = 0x0000000800000007
+/soc/gpio@7e200000/spi0_cs_pins/brcm,function: long = 0x00000001 (1)
+/soc/gpio@7e200000/spi0_cs_pins/phandle: long = 0x0000000F (15)
+/soc/gpio@7e200000/spi3_pins/
+/soc/gpio@7e200000/spi3_pins/brcm,pins: blob = 00 00 00 01 00 00 00 02 00 00 00 03
+/soc/gpio@7e200000/spi3_pins/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/spi3_pins/phandle: long = 0x0000001C (28)
+/soc/gpio@7e200000/spi3_cs_pins/
+/soc/gpio@7e200000/spi3_cs_pins/brcm,pins: quad = 0x00000018 (24)
+/soc/gpio@7e200000/spi3_cs_pins/brcm,function: long = 0x00000001 (1)
+/soc/gpio@7e200000/spi3_cs_pins/phandle: long = 0x0000001D (29)
+/soc/gpio@7e200000/spi4_pins/
+/soc/gpio@7e200000/spi4_pins/brcm,pins: blob = 00 00 00 05 00 00 00 06 00 00 00 07
+/soc/gpio@7e200000/spi4_pins/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/spi4_pins/phandle: long = 0x0000001E (30)
+/soc/gpio@7e200000/spi4_cs_pins/
+/soc/gpio@7e200000/spi4_cs_pins/brcm,pins: quad = 0x0000000400000019
+/soc/gpio@7e200000/spi4_cs_pins/brcm,function: long = 0x00000001 (1)
+/soc/gpio@7e200000/spi4_cs_pins/phandle: long = 0x0000001F (31)
+/soc/gpio@7e200000/spi5_pins/
+/soc/gpio@7e200000/spi5_pins/brcm,pins: blob = 00 00 00 0D 00 00 00 0E 00 00 00 0F
+/soc/gpio@7e200000/spi5_pins/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/spi5_pins/phandle: long = 0x00000020 (32)
+/soc/gpio@7e200000/spi5_cs_pins/
+/soc/gpio@7e200000/spi5_cs_pins/brcm,pins: quad = 0x0000000C0000001A
+/soc/gpio@7e200000/spi5_cs_pins/brcm,function: long = 0x00000001 (1)
+/soc/gpio@7e200000/spi5_cs_pins/phandle: long = 0x00000021 (33)
+/soc/gpio@7e200000/spi6_pins/
+/soc/gpio@7e200000/spi6_pins/brcm,pins: blob = 00 00 00 13 00 00 00 14 00 00 00 15
+/soc/gpio@7e200000/spi6_pins/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/spi6_pins/phandle: long = 0x00000022 (34)
+/soc/gpio@7e200000/spi6_cs_pins/
+/soc/gpio@7e200000/spi6_cs_pins/brcm,pins: quad = 0x000000120000001B
+/soc/gpio@7e200000/spi6_cs_pins/brcm,function: long = 0x00000001 (1)
+/soc/gpio@7e200000/spi6_cs_pins/phandle: long = 0x00000023 (35)
+/soc/gpio@7e200000/i2c0/
+/soc/gpio@7e200000/i2c0/brcm,pins: quad = 0x00000001 (1)
+/soc/gpio@7e200000/i2c0/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/i2c0/brcm,pull: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c0/phandle: long = 0x000000BC (188)
+/soc/gpio@7e200000/i2c1/
+/soc/gpio@7e200000/i2c1/brcm,pins: quad = 0x0000000200000003
+/soc/gpio@7e200000/i2c1/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/i2c1/brcm,pull: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c1/phandle: long = 0x00000015 (21)
+/soc/gpio@7e200000/i2c3/
+/soc/gpio@7e200000/i2c3/brcm,pins: quad = 0x0000000400000005
+/soc/gpio@7e200000/i2c3/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c3/brcm,pull: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c3/phandle: long = 0x00000024 (36)
+/soc/gpio@7e200000/i2c4/
+/soc/gpio@7e200000/i2c4/brcm,pins: quad = 0x0000000800000009
+/soc/gpio@7e200000/i2c4/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c4/brcm,pull: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c4/phandle: long = 0x00000025 (37)
+/soc/gpio@7e200000/i2c5/
+/soc/gpio@7e200000/i2c5/brcm,pins: quad = 0x0000000C0000000D
+/soc/gpio@7e200000/i2c5/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c5/brcm,pull: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c5/phandle: long = 0x00000026 (38)
+/soc/gpio@7e200000/i2c6/
+/soc/gpio@7e200000/i2c6/brcm,pins: quad = 0x0000001600000017
+/soc/gpio@7e200000/i2c6/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c6/brcm,pull: long = 0x00000002 (2)
+/soc/gpio@7e200000/i2c6/phandle: long = 0x00000027 (39)
+/soc/gpio@7e200000/i2s/
+/soc/gpio@7e200000/i2s/brcm,pins: blob = 00 00 00 12 00 00 00 13 00 00 00 14 00 00 00 15
+/soc/gpio@7e200000/i2s/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/i2s/phandle: long = 0x0000000D (13)
+/soc/gpio@7e200000/sdio_pins/
+/soc/gpio@7e200000/sdio_pins/brcm,pins: blob = 00 00 00 22 00 00 00 23 00 00 00 24 00 00 00 25
+00 00 00 26 00 00 00 27
+/soc/gpio@7e200000/sdio_pins/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/sdio_pins/brcm,pull: blob = 00 00 00 00 00 00 00 02 00 00 00 02 00 00 00 02
+00 00 00 02 00 00 00 02
+/soc/gpio@7e200000/sdio_pins/phandle: long = 0x00000033 (51)
+/soc/gpio@7e200000/uart2_pins/
+/soc/gpio@7e200000/uart2_pins/brcm,pins: quad = 0x00000001 (1)
+/soc/gpio@7e200000/uart2_pins/brcm,function: long = 0x00000003 (3)
+/soc/gpio@7e200000/uart2_pins/brcm,pull: quad = 0x00000002 (2)
+/soc/gpio@7e200000/uart2_pins/phandle: long = 0x00000018 (24)
+/soc/gpio@7e200000/uart3_pins/
+/soc/gpio@7e200000/uart3_pins/brcm,pins: quad = 0x0000000400000005
+/soc/gpio@7e200000/uart3_pins/brcm,function: long = 0x00000003 (3)
+/soc/gpio@7e200000/uart3_pins/brcm,pull: quad = 0x00000002 (2)
+/soc/gpio@7e200000/uart3_pins/phandle: long = 0x00000019 (25)
+/soc/gpio@7e200000/uart4_pins/
+/soc/gpio@7e200000/uart4_pins/brcm,pins: quad = 0x0000000800000009
+/soc/gpio@7e200000/uart4_pins/brcm,function: long = 0x00000003 (3)
+/soc/gpio@7e200000/uart4_pins/brcm,pull: quad = 0x00000002 (2)
+/soc/gpio@7e200000/uart4_pins/phandle: long = 0x0000001A (26)
+/soc/gpio@7e200000/uart5_pins/
+/soc/gpio@7e200000/uart5_pins/brcm,pins: quad = 0x0000000C0000000D
+/soc/gpio@7e200000/uart5_pins/brcm,function: long = 0x00000003 (3)
+/soc/gpio@7e200000/uart5_pins/brcm,pull: quad = 0x00000002 (2)
+/soc/gpio@7e200000/uart5_pins/phandle: long = 0x0000001B (27)
+/soc/gpio@7e200000/bt_pins/
+/soc/gpio@7e200000/bt_pins/brcm,pins: blob = 2D 00
+/soc/gpio@7e200000/bt_pins/brcm,function: long = 0x00000000 (0)
+/soc/gpio@7e200000/bt_pins/brcm,pull: long = 0x00000002 (2)
+/soc/gpio@7e200000/bt_pins/phandle: long = 0x0000000A (10)
+/soc/gpio@7e200000/uart0_pins/
+/soc/gpio@7e200000/uart0_pins/brcm,pins: blob = 00 00 00 1E 00 00 00 1F 00 00 00 20 00 00 00 21
+/soc/gpio@7e200000/uart0_pins/brcm,function: long = 0x00000007 (7)
+/soc/gpio@7e200000/uart0_pins/brcm,pull: blob = 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 02
+/soc/gpio@7e200000/uart0_pins/phandle: long = 0x00000009 (9)
+/soc/gpio@7e200000/uart1_pins/
+/soc/gpio@7e200000/uart1_pins/brcm,pins: empty = -
+/soc/gpio@7e200000/uart1_pins/brcm,function: empty = -
+/soc/gpio@7e200000/uart1_pins/brcm,pull: empty = -
+/soc/gpio@7e200000/uart1_pins/phandle: long = 0x00000012 (18)
+/soc/gpio@7e200000/uart1_bt_pins/
+/soc/gpio@7e200000/uart1_bt_pins/brcm,pins: blob = 00 00 00 20 00 00 00 21 00 00 00 1E 00 00 00 1F
+/soc/gpio@7e200000/uart1_bt_pins/brcm,function: long = 0x00000002 (2)
+/soc/gpio@7e200000/uart1_bt_pins/brcm,pull: blob = 00 00 00 00 00 00 00 02 00 00 00 02 00 00 00 00
+/soc/gpio@7e200000/uart1_bt_pins/phandle: long = 0x000000BD (189)
+/soc/gpio@7e200000/audio_pins/
+/soc/gpio@7e200000/audio_pins/brcm,pins: quad = 0x0000002800000029
+/soc/gpio@7e200000/audio_pins/brcm,function: long = 0x00000004 (4)
+/soc/gpio@7e200000/audio_pins/brcm,pull: long = 0x00000000 (0)
+/soc/gpio@7e200000/audio_pins/phandle: long = 0x00000032 (50)
+/soc/serial@7e201000/
+/soc/serial@7e201000/compatible: string list = arm,pl011
+arm,primecell
+/soc/serial@7e201000/reg: quad = 0x7E20100000000200
+/soc/serial@7e201000/interrupts: blob = 00 00 00 00 00 00 00 79 00 00 00 04
+/soc/serial@7e201000/clocks: blob = 00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14
+/soc/serial@7e201000/clock-names: string list = uartclk
+apb_pclk
+/soc/serial@7e201000/arm,primecell-periphid: long = 0x00341011 (3411985)
+/soc/serial@7e201000/status: string = okay
+/soc/serial@7e201000/cts-event-workaround: empty = -
+/soc/serial@7e201000/pinctrl-names: string = default
+/soc/serial@7e201000/pinctrl-0: quad = 0x000000090000000A
+/soc/serial@7e201000/uart-has-rtscts: empty = -
+/soc/serial@7e201000/skip-init: empty = -
+/soc/serial@7e201000/phandle: long = 0x00000043 (67)
+/soc/serial@7e201000/bluetooth/
+/soc/serial@7e201000/bluetooth/compatible: string = brcm,bcm43438-bt
+/soc/serial@7e201000/bluetooth/max-speed: long = 0x002DC6C0 (3000000)
+/soc/serial@7e201000/bluetooth/shutdown-gpios: blob = 00 00 00 0B 00 00 00 00 00 00 00 00
+/soc/serial@7e201000/bluetooth/local-bd-address: blob = 01 4B BB 01 5F E4
+/soc/serial@7e201000/bluetooth/fallback-bd-address: empty = -
+/soc/serial@7e201000/bluetooth/status: string = okay
+/soc/serial@7e201000/bluetooth/phandle: long = 0x00000041 (65)
+/soc/mmc@7e202000/
+/soc/mmc@7e202000/compatible: string = brcm,bcm2835-sdhost
+/soc/mmc@7e202000/reg: quad = 0x7E20200000000100
+/soc/mmc@7e202000/interrupts: blob = 00 00 00 00 00 00 00 78 00 00 00 04
+/soc/mmc@7e202000/clocks: quad = 0x0000000800000014
+/soc/mmc@7e202000/status: string = disabled
+/soc/mmc@7e202000/dmas: quad = 0x0000000C2000000D
+/soc/mmc@7e202000/dma-names: string = rx-tx
+/soc/mmc@7e202000/bus-width: long = 0x00000004 (4)
+/soc/mmc@7e202000/brcm,overclock-50: long = 0x00000000 (0)
+/soc/mmc@7e202000/brcm,pio-limit: long = 0x00000001 (1)
+/soc/mmc@7e202000/firmware: long = 0x00000006 (6)
+/soc/mmc@7e202000/phandle: long = 0x0000004B (75)
+/soc/i2s@7e203000/
+/soc/i2s@7e203000/compatible: string = brcm,bcm2835-i2s
+/soc/i2s@7e203000/reg: quad = 0x7E20300000000024
+/soc/i2s@7e203000/clocks: quad = 0x000000080000001F
+/soc/i2s@7e203000/status: string = disabled
+/soc/i2s@7e203000/#sound-dai-cells: long = 0x00000000 (0)
+/soc/i2s@7e203000/dmas: blob = 00 00 00 0C 00 00 00 02 00 00 00 0C 00 00 00 03
+/soc/i2s@7e203000/dma-names: string list = tx
+rx
+/soc/i2s@7e203000/pinctrl-names: string = default
+/soc/i2s@7e203000/pinctrl-0: long = 0x0000000D (13)
+/soc/i2s@7e203000/phandle: long = 0x00000045 (69)
+/soc/spi@7e204000/
+/soc/spi@7e204000/compatible: string = brcm,bcm2835-spi
+/soc/spi@7e204000/reg: quad = 0x7E20400000000200
+/soc/spi@7e204000/interrupts: blob = 00 00 00 00 00 00 00 76 00 00 00 04
+/soc/spi@7e204000/clocks: quad = 0x0000000800000014
+/soc/spi@7e204000/#address-cells: long = 0x00000001 (1)
+/soc/spi@7e204000/#size-cells: long = 0x00000000 (0)
+/soc/spi@7e204000/status: string = disabled
+/soc/spi@7e204000/dmas: blob = 00 00 00 0C 00 00 00 06 00 00 00 0C 00 00 00 07
+/soc/spi@7e204000/dma-names: string list = tx
+rx
+/soc/spi@7e204000/pinctrl-names: string = default
+/soc/spi@7e204000/pinctrl-0: quad = 0x0000000E0000000F
+/soc/spi@7e204000/cs-gpios: blob = 00 00 00 07 00 00 00 08 00 00 00 01 00 00 00 07
+00 00 00 07 00 00 00 01
+/soc/spi@7e204000/phandle: long = 0x00000046 (70)
+/soc/spi@7e204000/spidev@0/
+/soc/spi@7e204000/spidev@0/compatible: string = spidev
+/soc/spi@7e204000/spidev@0/reg: long = 0x00000000 (0)
+/soc/spi@7e204000/spidev@0/#address-cells: long = 0x00000001 (1)
+/soc/spi@7e204000/spidev@0/#size-cells: long = 0x00000000 (0)
+/soc/spi@7e204000/spidev@0/spi-max-frequency: long = 0x07735940 (125000000)
+/soc/spi@7e204000/spidev@0/phandle: long = 0x000000BE (190)
+/soc/spi@7e204000/spidev@1/
+/soc/spi@7e204000/spidev@1/compatible: string = spidev
+/soc/spi@7e204000/spidev@1/reg: long = 0x00000001 (1)
+/soc/spi@7e204000/spidev@1/#address-cells: long = 0x00000001 (1)
+/soc/spi@7e204000/spidev@1/#size-cells: long = 0x00000000 (0)
+/soc/spi@7e204000/spidev@1/spi-max-frequency: long = 0x07735940 (125000000)
+/soc/spi@7e204000/spidev@1/phandle: long = 0x000000BF (191)
+/soc/i2c@7e205000/
+/soc/i2c@7e205000/compatible: string list = brcm,bcm2711-i2c
+brcm,bcm2835-i2c
+/soc/i2c@7e205000/reg: quad = 0x7E20500000000200
+/soc/i2c@7e205000/interrupts: blob = 00 00 00 00 00 00 00 75 00 00 00 04
+/soc/i2c@7e205000/clocks: quad = 0x0000000800000014
+/soc/i2c@7e205000/#address-cells: long = 0x00000001 (1)
+/soc/i2c@7e205000/#size-cells: long = 0x00000000 (0)
+/soc/i2c@7e205000/status: string = disabled
+/soc/i2c@7e205000/clock-frequency: long = 0x000186A0 (100000)
+/soc/i2c@7e205000/phandle: long = 0x00000034 (52)
+/soc/dpi@7e208000/
+/soc/dpi@7e208000/compatible: string = brcm,bcm2835-dpi
+/soc/dpi@7e208000/reg: quad = 0x7E2080000000008C
+/soc/dpi@7e208000/clocks: blob = 00 00 00 08 00 00 00 14 00 00 00 08 00 00 00 2C
+/soc/dpi@7e208000/clock-names: string list = core
+pixel
+/soc/dpi@7e208000/status: string = disabled
+/soc/dpi@7e208000/phandle: long = 0x000000C0 (192)
+/soc/dsi@7e209000/
+/soc/dsi@7e209000/compatible: string = brcm,bcm2835-dsi0
+/soc/dsi@7e209000/reg: quad = 0x7E20900000000078
+/soc/dsi@7e209000/interrupts: blob = 00 00 00 00 00 00 00 64 00 00 00 04
+/soc/dsi@7e209000/#address-cells: long = 0x00000001 (1)
+/soc/dsi@7e209000/#size-cells: long = 0x00000000 (0)
+/soc/dsi@7e209000/#clock-cells: long = 0x00000001 (1)
+/soc/dsi@7e209000/clocks: blob = 00 00 00 08 00 00 00 22 00 00 00 08 00 00 00 2F
+00 00 00 08 00 00 00 31
+/soc/dsi@7e209000/clock-names: string list = phy
+escape
+pixel
+/soc/dsi@7e209000/clock-output-names: string list = dsi0_byte
+dsi0_ddr2
+dsi0_ddr
+/soc/dsi@7e209000/status: string = disabled
+/soc/dsi@7e209000/power-domains: quad = 0x0000001000000011
+/soc/dsi@7e209000/phandle: long = 0x00000004 (4)
+/soc/aux@7e215000/
+/soc/aux@7e215000/compatible: string = brcm,bcm2835-aux
+/soc/aux@7e215000/#clock-cells: long = 0x00000001 (1)
+/soc/aux@7e215000/reg: quad = 0x7E21500000000008
+/soc/aux@7e215000/clocks: quad = 0x0000000800000014
+/soc/aux@7e215000/phandle: long = 0x00000011 (17)
+/soc/serial@7e215040/
+/soc/serial@7e215040/compatible: string = brcm,bcm2835-aux-uart
+/soc/serial@7e215040/reg: quad = 0x7E21504000000040
+/soc/serial@7e215040/interrupts: blob = 00 00 00 00 00 00 00 5D 00 00 00 04
+/soc/serial@7e215040/clocks: quad = 0x0000001100000000
+/soc/serial@7e215040/status: string = disabled
+/soc/serial@7e215040/pinctrl-names: string = default
+/soc/serial@7e215040/pinctrl-0: long = 0x00000012 (18)
+/soc/serial@7e215040/skip-init: empty = -
+/soc/serial@7e215040/phandle: long = 0x00000044 (68)
+/soc/serial@7e215040/bluetooth/
+/soc/serial@7e215040/bluetooth/compatible: string = brcm,bcm43438-bt
+/soc/serial@7e215040/bluetooth/max-speed: long = 0x00038400 (230400)
+/soc/serial@7e215040/bluetooth/shutdown-gpios: blob = 00 00 00 0B 00 00 00 00 00 00 00 00
+/soc/serial@7e215040/bluetooth/local-bd-address: blob = 00 00 00 00 00 00
+/soc/serial@7e215040/bluetooth/fallback-bd-address: empty = -
+/soc/serial@7e215040/bluetooth/status: string = disabled
+/soc/serial@7e215040/bluetooth/phandle: long = 0x00000042 (66)
+/soc/spi@7e215080/
+/soc/spi@7e215080/compatible: string = brcm,bcm2835-aux-spi
+/soc/spi@7e215080/reg: quad = 0x7E21508000000040
+/soc/spi@7e215080/interrupts: blob = 00 00 00 00 00 00 00 5D 00 00 00 04
+/soc/spi@7e215080/clocks: quad = 0x0000001100000001
+/soc/spi@7e215080/#address-cells: long = 0x00000001 (1)
+/soc/spi@7e215080/#size-cells: long = 0x00000000 (0)
+/soc/spi@7e215080/status: string = disabled
+/soc/spi@7e215080/phandle: long = 0x000000C1 (193)
+/soc/spi@7e2150c0/
+/soc/spi@7e2150c0/compatible: string = brcm,bcm2835-aux-spi
+/soc/spi@7e2150c0/reg: quad = 0x7E2150C000000040
+/soc/spi@7e2150c0/interrupts: blob = 00 00 00 00 00 00 00 5D 00 00 00 04
+/soc/spi@7e2150c0/clocks: quad = 0x0000001100000002
+/soc/spi@7e2150c0/#address-cells: long = 0x00000001 (1)
+/soc/spi@7e2150c0/#size-cells: long = 0x00000000 (0)
+/soc/spi@7e2150c0/status: string = disabled
+/soc/spi@7e2150c0/phandle: long = 0x000000C2 (194)
+/soc/pwm@7e20c000/
+/soc/pwm@7e20c000/compatible: string = brcm,bcm2835-pwm
+/soc/pwm@7e20c000/reg: quad = 0x7E20C00000000028
+/soc/pwm@7e20c000/clocks: quad = 0x000000080000001E
+/soc/pwm@7e20c000/assigned-clocks: quad = 0x000000080000001E
+/soc/pwm@7e20c000/assigned-clock-rates: long = 0x02FAF080 (50000000)
+/soc/pwm@7e20c000/#pwm-cells: long = 0x00000003 (3)
+/soc/pwm@7e20c000/status: string = disabled
+/soc/pwm@7e20c000/phandle: long = 0x000000C3 (195)
+/soc/mmc@7e300000/
+/soc/mmc@7e300000/compatible: string list = brcm,bcm2835-mmc
+brcm,bcm2835-sdhci
+/soc/mmc@7e300000/reg: quad = 0x7E30000000000100
+/soc/mmc@7e300000/interrupts: blob = 00 00 00 00 00 00 00 7E 00 00 00 04
+/soc/mmc@7e300000/clocks: quad = 0x000000080000001C
+/soc/mmc@7e300000/status: string = disabled
+/soc/mmc@7e300000/pinctrl-names: string = default
+/soc/mmc@7e300000/pinctrl-0: long = 0x00000013 (19)
+/soc/mmc@7e300000/bus-width: long = 0x00000004 (4)
+/soc/mmc@7e300000/dmas: quad = 0x0000000C0000000B
+/soc/mmc@7e300000/dma-names: string = rx-tx
+/soc/mmc@7e300000/brcm,overclock-50: long = 0x00000000 (0)
+/soc/mmc@7e300000/phandle: long = 0x0000004C (76)
+/soc/hvs@7e400000/
+/soc/hvs@7e400000/compatible: string = brcm,bcm2711-hvs
+/soc/hvs@7e400000/reg: quad = 0x7E40000000008000
+/soc/hvs@7e400000/interrupts: blob = 00 00 00 00 00 00 00 61 00 00 00 04
+/soc/hvs@7e400000/clocks: quad = 0x0000001400000004
+/soc/hvs@7e400000/status: string = disabled
+/soc/hvs@7e400000/phandle: long = 0x000000C4 (196)
+/soc/dsi@7e700000/
+/soc/dsi@7e700000/compatible: string = brcm,bcm2711-dsi1
+/soc/dsi@7e700000/reg: quad = 0x7E7000000000008C
+/soc/dsi@7e700000/interrupts: blob = 00 00 00 00 00 00 00 6C 00 00 00 04
+/soc/dsi@7e700000/#address-cells: long = 0x00000001 (1)
+/soc/dsi@7e700000/#size-cells: long = 0x00000000 (0)
+/soc/dsi@7e700000/#clock-cells: long = 0x00000001 (1)
+/soc/dsi@7e700000/clocks: blob = 00 00 00 08 00 00 00 23 00 00 00 08 00 00 00 30
+00 00 00 08 00 00 00 32
+/soc/dsi@7e700000/clock-names: string list = phy
+escape
+pixel
+/soc/dsi@7e700000/clock-output-names: string list = dsi1_byte
+dsi1_ddr2
+dsi1_ddr
+/soc/dsi@7e700000/status: string = disabled
+/soc/dsi@7e700000/power-domains: quad = 0x0000001000000012
+/soc/dsi@7e700000/phandle: long = 0x00000005 (5)
+/soc/csi@7e800000/
+/soc/csi@7e800000/compatible: string = brcm,bcm2835-unicam
+/soc/csi@7e800000/reg: blob = 7E 80 00 00 00 00 08 00 7E 80 20 00 00 00 00 04
+/soc/csi@7e800000/reg-names: string list = unicam
+cmi
+/soc/csi@7e800000/interrupts: blob = 00 00 00 00 00 00 00 66 00 00 00 04
+/soc/csi@7e800000/brcm,num-data-lanes: long = 0x00000002 (2)
+/soc/csi@7e800000/status: string = disabled
+/soc/csi@7e800000/clocks: blob = 00 00 00 08 00 00 00 2D 00 00 00 14 00 00 00 04
+/soc/csi@7e800000/clock-names: string list = lp
+vpu
+/soc/csi@7e800000/power-domains: quad = 0x000000100000000C
+/soc/csi@7e800000/phandle: long = 0x00000051 (81)
+/soc/csi@7e800000/port/
+/soc/csi@7e801000/
+/soc/csi@7e801000/compatible: string = brcm,bcm2835-unicam
+/soc/csi@7e801000/reg: blob = 7E 80 10 00 00 00 08 00 7E 80 20 04 00 00 00 04
+/soc/csi@7e801000/reg-names: string list = unicam
+cmi
+/soc/csi@7e801000/interrupts: blob = 00 00 00 00 00 00 00 67 00 00 00 04
+/soc/csi@7e801000/brcm,num-data-lanes: long = 0x00000002 (2)
+/soc/csi@7e801000/status: string = disabled
+/soc/csi@7e801000/clocks: blob = 00 00 00 08 00 00 00 2E 00 00 00 14 00 00 00 04
+/soc/csi@7e801000/clock-names: string list = lp
+vpu
+/soc/csi@7e801000/power-domains: quad = 0x000000100000000D
+/soc/csi@7e801000/phandle: long = 0x00000050 (80)
+/soc/csi@7e801000/port/
+/soc/i2c@7e804000/
+/soc/i2c@7e804000/compatible: string list = brcm,bcm2711-i2c
+brcm,bcm2835-i2c
+/soc/i2c@7e804000/reg: quad = 0x7E80400000001000
+/soc/i2c@7e804000/interrupts: blob = 00 00 00 00 00 00 00 75 00 00 00 04
+/soc/i2c@7e804000/clocks: quad = 0x0000000800000014
+/soc/i2c@7e804000/#address-cells: long = 0x00000001 (1)
+/soc/i2c@7e804000/#size-cells: long = 0x00000000 (0)
+/soc/i2c@7e804000/status: string = disabled
+/soc/i2c@7e804000/pinctrl-names: string = default
+/soc/i2c@7e804000/pinctrl-0: long = 0x00000015 (21)
+/soc/i2c@7e804000/clock-frequency: long = 0x000186A0 (100000)
+/soc/i2c@7e804000/phandle: long = 0x00000048 (72)
+/soc/usb@7e980000/
+/soc/usb@7e980000/compatible: string = brcm,bcm2708-usb
+/soc/usb@7e980000/reg: blob = 7E 98 00 00 00 01 00 00 7E 00 B2 00 00 00 02 00
+/soc/usb@7e980000/interrupts: blob = 00 00 00 00 00 00 00 49 00 00 00 04 00 00 00 00
+00 00 00 28 00 00 00 04
+/soc/usb@7e980000/#address-cells: long = 0x00000001 (1)
+/soc/usb@7e980000/#size-cells: long = 0x00000000 (0)
+/soc/usb@7e980000/clocks: long = 0x00000016 (22)
+/soc/usb@7e980000/clock-names: string = otg
+/soc/usb@7e980000/phys: long = 0x00000017 (23)
+/soc/usb@7e980000/phy-names: string = usb2-phy
+/soc/usb@7e980000/power-domains: quad = 0x0000001000000006
+/soc/usb@7e980000/interrupt-names: string list = usb
+soft
+/soc/usb@7e980000/status: string = disabled
+/soc/usb@7e980000/phandle: long = 0x000000C5 (197)
+/soc/interrupt-controller@40000000/
+/soc/interrupt-controller@40000000/compatible: string = brcm,bcm2836-l1-intc
+/soc/interrupt-controller@40000000/reg: quad = 0x4000000000000100
+/soc/interrupt-controller@40000000/phandle: long = 0x000000C6 (198)
+/soc/interrupt-controller@40041000/
+/soc/interrupt-controller@40041000/interrupt-controller: empty = -
+/soc/interrupt-controller@40041000/#interrupt-cells: long = 0x00000003 (3)
+/soc/interrupt-controller@40041000/compatible: string = arm,gic-400
+/soc/interrupt-controller@40041000/reg: blob = 40 04 10 00 00 00 10 00 40 04 20 00 00 00 20 00
+40 04 40 00 00 00 20 00 40 04 60 00 00 00 20 00
+/soc/interrupt-controller@40041000/interrupts: blob = 00 00 00 01 00 00 00 09 00 00 0F 04
+/soc/interrupt-controller@40041000/phandle: long = 0x00000001 (1)
+/soc/avs-monitor@7d5d2000/
+/soc/avs-monitor@7d5d2000/compatible: string list = brcm,bcm2711-avs-monitor
+syscon
+simple-mfd
+/soc/avs-monitor@7d5d2000/reg: quad = 0x7D5D200000000F00
+/soc/avs-monitor@7d5d2000/phandle: long = 0x000000C7 (199)
+/soc/avs-monitor@7d5d2000/thermal/
+/soc/avs-monitor@7d5d2000/thermal/compatible: string = brcm,bcm2711-thermal
+/soc/avs-monitor@7d5d2000/thermal/#thermal-sensor-cells: long = 0x00000000 (0)
+/soc/avs-monitor@7d5d2000/thermal/phandle: long = 0x00000002 (2)
+/soc/dma-controller@7e007000/
+/soc/dma-controller@7e007000/compatible: string = brcm,bcm2835-dma
+/soc/dma-controller@7e007000/reg: quad = 0x7E00700000000B00
+/soc/dma-controller@7e007000/interrupts: blob = 00 00 00 00 00 00 00 50 00 00 00 04 00 00 00 00
+00 00 00 51 00 00 00 04 00 00 00 00 00 00 00 52
+00 00 00 04 00 00 00 00 00 00 00 53 00 00 00 04
+00 00 00 00 00 00 00 54 00 00 00 04 00 00 00 00
+00 00 00 55 00 00 00 04 00 00 00 00 00 00 00 56
+00 00 00 04 00 00 00 00 00 00 00 57 00 00 00 04
+00 00 00 00 00 00 00 57 00 00 00 04 00 00 00 00
+00 00 00 58 00 00 00 04 00 00 00 00 00 00 00 58
+00 00 00 04
+/soc/dma-controller@7e007000/interrupt-names: string list = dma0
+dma1
+dma2
+dma3
+dma4
+dma5
+dma6
+dma7
+dma8
+dma9
+dma10
+/soc/dma-controller@7e007000/#dma-cells: long = 0x00000001 (1)
+/soc/dma-controller@7e007000/brcm,dma-channel-mask: long = 0x000007F5 (2037)
+/soc/dma-controller@7e007000/phandle: long = 0x0000000C (12)
+/soc/watchdog@7e100000/
+/soc/watchdog@7e100000/compatible: string list = brcm,bcm2711-pm
+brcm,bcm2835-pm-wdt
+/soc/watchdog@7e100000/#power-domain-cells: long = 0x00000001 (1)
+/soc/watchdog@7e100000/#reset-cells: long = 0x00000001 (1)
+/soc/watchdog@7e100000/reg: blob = 7E 10 00 00 00 00 01 14 7E 00 A0 00 00 00 00 24
+7E C1 10 00 00 00 00 20
+/soc/watchdog@7e100000/reg-names: string list = pm
+asb
+rpivid_asb
+/soc/watchdog@7e100000/clocks: blob = 00 00 00 08 00 00 00 15 00 00 00 08 00 00 00 1D
+00 00 00 08 00 00 00 17 00 00 00 08 00 00 00 16
+/soc/watchdog@7e100000/clock-names: string list = v3d
+peri_image
+h264
+isp
+/soc/watchdog@7e100000/system-power-controller: empty = -
+/soc/watchdog@7e100000/phandle: long = 0x00000049 (73)
+/soc/rng@7e104000/
+/soc/rng@7e104000/compatible: string = brcm,bcm2711-rng200
+/soc/rng@7e104000/reg: quad = 0x7E10400000000028
+/soc/rng@7e104000/status: string = okay
+/soc/rng@7e104000/phandle: long = 0x0000004A (74)
+/soc/serial@7e201400/
+/soc/serial@7e201400/compatible: string list = arm,pl011
+arm,primecell
+/soc/serial@7e201400/reg: quad = 0x7E20140000000200
+/soc/serial@7e201400/interrupts: blob = 00 00 00 00 00 00 00 79 00 00 00 04
+/soc/serial@7e201400/clocks: blob = 00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14
+/soc/serial@7e201400/clock-names: string list = uartclk
+apb_pclk
+/soc/serial@7e201400/arm,primecell-periphid: long = 0x00341011 (3411985)
+/soc/serial@7e201400/status: string = disabled
+/soc/serial@7e201400/pinctrl-0: long = 0x00000018 (24)
+/soc/serial@7e201400/pinctrl-names: string = default
+/soc/serial@7e201400/phandle: long = 0x000000C8 (200)
+/soc/serial@7e201600/
+/soc/serial@7e201600/compatible: string list = arm,pl011
+arm,primecell
+/soc/serial@7e201600/reg: quad = 0x7E20160000000200
+/soc/serial@7e201600/interrupts: blob = 00 00 00 00 00 00 00 79 00 00 00 04
+/soc/serial@7e201600/clocks: blob = 00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14
+/soc/serial@7e201600/clock-names: string list = uartclk
+apb_pclk
+/soc/serial@7e201600/arm,primecell-periphid: long = 0x00341011 (3411985)
+/soc/serial@7e201600/status: string = disabled
+/soc/serial@7e201600/pinctrl-0: long = 0x00000019 (25)
+/soc/serial@7e201600/pinctrl-names: string = default
+/soc/serial@7e201600/phandle: long = 0x000000C9 (201)
+/soc/serial@7e201800/
+/soc/serial@7e201800/compatible: string list = arm,pl011
+arm,primecell
+/soc/serial@7e201800/reg: quad = 0x7E20180000000200
+/soc/serial@7e201800/interrupts: blob = 00 00 00 00 00 00 00 79 00 00 00 04
+/soc/serial@7e201800/clocks: blob = 00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14
+/soc/serial@7e201800/clock-names: string list = uartclk
+apb_pclk
+/soc/serial@7e201800/arm,primecell-periphid: long = 0x00341011 (3411985)
+/soc/serial@7e201800/status: string = disabled
+/soc/serial@7e201800/pinctrl-0: long = 0x0000001A (26)
+/soc/serial@7e201800/pinctrl-names: string = default
+/soc/serial@7e201800/phandle: long = 0x000000CA (202)
+/soc/serial@7e201a00/
+/soc/serial@7e201a00/compatible: string list = arm,pl011
+arm,primecell
+/soc/serial@7e201a00/reg: quad = 0x7E201A0000000200
+/soc/serial@7e201a00/interrupts: blob = 00 00 00 00 00 00 00 79 00 00 00 04
+/soc/serial@7e201a00/clocks: blob = 00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14
+/soc/serial@7e201a00/clock-names: string list = uartclk
+apb_pclk
+/soc/serial@7e201a00/arm,primecell-periphid: long = 0x00341011 (3411985)
+/soc/serial@7e201a00/status: string = disabled
+/soc/serial@7e201a00/pinctrl-0: long = 0x0000001B (27)
+/soc/serial@7e201a00/pinctrl-names: string = default
+/soc/serial@7e201a00/phandle: long = 0x000000CB (203)
+/soc/spi@7e204600/
+/soc/spi@7e204600/compatible: string = brcm,bcm2835-spi
+/soc/spi@7e204600/reg: quad = 0x7E20460000000200
+/soc/spi@7e204600/interrupts: blob = 00 00 00 00 00 00 00 76 00 00 00 04
+/soc/spi@7e204600/clocks: quad = 0x0000000800000014
+/soc/spi@7e204600/#address-cells: long = 0x00000001 (1)
+/soc/spi@7e204600/#size-cells: long = 0x00000000 (0)
+/soc/spi@7e204600/status: string = disabled
+/soc/spi@7e204600/pinctrl-0: quad = 0x0000001C0000001D
+/soc/spi@7e204600/pinctrl-names: string = default
+/soc/spi@7e204600/phandle: long = 0x000000CC (204)
+/soc/spi@7e204800/
+/soc/spi@7e204800/compatible: string = brcm,bcm2835-spi
+/soc/spi@7e204800/reg: quad = 0x7E20480000000200
+/soc/spi@7e204800/interrupts: blob = 00 00 00 00 00 00 00 76 00 00 00 04
+/soc/spi@7e204800/clocks: quad = 0x0000000800000014
+/soc/spi@7e204800/#address-cells: long = 0x00000001 (1)
+/soc/spi@7e204800/#size-cells: long = 0x00000000 (0)
+/soc/spi@7e204800/status: string = disabled
+/soc/spi@7e204800/pinctrl-0: quad = 0x0000001E0000001F
+/soc/spi@7e204800/pinctrl-names: string = default
+/soc/spi@7e204800/phandle: long = 0x000000CD (205)
+/soc/spi@7e204a00/
+/soc/spi@7e204a00/compatible: string = brcm,bcm2835-spi
+/soc/spi@7e204a00/reg: quad = 0x7E204A0000000200
+/soc/spi@7e204a00/interrupts: blob = 00 00 00 00 00 00 00 76 00 00 00 04
+/soc/spi@7e204a00/clocks: quad = 0x0000000800000014
+/soc/spi@7e204a00/#address-cells: long = 0x00000001 (1)
+/soc/spi@7e204a00/#size-cells: long = 0x00000000 (0)
+/soc/spi@7e204a00/status: string = disabled
+/soc/spi@7e204a00/pinctrl-0: quad = 0x0000002000000021
+/soc/spi@7e204a00/pinctrl-names: string = default
+/soc/spi@7e204a00/phandle: long = 0x000000CE (206)
+/soc/spi@7e204c00/
+/soc/spi@7e204c00/compatible: string = brcm,bcm2835-spi
+/soc/spi@7e204c00/reg: quad = 0x7E204C0000000200
+/soc/spi@7e204c00/interrupts: blob = 00 00 00 00 00 00 00 76 00 00 00 04
+/soc/spi@7e204c00/clocks: quad = 0x0000000800000014
+/soc/spi@7e204c00/#address-cells: long = 0x00000001 (1)
+/soc/spi@7e204c00/#size-cells: long = 0x00000000 (0)
+/soc/spi@7e204c00/status: string = disabled
+/soc/spi@7e204c00/pinctrl-0: quad = 0x0000002200000023
+/soc/spi@7e204c00/pinctrl-names: string = default
+/soc/spi@7e204c00/phandle: long = 0x000000CF (207)
+/soc/i2c@7e205600/
+/soc/i2c@7e205600/compatible: string list = brcm,bcm2711-i2c
+brcm,bcm2835-i2c
+/soc/i2c@7e205600/reg: quad = 0x7E20560000000200
+/soc/i2c@7e205600/interrupts: blob = 00 00 00 00 00 00 00 75 00 00 00 04
+/soc/i2c@7e205600/clocks: quad = 0x0000000800000014
+/soc/i2c@7e205600/#address-cells: long = 0x00000001 (1)
+/soc/i2c@7e205600/#size-cells: long = 0x00000000 (0)
+/soc/i2c@7e205600/status: string = disabled
+/soc/i2c@7e205600/pinctrl-0: long = 0x00000024 (36)
+/soc/i2c@7e205600/pinctrl-names: string = default
+/soc/i2c@7e205600/phandle: long = 0x000000D0 (208)
+/soc/i2c@7e205800/
+/soc/i2c@7e205800/compatible: string list = brcm,bcm2711-i2c
+brcm,bcm2835-i2c
+/soc/i2c@7e205800/reg: quad = 0x7E20580000000200
+/soc/i2c@7e205800/interrupts: blob = 00 00 00 00 00 00 00 75 00 00 00 04
+/soc/i2c@7e205800/clocks: quad = 0x0000000800000014
+/soc/i2c@7e205800/#address-cells: long = 0x00000001 (1)
+/soc/i2c@7e205800/#size-cells: long = 0x00000000 (0)
+/soc/i2c@7e205800/status: string = disabled
+/soc/i2c@7e205800/pinctrl-0: long = 0x00000025 (37)
+/soc/i2c@7e205800/pinctrl-names: string = default
+/soc/i2c@7e205800/phandle: long = 0x000000D1 (209)
+/soc/i2c@7e205a00/
+/soc/i2c@7e205a00/compatible: string list = brcm,bcm2711-i2c
+brcm,bcm2835-i2c
+/soc/i2c@7e205a00/reg: quad = 0x7E205A0000000200
+/soc/i2c@7e205a00/interrupts: blob = 00 00 00 00 00 00 00 75 00 00 00 04
+/soc/i2c@7e205a00/clocks: quad = 0x0000000800000014
+/soc/i2c@7e205a00/#address-cells: long = 0x00000001 (1)
+/soc/i2c@7e205a00/#size-cells: long = 0x00000000 (0)
+/soc/i2c@7e205a00/status: string = disabled
+/soc/i2c@7e205a00/pinctrl-0: long = 0x00000026 (38)
+/soc/i2c@7e205a00/pinctrl-names: string = default
+/soc/i2c@7e205a00/phandle: long = 0x000000D2 (210)
+/soc/i2c@7e205c00/
+/soc/i2c@7e205c00/compatible: string list = brcm,bcm2711-i2c
+brcm,bcm2835-i2c
+/soc/i2c@7e205c00/reg: quad = 0x7E205C0000000200
+/soc/i2c@7e205c00/interrupts: blob = 00 00 00 00 00 00 00 75 00 00 00 04
+/soc/i2c@7e205c00/clocks: quad = 0x0000000800000014
+/soc/i2c@7e205c00/#address-cells: long = 0x00000001 (1)
+/soc/i2c@7e205c00/#size-cells: long = 0x00000000 (0)
+/soc/i2c@7e205c00/status: string = disabled
+/soc/i2c@7e205c00/pinctrl-0: long = 0x00000027 (39)
+/soc/i2c@7e205c00/pinctrl-names: string = default
+/soc/i2c@7e205c00/phandle: long = 0x000000D3 (211)
+/soc/pixelvalve@7e206000/
+/soc/pixelvalve@7e206000/compatible: string = brcm,bcm2711-pixelvalve0
+/soc/pixelvalve@7e206000/reg: quad = 0x7E20600000000100
+/soc/pixelvalve@7e206000/interrupts: blob = 00 00 00 00 00 00 00 6D 00 00 00 04
+/soc/pixelvalve@7e206000/status: string = disabled
+/soc/pixelvalve@7e206000/phandle: long = 0x000000D4 (212)
+/soc/pixelvalve@7e207000/
+/soc/pixelvalve@7e207000/compatible: string = brcm,bcm2711-pixelvalve1
+/soc/pixelvalve@7e207000/reg: quad = 0x7E20700000000100
+/soc/pixelvalve@7e207000/interrupts: blob = 00 00 00 00 00 00 00 6E 00 00 00 04
+/soc/pixelvalve@7e207000/status: string = disabled
+/soc/pixelvalve@7e207000/phandle: long = 0x000000D5 (213)
+/soc/pixelvalve@7e20a000/
+/soc/pixelvalve@7e20a000/compatible: string = brcm,bcm2711-pixelvalve2
+/soc/pixelvalve@7e20a000/reg: quad = 0x7E20A00000000100
+/soc/pixelvalve@7e20a000/interrupts: blob = 00 00 00 00 00 00 00 65 00 00 00 04
+/soc/pixelvalve@7e20a000/status: string = disabled
+/soc/pixelvalve@7e20a000/phandle: long = 0x000000D6 (214)
+/soc/pwm@7e20c800/
+/soc/pwm@7e20c800/compatible: string = brcm,bcm2835-pwm
+/soc/pwm@7e20c800/reg: quad = 0x7E20C80000000028
+/soc/pwm@7e20c800/clocks: quad = 0x000000080000001E
+/soc/pwm@7e20c800/assigned-clocks: quad = 0x000000080000001E
+/soc/pwm@7e20c800/assigned-clock-rates: long = 0x02FAF080 (50000000)
+/soc/pwm@7e20c800/#pwm-cells: long = 0x00000003 (3)
+/soc/pwm@7e20c800/status: string = disabled
+/soc/pwm@7e20c800/pinctrl-names: string = default
+/soc/pwm@7e20c800/pinctrl-0: quad = 0x0000002800000029
+/soc/pwm@7e20c800/phandle: long = 0x000000D7 (215)
+/soc/pixelvalve@7e216000/
+/soc/pixelvalve@7e216000/compatible: string = brcm,bcm2711-pixelvalve4
+/soc/pixelvalve@7e216000/reg: quad = 0x7E21600000000100
+/soc/pixelvalve@7e216000/interrupts: blob = 00 00 00 00 00 00 00 6E 00 00 00 04
+/soc/pixelvalve@7e216000/status: string = disabled
+/soc/pixelvalve@7e216000/phandle: long = 0x000000D8 (216)
+/soc/pixelvalve@7ec12000/
+/soc/pixelvalve@7ec12000/compatible: string = brcm,bcm2711-pixelvalve3
+/soc/pixelvalve@7ec12000/reg: quad = 0x7EC1200000000100
+/soc/pixelvalve@7ec12000/interrupts: blob = 00 00 00 00 00 00 00 6A 00 00 00 04
+/soc/pixelvalve@7ec12000/status: string = disabled
+/soc/pixelvalve@7ec12000/phandle: long = 0x000000D9 (217)
+/soc/vec@7ec13000/
+/soc/vec@7ec13000/compatible: string = brcm,bcm2711-vec
+/soc/vec@7ec13000/reg: quad = 0x7EC1300000001000
+/soc/vec@7ec13000/clocks: quad = 0x000000140000000F
+/soc/vec@7ec13000/interrupts: blob = 00 00 00 00 00 00 00 7B 00 00 00 04
+/soc/vec@7ec13000/status: string = disabled
+/soc/vec@7ec13000/power-domains: quad = 0x0000001000000007
+/soc/vec@7ec13000/phandle: long = 0x000000DA (218)
+/soc/clock@7ef00000/
+/soc/clock@7ef00000/compatible: string = brcm,brcm2711-dvp
+/soc/clock@7ef00000/reg: quad = 0x7EF0000000000010
+/soc/clock@7ef00000/clocks: long = 0x0000002A (42)
+/soc/clock@7ef00000/#clock-cells: long = 0x00000001 (1)
+/soc/clock@7ef00000/#reset-cells: long = 0x00000001 (1)
+/soc/clock@7ef00000/status: string = disabled
+/soc/clock@7ef00000/phandle: long = 0x0000002B (43)
+/soc/interrupt-controller@7ef00100/
+/soc/interrupt-controller@7ef00100/compatible: string list = brcm,bcm2711-l2-intc
+brcm,l2-intc
+/soc/interrupt-controller@7ef00100/reg: quad = 0x7EF0010000000030
+/soc/interrupt-controller@7ef00100/interrupts: blob = 00 00 00 00 00 00 00 60 00 00 00 01
+/soc/interrupt-controller@7ef00100/interrupt-controller: empty = -
+/soc/interrupt-controller@7ef00100/#interrupt-cells: long = 0x00000001 (1)
+/soc/interrupt-controller@7ef00100/status: string = disabled
+/soc/interrupt-controller@7ef00100/phandle: long = 0x0000002C (44)
+/soc/hdmi@7ef00700/
+/soc/hdmi@7ef00700/compatible: string = brcm,bcm2711-hdmi0
+/soc/hdmi@7ef00700/reg: blob = 7E F0 07 00 00 00 03 00 7E F0 03 00 00 00 02 00
+7E F0 0F 00 00 00 00 80 7E F0 0F 80 00 00 00 80
+7E F0 1B 00 00 00 02 00 7E F0 1F 00 00 00 04 00
+7E F0 02 00 00 00 00 80 7E F0 43 00 00 00 01 00
+7E F2 00 00 00 00 01 00 7E F0 01 00 00 00 00 30
+/soc/hdmi@7ef00700/reg-names: string list = hdmi
+dvp
+phy
+rm
+packet
+metadata
+csc
+cec
+hd
+intr2
+/soc/hdmi@7ef00700/clock-names: string list = hdmi
+bvb
+audio
+cec
+/soc/hdmi@7ef00700/resets: quad = 0x0000002B00000000
+/soc/hdmi@7ef00700/interrupt-parent: long = 0x0000002C (44)
+/soc/hdmi@7ef00700/interrupts: blob = 00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03
+00 00 00 04 00 00 00 05
+/soc/hdmi@7ef00700/interrupt-names: string list = cec-tx
+cec-rx
+cec-low
+wakeup
+hpd-connected
+hpd-removed
+/soc/hdmi@7ef00700/ddc: long = 0x0000002D (45)
+/soc/hdmi@7ef00700/dmas: quad = 0x0000002E41FA000A
+/soc/hdmi@7ef00700/dma-names: string = audio-rx
+/soc/hdmi@7ef00700/status: string = disabled
+/soc/hdmi@7ef00700/clocks: blob = 00 00 00 14 00 00 00 0D 00 00 00 14 00 00 00 0E
+00 00 00 2B 00 00 00 00 00 00 00 2F
+/soc/hdmi@7ef00700/wifi-2.4ghz-coexistence: empty = -
+/soc/hdmi@7ef00700/phandle: long = 0x00000055 (85)
+/soc/i2c@7ef04500/
+/soc/i2c@7ef04500/compatible: string = brcm,bcm2711-hdmi-i2c
+/soc/i2c@7ef04500/reg: blob = 7E F0 45 00 00 00 01 00 7E F0 0B 00 00 00 03 00
+/soc/i2c@7ef04500/reg-names: string list = bsc
+auto-i2c
+/soc/i2c@7ef04500/clock-frequency: long = 0x00017CDC (97500)
+/soc/i2c@7ef04500/status: string = disabled
+/soc/i2c@7ef04500/phandle: long = 0x0000002D (45)
+/soc/hdmi@7ef05700/
+/soc/hdmi@7ef05700/compatible: string = brcm,bcm2711-hdmi1
+/soc/hdmi@7ef05700/reg: blob = 7E F0 57 00 00 00 03 00 7E F0 53 00 00 00 02 00
+7E F0 5F 00 00 00 00 80 7E F0 5F 80 00 00 00 80
+7E F0 6B 00 00 00 02 00 7E F0 6F 00 00 00 04 00
+7E F0 02 80 00 00 00 80 7E F0 93 00 00 00 01 00
+7E F2 00 00 00 00 01 00 7E F0 01 00 00 00 00 30
+/soc/hdmi@7ef05700/reg-names: string list = hdmi
+dvp
+phy
+rm
+packet
+metadata
+csc
+cec
+hd
+intr2
+/soc/hdmi@7ef05700/ddc: long = 0x00000030 (48)
+/soc/hdmi@7ef05700/clock-names: string list = hdmi
+bvb
+audio
+cec
+/soc/hdmi@7ef05700/resets: quad = 0x0000002B00000001
+/soc/hdmi@7ef05700/interrupt-parent: long = 0x0000002C (44)
+/soc/hdmi@7ef05700/interrupts: blob = 00 00 00 08 00 00 00 07 00 00 00 06 00 00 00 09
+00 00 00 0A 00 00 00 0B
+/soc/hdmi@7ef05700/interrupt-names: string list = cec-tx
+cec-rx
+cec-low
+wakeup
+hpd-connected
+hpd-removed
+/soc/hdmi@7ef05700/dmas: quad = 0x0000002E41FA0011
+/soc/hdmi@7ef05700/dma-names: string = audio-rx
+/soc/hdmi@7ef05700/status: string = disabled
+/soc/hdmi@7ef05700/clocks: blob = 00 00 00 14 00 00 00 0D 00 00 00 14 00 00 00 0E
+00 00 00 2B 00 00 00 01 00 00 00 2F
+/soc/hdmi@7ef05700/wifi-2.4ghz-coexistence: empty = -
+/soc/hdmi@7ef05700/phandle: long = 0x00000056 (86)
+/soc/i2c@7ef09500/
+/soc/i2c@7ef09500/compatible: string = brcm,bcm2711-hdmi-i2c
+/soc/i2c@7ef09500/reg: blob = 7E F0 95 00 00 00 01 00 7E F0 5B 00 00 00 03 00
+/soc/i2c@7ef09500/reg-names: string list = bsc
+auto-i2c
+/soc/i2c@7ef09500/clock-frequency: long = 0x00017CDC (97500)
+/soc/i2c@7ef09500/status: string = disabled
+/soc/i2c@7ef09500/phandle: long = 0x00000030 (48)
+/soc/firmware/
+/soc/firmware/compatible: string list = raspberrypi,bcm2835-firmware
+simple-mfd
+/soc/firmware/mboxes: long = 0x00000031 (49)
+/soc/firmware/phandle: long = 0x00000006 (6)
+/soc/firmware/clocks/
+/soc/firmware/clocks/compatible: string = raspberrypi,firmware-clocks
+/soc/firmware/clocks/#clock-cells: long = 0x00000001 (1)
+/soc/firmware/clocks/phandle: long = 0x00000014 (20)
+/soc/firmware/gpio/
+/soc/firmware/gpio/compatible: string = raspberrypi,firmware-gpio
+/soc/firmware/gpio/gpio-controller: empty = -
+/soc/firmware/gpio/#gpio-cells: long = 0x00000002 (2)
+/soc/firmware/gpio/status: string = okay
+/soc/firmware/gpio/gpio-line-names: string list = BT_ON
+WL_ON
+PWR_LED_OFF
+GLOBAL_RESET
+VDD_SD_IO_SEL
+CAM_GPIO
+SD_PWR_ON
+SD_OC_N
+/soc/firmware/gpio/phandle: long = 0x0000000B (11)
+/soc/firmware/reset/
+/soc/firmware/reset/compatible: string = raspberrypi,firmware-reset
+/soc/firmware/reset/#reset-cells: long = 0x00000001 (1)
+/soc/firmware/reset/phandle: long = 0x0000003F (63)
+/soc/firmware/vcio/
+/soc/firmware/vcio/compatible: string = raspberrypi,vcio
+/soc/firmware/vcio/phandle: long = 0x000000DB (219)
+/soc/power/
+/soc/power/compatible: string = raspberrypi,bcm2835-power
+/soc/power/firmware: long = 0x00000006 (6)
+/soc/power/#power-domain-cells: long = 0x00000001 (1)
+/soc/power/phandle: long = 0x00000010 (16)
+/soc/mailbox@7e00b840/
+/soc/mailbox@7e00b840/compatible: string = brcm,bcm2711-vchiq
+/soc/mailbox@7e00b840/reg: quad = 0x7E00B8400000003C
+/soc/mailbox@7e00b840/interrupts: blob = 00 00 00 00 00 00 00 22 00 00 00 04
+/soc/mailbox@7e00b840/pinctrl-names: string = default
+/soc/mailbox@7e00b840/pinctrl-0: long = 0x00000032 (50)
+/soc/mailbox@7e00b840/phandle: long = 0x000000DC (220)
+/soc/mmcnr@7e300000/
+/soc/mmcnr@7e300000/compatible: string list = brcm,bcm2835-mmc
+brcm,bcm2835-sdhci
+/soc/mmcnr@7e300000/reg: quad = 0x7E30000000000100
+/soc/mmcnr@7e300000/interrupts: blob = 00 00 00 00 00 00 00 7E 00 00 00 04
+/soc/mmcnr@7e300000/clocks: quad = 0x000000080000001C
+/soc/mmcnr@7e300000/dmas: quad = 0x0000000C0000000B
+/soc/mmcnr@7e300000/dma-names: string = rx-tx
+/soc/mmcnr@7e300000/brcm,overclock-50: long = 0x00000000 (0)
+/soc/mmcnr@7e300000/non-removable: empty = -
+/soc/mmcnr@7e300000/status: string = okay
+/soc/mmcnr@7e300000/#address-cells: long = 0x00000001 (1)
+/soc/mmcnr@7e300000/#size-cells: long = 0x00000000 (0)
+/soc/mmcnr@7e300000/pinctrl-names: string = default
+/soc/mmcnr@7e300000/pinctrl-0: long = 0x00000033 (51)
+/soc/mmcnr@7e300000/bus-width: long = 0x00000004 (4)
+/soc/mmcnr@7e300000/phandle: long = 0x0000004D (77)
+/soc/mmcnr@7e300000/wifi@1/
+/soc/mmcnr@7e300000/wifi@1/reg: long = 0x00000001 (1)
+/soc/mmcnr@7e300000/wifi@1/compatible: string = brcm,bcm4329-fmac
+/soc/mmcnr@7e300000/wifi@1/phandle: long = 0x000000DD (221)
+/soc/firmwarekms@7e600000/
+/soc/firmwarekms@7e600000/compatible: string = raspberrypi,rpi-firmware-kms-2711
+/soc/firmwarekms@7e600000/reg: quad = 0x7E60000000000100
+/soc/firmwarekms@7e600000/interrupts: blob = 00 00 00 00 00 00 00 70 00 00 00 04
+/soc/firmwarekms@7e600000/brcm,firmware: long = 0x00000006 (6)
+/soc/firmwarekms@7e600000/status: string = disabled
+/soc/firmwarekms@7e600000/phandle: long = 0x000000DE (222)
+/soc/smi@7e600000/
+/soc/smi@7e600000/compatible: string = brcm,bcm2835-smi
+/soc/smi@7e600000/reg: quad = 0x7E60000000000100
+/soc/smi@7e600000/interrupts: blob = 00 00 00 00 00 00 00 70 00 00 00 04
+/soc/smi@7e600000/clocks: quad = 0x000000080000002A
+/soc/smi@7e600000/assigned-clocks: quad = 0x000000080000002A
+/soc/smi@7e600000/assigned-clock-rates: long = 0x07735940 (125000000)
+/soc/smi@7e600000/dmas: quad = 0x0000000C00000004
+/soc/smi@7e600000/dma-names: string = rx-tx
+/soc/smi@7e600000/status: string = disabled
+/soc/smi@7e600000/phandle: long = 0x000000DF (223)
+/soc/axiperf/
+/soc/axiperf/compatible: string = brcm,bcm2711-axiperf
+/soc/axiperf/reg: blob = 7E 00 98 00 00 00 01 00 7E E0 80 00 00 00 01 00
+/soc/axiperf/firmware: long = 0x00000006 (6)
+/soc/axiperf/status: string = disabled
+/soc/axiperf/phandle: long = 0x0000004E (78)
+/soc/i2c0mux/
+/soc/i2c0mux/compatible: string = i2c-mux-pinctrl
+/soc/i2c0mux/#address-cells: long = 0x00000001 (1)
+/soc/i2c0mux/#size-cells: long = 0x00000000 (0)
+/soc/i2c0mux/i2c-parent: long = 0x00000034 (52)
+/soc/i2c0mux/status: string = disabled
+/soc/i2c0mux/pinctrl-names: string list = i2c0
+i2c_csi_dsi
+/soc/i2c0mux/pinctrl-0: long = 0x00000035 (53)
+/soc/i2c0mux/pinctrl-1: long = 0x00000036 (54)
+/soc/i2c0mux/phandle: long = 0x00000047 (71)
+/soc/i2c0mux/i2c@0/
+/soc/i2c0mux/i2c@0/reg: long = 0x00000000 (0)
+/soc/i2c0mux/i2c@0/#address-cells: long = 0x00000001 (1)
+/soc/i2c0mux/i2c@0/#size-cells: long = 0x00000000 (0)
+/soc/i2c0mux/i2c@0/phandle: long = 0x000000E0 (224)
+/soc/i2c0mux/i2c@1/
+/soc/i2c0mux/i2c@1/reg: long = 0x00000001 (1)
+/soc/i2c0mux/i2c@1/#address-cells: long = 0x00000001 (1)
+/soc/i2c0mux/i2c@1/#size-cells: long = 0x00000000 (0)
+/soc/i2c0mux/i2c@1/phandle: long = 0x000000E1 (225)
+/soc/gpiomem/
+/soc/gpiomem/compatible: string = brcm,bcm2835-gpiomem
+/soc/gpiomem/reg: quad = 0x7E20000000001000
+/soc/fb/
+/soc/fb/compatible: string = brcm,bcm2708-fb
+/soc/fb/firmware: long = 0x00000006 (6)
+/soc/fb/status: string = okay
+/soc/fb/phandle: long = 0x000000E2 (226)
+/soc/sound/
+/soc/sound/status: string = disabled
+/soc/sound/phandle: long = 0x000000E3 (227)
+/soc/nvmem/
+/soc/nvmem/compatible: string = simple-bus
+/soc/nvmem/#address-cells: long = 0x00000001 (1)
+/soc/nvmem/#size-cells: long = 0x00000001 (1)
+/soc/nvmem/nvmem_otp/
+/soc/nvmem/nvmem_otp/compatible: string = raspberrypi,rpi-otp
+/soc/nvmem/nvmem_otp/firmware: long = 0x00000006 (6)
+/soc/nvmem/nvmem_otp/reg: quad = 0x000000A6 (166)
+/soc/nvmem/nvmem_otp/status: string = okay
+/soc/nvmem/nvmem_otp/phandle: long = 0x000000E4 (228)
+/soc/nvmem/nvmem_cust/
+/soc/nvmem/nvmem_cust/compatible: string = raspberrypi,rpi-otp
+/soc/nvmem/nvmem_cust/firmware: long = 0x00000006 (6)
+/soc/nvmem/nvmem_cust/reg: quad = 0x0000000100000008
+/soc/nvmem/nvmem_cust/status: string = okay
+/soc/nvmem/nvmem_cust/phandle: long = 0x00000057 (87)
+/soc/nvmem/nvmem_priv/
+/soc/nvmem/nvmem_priv/compatible: string = raspberrypi,rpi-otp
+/soc/nvmem/nvmem_priv/firmware: long = 0x00000006 (6)
+/soc/nvmem/nvmem_priv/reg: quad = 0x0000000300000008
+/soc/nvmem/nvmem_priv/status: string = okay
+/soc/nvmem/nvmem_priv/phandle: long = 0x00000058 (88)
+/clocks/
+/clocks/compatible: string = simple-bus
+/clocks/#address-cells: long = 0x00000001 (1)
+/clocks/#size-cells: long = 0x00000000 (0)
+/clocks/clk-osc/
+/clocks/clk-osc/compatible: string = fixed-clock
+/clocks/clk-osc/#clock-cells: long = 0x00000000 (0)
+/clocks/clk-osc/clock-output-names: string = osc
+/clocks/clk-osc/clock-frequency: long = 0x0337F980 (54000000)
+/clocks/clk-osc/phandle: long = 0x00000003 (3)
+/clocks/clk-usb/
+/clocks/clk-usb/compatible: string = fixed-clock
+/clocks/clk-usb/#clock-cells: long = 0x00000000 (0)
+/clocks/clk-usb/clock-output-names: string = otg
+/clocks/clk-usb/clock-frequency: long = 0x1C9C3800 (480000000)
+/clocks/clk-usb/phandle: long = 0x00000016 (22)
+/phy/
+/phy/compatible: string = usb-nop-xceiv
+/phy/#phy-cells: long = 0x00000000 (0)
+/phy/phandle: long = 0x00000017 (23)
+/gpu/
+/gpu/compatible: string = brcm,bcm2711-vc5
+/gpu/status: string = disabled
+/gpu/raspberrypi,firmware: long = 0x00000006 (6)
+/gpu/phandle: long = 0x000000E5 (229)
+/clk-27M/
+/clk-27M/#clock-cells: long = 0x00000000 (0)
+/clk-27M/compatible: string = fixed-clock
+/clk-27M/clock-frequency: long = 0x019BFCC0 (27000000)
+/clk-27M/clock-output-names: string = 27MHz-clock
+/clk-27M/phandle: long = 0x0000002F (47)
+/clk-108M/
+/clk-108M/#clock-cells: long = 0x00000000 (0)
+/clk-108M/compatible: string = fixed-clock
+/clk-108M/clock-frequency: long = 0x066FF300 (108000000)
+/clk-108M/clock-output-names: string = 108MHz-clock
+/clk-108M/phandle: long = 0x0000002A (42)
+/emmc2bus/
+/emmc2bus/compatible: string = simple-bus
+/emmc2bus/#address-cells: long = 0x00000002 (2)
+/emmc2bus/#size-cells: long = 0x00000001 (1)
+/emmc2bus/ranges: blob = 00 00 00 00 7E 00 00 00 00 00 00 00 FE 00 00 00
+01 80 00 00
+/emmc2bus/dma-ranges: blob = 00 00 00 00 C0 00 00 00 00 00 00 00 00 00 00 00
+40 00 00 00
+/emmc2bus/phandle: long = 0x000000E6 (230)
+/emmc2bus/mmc@7e340000/
+/emmc2bus/mmc@7e340000/compatible: string = brcm,bcm2711-emmc2
+/emmc2bus/mmc@7e340000/reg: blob = 00 00 00 00 7E 34 00 00 00 00 01 00
+/emmc2bus/mmc@7e340000/interrupts: blob = 00 00 00 00 00 00 00 7E 00 00 00 04
+/emmc2bus/mmc@7e340000/clocks: quad = 0x0000000800000033
+/emmc2bus/mmc@7e340000/status: string = okay
+/emmc2bus/mmc@7e340000/vqmmc-supply: long = 0x00000037 (55)
+/emmc2bus/mmc@7e340000/vmmc-supply: long = 0x00000038 (56)
+/emmc2bus/mmc@7e340000/broken-cd: empty = -
+/emmc2bus/mmc@7e340000/mmc-ddr-3_3v: empty = -
+/emmc2bus/mmc@7e340000/phandle: long = 0x00000059 (89)
+/pmu/
+/pmu/compatible: string = arm,cortex-a72-pmu
+/pmu/interrupts: blob = 00 00 00 00 00 00 00 10 00 00 00 04 00 00 00 00
+00 00 00 11 00 00 00 04 00 00 00 00 00 00 00 12
+00 00 00 04 00 00 00 00 00 00 00 13 00 00 00 04
+/pmu/interrupt-affinity: blob = 00 00 00 39 00 00 00 3A 00 00 00 3B 00 00 00 3C
+/timer/
+/timer/compatible: string = arm,armv8-timer
+/timer/interrupts: blob = 00 00 00 01 00 00 00 0D 00 00 0F 08 00 00 00 01
+00 00 00 0E 00 00 0F 08 00 00 00 01 00 00 00 0B
+00 00 0F 08 00 00 00 01 00 00 00 0A 00 00 0F 08
+/cpus/
+/cpus/#address-cells: long = 0x00000001 (1)
+/cpus/#size-cells: long = 0x00000000 (0)
+/cpus/enable-method: string = brcm,bcm2836-smp
+/cpus/phandle: long = 0x000000E7 (231)
+/cpus/cpu@0/
+/cpus/cpu@0/device_type: string = cpu
+/cpus/cpu@0/compatible: string = arm,cortex-a72
+/cpus/cpu@0/reg: long = 0x00000000 (0)
+/cpus/cpu@0/enable-method: string = spin-table
+/cpus/cpu@0/cpu-release-addr: quad = 0x000000D8 (216)
+/cpus/cpu@0/d-cache-size: long = 0x00008000 (32768)
+/cpus/cpu@0/d-cache-line-size: long = 0x00000040 (64)
+/cpus/cpu@0/d-cache-sets: long = 0x00000100 (256)
+/cpus/cpu@0/i-cache-size: long = 0x0000C000 (49152)
+/cpus/cpu@0/i-cache-line-size: long = 0x00000040 (64)
+/cpus/cpu@0/i-cache-sets: long = 0x00000100 (256)
+/cpus/cpu@0/next-level-cache: long = 0x0000003D (61)
+/cpus/cpu@0/phandle: long = 0x00000039 (57)
+/cpus/cpu@1/
+/cpus/cpu@1/device_type: string = cpu
+/cpus/cpu@1/compatible: string = arm,cortex-a72
+/cpus/cpu@1/reg: long = 0x00000001 (1)
+/cpus/cpu@1/enable-method: string = spin-table
+/cpus/cpu@1/cpu-release-addr: quad = 0x000000E0 (224)
+/cpus/cpu@1/d-cache-size: long = 0x00008000 (32768)
+/cpus/cpu@1/d-cache-line-size: long = 0x00000040 (64)
+/cpus/cpu@1/d-cache-sets: long = 0x00000100 (256)
+/cpus/cpu@1/i-cache-size: long = 0x0000C000 (49152)
+/cpus/cpu@1/i-cache-line-size: long = 0x00000040 (64)
+/cpus/cpu@1/i-cache-sets: long = 0x00000100 (256)
+/cpus/cpu@1/next-level-cache: long = 0x0000003D (61)
+/cpus/cpu@1/phandle: long = 0x0000003A (58)
+/cpus/cpu@2/
+/cpus/cpu@2/device_type: string = cpu
+/cpus/cpu@2/compatible: string = arm,cortex-a72
+/cpus/cpu@2/reg: long = 0x00000002 (2)
+/cpus/cpu@2/enable-method: string = spin-table
+/cpus/cpu@2/cpu-release-addr: quad = 0x000000E8 (232)
+/cpus/cpu@2/d-cache-size: long = 0x00008000 (32768)
+/cpus/cpu@2/d-cache-line-size: long = 0x00000040 (64)
+/cpus/cpu@2/d-cache-sets: long = 0x00000100 (256)
+/cpus/cpu@2/i-cache-size: long = 0x0000C000 (49152)
+/cpus/cpu@2/i-cache-line-size: long = 0x00000040 (64)
+/cpus/cpu@2/i-cache-sets: long = 0x00000100 (256)
+/cpus/cpu@2/next-level-cache: long = 0x0000003D (61)
+/cpus/cpu@2/phandle: long = 0x0000003B (59)
+/cpus/cpu@3/
+/cpus/cpu@3/device_type: string = cpu
+/cpus/cpu@3/compatible: string = arm,cortex-a72
+/cpus/cpu@3/reg: long = 0x00000003 (3)
+/cpus/cpu@3/enable-method: string = spin-table
+/cpus/cpu@3/cpu-release-addr: quad = 0x000000F0 (240)
+/cpus/cpu@3/d-cache-size: long = 0x00008000 (32768)
+/cpus/cpu@3/d-cache-line-size: long = 0x00000040 (64)
+/cpus/cpu@3/d-cache-sets: long = 0x00000100 (256)
+/cpus/cpu@3/i-cache-size: long = 0x0000C000 (49152)
+/cpus/cpu@3/i-cache-line-size: long = 0x00000040 (64)
+/cpus/cpu@3/i-cache-sets: long = 0x00000100 (256)
+/cpus/cpu@3/next-level-cache: long = 0x0000003D (61)
+/cpus/cpu@3/phandle: long = 0x0000003C (60)
+/cpus/l2-cache0/
+/cpus/l2-cache0/compatible: string = cache
+/cpus/l2-cache0/cache-unified: empty = -
+/cpus/l2-cache0/cache-size: long = 0x00100000 (1048576)
+/cpus/l2-cache0/cache-line-size: long = 0x00000040 (64)
+/cpus/l2-cache0/cache-sets: long = 0x00000400 (1024)
+/cpus/l2-cache0/cache-level: long = 0x00000002 (2)
+/cpus/l2-cache0/phandle: long = 0x0000003D (61)
+/scb/
+/scb/compatible: string = simple-bus
+/scb/#address-cells: long = 0x00000002 (2)
+/scb/#size-cells: long = 0x00000002 (2)
+/scb/ranges: blob = 00 00 00 00 7C 00 00 00 00 00 00 00 F6 00 00 00
+00 00 00 00 03 80 00 00 00 00 00 00 40 00 00 00
+00 00 00 00 F9 80 00 00 00 00 00 00 00 80 00 00
+00 00 00 06 00 00 00 00 00 00 00 06 00 00 00 00
+00 00 00 00 40 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 FC 00 00 00
+/scb/dma-ranges: blob = 00 00 00 04 7C 00 00 00 00 00 00 00 FC 00 00 00
+00 00 00 00 03 80 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 04 00 00 00 00
+/scb/phandle: long = 0x000000E8 (232)
+/scb/pcie@7d500000/
+/scb/pcie@7d500000/compatible: string = brcm,bcm2711-pcie
+/scb/pcie@7d500000/reg: blob = 00 00 00 00 7D 50 00 00 00 00 00 00 00 00 93 10
+/scb/pcie@7d500000/device_type: string = pci
+/scb/pcie@7d500000/#address-cells: long = 0x00000003 (3)
+/scb/pcie@7d500000/#interrupt-cells: long = 0x00000001 (1)
+/scb/pcie@7d500000/#size-cells: long = 0x00000002 (2)
+/scb/pcie@7d500000/interrupts: blob = 00 00 00 00 00 00 00 93 00 00 00 04 00 00 00 00
+00 00 00 94 00 00 00 04
+/scb/pcie@7d500000/interrupt-names: string list = pcie
+msi
+/scb/pcie@7d500000/interrupt-map-mask: blob = 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 07
+/scb/pcie@7d500000/interrupt-map: blob = 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
+00 00 00 01 00 00 00 00 00 00 00 8F 00 00 00 04
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02
+00 00 00 01 00 00 00 00 00 00 00 90 00 00 00 04
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03
+00 00 00 01 00 00 00 00 00 00 00 91 00 00 00 04
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04
+00 00 00 01 00 00 00 00 00 00 00 92 00 00 00 04
+/scb/pcie@7d500000/msi-controller: empty = -
+/scb/pcie@7d500000/msi-parent: long = 0x0000003E (62)
+/scb/pcie@7d500000/ranges: blob = 02 00 00 00 00 00 00 00 C0 00 00 00 00 00 00 06
+00 00 00 00 00 00 00 00 04 00 00 00
+/scb/pcie@7d500000/dma-ranges: blob = 02 00 00 00 00 00 00 04 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 80 00 00 00
+/scb/pcie@7d500000/brcm,enable-ssc: empty = -
+/scb/pcie@7d500000/phandle: long = 0x0000003E (62)
+/scb/pcie@7d500000/emu68,pci-mmio-phys: quad = 0x0000000600000000
+/scb/pcie@7d500000/emu68,pci-mmio-virt: long = 0xFA000000 (4194304000)
+/scb/pcie@7d500000/emu68,pci-mmio-size: long = 0x04000000 (67108864)
+/scb/pcie@7d500000/pci@0,0/
+/scb/pcie@7d500000/pci@0,0/device_type: string = pci
+/scb/pcie@7d500000/pci@0,0/#address-cells: long = 0x00000003 (3)
+/scb/pcie@7d500000/pci@0,0/#size-cells: long = 0x00000002 (2)
+/scb/pcie@7d500000/pci@0,0/ranges: empty = -
+/scb/pcie@7d500000/pci@0,0/reg: blob = 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00
+/scb/pcie@7d500000/pci@0,0/usb@0,0/
+/scb/pcie@7d500000/pci@0,0/usb@0,0/reg: blob = 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00
+/scb/pcie@7d500000/pci@0,0/usb@0,0/resets: quad = 0x0000003F00000000
+/scb/ethernet@7d580000/
+/scb/ethernet@7d580000/local-mac-address: blob = E4 5F 01 11 E1 AB
+/scb/ethernet@7d580000/compatible: string = brcm,bcm2711-genet-v5
+/scb/ethernet@7d580000/reg: blob = 00 00 00 00 7D 58 00 00 00 00 00 00 00 01 00 00
+/scb/ethernet@7d580000/#address-cells: long = 0x00000001 (1)
+/scb/ethernet@7d580000/#size-cells: long = 0x00000001 (1)
+/scb/ethernet@7d580000/interrupts: blob = 00 00 00 00 00 00 00 9D 00 00 00 04 00 00 00 00
+00 00 00 9E 00 00 00 04
+/scb/ethernet@7d580000/status: string = okay
+/scb/ethernet@7d580000/phy-handle: long = 0x00000040 (64)
+/scb/ethernet@7d580000/phy-mode: string = rgmii-rxid
+/scb/ethernet@7d580000/phandle: long = 0x000000E9 (233)
+/scb/ethernet@7d580000/mdio@e14/
+/scb/ethernet@7d580000/mdio@e14/compatible: string = brcm,genet-mdio-v5
+/scb/ethernet@7d580000/mdio@e14/reg: quad = 0x00000E1400000008
+/scb/ethernet@7d580000/mdio@e14/reg-names: string = mdio
+/scb/ethernet@7d580000/mdio@e14/#address-cells: long = 0x00000001 (1)
+/scb/ethernet@7d580000/mdio@e14/#size-cells: long = 0x00000000 (0)
+/scb/ethernet@7d580000/mdio@e14/phandle: long = 0x000000EA (234)
+/scb/ethernet@7d580000/mdio@e14/ethernet-phy@1/
+/scb/ethernet@7d580000/mdio@e14/ethernet-phy@1/reg: long = 0x00000001 (1)
+/scb/ethernet@7d580000/mdio@e14/ethernet-phy@1/led-modes: quad = 0x00000008 (8)
+/scb/ethernet@7d580000/mdio@e14/ethernet-phy@1/phandle: long = 0x00000040 (64)
+/scb/codec@7eb10000/
+/scb/codec@7eb10000/compatible: string list = brcm,bcm2711-hevc-dec
+raspberrypi,hevc-dec
+/scb/codec@7eb10000/reg: blob = 00 00 00 00 7E B0 00 00 00 00 00 00 00 01 00 00
+00 00 00 00 7E B1 00 00 00 00 00 00 00 00 10 00
+/scb/codec@7eb10000/reg-names: string list = hevc
+intc
+/scb/codec@7eb10000/interrupts: blob = 00 00 00 00 00 00 00 62 00 00 00 04
+/scb/codec@7eb10000/clocks: quad = 0x000000140000000B
+/scb/codec@7eb10000/phandle: long = 0x000000EB (235)
+/scb/dma@7e007b00/
+/scb/dma@7e007b00/dma-channel-mask: long = 0x00003000 (12288)
+/scb/dma@7e007b00/compatible: string = brcm,bcm2711-dma
+/scb/dma@7e007b00/reg: blob = 00 00 00 00 7E 00 7B 00 00 00 00 00 00 00 04 00
+/scb/dma@7e007b00/interrupts: blob = 00 00 00 00 00 00 00 59 00 00 00 04 00 00 00 00
+00 00 00 5A 00 00 00 04 00 00 00 00 00 00 00 5B
+00 00 00 04 00 00 00 00 00 00 00 5C 00 00 00 04
+/scb/dma@7e007b00/interrupt-names: string list = dma11
+dma12
+dma13
+dma14
+/scb/dma@7e007b00/#dma-cells: long = 0x00000001 (1)
+/scb/dma@7e007b00/brcm,dma-channel-mask: long = 0x00003000 (12288)
+/scb/dma@7e007b00/phandle: long = 0x0000002E (46)
+/scb/xhci@7e9c0000/
+/scb/xhci@7e9c0000/compatible: string = generic-xhci
+/scb/xhci@7e9c0000/status: string = okay
+/scb/xhci@7e9c0000/reg: blob = 00 00 00 00 7E 9C 00 00 00 00 00 00 00 10 00 00
+/scb/xhci@7e9c0000/interrupts: blob = 00 00 00 00 00 00 00 B0 00 00 00 04
+/scb/xhci@7e9c0000/power-domains: quad = 0x0000001000000006
+/scb/xhci@7e9c0000/phandle: long = 0x000000EC (236)
+/memory@0/
+/memory@0/device_type: string = memory
+/memory@0/reg: blob = 00 00 00 00 01 00 00 00 3B A0 00 00 00 00 00 00
+40 00 00 00 39 E0 00 00
+/leds/
+/leds/compatible: string = gpio-leds
+/leds/phandle: long = 0x000000ED (237)
+/leds/led-act/
+/leds/led-act/label: string = ACT
+/leds/led-act/default-state: string = off
+/leds/led-act/linux,default-trigger: string = mmc0
+/leds/led-act/gpios: blob = 00 00 00 07 00 00 00 2A 00 00 00 00
+/leds/led-act/phandle: long = 0x0000005A (90)
+/leds/led-pwr/
+/leds/led-pwr/label: string = PWR
+/leds/led-pwr/gpios: blob = 00 00 00 0B 00 00 00 02 00 00 00 01
+/leds/led-pwr/default-state: string = off
+/leds/led-pwr/linux,default-trigger: string = default-on
+/leds/led-pwr/phandle: long = 0x0000005B (91)
+/cam1_clk/
+/cam1_clk/compatible: string = fixed-clock
+/cam1_clk/#clock-cells: long = 0x00000000 (0)
+/cam1_clk/status: string = disabled
+/cam1_clk/phandle: long = 0x000000EE (238)
+/cam0_regulator/
+/cam0_regulator/compatible: string = regulator-fixed
+/cam0_regulator/regulator-name: string = cam0-reg
+/cam0_regulator/enable-active-high: empty = -
+/cam0_regulator/status: string = disabled
+/cam0_regulator/phandle: long = 0x000000EF (239)
+/cam0_clk/
+/cam0_clk/compatible: string = fixed-clock
+/cam0_clk/#clock-cells: long = 0x00000000 (0)
+/cam0_clk/status: string = disabled
+/cam0_clk/phandle: long = 0x000000F0 (240)
+/cam_dummy_reg/
+/cam_dummy_reg/compatible: string = regulator-fixed
+/cam_dummy_reg/regulator-name: string = cam-dummy-reg
+/cam_dummy_reg/status: string = okay
+/cam_dummy_reg/phandle: long = 0x00000052 (82)
+/__overrides__/
+/__overrides__/cam0-pwdn-ctrl: empty = -
+/__overrides__/cam0-pwdn: empty = -
+/__overrides__/cam0-led-ctrl: empty = -
+/__overrides__/cam0-led: empty = -
+/__overrides__/bdaddr: string list = Alocal-bd-address[
+Afallback-bd-address?=0
+Blocal-bd-address[
+Bfallback-bd-address?=0
+/__overrides__/krnbt: string = Astatus
+/__overrides__/krnbt_baudrate: string list = Amax-speed:0
+Bmax-speed:0
+/__overrides__/cache_line_size: empty = -
+/__overrides__/uart0: string = Cstatus
+/__overrides__/uart1: string = Dstatus
+/__overrides__/i2s: string = Estatus
+/__overrides__/spi: string = Fstatus
+/__overrides__/i2c0: string list = 4status
+Gstatus
+/__overrides__/i2c1: string = Hstatus
+/__overrides__/i2c: string = Hstatus
+/__overrides__/i2c_arm: string = Hstatus
+/__overrides__/i2c_vc: string list = 4status
+Gstatus
+/__overrides__/i2c0_baudrate: string = 4clock-frequency:0
+/__overrides__/i2c1_baudrate: string = Hclock-frequency:0
+/__overrides__/i2c_baudrate: string = Hclock-frequency:0
+/__overrides__/i2c_arm_baudrate: string = Hclock-frequency:0
+/__overrides__/i2c_vc_baudrate: string = 4clock-frequency:0
+/__overrides__/watchdog: string = Istatus
+/__overrides__/random: string = Jstatus
+/__overrides__/sd_overclock: string = Kbrcm,overclock-50:0
+/__overrides__/sd_force_pio: string = Kbrcm,force-pio?
+/__overrides__/sd_pio_limit: string = Kbrcm,pio-limit:0
+/__overrides__/sd_debug: string = Kbrcm,debug
+/__overrides__/sdio_overclock: string list = Lbrcm,overclock-50:0
+Mbrcm,overclock-50:0
+/__overrides__/axiperf: string = Nstatus
+/__overrides__/drm_fb0_vc4: string list = Odrm-fb0=
+/gpu
+/__overrides__/drm_fb1_vc4: string list = Odrm-fb1=
+/gpu
+/__overrides__/drm_fb2_vc4: string list = Odrm-fb2=
+/gpu
+/__overrides__/cam1_sync: blob = 00 00 00 50 73 79 6E 63 2D 67 70 69 6F 73 3A 30
+3D 00 00 00 00 07 00 00 00 50 73 79 6E 63 2D 67
+70 69 6F 73 3A 34 00 00 00 00 50 73 79 6E 63 2D
+67 70 69 6F 73 3A 38 3D 00 00 00 00 00
+/__overrides__/cam1_sync_inverted: blob = 00 00 00 50 73 79 6E 63 2D 67 70 69 6F 73 3A 30
+3D 00 00 00 00 07 00 00 00 50 73 79 6E 63 2D 67
+70 69 6F 73 3A 34 00 00 00 00 50 73 79 6E 63 2D
+67 70 69 6F 73 3A 38 3D 00 00 00 00 01
+/__overrides__/cam0_sync: blob = 00 00 00 51 73 79 6E 63 2D 67 70 69 6F 73 3A 30
+3D 00 00 00 00 07 00 00 00 51 73 79 6E 63 2D 67
+70 69 6F 73 3A 34 00 00 00 00 51 73 79 6E 63 2D
+67 70 69 6F 73 3A 38 3D 00 00 00 00 00
+/__overrides__/cam0_sync_inverted: blob = 00 00 00 51 73 79 6E 63 2D 67 70 69 6F 73 3A 30
+3D 00 00 00 00 07 00 00 00 51 73 79 6E 63 2D 67
+70 69 6F 73 3A 34 00 00 00 00 51 73 79 6E 63 2D
+67 70 69 6F 73 3A 38 3D 00 00 00 00 01
+/__overrides__/cam0_reg: string = Rstatus
+/__overrides__/cam0_reg_gpio: blob = 00 00 00 52 67 70 69 6F 3A 34 00 00 00 00 52 67
+70 69 6F 3A 30 3D 00 00 00 00 07
+/__overrides__/cam1_reg: string = Sstatus
+/__overrides__/cam1_reg_gpio: blob = 00 00 00 53 67 70 69 6F 3A 34 00 00 00 00 53 67
+70 69 6F 3A 30 3D 00 00 00 00 07
+/__overrides__/strict_gpiod: string = Tbootargs=pinctrl_bcm2835.persist_gpio_outputs=n
+/__overrides__/arm_freq: empty = -
+/__overrides__/eee: string = Tbootargs{on='',off='genet.eee=N'}
+/__overrides__/hdmi: string list = Ustatus
+Vstatus
+/__overrides__/nvmem_cust_rw: string = Wrw?
+/__overrides__/nvmem_priv_rw: string = Xrw?
+/__overrides__/pcie: string = >status
+/__overrides__/sd: string = Ystatus
+/__overrides__/sd_poll_once: string = Ynon-removable?
+/__overrides__/spi_dma4: blob = 00 00 00 46 64 6D 61 73 3A 30 3D 00 00 00 00 2E
+00 00 00 46 64 6D 61 73 3A 38 3D 00 00 00 00 2E
+/__overrides__/i2s_dma4: blob = 00 00 00 45 64 6D 61 73 3A 30 3D 00 00 00 00 2E
+00 00 00 45 64 6D 61 73 3A 38 3D 00 00 00 00 2E
+/__overrides__/audio: string = Tbootargs{on='snd_bcm2835.enable_headphones=1 snd_bcm2835.enable_hdmi=1',off='snd_bcm2835.enable_headphones=0 snd_bcm2835.enable_hdmi=0'}
+/__overrides__/act_led_gpio: string = Zgpios:4
+/__overrides__/act_led_activelow: string = Zgpios:8
+/__overrides__/act_led_trigger: string = Zlinux,default-trigger
+/__overrides__/pwr_led_gpio: string = [gpios:4
+/__overrides__/pwr_led_activelow: string = [gpios:8
+/__overrides__/pwr_led_trigger: string = [linux,default-trigger
+/__overrides__/eth_led0: string = @led-modes:0
+/__overrides__/eth_led1: string = @led-modes:4
+/regulator-cam1/
+/regulator-cam1/compatible: string = regulator-fixed
+/regulator-cam1/regulator-name: string = cam1-reg
+/regulator-cam1/enable-active-high: empty = -
+/regulator-cam1/gpio: blob = 00 00 00 0B 00 00 00 05 00 00 00 00
+/regulator-cam1/phandle: long = 0x00000053 (83)
+/regulator-sd-io-1v8/
+/regulator-sd-io-1v8/compatible: string = regulator-gpio
+/regulator-sd-io-1v8/regulator-name: string = vdd-sd-io
+/regulator-sd-io-1v8/regulator-min-microvolt: long = 0x001B7740 (1800000)
+/regulator-sd-io-1v8/regulator-max-microvolt: long = 0x00325AA0 (3300000)
+/regulator-sd-io-1v8/regulator-boot-on: empty = -
+/regulator-sd-io-1v8/regulator-always-on: empty = -
+/regulator-sd-io-1v8/regulator-settling-time-us: long = 0x00001388 (5000)
+/regulator-sd-io-1v8/gpios: blob = 00 00 00 0B 00 00 00 04 00 00 00 00
+/regulator-sd-io-1v8/states: blob = 00 1B 77 40 00 00 00 01 00 32 5A A0 00 00 00 00
+/regulator-sd-io-1v8/status: string = okay
+/regulator-sd-io-1v8/phandle: long = 0x00000037 (55)
+/regulator-sd-vcc/
+/regulator-sd-vcc/compatible: string = regulator-fixed
+/regulator-sd-vcc/regulator-name: string = vcc-sd
+/regulator-sd-vcc/regulator-min-microvolt: long = 0x00325AA0 (3300000)
+/regulator-sd-vcc/regulator-max-microvolt: long = 0x00325AA0 (3300000)
+/regulator-sd-vcc/regulator-boot-on: empty = -
+/regulator-sd-vcc/enable-active-high: empty = -
+/regulator-sd-vcc/gpio: blob = 00 00 00 0B 00 00 00 06 00 00 00 00
+/regulator-sd-vcc/phandle: long = 0x00000038 (56)
+/fixedregulator_3v3/
+/fixedregulator_3v3/compatible: string = regulator-fixed
+/fixedregulator_3v3/regulator-always-on: empty = -
+/fixedregulator_3v3/regulator-max-microvolt: long = 0x00325AA0 (3300000)
+/fixedregulator_3v3/regulator-min-microvolt: long = 0x00325AA0 (3300000)
+/fixedregulator_3v3/regulator-name: string = 3v3
+/fixedregulator_3v3/phandle: long = 0x000000F1 (241)
+/fixedregulator_5v0/
+/fixedregulator_5v0/compatible: string = regulator-fixed
+/fixedregulator_5v0/regulator-always-on: empty = -
+/fixedregulator_5v0/regulator-max-microvolt: long = 0x004C4B40 (5000000)
+/fixedregulator_5v0/regulator-min-microvolt: long = 0x004C4B40 (5000000)
+/fixedregulator_5v0/regulator-name: string = 5v0
+/fixedregulator_5v0/phandle: long = 0x000000F2 (242)
+/zone_dma/
+/zone_dma/#address-cells: long = 0x00000001 (1)
+/zone_dma/#size-cells: long = 0x00000001 (1)
+/zone_dma/dma-ranges: blob = 00 00 00 00 00 00 00 00 00 00 00 00 40 00 00 00
+/v3dbus/
+/v3dbus/compatible: string = simple-bus
+/v3dbus/#address-cells: long = 0x00000001 (1)
+/v3dbus/#size-cells: long = 0x00000002 (2)
+/v3dbus/ranges: blob = 7C 50 00 00 00 00 00 00 FC 50 00 00 00 00 00 00
+03 30 00 00 40 00 00 00 00 00 00 00 FF 80 00 00
+00 00 00 00 00 80 00 00
+/v3dbus/dma-ranges: blob = 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04
+00 00 00 00
+/v3dbus/phandle: long = 0x000000F3 (243)
+/v3dbus/v3d@7ec04000/
+/v3dbus/v3d@7ec04000/compatible: string = brcm,2711-v3d
+/v3dbus/v3d@7ec04000/reg: blob = 7E C0 00 00 00 00 00 00 00 00 40 00 7E C0 40 00
+00 00 00 00 00 00 40 00
+/v3dbus/v3d@7ec04000/reg-names: string list = hub
+core0
+/v3dbus/v3d@7ec04000/power-domains: quad = 0x0000004900000001
+/v3dbus/v3d@7ec04000/resets: quad = 0x0000004900000000
+/v3dbus/v3d@7ec04000/clocks: quad = 0x0000001400000005
+/v3dbus/v3d@7ec04000/clocks-names: string = v3d
+/v3dbus/v3d@7ec04000/interrupts: blob = 00 00 00 00 00 00 00 4A 00 00 00 04
+/v3dbus/v3d@7ec04000/status: string = disabled
+/v3dbus/v3d@7ec04000/phandle: long = 0x000000F4 (244)
+/__symbols__/
+/__symbols__/aliases: string = /aliases
+/__symbols__/chosen: string = /chosen
+/__symbols__/rmem: string = /reserved-memory
+/__symbols__/cma: string = /reserved-memory/linux,cma
+/__symbols__/blconfig: string = /reserved-memory/nvram@0
+/__symbols__/blpubkey: string = /reserved-memory/nvram@1
+/__symbols__/cpu_thermal: string = /thermal-zones/cpu-thermal
+/__symbols__/thermal_trips: string = /thermal-zones/cpu-thermal/trips
+/__symbols__/cooling_maps: string = /thermal-zones/cpu-thermal/cooling-maps
+/__symbols__/soc: string = /soc
+/__symbols__/system_timer: string = /soc/timer@7e003000
+/__symbols__/txp: string = /soc/txp@7e004000
+/__symbols__/clocks: string = /soc/cprman@7e101000
+/__symbols__/mailbox: string = /soc/mailbox@7e00b880
+/__symbols__/gpio: string = /soc/gpio@7e200000
+/__symbols__/dpi_gpio0: string = /soc/gpio@7e200000/dpi-gpio0
+/__symbols__/emmc_gpio22: string = /soc/gpio@7e200000/emmc-gpio22
+/__symbols__/emmc_gpio34: string = /soc/gpio@7e200000/emmc-gpio34
+/__symbols__/emmc_gpio48: string = /soc/gpio@7e200000/emmc-gpio48
+/__symbols__/gpclk0_gpio4: string = /soc/gpio@7e200000/gpclk0-gpio4
+/__symbols__/gpclk1_gpio5: string = /soc/gpio@7e200000/gpclk1-gpio5
+/__symbols__/gpclk1_gpio42: string = /soc/gpio@7e200000/gpclk1-gpio42
+/__symbols__/gpclk1_gpio44: string = /soc/gpio@7e200000/gpclk1-gpio44
+/__symbols__/gpclk2_gpio6: string = /soc/gpio@7e200000/gpclk2-gpio6
+/__symbols__/gpclk2_gpio43: string = /soc/gpio@7e200000/gpclk2-gpio43
+/__symbols__/i2c0_gpio0: string = /soc/gpio@7e200000/i2c0if-gpio0
+/__symbols__/i2c0_gpio28: string = /soc/gpio@7e200000/i2c0if-gpio28
+/__symbols__/i2c0_gpio44: string = /soc/gpio@7e200000/i2c0if-gpio44
+/__symbols__/i2c1_gpio2: string = /soc/gpio@7e200000/i2c1-gpio2
+/__symbols__/i2c1_gpio44: string = /soc/gpio@7e200000/i2c1-gpio44
+/__symbols__/jtag_gpio22: string = /soc/gpio@7e200000/jtag-gpio22
+/__symbols__/pcm_gpio18: string = /soc/gpio@7e200000/pcm-gpio18
+/__symbols__/pcm_gpio28: string = /soc/gpio@7e200000/pcm-gpio28
+/__symbols__/sdhost_gpio48: string = /soc/gpio@7e200000/sdhost-gpio48
+/__symbols__/spi0_gpio7: string = /soc/gpio@7e200000/spi0-gpio7
+/__symbols__/spi0_gpio35: string = /soc/gpio@7e200000/spi0-gpio35
+/__symbols__/spi1_gpio16: string = /soc/gpio@7e200000/spi1-gpio16
+/__symbols__/spi2_gpio40: string = /soc/gpio@7e200000/spi2-gpio40
+/__symbols__/uart0_gpio14: string = /soc/gpio@7e200000/uart0-gpio14
+/__symbols__/uart0_ctsrts_gpio16: string = /soc/gpio@7e200000/uart0-ctsrts-gpio16
+/__symbols__/uart0_ctsrts_gpio30: string = /soc/gpio@7e200000/uart0-ctsrts-gpio30
+/__symbols__/uart0_gpio32: string = /soc/gpio@7e200000/uart0-gpio32
+/__symbols__/uart0_gpio36: string = /soc/gpio@7e200000/uart0-gpio36
+/__symbols__/uart0_ctsrts_gpio38: string = /soc/gpio@7e200000/uart0-ctsrts-gpio38
+/__symbols__/uart1_gpio14: string = /soc/gpio@7e200000/uart1-gpio14
+/__symbols__/uart1_ctsrts_gpio16: string = /soc/gpio@7e200000/uart1-ctsrts-gpio16
+/__symbols__/uart1_gpio32: string = /soc/gpio@7e200000/uart1-gpio32
+/__symbols__/uart1_ctsrts_gpio30: string = /soc/gpio@7e200000/uart1-ctsrts-gpio30
+/__symbols__/uart1_gpio40: string = /soc/gpio@7e200000/uart1-gpio40
+/__symbols__/uart1_ctsrts_gpio42: string = /soc/gpio@7e200000/uart1-ctsrts-gpio42
+/__symbols__/gpclk0_gpio49: string = /soc/gpio@7e200000/gpclk0-gpio49
+/__symbols__/gpclk1_gpio50: string = /soc/gpio@7e200000/gpclk1-gpio50
+/__symbols__/gpclk2_gpio51: string = /soc/gpio@7e200000/gpclk2-gpio51
+/__symbols__/i2c0_gpio46: string = /soc/gpio@7e200000/i2c0if-gpio46
+/__symbols__/i2c1_gpio46: string = /soc/gpio@7e200000/i2c1-gpio46
+/__symbols__/i2c3_gpio2: string = /soc/gpio@7e200000/i2c3-gpio2
+/__symbols__/i2c3_gpio4: string = /soc/gpio@7e200000/i2c3-gpio4
+/__symbols__/i2c4_gpio6: string = /soc/gpio@7e200000/i2c4-gpio6
+/__symbols__/i2c4_gpio8: string = /soc/gpio@7e200000/i2c4-gpio8
+/__symbols__/i2c5_gpio10: string = /soc/gpio@7e200000/i2c5-gpio10
+/__symbols__/i2c5_gpio12: string = /soc/gpio@7e200000/i2c5-gpio12
+/__symbols__/i2c6_gpio0: string = /soc/gpio@7e200000/i2c6-gpio0
+/__symbols__/i2c6_gpio22: string = /soc/gpio@7e200000/i2c6-gpio22
+/__symbols__/i2c_slave_gpio8: string = /soc/gpio@7e200000/i2c-slave-gpio8
+/__symbols__/jtag_gpio48: string = /soc/gpio@7e200000/jtag-gpio48
+/__symbols__/mii_gpio28: string = /soc/gpio@7e200000/mii-gpio28
+/__symbols__/mii_gpio36: string = /soc/gpio@7e200000/mii-gpio36
+/__symbols__/pcm_gpio50: string = /soc/gpio@7e200000/pcm-gpio50
+/__symbols__/pwm0_0_gpio12: string = /soc/gpio@7e200000/pwm0-0-gpio12
+/__symbols__/pwm0_0_gpio18: string = /soc/gpio@7e200000/pwm0-0-gpio18
+/__symbols__/pwm1_0_gpio40: string = /soc/gpio@7e200000/pwm1-0-gpio40
+/__symbols__/pwm0_1_gpio13: string = /soc/gpio@7e200000/pwm0-1-gpio13
+/__symbols__/pwm0_1_gpio19: string = /soc/gpio@7e200000/pwm0-1-gpio19
+/__symbols__/pwm1_1_gpio41: string = /soc/gpio@7e200000/pwm1-1-gpio41
+/__symbols__/pwm0_1_gpio45: string = /soc/gpio@7e200000/pwm0-1-gpio45
+/__symbols__/pwm0_0_gpio52: string = /soc/gpio@7e200000/pwm0-0-gpio52
+/__symbols__/pwm0_1_gpio53: string = /soc/gpio@7e200000/pwm0-1-gpio53
+/__symbols__/rgmii_gpio35: string = /soc/gpio@7e200000/rgmii-gpio35
+/__symbols__/rgmii_irq_gpio34: string = /soc/gpio@7e200000/rgmii-irq-gpio34
+/__symbols__/rgmii_irq_gpio39: string = /soc/gpio@7e200000/rgmii-irq-gpio39
+/__symbols__/rgmii_mdio_gpio28: string = /soc/gpio@7e200000/rgmii-mdio-gpio28
+/__symbols__/rgmii_mdio_gpio37: string = /soc/gpio@7e200000/rgmii-mdio-gpio37
+/__symbols__/spi0_gpio46: string = /soc/gpio@7e200000/spi0-gpio46
+/__symbols__/spi2_gpio46: string = /soc/gpio@7e200000/spi2-gpio46
+/__symbols__/spi3_gpio0: string = /soc/gpio@7e200000/spi3-gpio0
+/__symbols__/spi4_gpio4: string = /soc/gpio@7e200000/spi4-gpio4
+/__symbols__/spi5_gpio12: string = /soc/gpio@7e200000/spi5-gpio12
+/__symbols__/spi6_gpio18: string = /soc/gpio@7e200000/spi6-gpio18
+/__symbols__/uart2_gpio0: string = /soc/gpio@7e200000/uart2-gpio0
+/__symbols__/uart2_ctsrts_gpio2: string = /soc/gpio@7e200000/uart2-ctsrts-gpio2
+/__symbols__/uart3_gpio4: string = /soc/gpio@7e200000/uart3-gpio4
+/__symbols__/uart3_ctsrts_gpio6: string = /soc/gpio@7e200000/uart3-ctsrts-gpio6
+/__symbols__/uart4_gpio8: string = /soc/gpio@7e200000/uart4-gpio8
+/__symbols__/uart4_ctsrts_gpio10: string = /soc/gpio@7e200000/uart4-ctsrts-gpio10
+/__symbols__/uart5_gpio12: string = /soc/gpio@7e200000/uart5-gpio12
+/__symbols__/uart5_ctsrts_gpio14: string = /soc/gpio@7e200000/uart5-ctsrts-gpio14
+/__symbols__/gpioout: string = /soc/gpio@7e200000/gpioout
+/__symbols__/alt0: string = /soc/gpio@7e200000/alt0
+/__symbols__/dpi_18bit_cpadhi_gpio0: string = /soc/gpio@7e200000/dpi_18bit_cpadhi_gpio0
+/__symbols__/dpi_18bit_cpadhi_gpio2: string = /soc/gpio@7e200000/dpi_18bit_cpadhi_gpio2
+/__symbols__/dpi_18bit_gpio0: string = /soc/gpio@7e200000/dpi_18bit_gpio0
+/__symbols__/dpi_18bit_gpio2: string = /soc/gpio@7e200000/dpi_18bit_gpio2
+/__symbols__/dpi_16bit_gpio0: string = /soc/gpio@7e200000/dpi_16bit_gpio0
+/__symbols__/dpi_16bit_gpio2: string = /soc/gpio@7e200000/dpi_16bit_gpio2
+/__symbols__/dpi_16bit_cpadhi_gpio0: string = /soc/gpio@7e200000/dpi_16bit_cpadhi_gpio0
+/__symbols__/dpi_16bit_cpadhi_gpio2: string = /soc/gpio@7e200000/dpi_16bit_cpadhi_gpio2
+/__symbols__/spi0_pins: string = /soc/gpio@7e200000/spi0_pins
+/__symbols__/spi0_cs_pins: string = /soc/gpio@7e200000/spi0_cs_pins
+/__symbols__/spi3_pins: string = /soc/gpio@7e200000/spi3_pins
+/__symbols__/spi3_cs_pins: string = /soc/gpio@7e200000/spi3_cs_pins
+/__symbols__/spi4_pins: string = /soc/gpio@7e200000/spi4_pins
+/__symbols__/spi4_cs_pins: string = /soc/gpio@7e200000/spi4_cs_pins
+/__symbols__/spi5_pins: string = /soc/gpio@7e200000/spi5_pins
+/__symbols__/spi5_cs_pins: string = /soc/gpio@7e200000/spi5_cs_pins
+/__symbols__/spi6_pins: string = /soc/gpio@7e200000/spi6_pins
+/__symbols__/spi6_cs_pins: string = /soc/gpio@7e200000/spi6_cs_pins
+/__symbols__/i2c0_pins: string = /soc/gpio@7e200000/i2c0
+/__symbols__/i2c1_pins: string = /soc/gpio@7e200000/i2c1
+/__symbols__/i2c3_pins: string = /soc/gpio@7e200000/i2c3
+/__symbols__/i2c4_pins: string = /soc/gpio@7e200000/i2c4
+/__symbols__/i2c5_pins: string = /soc/gpio@7e200000/i2c5
+/__symbols__/i2c6_pins: string = /soc/gpio@7e200000/i2c6
+/__symbols__/i2s_pins: string = /soc/gpio@7e200000/i2s
+/__symbols__/sdio_pins: string = /soc/gpio@7e200000/sdio_pins
+/__symbols__/uart2_pins: string = /soc/gpio@7e200000/uart2_pins
+/__symbols__/uart3_pins: string = /soc/gpio@7e200000/uart3_pins
+/__symbols__/uart4_pins: string = /soc/gpio@7e200000/uart4_pins
+/__symbols__/uart5_pins: string = /soc/gpio@7e200000/uart5_pins
+/__symbols__/bt_pins: string = /soc/gpio@7e200000/bt_pins
+/__symbols__/uart0_pins: string = /soc/gpio@7e200000/uart0_pins
+/__symbols__/uart1_pins: string = /soc/gpio@7e200000/uart1_pins
+/__symbols__/uart1_bt_pins: string = /soc/gpio@7e200000/uart1_bt_pins
+/__symbols__/audio_pins: string = /soc/gpio@7e200000/audio_pins
+/__symbols__/uart0: string = /soc/serial@7e201000
+/__symbols__/bt: string = /soc/serial@7e201000/bluetooth
+/__symbols__/sdhost: string = /soc/mmc@7e202000
+/__symbols__/i2s_clk_consumer: string = /soc/i2s@7e203000
+/__symbols__/i2s_clk_producer: string = /soc/i2s@7e203000
+/__symbols__/i2s: string = /soc/i2s@7e203000
+/__symbols__/spi0: string = /soc/spi@7e204000
+/__symbols__/spi: string = /soc/spi@7e204000
+/__symbols__/spidev0: string = /soc/spi@7e204000/spidev@0
+/__symbols__/spidev1: string = /soc/spi@7e204000/spidev@1
+/__symbols__/i2c0if: string = /soc/i2c@7e205000
+/__symbols__/dpi: string = /soc/dpi@7e208000
+/__symbols__/dsi0: string = /soc/dsi@7e209000
+/__symbols__/aux: string = /soc/aux@7e215000
+/__symbols__/uart1: string = /soc/serial@7e215040
+/__symbols__/minibt: string = /soc/serial@7e215040/bluetooth
+/__symbols__/spi1: string = /soc/spi@7e215080
+/__symbols__/spi2: string = /soc/spi@7e2150c0
+/__symbols__/pwm: string = /soc/pwm@7e20c000
+/__symbols__/mmc: string = /soc/mmc@7e300000
+/__symbols__/sdhci: string = /soc/mmc@7e300000
+/__symbols__/hvs: string = /soc/hvs@7e400000
+/__symbols__/dsi1: string = /soc/dsi@7e700000
+/__symbols__/csi0: string = /soc/csi@7e800000
+/__symbols__/csi1: string = /soc/csi@7e801000
+/__symbols__/i2c_arm: string = /soc/i2c@7e804000
+/__symbols__/i2c1: string = /soc/i2c@7e804000
+/__symbols__/usb: string = /soc/usb@7e980000
+/__symbols__/local_intc: string = /soc/interrupt-controller@40000000
+/__symbols__/gicv2: string = /soc/interrupt-controller@40041000
+/__symbols__/avs_monitor: string = /soc/avs-monitor@7d5d2000
+/__symbols__/thermal: string = /soc/avs-monitor@7d5d2000/thermal
+/__symbols__/dma: string = /soc/dma-controller@7e007000
+/__symbols__/watchdog: string = /soc/watchdog@7e100000
+/__symbols__/pm: string = /soc/watchdog@7e100000
+/__symbols__/random: string = /soc/rng@7e104000
+/__symbols__/uart2: string = /soc/serial@7e201400
+/__symbols__/uart3: string = /soc/serial@7e201600
+/__symbols__/uart4: string = /soc/serial@7e201800
+/__symbols__/uart5: string = /soc/serial@7e201a00
+/__symbols__/spi3: string = /soc/spi@7e204600
+/__symbols__/spi4: string = /soc/spi@7e204800
+/__symbols__/spi5: string = /soc/spi@7e204a00
+/__symbols__/spi6: string = /soc/spi@7e204c00
+/__symbols__/i2c3: string = /soc/i2c@7e205600
+/__symbols__/i2c4: string = /soc/i2c@7e205800
+/__symbols__/i2c5: string = /soc/i2c@7e205a00
+/__symbols__/i2c6: string = /soc/i2c@7e205c00
+/__symbols__/pixelvalve0: string = /soc/pixelvalve@7e206000
+/__symbols__/pixelvalve1: string = /soc/pixelvalve@7e207000
+/__symbols__/pixelvalve2: string = /soc/pixelvalve@7e20a000
+/__symbols__/pwm1: string = /soc/pwm@7e20c800
+/__symbols__/pixelvalve4: string = /soc/pixelvalve@7e216000
+/__symbols__/pixelvalve3: string = /soc/pixelvalve@7ec12000
+/__symbols__/vec: string = /soc/vec@7ec13000
+/__symbols__/dvp: string = /soc/clock@7ef00000
+/__symbols__/aon_intr: string = /soc/interrupt-controller@7ef00100
+/__symbols__/hdmi0: string = /soc/hdmi@7ef00700
+/__symbols__/ddc0: string = /soc/i2c@7ef04500
+/__symbols__/hdmi1: string = /soc/hdmi@7ef05700
+/__symbols__/ddc1: string = /soc/i2c@7ef09500
+/__symbols__/firmware: string = /soc/firmware
+/__symbols__/firmware_clocks: string = /soc/firmware/clocks
+/__symbols__/expgpio: string = /soc/firmware/gpio
+/__symbols__/reset: string = /soc/firmware/reset
+/__symbols__/vcio: string = /soc/firmware/vcio
+/__symbols__/power: string = /soc/power
+/__symbols__/vchiq: string = /soc/mailbox@7e00b840
+/__symbols__/mmcnr: string = /soc/mmcnr@7e300000
+/__symbols__/brcmf: string = /soc/mmcnr@7e300000/wifi@1
+/__symbols__/firmwarekms: string = /soc/firmwarekms@7e600000
+/__symbols__/smi: string = /soc/smi@7e600000
+/__symbols__/axiperf: string = /soc/axiperf
+/__symbols__/i2c0mux: string = /soc/i2c0mux
+/__symbols__/i2c_csi_dsi0: string = /soc/i2c0mux/i2c@0
+/__symbols__/i2c_vc: string = /soc/i2c0mux/i2c@0
+/__symbols__/i2c0: string = /soc/i2c0mux/i2c@0
+/__symbols__/i2c_csi_dsi: string = /soc/i2c0mux/i2c@1
+/__symbols__/fb: string = /soc/fb
+/__symbols__/sound: string = /soc/sound
+/__symbols__/nvmem_otp: string = /soc/nvmem/nvmem_otp
+/__symbols__/nvmem_cust: string = /soc/nvmem/nvmem_cust
+/__symbols__/nvmem_priv: string = /soc/nvmem/nvmem_priv
+/__symbols__/clk_osc: string = /clocks/clk-osc
+/__symbols__/clk_usb: string = /clocks/clk-usb
+/__symbols__/usbphy: string = /phy
+/__symbols__/vc4: string = /gpu
+/__symbols__/clk_27MHz: string = /clk-27M
+/__symbols__/clk_108MHz: string = /clk-108M
+/__symbols__/emmc2bus: string = /emmc2bus
+/__symbols__/emmc2: string = /emmc2bus/mmc@7e340000
+/__symbols__/cpus: string = /cpus
+/__symbols__/cpu0: string = /cpus/cpu@0
+/__symbols__/cpu1: string = /cpus/cpu@1
+/__symbols__/cpu2: string = /cpus/cpu@2
+/__symbols__/cpu3: string = /cpus/cpu@3
+/__symbols__/l2: string = /cpus/l2-cache0
+/__symbols__/scb: string = /scb
+/__symbols__/pcie0: string = /scb/pcie@7d500000
+/__symbols__/genet: string = /scb/ethernet@7d580000
+/__symbols__/genet_mdio: string = /scb/ethernet@7d580000/mdio@e14
+/__symbols__/phy1: string = /scb/ethernet@7d580000/mdio@e14/ethernet-phy@1
+/__symbols__/hevc_dec: string = /scb/codec@7eb10000
+/__symbols__/dma40: string = /scb/dma@7e007b00
+/__symbols__/xhci: string = /scb/xhci@7e9c0000
+/__symbols__/leds: string = /leds
+/__symbols__/led_act: string = /leds/led-act
+/__symbols__/led_pwr: string = /leds/led-pwr
+/__symbols__/cam1_clk: string = /cam1_clk
+/__symbols__/cam0_regulator: string = /cam0_regulator
+/__symbols__/cam0_clk: string = /cam0_clk
+/__symbols__/cam0_reg: string = /cam_dummy_reg
+/__symbols__/cam_dummy_reg: string = /cam_dummy_reg
+/__symbols__/cam1_reg: string = /regulator-cam1
+/__symbols__/sd_io_1v8_reg: string = /regulator-sd-io-1v8
+/__symbols__/sd_vcc_reg: string = /regulator-sd-vcc
+/__symbols__/vdd_3v3_reg: string = /fixedregulator_3v3
+/__symbols__/vdd_5v0_reg: string = /fixedregulator_5v0
+/__symbols__/v3dbus: string = /v3dbus
+/__symbols__/v3d: string = /v3dbus/v3d@7ec04000
+/emu68/
+/emu68/idstring: string = $VER: Emu68 1.1.0-beta.1 (01.09.2026) git:e2f1b9c
+/emu68/version: blob = 00 00 00 01 00 00 00 01 00 00 00 00
+/emu68/git-hash: string = e2f1b9c723fe041a39c33a0aa0b506315742966f
+/emu68/support: blob = 41 6C 62 65 72 74 6F 20 42 65 6E C3 AD 74 65 7A
+20 53 C3 A1 6E 63 68 65 7A 00 41 6C 65 78 61 6E
+64 65 72 20 48 6F 6C 6C 61 6E 64 00 41 6C 69 73
+74 65 72 20 4D 69 6C 6C 73 00 41 6C 76 61 72 6F
+20 4D 6F 72 65 6E 6F 00 41 6D 69 4B 69 74 00 61
+6E 64 69 73 2E 72 65 74 72 6F 2E 63 6F 72 6E 65
+72 00 41 6E 64 72 65 20 57 61 6E 64 65 72 00 41
+6E 64 72 C3 A9 20 57 C3 B6 73 74 65 6E 00 41 6E
+64 72 65 73 00 41 6E 64 72 65 77 20 45 6E 67 6C
+69 73 68 00 41 6E 64 72 65 77 20 48 75 74 63 68
+69 6E 67 73 00 41 6E 75 62 69 73 00 41 72 6B 61
+64 69 75 73 7A 20 4B 77 61 C5 9B 6E 79 00 41 72
+6B 61 64 69 75 73 7A 20 53 7A 79 63 68 6F 77 73
+6B 69 00 41 72 74 75 72 61 73 20 53 65 70 75 74
+69 73 00 41 75 72 61 62 69 6E 00 42 61 72 72 79
+20 50 6F 72 63 68 00 42 65 6E 20 4D 61 74 74 68
+65 77 00 42 65 6E 65 64 65 74 74 6F 20 46 69 6C
+69 70 70 6F 20 44 69 61 6E 61 00 42 65 6E 65 64
+65 74 74 6F 20 4C 6F 72 65 6C 6C 6F 00 42 65 72
+74 72 61 6E 64 00 42 6A C3 B6 72 6E 20 50 65 72
+73 73 6F 6E 00 42 6F 20 53 74 C3 A5 6C 65 20 4B
+6F 70 70 65 72 75 64 00 42 6F 62 20 57 69 63 6B
+73 61 6C 6C 00 42 72 65 74 74 20 41 72 6D 73 74
+72 6F 6E 67 00 42 72 69 61 6E 20 47 6F 73 6E 65
+79 00 42 72 69 61 6E 20 4B 69 6E 67 00 42 72 69
+65 6C 6C 65 20 48 61 72 72 69 73 6F 6E 00 43 61
+70 74 2E 20 4C 65 43 68 75 63 6B 00 43 61 72 6F
+6C 69 6E 61 20 4A 6F 6E 65 73 00 43 61 74 68 61
+6C 00 43 C3 A9 64 72 69 63 20 42 69 6C 6C 65 6D
+6F 6E 74 00 43 68 61 6E 63 65 20 44 61 76 69 73
+00 43 68 72 69 73 20 48 61 79 77 6F 6F 64 00 43
+68 72 69 73 20 52 6F 62 69 6E 73 6F 6E 00 43 68
+72 69 73 74 69 61 6E 20 4A 6F 68 61 6E 73 73 6F
+6E 00 43 68 72 69 73 74 6F 70 68 65 20 54 68 69
+62 61 75 6C 74 00 43 68 72 69 73 74 6F 70 68 65
+72 20 46 72 61 73 65 72 00 43 68 72 69 73 74 6F
+70 68 65 72 20 54 75 63 6B 77 65 6C 6C 00 43 6C
+61 75 64 65 20 53 63 68 77 61 72 7A 00 43 6C 6F
+75 64 68 75 6E 74 65 72 20 00 64 2D 61 2D 6E 2D
+78 00 44 61 67 6F 6E 20 41 6D 69 67 61 4F 53 00
+44 61 6E 61 20 52 6F 73 73 00 44 61 6E 69 61 6C
+20 50 68 69 6C 6C 69 70 73 00 44 61 6E 69 65 6C
+20 44 6F 72 61 6E 00 44 61 6E 69 65 6C 20 56 61
+72 67 61 00 44 61 6E 69 6C 6F 20 53 61 76 69 6F
+6E 69 00 44 61 76 65 20 57 61 6C 7A 20 61 6B 61
+20 4B 75 6E 67 2D 46 75 00 44 61 76 69 64 20 46
+65 72 67 75 73 6F 6E 00 44 61 76 69 64 20 52 61
+75 6C 6F 00 44 61 76 69 64 65 20 43 00 64 67 69
+61 6C 00 44 69 6F 67 6F 20 42 6F 72 67 65 73 00
+45 6D 69 6C 69 61 6E 6F 20 45 73 70 6F 73 69 74
+6F 00 45 6E 72 69 71 75 65 20 4D 65 63 6B 6C 65
+6E 62 75 72 67 20 53 65 72 6B 6F 76 69 63 00 45
+6E 76 65 72 20 50 61 75 6C 00 65 58 65 6C 65 72
+30 00 46 61 62 72 69 7A 69 6F 20 4C 6F 64 69 00
+46 61 62 72 69 7A 69 6F 20 52 61 64 69 63 61 00
+46 61 66 61 00 46 61 73 69 68 20 52 65 68 6D 61
+6E 00 46 65 64 65 72 69 63 6F 20 53 74 61 6E 67
+6F 00 46 65 72 65 6E 63 20 42 6F 6C 64 6F 67 00
+46 69 73 68 57 68 69 73 74 6C 65 00 66 6C 79 70
+65 00 46 C3 B6 6C 64 65 73 69 20 50 C3 A9 74 65
+72 00 46 72 61 6E 6B 20 45 65 72 73 65 6C 73 00
+46 72 61 6E 6B 20 4C 6F 77 65 00 47 2E 20 5A 2E
+00 47 61 65 74 61 6E 6F 20 47 69 61 72 72 75 73
+73 6F 00 47 65 69 6A 65 72 00 47 65 6F 72 67 65
+20 41 6C 69 62 69 6E 69 73 69 73 00 47 65 72 64
+20 4B 61 75 74 7A 6D 61 6E 6E 00 47 69 61 6E 74
+73 20 43 68 72 69 73 74 6F 70 68 65 00 47 69 75
+73 65 70 70 65 20 44 65 20 56 69 6E 63 65 6E 7A
+69 00 47 72 65 67 20 44 79 6B 65 00 67 72 6F 76
+64 61 74 61 00 48 61 72 72 69 20 54 69 6B 6B 61
+6E 65 6E 00 48 C3 A9 63 74 6F 72 20 4A 75 61 6E
+00 48 50 68 00 49 67 6F 72 20 49 61 6E 6F 76 00
+49 6E 67 6F 20 53 63 68 6D 69 74 7A 00 49 72 65
+6E 65 75 73 7A 20 42 6F 68 61 74 79 72 65 77 69
+63 7A 00 49 72 69 64 69 75 6D 46 58 00 4A 61 63
+68 79 6D 20 43 69 6E 65 6D 61 74 69 63 20 53 74
+75 64 69 6F 00 4A 61 69 6D 65 20 43 61 67 69 67
+61 6C 20 42 6F 72 64 6F 6E 61 62 61 00 4A 61 6D
+65 73 20 42 6F 79 64 00 4A 61 6D 65 73 20 4A 6F
+68 6E 73 74 6F 6E 00 4A 61 6D 65 73 20 54 65 6D
+70 6C 65 00 4A 61 72 72 6F 64 20 42 65 7A 7A 69
+6E 61 00 6A 65 64 69 6D 61 74 74 34 32 00 4A 65
+72 69 20 4D 61 73 6F 6E 00 4A 65 72 6F 65 6E 20
+56 61 6E 64 65 7A 61 6E 64 65 00 4A C3 A9 72 C3
+B4 6D 65 20 52 61 62 61 73 00 4A 6F 61 6B 69 6D
+20 45 6B 62 6C 61 64 00 4A 6F 65 20 54 6F 6D 20
+43 6F 6C 6C 69 6E 73 00 4A 6F 68 61 6E 20 6A 6F
+6E 73 73 6F 6E 00 4A 6F 68 61 6E 20 53 6D 6F 6C
+69 6E 73 6B 69 00 6A 6F 6E 61 74 68 61 6E 20 57
+69 63 6B 65 74 74 00 4A 75 6E 65 20 54 61 74 65
+2D 47 61 6E 73 00 4B 61 73 70 65 72 20 4F 6C 65
+73 65 6E 00 4B 6F 6C 62 6A C3 B8 72 6E 20 42 61
+72 6D 65 6E 00 4B 75 62 61 00 4C 65 6D 61 72 75
+00 C5 81 75 6B 61 73 7A 20 52 61 74 61 6A 63 7A
+79 6B 00 4D 2E 42 2E 00 4D 41 41 52 54 45 4E 00
+4D 61 64 67 72 69 7A 7A 6C 65 00 4D 61 68 65 6E
+00 4D 61 69 63 20 53 74 72 69 65 70 65 00 4D 61
+6E 75 65 6C 20 4D 6F 6E 74 6F 74 6F 00 4D 61 72
+63 69 6E 20 50 61 6E 61 77 61 00 4D 61 72 63 6F
+20 52 6F 64 72 69 67 75 65 7A 00 4D 61 72 63 75
+73 20 41 67 65 68 61 6C 6C 00 4D 61 72 63 75 73
+20 42 65 6E 67 74 73 73 6F 6E 00 4D 61 72 63 75
+73 20 47 65 72 61 72 64 73 00 4D 61 72 6B 00 4D
+61 72 6B 20 4A 61 71 75 65 73 00 4D 61 72 6C 6F
+6E 20 42 65 69 6A 65 72 00 4D 61 72 74 69 6E 20
+4C 75 6B 61 73 65 6B 00 6D 61 72 79 6F 6F 73 68
+5F 6B 00 4D 61 74 65 75 73 7A 20 50 72 7A 79 62
+79 6C 73 6B 69 00 4D 61 74 65 75 73 7A 20 53 74
+61 6E 69 73 7A 65 77 00 4D 61 74 74 68 65 77 20
+4D 63 47 65 65 00 6D 64 70 79 65 00 4D 69 63 68
+61 65 6C 00 4D 69 63 68 61 65 6C 20 4A 61 6B 65
+73 00 4D 69 63 68 61 65 6C 20 4C 6F 6E 67 76 61
+6C 00 4D 69 6B 65 73 20 52 65 74 72 6F 20 54 65
+63 68 00 4D 69 6C 6F 4C 6F 76 65 73 43 68 6F 63
+6F 6C 61 74 65 00 4D 69 6C 6F 73 6C 61 76 20 4D
+61 72 74 69 6E 6B 61 00 4D 56 20 49 6D 61 67 69
+6E 67 00 4E 69 63 6B 20 4C 00 4E 69 63 6B 6C 61
+73 20 42 65 72 67 00 4E 69 6B 6F 20 54 6F 6D 61
+74 73 69 64 69 73 00 4E 69 73 73 65 20 48 00 50
+61 6C 61 64 69 6E 70 72 69 6D 65 00 70 61 74 72
+61 63 79 00 50 61 75 6C 20 41 74 72 65 69 64 65
+73 00 50 65 74 65 72 20 4B 6E C3 B6 6C 6C 00 50
+65 74 65 72 20 50 65 72 73 73 6F 6E 00 50 65 74
+74 65 72 20 4C 69 6E 64 71 75 69 73 74 00 70 72
+6F 6D 65 74 65 75 73 7A 38 34 00 50 72 7A 65 6D
+79 73 C5 82 61 77 20 53 74 61 6C 6D 61 63 68 00
+52 61 73 74 69 73 6C 61 76 20 53 65 66 66 65 72
+00 52 65 6D 69 67 69 75 73 7A 00 52 65 6E 61 75
+64 20 53 63 68 77 65 69 6E 67 72 75 62 65 72 00
+52 65 6E 65 65 20 43 6F 75 73 69 6E 73 00 72 65
+6E 65 77 61 62 6C 65 5F 69 6E 74 65 6C 00 52 65
+74 72 6F 66 6C 65 74 63 68 00 52 65 74 72 6F 50
+61 73 73 69 6F 6E 20 4C 74 64 00 52 69 63 68 61
+72 64 20 50 72 6F 6B 65 73 63 68 00 52 69 6F 74
+20 52 65 74 72 6F 20 47 61 6D 69 6E 67 00 52 6F
+62 00 52 6F 62 65 72 74 6F 20 4D 65 6C 6F 6E 69
+00 52 6F 62 65 72 74 6F 20 4D 6F 6E 74 69 63 65
+6C 6C 69 00 52 6F 62 69 6E 20 53 6F 75 74 68 65
+72 6E 00 52 6F 43 00 52 6F 57 69 00 52 52 65 6E
+66 72 6F 77 00 52 75 62 65 6E 00 53 61 6D 75 65
+6C 20 43 72 6F 77 00 53 61 72 6D 61 64 20 47 69
+6C 61 6E 69 00 53 65 72 67 65 20 41 6C 76 65 73
+00 73 68 6F 65 00 53 69 65 75 72 20 4F 72 61 67
+65 20 28 41 6C 6C 61 6E 29 00 53 69 67 75 72 62
+6A 6F 72 6E 20 42 2E 20 4C 61 72 75 73 73 6F 6E
+00 53 69 6D 6F 6E 00 53 69 6D 6F 6E 20 4C 65 65
+00 53 69 6D 6F 6E 20 4F 73 62 6F 72 6E 65 00 53
+69 6D 6F 6E 56 00 53 6D 61 72 74 68 75 6D 61 6E
+00 53 74 65 66 61 6E 20 42 6C 69 78 74 68 00 53
+74 65 66 61 6E 20 4B 6E 6F 62 6C 69 63 68 00 53
+74 65 66 61 6E 20 52 65 69 6E 61 75 65 72 00 53
+74 65 66 66 65 6E 20 42 61 72 61 62 61 73 63 68
+00 53 74 65 70 68 61 6E 65 20 4A 61 63 6F 62 00
+53 74 65 70 68 65 6E 20 46 72 61 6D 65 00 53 74
+65 76 65 20 48 6F 64 73 6F 6E 00 53 74 65 76 65
+20 4A 6F 6E 65 73 00 53 74 65 76 65 6E 20 54 61
+79 6C 6F 72 00 53 75 72 66 62 75 64 00 54 61 6D
+C3 A1 73 20 56 C3 A1 6E 64 6F 72 66 66 79 00 54
+68 65 20 41 6D 69 67 61 20 53 68 6F 77 00 54 68
+65 20 55 6E 64 65 72 74 61 6B 65 72 00 54 68 6F
+6D 61 73 20 4F 65 64 69 6E 67 00 54 68 6F 6D 61
+73 20 52 61 64 65 63 6B 00 54 68 6F 6D 61 73 20
+53 63 68 65 6C 6C 65 72 00 54 69 6A 6E 7A 20 00
+54 69 6D 6F 74 68 79 20 44 65 74 65 72 73 00 54
+6F 62 69 61 73 20 53 65 69 6C 65 72 00 54 6F 64
+64 20 43 68 61 6D 62 65 72 6C 61 69 6E 00 54 6F
+6D 61 73 20 4B 61 6C 75 7A 69 6B 00 54 6F 6D 65
+6B 20 52 79 6D 61 72 63 7A 75 6B 00 54 6F 6D 65
+6B 20 5A 61 6C 65 67 61 00 54 6F 6E 6E 79 20 52
+6F 67 65 72 20 48 6F 6C 6D 00 54 6F 72 73 74 65
+6E 20 4B 75 72 62 61 64 00 56 69 74 6F 20 4C 65
+76 61 00 56 6F 76 61 20 53 74 65 67 61 6E 74 73
+6F 76 00 57 65 62 62 61 00 57 6F 6C 66 67 61 6E
+67 20 53 63 68 75 73 74 65 72 00 00
+/emu68/m68k-jit-size: long = 0x00000040 (64)
+/emu68/ppc-jit-size: long = 0x00000040 (64)
+/emu68/variant: string = pistorm32lite
+/emu68/vc4-mem: quad = 0x3D00000001000000
+/emu68/unicam-mem: quad = 0x3CC0000000200000
+/emu68/brcm-emmc/
+/emu68/brcm-emmc/status: string = okay
+/emu68/brcm-emmc/hs-clock-mhz: long = 0x00000032 (50)
+/emu68/brcm-emmc/whole-drive-access: long = 0x00000001 (1)
+/emu68/brcm-emmc/verbose: long = 0x00000000 (0)
+/emu68/brcm-sdhc/
+/emu68/brcm-sdhc/status: string = disabled
+/emu68/brcm-sdhc/hs-clock-mhz: long = 0x00000032 (50)
+/emu68/brcm-sdhc/whole-drive-access: long = 0x00000001 (1)
+/emu68/brcm-sdhc/verbose: long = 0x00000000 (0)
+/emu68/defaults/
+/emu68/defaults/insn-count: long = 0x00000100 (256)
+/emu68/defaults/ccr-scan-depth: long = 0x00000014 (20)
+/emu68/defaults/branch-inline-distance: long = 0x00001FFF (8191)
+/emu68/defaults/chip-slowdown-distance: long = 0x00000001 (1)
+/emu68/defaults/dbf-slowdown: empty = -
+/emu68/diag/

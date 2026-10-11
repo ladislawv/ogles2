@@ -1,0 +1,34 @@
+# The checks that need no m68k toolchain and no Amiga (CONTRIBUTING.md,
+# "Building and host checks"). The library and the tests need bebbo's
+# toolchains (dev/host-setup) and run on real hardware.
+name: host checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  host:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python files compile
+        run: python3 -m py_compile $(git ls-files '*.py')
+
+      - name: Generator runs; abi_order.txt is complete (append-only, committed)
+        run: |
+          python3 gen/gen_ogles2.py --out build/gen --impl-dir ogles2
+          git diff --exit-code gen/abi_order.txt
+
+      - name: Remote test station (amictld host build + amictl client)
+        run: make amictl-test B=build
+
+      - name: BLAKE3 against Mesa's (Mesa at the pinned commit, src/util/blake3 only)
+        run: |
+          git init -q mesa
+          git -C mesa remote add origin https://gitlab.freedesktop.org/mesa/mesa.git
+          git -C mesa sparse-checkout set --no-cone /src/util/blake3/
+          git -C mesa fetch -q --depth 1 origin 74b69717c52b73494200e11e2dd97aa346d552dd
+          git -C mesa -c advice.detachedHead=false checkout -q FETCH_HEAD
+          make blake3-test B=build MESA_SRC=$PWD/mesa/src

@@ -1,0 +1,57 @@
+diff --git a/src/gallium/auxiliary/tgsi/tgsi_exec.c b/src/gallium/auxiliary/tgsi/tgsi_exec.c
+index 6e4df172fe4..93f40e9819f 100644
+--- a/src/gallium/auxiliary/tgsi/tgsi_exec.c
++++ b/src/gallium/auxiliary/tgsi/tgsi_exec.c
+@@ -73,9 +73,9 @@
+ #define TILE_BOTTOM_LEFT  2
+ #define TILE_BOTTOM_RIGHT 3
+ 
+-static_assert(alignof(union tgsi_exec_channel) == 16, "");
+-static_assert(alignof(struct tgsi_exec_vector) == 16, "");
+-static_assert(alignof(struct tgsi_exec_machine) == 16, "");
++static_assert(alignof(union tgsi_exec_channel) == TGSI_EXEC_CHANNEL_ALIGN, "");
++static_assert(alignof(struct tgsi_exec_vector) == TGSI_EXEC_CHANNEL_ALIGN, "");
++static_assert(alignof(struct tgsi_exec_machine) == TGSI_EXEC_CHANNEL_ALIGN, "");
+ 
+ union tgsi_double_channel {
+    alignas(16)
+diff --git a/src/gallium/auxiliary/tgsi/tgsi_exec.h b/src/gallium/auxiliary/tgsi/tgsi_exec.h
+index 6e08cf9a384..b63106b51dc 100644
+--- a/src/gallium/auxiliary/tgsi/tgsi_exec.h
++++ b/src/gallium/auxiliary/tgsi/tgsi_exec.h
+@@ -71,9 +71,16 @@ extern "C" {
+ /**
+   * Registers may be treated as float, signed int or unsigned int.
+   */
++/* 16 for SSE; the AmigaOS hunk format cannot align static objects beyond 8. */
++#if defined(__m68k__)
++#define TGSI_EXEC_CHANNEL_ALIGN 8
++#else
++#define TGSI_EXEC_CHANNEL_ALIGN 16
++#endif
++
+ union tgsi_exec_channel
+ {
+-   alignas(16)
++   alignas(TGSI_EXEC_CHANNEL_ALIGN)
+    float    f[TGSI_QUAD_SIZE];
+    int32_t  i[TGSI_QUAD_SIZE];
+    uint32_t u[TGSI_QUAD_SIZE];
+@@ -84,7 +91,7 @@ union tgsi_exec_channel
+   */
+ struct tgsi_exec_vector
+ {
+-   alignas(16) union tgsi_exec_channel xyzw[TGSI_NUM_CHANNELS];
++   alignas(TGSI_EXEC_CHANNEL_ALIGN) union tgsi_exec_channel xyzw[TGSI_NUM_CHANNELS];
+ };
+ 
+ /**
+@@ -296,7 +303,7 @@ struct tgsi_exec_machine
+ {
+    /* Total = program temporaries + internal temporaries
+     */
+-   alignas(16)
++   alignas(TGSI_EXEC_CHANNEL_ALIGN)
+    struct tgsi_exec_vector       Temps[TGSI_EXEC_NUM_TEMPS];
+ 
+    unsigned                       ImmsReserved;

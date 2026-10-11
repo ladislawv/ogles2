@@ -1,0 +1,61 @@
+(
+(declare (temporary ) vec3 assignment_tmp)
+(declare (temporary ) float assignment_tmp)
+(declare (temporary ) float assignment_tmp)
+(declare (location=2 shader_out mediump ) vec4 gl_FragColor)
+(declare (location=25 shader_in mediump ) vec2 gl_PointCoord)
+(declare (location=24 shader_in flat) bool gl_FrontFacing)
+(declare (location=0 shader_in mediump ) vec4 gl_FragCoord)
+(declare (uniform highp ) float time)
+(declare (uniform highp ) vec2 resolution)
+(declare (highp ) float k_exp) (constant float (11.313708))  (constant float (11.313708)) 
+(declare (highp ) float k_log) (constant float (3.321928))  (constant float (3.321928)) 
+(declare (highp ) vec3 k_mix) (constant vec3 (0.300000 0.350000 0.400000))  (constant vec3 (0.300000 0.350000 0.400000)) 
+(assign  (x) (var_ref assignment_tmp)  (constant float (11.313708)) ) 
+(assign  (x) (var_ref k_exp)  (var_ref assignment_tmp) ) 
+(assign  (x) (var_ref assignment_tmp)  (constant float (3.321928)) ) 
+(assign  (x) (var_ref k_log)  (var_ref assignment_tmp) ) 
+(assign  (xyz) (var_ref assignment_tmp)  (constant vec3 (0.300000 0.350000 0.400000)) ) 
+(assign  (xyz) (var_ref k_mix)  (var_ref assignment_tmp) ) 
+( function main
+  (signature void
+    (parameters
+    )
+    (
+      (declare (highp ) vec3 c)
+      (declare (highp ) float v)
+      (declare (highp ) vec2 p)
+      (declare (temporary ) vec2 assignment_tmp)
+      (assign  (xy) (var_ref p)  (expression vec2 / (swiz xy (var_ref gl_FragCoord) )(var_ref resolution) ) ) 
+      (declare (temporary ) float dot_retval)
+      (declare (temporary ) float sin_retval)
+      (declare (temporary ) float fract_retval)
+      (declare (temporary ) float assignment_tmp@2)
+      (declare (temporary ) float step_retval)
+      (declare (temporary ) float compiler_temp)
+      (declare (temporary ) float fract_retval@3)
+      (declare (temporary ) vec3 vec_ctor)
+      (assign  (xy) (var_ref vec_ctor)  (swiz xy (swiz yx (var_ref p) ))) 
+      (assign  (z) (var_ref vec_ctor)  (swiz x (expression float fract (expression float / (expression float * (var_ref time) (var_ref k_exp) ) (var_ref k_log) ) ) )) 
+      (declare (temporary ) vec3 assignment_tmp@4)
+      (assign  (xyz) (var_ref c)  (expression vec3 + (expression vec3 * (var_ref k_mix) (expression float b2f (expression bool >= (expression float fract (expression float * (expression float sin (expression float dot (var_ref p) (constant vec2 (12.989800 78.233002)) ) ) (constant float (43758.546875)) ) ) (constant float (0.500000)) ) ) ) (var_ref vec_ctor) ) ) 
+      (if (expression bool < (constant float (0.500000)) (swiz x (var_ref p) )) (
+        (assign  (xyz) (var_ref c)  (swiz zyx (var_ref c) )) 
+      )
+      (
+        (if (expression bool < (constant float (0.750000)) (swiz y (var_ref p) )) (
+          (assign  (xyz) (var_ref c)  (expression vec3 * (var_ref c) (constant vec3 (1.259921 2.807355 0.707107)) ) ) 
+        )
+        ())
+
+      ))
+
+      (declare (temporary ) vec4 vec_ctor@5)
+      (assign  (w) (var_ref vec_ctor@5)  (constant float (1.000000)) ) 
+      (assign  (xyz) (var_ref vec_ctor@5)  (swiz xyz (var_ref c) )) 
+      (assign  (xyzw) (var_ref gl_FragColor)  (var_ref vec_ctor@5) ) 
+    ))
+
+)
+
+)

@@ -1,10 +1,11 @@
 # Host setup for ogles2 development
 
-Scripts that set up the build machine described in §2.4 of `OGLES2_DEVELOPMENT_PLAN.md`. Everything runs inside WSL Ubuntu 24.04, in the Linux filesystem (`~`).
+Scripts that set up the build machine described in §2.4 of [`docs/DEVELOPMENT_PLAN.md`](../../docs/DEVELOPMENT_PLAN.md). Everything runs in Ubuntu 24.04 (WSL on Windows, or native Linux), in the Linux filesystem (`~`). The repository itself may live anywhere, including a Windows drive under `/mnt/c`.
 
 | Script | What it does |
 |---|---|
-| `build_toolchains.sh` | Builds bebbo's amiga-gcc twice: GCC 6.5.0b (`amiga6`, PiStorm3D's toolchain, with clib2) into `~/amiga-gcc-install`, and GCC 16.2.0b (`amiga16.2`, for the Mesa compiler port, with libnix and libstdc++) into `~/amiga-gcc162-install`. `TARGETS=gcc16` builds the older `amiga16.1` into `~/amiga-gcc16-install`, which miscompiles and is kept only for comparison. Logs and exact commits: `~/toolchain-build/summary.log`. |
+| `build_tools.sh` | Installs LHa for UNIX (`~/tools/bin/lha`, the test packages' archiver) and amitools (`~/amitools-venv`, vamos for the host tests) at the commits used here. A few minutes. |
+| `build_toolchains.sh` | Builds bebbo's amiga-gcc twice, every project at the commit in `toolchain-pins.txt` (`PINNED=0`: the branch heads, for a deliberate toolchain update): GCC 6.5.0b (`amiga6`, PiStorm3D's toolchain, with clib2) into `~/amiga-gcc-install`, and GCC 16.2.0b (`amiga16.2`, for the Mesa compiler port, with libnix and libstdc++) into `~/amiga-gcc162-install`. `TARGETS=gcc16` builds the older `amiga16.1` into `~/amiga-gcc16-install`, which miscompiles and is kept only for comparison. Logs and exact commits: `~/toolchain-build/summary.log`. |
 | `clib2-ndk32.patch` | Lets adtools clib2 `master` (`c026659`) build against the NDK 3.2 headers amiga-gcc now ships: an invalid `##` paste in the constructor macros, `<time.h>`'s `tv_sec` macro clashing with NDK 3.2's `struct timeval`, and a missing `IntuitionBase` declaration. Applied to GCC 6 only; under GCC 16 clib2's inline asm no longer compiles. |
 | `pthread-timersub.patch` | Adds the BSD `timersub` macro to amiga-gcc's libpthread. Without it GCC 6 leaves `_timersub` unresolved, and GCC 16 stops, which also skips libgcc and libstdc++. |
 | `build_mesa.sh` | Builds Mesa at the pinned commit `74b6971` with the gallium `v3d` driver, the v3d drm-shim and llvmpipe into `~/mesa-install`. |
@@ -21,10 +22,10 @@ apt-get install make wget curl git gcc g++ lhasa libgmp-dev libmpfr-dev libmpc-d
   python3-mako python3-yaml python3-packaging ninja-build pkg-config libdrm-dev libexpat1-dev zlib1g-dev \
   libzstd-dev libelf-dev cmake llvm-dev libclang-cpp-dev libunwind-dev libsensors-dev \
   libx11-dev libxext-dev libxfixes-dev libxcb-glx0-dev libxcb-shm0-dev libx11-xcb-dev libxrandr-dev \
-  libxshmfence-dev libxxf86vm-dev libwayland-dev wayland-protocols libwayland-egl-backend-dev glslang-tools
+  libxshmfence-dev libxxf86vm-dev libwayland-dev wayland-protocols libwayland-egl-backend-dev glslang-tools \n  libegl-dev libgles-dev libegl-mesa0 libgl1-mesa-dri
 ```
 
-Order: prerequisites, then `build_toolchains.sh` and `build_mesa.sh` (independent, can run together), then `patch_drmshim.sh` and `run_shimtest.sh`.
+Order: prerequisites, then `build_tools.sh`, `build_toolchains.sh` and `build_mesa.sh` (independent, can run together; the toolchains take the longest, a few hours), then `patch_drmshim.sh` and `run_shimtest.sh`; `build_vbcc.sh` after the toolchains. The last four packages are for the corpus's reference renders (`tests/corpus`, Mesa llvmpipe through EGL).
 
 Installed and verified on 2026-10-09/10 (`~/toolchain-build/summary.log`):
 

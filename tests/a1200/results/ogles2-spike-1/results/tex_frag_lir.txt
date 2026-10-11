@@ -1,0 +1,32 @@
+(
+(declare (location=2 shader_out mediump ) vec4 gl_FragColor)
+(declare (location=25 shader_in mediump ) vec2 gl_PointCoord)
+(declare (location=24 shader_in flat) bool gl_FrontFacing)
+(declare (location=0 shader_in mediump ) vec4 gl_FragCoord)
+(declare (uniform lowp ) sampler2D tex)
+(declare (uniform mediump ) vec4 tint)
+(declare (shader_in mediump ) vec2 uv)
+( function main
+  (signature void
+    (parameters
+    )
+    (
+      (declare (mediump ) vec4 c)
+      (declare (temporary ) vec4 texture2D_retval)
+      (declare (temporary ) vec4 assignment_tmp)
+      (assign  (xyzw) (var_ref c)  (expression vec4 * (tex vec4 (var_ref tex)  (var_ref uv)  0 0 1 () () )(var_ref tint) ) ) 
+      (if (expression bool < (swiz w (var_ref c) )(constant float (0.500000)) ) (
+        (discard )
+      )
+      ())
+
+      (declare (temporary ) vec3 pow_retval)
+      (declare (temporary ) vec4 vec_ctor)
+      (assign  (xyz) (var_ref vec_ctor)  (swiz xyz (expression vec3 pow (swiz xyz (var_ref c) )(constant vec3 (0.454545 0.454545 0.454545)) ) )) 
+      (assign  (w) (var_ref vec_ctor)  (swiz x (swiz w (var_ref c) ))) 
+      (assign  (xyzw) (var_ref gl_FragColor)  (var_ref vec_ctor) ) 
+    ))
+
+)
+
+)

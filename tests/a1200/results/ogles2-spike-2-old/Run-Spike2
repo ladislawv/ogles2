@@ -1,0 +1,84 @@
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+; Run-Spike2 - Mesa's full V3D shader compiler (GLSL to GPU code) on the A1200.
+; See ReadMe.txt.
+;   CD to this directory, then:        Execute Run-Spike2
+;   After a reboot in the middle:      Execute Run-Spike2 FROM=<step>
+; Times go to results/times.txt, each run's output to results/<name>.txt.
+; Nothing outside this directory is changed.
+
+FailAt 21
+If NOT EXISTS bin/v3dc
+  Echo "Please CD into the ogles2-spike-2 directory first,"
+  Echo "then run:  Execute Run-Spike2"
+  Quit 20
+EndIf
+
+Assign SPIKE2: ""
+If NOT EXISTS SPIKE2:results
+  MakeDir SPIKE2:results
+EndIf
+Echo "ogles2 spike run 2, starting at step {FROM}" >>SPIKE2:results/00-progress.txt
+Date >>SPIKE2:results/00-progress.txt
+Echo "== starting at step {FROM}" >>SPIKE2:results/times.txt
+Avail >SPIKE2:results/01-avail-before.txt
+
+Stack 4000000
+CD SPIKE2:shaders
+
+; ---------------------------------------------------------------- steps 1-2
+; No program: the time to load the 19 MB program and set up the GL context.
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 5: start-up only, first run (includes loading from disk)"
+  SPIKE2:bin/timeit SPIKE2:results/times.txt startup_first SPIKE2:bin/v3dc -d precompile >SPIKE2:results/startup_first.txt
+  Echo "step 1 done" >>SPIKE2:results/00-progress.txt
+EndIf
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 5: start-up only, second run"
+  SPIKE2:bin/timeit SPIKE2:results/times.txt startup_second SPIKE2:bin/v3dc -d precompile >SPIKE2:results/startup_second.txt
+  Echo "step 2 done" >>SPIKE2:results/00-progress.txt
+EndIf
+
+; ---------------------------------------------------------------- step 3
+; Each program alone, printing its GPU code (compared on the PC with x86-64).
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 5: each program, with its GPU code (4 runs)"
+  SPIKE2:bin/timeit SPIKE2:results/times.txt tex_qpu SPIKE2:bin/v3dc -d precompile,qpu,shaderdb tex.vert tex.frag >SPIKE2:results/tex_qpu.txt
+  SPIKE2:bin/timeit SPIKE2:results/times.txt light_qpu SPIKE2:bin/v3dc -d precompile,qpu,shaderdb light.vert light.frag >SPIKE2:results/light_qpu.txt
+  SPIKE2:bin/timeit SPIKE2:results/times.txt skin_qpu SPIKE2:bin/v3dc -d precompile,qpu,shaderdb skin.vert skin.frag >SPIKE2:results/skin_qpu.txt
+  SPIKE2:bin/timeit SPIKE2:results/times.txt proc_qpu SPIKE2:bin/v3dc -d precompile,qpu,shaderdb tex.vert proc.frag >SPIKE2:results/proc_qpu.txt
+  Echo "step 3 done" >>SPIKE2:results/00-progress.txt
+EndIf
+
+; ---------------------------------------------------------------- step 4
+; The same compiles without printing, for the plain compile time.
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 5: each program again, without printing (4 runs)"
+  SPIKE2:bin/timeit SPIKE2:results/times.txt tex_quiet SPIKE2:bin/v3dc -d precompile tex.vert tex.frag >SPIKE2:results/tex_quiet.txt
+  SPIKE2:bin/timeit SPIKE2:results/times.txt light_quiet SPIKE2:bin/v3dc -d precompile light.vert light.frag >SPIKE2:results/light_quiet.txt
+  SPIKE2:bin/timeit SPIKE2:results/times.txt skin_quiet SPIKE2:bin/v3dc -d precompile skin.vert skin.frag >SPIKE2:results/skin_quiet.txt
+  SPIKE2:bin/timeit SPIKE2:results/times.txt proc_quiet SPIKE2:bin/v3dc -d precompile tex.vert proc.frag >SPIKE2:results/proc_quiet.txt
+  Echo "step 4 done" >>SPIKE2:results/00-progress.txt
+EndIf
+
+; ---------------------------------------------------------------- step 5
+; All four in one run: start-up paid once.
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 5: all four programs in one run"
+  SPIKE2:bin/timeit SPIKE2:results/times.txt all_four SPIKE2:bin/v3dc -d precompile tex.vert tex.frag light.vert light.frag skin.vert skin.frag tex.vert proc.frag >SPIKE2:results/all_four.txt
+  Echo "step 5 done" >>SPIKE2:results/00-progress.txt
+EndIf
+
+CD SPIKE2:
+Avail >SPIKE2:results/99-avail-after.txt
+If NOT EXISTS SPIKE2:results/notes.txt
+  Copy SPIKE2:notes-template.txt SPIKE2:results/notes.txt
+EndIf
+List SPIKE2:results >SPIKE2:results/99-files.txt
+Echo "finished" >>SPIKE2:results/00-progress.txt
+Date >>SPIKE2:results/00-progress.txt
+Echo ""
+Echo "Done. The times are in results/times.txt."
+Echo "Please add a few words to results/notes.txt and send the whole results directory back."
