@@ -21,6 +21,7 @@ struct OGLES2Library
     BPTR segList;
     struct SignalSemaphore lock; /* library-wide state: context list, log */
     struct SignalSemaphore compiler_lock; /* starting the shader compiler (compiler.c) */
+    ULONG contexts;                       /* with a GPU, in every program (job.c: overlap only with one) */
 };
 
 /* A GL context. Opaque to clients (struct OGLES2Context in the headers). */
@@ -134,6 +135,14 @@ struct OGLES2Variant
     ULONG code_bytes, code_offset;
     UWORD nrecipe;
     const ULONG *rtype, *rdata;
+    UBYTE uses_ubo;               /* the recipe has OGLES2_U_UBO_ADDR (v3dp.c; 0 in the built-in image) */
+    /* v3dp.c, for draw.c's uniform streams (NULL in the built-in image):
+     * each entry's constant buffer word (0 for the others), and the
+     * entries that are not constant buffer words. */
+    const UWORD *uidx;
+    const UWORD *special;
+    UWORD nspecial;
+    UBYTE no_textures;            /* no TMU or UBO entries: its stream depends on no texture */
 };
 
 struct OGLES2ImageAttrib
@@ -226,6 +235,8 @@ struct OGLES2Program
     const struct OGLES2Image *image;  /* after a successful link */
     UBYTE attrib_index[OGLES2_MAX_VERTEX_ATTRIBS]; /* image attribute i <- generic attribute */
     ULONG *cbuf[2];                   /* constant buffers, vertex and fragment */
+    ULONG *cbuf_le[2];                /* the same in the GPU's byte order, for the draws'
+                                         uniform streams: written with ogles2_cbuf_set */
     UWORD nlocations;                 /* uniform locations: one per array element */
     UWORD *loc_uniform, *loc_element; /* location -> uniform, element */
     UBYTE *sampler_unit;              /* per uniform: its texture unit (glUniform1i) */
@@ -233,9 +244,33 @@ struct OGLES2Program
     GLuint bind_index[OGLES2_MAX_BINDINGS];
     UBYTE nbindings;
     char *info_log;                   /* AllocVec'd or NULL */
+    /* draw.c: its last GL shader state record without the addresses that
+     * change per draw, for the variants and code it was made from. */
+    APTR rec_tmpl;                    /* AllocVec'd or NULL; freed at unlink */
+    const struct OGLES2Variant *rec_var[3];
+    ULONG rec_code[3];
+    BOOL rec_points;
+    /* draw.c: the variants and code addresses for the last primitive mode
+     * drawn, and the image's sampler uniforms (0xff: not listed yet). */
+    BOOL var_ok;
+    GLenum var_mode;
+    const struct OGLES2Variant *var[3];
+    ULONG var_code[3];
+    UBYTE nsamplers;
+    UWORD samplers[16];
+    /* draw.c: the coordinate and vertex shaders' last uniform streams,
+     * reused while the vertex constant buffer and the state they read are
+     * the same (cbuf_ver[0], the context's ustate_ver). */
+    ULONG cbuf_ver[2];                /* bumped by every change to cbuf[k] */
+    const struct OGLES2Variant *us_var[2];
+    ULONG us_gen[2], us_cbuf_ver[2], us_state_ver[2], us_addr[2];
+    UBYTE nslots;                     /* vertex input slots (0xff: not mapped yet) */
+    UBYTE slot_attrib[16];            /* the generic attribute of each (0xff: none) */
 };
 
 struct OGLES2Context;
+/* program.c: one word of a constant buffer and its little-endian copy. */
+void ogles2_cbuf_set(struct OGLES2Program *p, int stage, ULONG at, ULONG w);
 /* program.c: a program on the built-in image, outside the name table
  * (draw.c's clears); its storage freed with ogles2_program_builtin_free. */
 BOOL ogles2_program_builtin(struct OGLES2Program *p);
@@ -265,54 +300,6 @@ struct OGLES2Display
 
 struct V3DContext; /* v3dcore */
 
-struct OGLES2Context
-{
-    ULONG magic;
-    GLenum error;        /* first error since the last glGetError (sticky) */
-    ULONG width, height; /* default framebuffer size; 0 without a display */
-    struct OGLES2State state;
-    struct OGLES2Display display;   /* zeroed for a state-only (test) context */
-    struct V3DContext *v3d;         /* GPU pools and control lists; NULL state-only */
-    UBYTE depth_bits, stencil_bits; /* of the default framebuffer */
-    UBYTE depth_format;             /* OGLES2_DEPTH_*: the tile buffer's depth type */
-    UBYTE job_clear_stencil;        /* the open job's stencil clear value (job.c) */
-    GLint viewport[4];              /* x, y, width, height */
-    GLint scissor[4];
-    ULONG frames, frames_dropped;   /* statistics, logged at destroy */
-    ULONG probe;                    /* OGLES2_PROBE_*, from ENV:OGLES2/Probe (context.c) */
-    ULONG probe_addr;               /* OGLES2_PROBE_ADDR's buffer (4 KB, the test's) */
-    struct OGLES2Array array[OGLES2_MAX_VERTEX_ATTRIBS];
-    void **objects;                 /* shaders and programs, indexed by name */
-    GLuint nobjects;                /* slots in objects (name 0 is never used) */
-    struct OGLES2Program *program;  /* glUseProgram */
-    struct OGLES2Draw *draw;        /* draw.c's per-context state, NULL until the first draw */
-    struct OGLES2TexState *tex;     /* texture.c's, NULL until first used */
-    UBYTE unpack_alignment, pack_alignment; /* glPixelStorei */
-    ULONG job_serial;               /* counts jobs; textures note the last that drew with them */
-    struct OGLES2Image *images;     /* program cache: every image loaded, by hash (plan 7.8) */
-    struct OGLES2BufState *buf;     /* buffer.c's, NULL until first used */
-    BOOL debug_shader_log;          /* OGLES2_CCT_DEBUG_SHADER_LOG: link logs describe the variants */
-    ULONG chained_blocks;           /* binning-list blocks added (job.c); the first is logged */
-    void *zs_save;                  /* job.c: memory for depth/stencil across a mid-frame flush */
-    BOOL zs_saved;                  /* the next job of this frame loads depth/stencil from it */
-    BOOL zs_logged;
-    /* Framebuffer objects (fbo.c, plan 7.7). width/height/depth_bits/
-     * stencil_bits/depth_format above are the default framebuffer's; the
-     * fb_* fields describe the framebuffer drawn into now (ogles2_fb_update). */
-    struct OGLES2FboState *fbo;     /* fbo.c's, NULL until first used */
-    struct OGLES2Framebuffer *draw_fb; /* GL_FRAMEBUFFER binding; NULL: the default */
-    struct OGLES2Framebuffer *job_fb;  /* what the open job renders into */
-    UWORD fb_w, fb_h;
-    BOOL fb_flip;                   /* the default framebuffer: drawn upside down (plan 7.11) */
-    UBYTE fb_depth_bits, fb_stencil_bits, fb_depth_format;
-    UBYTE job_discard;              /* EXT_discard_framebuffer: OGLES2_DISCARD_* the open job does not store */
-    UBYTE job_noload;               /* and those it does not load (discarded before it began) */
-};
-
-#define OGLES2_DISCARD_COLOR   1
-#define OGLES2_DISCARD_DEPTH   2
-#define OGLES2_DISCARD_STENCIL 4
-
 /* ---- framebuffer objects (fbo.c) ----
  * One image a job's tile buffer loads from and stores to (Mesa's
  * load_general/store_general fields). */
@@ -339,6 +326,89 @@ struct OGLES2Target
     UBYTE face, level;
 };
 
+struct OGLES2Context
+{
+    ULONG magic;
+    GLenum error;        /* first error since the last glGetError (sticky) */
+    ULONG width, height; /* default framebuffer size; 0 without a display */
+    struct OGLES2State state;
+    struct OGLES2Display display;   /* zeroed for a state-only (test) context */
+    struct V3DContext *v3d;         /* GPU pools and control lists; NULL state-only */
+    UBYTE depth_bits, stencil_bits; /* of the default framebuffer */
+    UBYTE depth_format;             /* OGLES2_DEPTH_*: the tile buffer's depth type */
+    UBYTE job_clear_stencil;        /* the open job's stencil clear value (job.c) */
+    GLint viewport[4];              /* x, y, width, height */
+    GLint scissor[4];
+    ULONG frames, frames_dropped;   /* statistics, logged at destroy */
+    /* Timing (microseconds, ogles2_clock_us; logged at destroy): per job the
+     * CPU's part (job begun to flush) and the waits for binning and render;
+     * per frame the time between swaps and the presentation. */
+    ULONG t_job_begin, t_last_swap;
+    double sum_build, sum_bin, sum_render, sum_present, sum_frame;
+    double sum_list, sum_pre, sum_post; /* the flush's own: render list, cache before, after */
+    ULONG n_jobs, n_swaps;
+    ULONG n_renames;                /* textures renamed (texture.c) */
+    ULONG n_draws;                  /* draws issued (draw.c) */
+    double sum_draw, sum_bufdata, sum_teximage; /* microseconds in draws, buffer data, texture images */
+    double p_draw, p_bufdata, p_teximage;
+    /* Probe P: microseconds in each stage of a draw (draw.c's DRAW_STAGES). */
+    ULONG t_stage;
+    double stage[8], p_stage[8];
+    double n_uwords, n_vbytes, n_indices; /* probe P: uniform stream words, vertex bytes, indices copied */
+    /* draw.c: the state the uniform recipes read besides the constant
+     * buffers, as at the last draw, and its version. */
+    ULONG ustate[6], ustate_ver;
+    /* Bumped by every change to the state draw.c's emit_state reads (the
+     * setters in state.c, glViewport and glScissor, glClear's override):
+     * a draw with the same version as the last skips emit_state. */
+    ULONG state_ver;
+    ULONG p_draws;
+    ULONG n_deletes;                /* glDelete* calls (probe T) */
+    double p_frame, p_build, p_render, p_list, p_pre; /* the sums at the last probe P report */
+    ULONG p_jobs, p_renames;
+    ULONG probe;                    /* OGLES2_PROBE_*, from ENV:OGLES2/Probe (context.c) */
+    ULONG probe_addr;               /* OGLES2_PROBE_ADDR's buffer (4 KB, the test's) */
+    struct OGLES2Array array[OGLES2_MAX_VERTEX_ATTRIBS];
+    void **objects;                 /* shaders and programs, indexed by name */
+    GLuint nobjects;                /* slots in objects (name 0 is never used) */
+    struct OGLES2Program *program;  /* glUseProgram */
+    struct OGLES2Draw *draw;        /* draw.c's per-context state, NULL until the first draw */
+    struct OGLES2TexState *tex;     /* texture.c's, NULL until first used */
+    UBYTE unpack_alignment, pack_alignment; /* glPixelStorei */
+    ULONG job_serial;               /* counts jobs; textures note the last that drew with them */
+    struct OGLES2Image *images;     /* program cache: every image loaded, by hash (plan 7.8) */
+    struct OGLES2BufState *buf;     /* buffer.c's, NULL until first used */
+    BOOL debug_shader_log;          /* OGLES2_CCT_DEBUG_SHADER_LOG: link logs describe the variants */
+    ULONG chained_blocks;           /* binning-list blocks added (job.c); the first is logged */
+    void *zs_save;                  /* job.c: memory for depth/stencil across a mid-frame flush */
+    BOOL zs_saved;                  /* the next job of this frame loads depth/stencil from it */
+    BOOL zs_logged;
+    /* Framebuffer objects (fbo.c, plan 7.7). width/height/depth_bits/
+     * stencil_bits/depth_format above are the default framebuffer's; the
+     * fb_* fields describe the framebuffer drawn into now (ogles2_fb_update). */
+    struct OGLES2FboState *fbo;     /* fbo.c's, NULL until first used */
+    struct OGLES2Framebuffer *draw_fb; /* GL_FRAMEBUFFER binding; NULL: the default */
+    struct OGLES2Framebuffer *job_fb;  /* what the open job renders into */
+    UWORD fb_w, fb_h;
+    BOOL fb_flip;                   /* the default framebuffer: drawn upside down (plan 7.11) */
+    UBYTE fb_depth_bits, fb_stencil_bits, fb_depth_format;
+    /* M6 overlap (job.c): a render submitted and not waited for yet; it
+     * holds the GPU lock (and the bitmap lock, on the screen) until
+     * ogles2_job_finish. */
+    BOOL pend;
+    UBYTE pend_frame;               /* v3d_submit_render's count */
+    ULONG pend_serial;              /* its job_serial */
+    struct OGLES2Framebuffer *pend_fb; /* NULL: the default framebuffer */
+    struct OGLES2Target pend_tg;
+    UBYTE job_discard;              /* EXT_discard_framebuffer: OGLES2_DISCARD_* the open job does not store */
+    UBYTE job_noload;               /* and those it does not load (discarded before it began) */
+};
+
+#define OGLES2_DISCARD_COLOR   1
+#define OGLES2_DISCARD_DEPTH   2
+#define OGLES2_DISCARD_STENCIL 4
+
+
 /* EXT_blend_minmax (gl2ext.h) */
 #ifndef GL_MIN_EXT
 #define GL_MIN_EXT 0x8007
@@ -358,6 +428,9 @@ struct OGLES2Target
 #define OGLES2_PROBE_FLIP_Y     8UL  /* Y: colour stored and loaded with Flip Y */
 #define OGLES2_PROBE_SEMAPHORE 16UL  /* S: render queued behind binning (semaphore packets) */
 #define OGLES2_PROBE_ADDR      32UL  /* A: positions copied to ENV:OGLES2/ProbeAddr (hex) */
+/* M6 diagnosis (a program that hangs or slows down): */
+#define OGLES2_PROBE_TRACE     64UL  /* T: log every glDelete* call and each step of aglDestroyContext */
+#define OGLES2_PROBE_PERIODIC 128UL  /* P: every 256 swaps, the timing, GPU memory and renames since the last */
 
 void ogles2_state_init(struct OGLES2Context *ctx);
 BOOL ogles2_state_dither(struct OGLES2Context *ctx); /* GL_DITHER enabled */
@@ -430,6 +503,7 @@ ULONG ogles2_format(char *buf, ULONG size, const char *fmt, ...); /* log.c: RawD
 BOOL ogles2_cache_assigned(void);   /* OGLES2Cache: exists */
 const char *ogles2_cache_dir(void); /* where compiled programs go: OGLES2Cache: or T: */
 BOOL ogles2_compiler_installed(void);
+ULONG ogles2_compiler_id(void); /* the installed compiler's size and date, hashed; 0: none */
 BOOL ogles2_compile_program(const char *vs, const char *fs, const char *path, char *log,
                             ULONG log_size);
 /* One shader through the front end: 1 compiled, 0 GLSL errors (in log),
@@ -459,6 +533,11 @@ void ogles2_job_clear(struct OGLES2Context *ctx, GLbitfield mask);
 BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end); /* FALSE: dropped. Mid-frame (frame_end FALSE): depth and stencil are kept for the next job */
 void ogles2_job_free(struct OGLES2Context *ctx); /* aglDestroyContext: job.c's memory */
 void ogles2_job_discard(struct OGLES2Context *ctx);
+/* The submitted render waited for (M6 overlap): before the CPU reads what it
+ * writes or changes what it reads. */
+void ogles2_job_finish(struct OGLES2Context *ctx);
+/* The open job or the submitted one uses what was last used by job `serial`. */
+BOOL ogles2_job_uses(struct OGLES2Context *ctx, ULONG serial);
 
 extern struct ExecBase *SysBase;
 extern struct DosLibrary *DOSBase;
@@ -483,6 +562,11 @@ BOOL ogles2_device_gpu_reachable(ULONG addr, ULONG size);
 struct SignalSemaphore *ogles2_device_gpu_lock(void);
 /* TRUE once the device initialised (a state-only context may have none). */
 BOOL ogles2_device_ready(void);
+/* The Pi's 1 MHz system timer: microseconds, wrapping every 71 minutes
+ * (take differences as ULONG). */
+ULONG ogles2_clock_us(void);
+ULONG ogles2_device_bytes(void); /* GPU memory in use */
+void ogles2_trace(struct OGLES2Context *ctx, const char *what, LONG n, ULONG first); /* probe T */
 void ogles2_device_reset(const char *why); /* the GPU did not finish a job: reset it (lock held) */
 /* v3dcore's device (struct V3DDevice); valid after ogles2_device_open. */
 struct V3DDevice *ogles2_device(void);

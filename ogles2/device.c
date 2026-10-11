@@ -20,7 +20,24 @@
 #include "v3d_regs.h"
 #include "devicetree_protos.h"
 
+/* ---- a clock for the timing statistics ----
+ * The Pi's system timer: a free-running 1 MHz counter (CLO, peripheral
+ * offset 0x3004), in the peripheral window v3dcore's registers use. One
+ * read, on the Pi's side: timer.device's E-clock reads the Amiga's CIAs
+ * across the PiStorm bus, which cost about 25 microseconds a call. */
+#define SYSTIMER_CLO (*(volatile ULONG *)(0xF2000000 + 0x3004))
+
+ULONG ogles2_clock_us(void)
+{
+    return LE32(SYSTIMER_CLO);
+}
+
 static V3DDevice device;
+
+ULONG ogles2_device_bytes(void)
+{
+    return (ULONG)device.BytesAllocated;
+}
 static struct SignalSemaphore *gpu_lock; /* public, shared with other GPU clients */
 static LONG state;          /* 0 not tried, 1 ready, < 0 v3d_init's error */
 static char renderer[96];

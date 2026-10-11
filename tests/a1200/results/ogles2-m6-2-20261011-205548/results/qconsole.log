@@ -1,0 +1,170 @@
+logfile opened on Sun Oct 11 19:55:53 2026
+
+----- Client Initialization -----
+----- Initializing Renderer ----
+-------------------------------
+QKEY found.
+----- Client Initialization Complete -----
+----- R_Init -----
+===== quake3-68k on gl4es and ogles2.library =====
+Initializing OpenGL subsystem
+...setting mode 3: 640 480 fullscreen
+...ogles2 context 640x480 through gl4es
+Initializing OpenGL extensions
+...GL_S3_s3tc not used
+...GL_EXT_texture_env_add not used
+...using GL_ARB_multitexture
+...using GL_EXT_compiled_vertex_array
+... Sys_EventPort at 0x86da020
+Initializing Shaders
+
+GL_VENDOR: GL4ES wrapping ogles2.library
+GL_RENDERER: GL4ES using V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+GL_VERSION: 2.1 gl4es wrapper 1.1.7
+GL_EXTENSIONS: GL_EXT_abgr GL_MGL_packed_pixels GL_EXT_packed_pixels GL_EXT_compiled_vertex_array GL_EXT_compiled_vertex_arrays GL_ARB_vertex_buffer_object GL_ARB_vertex_array_object GL_ARB_vertex_buffer GL_EXT_vertex_array GL_EXT_secondary_color GL_ARB_multitexture GL_ARB_texture_border_clamp GL_ARB_texture_env_add GL_EXT_texture_env_add GL_ARB_texture_env_combine GL_EXT_texture_env_combine GL_ARB_texture_env_crossbar GL_EXT_texture_env_crossbar GL_ARB_texture_env_dot3 GL_EXT_texture_env_dot3 GL_SGIS_generate_mipmap GL_EXT_draw_range_elements GL_EXT_bgra GL_ARB_texture_compression GL_EXT_texture_compression_s3tc GL_OES_texture_compression_S3TC GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_dxt3 GL_EXT_texture_compression_dxt5 GL_ARB_point_parameters GL_EXT_point_parameters GL_EXT_stencil_wrap GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp GL_EXT_direct_state_access GL_EXT_multi_draw_arrays GL_SUN_multi_draw_arrays GL_ARB_multisample GL_EXT_texture_object GL_EXT_polygon_offset GL_GL4ES_hint GL_ARB_draw_elements_base_vertex GL_EXT_draw_elements_base_vertex GL_ARB_map_buffer_range GL_NV_blend_square GL_ARB_texture_rectangle GL_APPLE_texture_2D_limited_npot GL_ARB_texture_non_power_of_two GL_EXT_blend_color GL_EXT_blend_minmax GL_EXT_blend_equation_separate GL_EXT_blend_func_separate GL_EXT_blend_subtract GL_ARB_texture_mirrored_repeat GL_ARB_framebuffer_object GL_EXT_framebuffer_object GL_EXT_packed_depth_stencil GL_EXT_framebuffer_blit GL_ARB_draw_buffers GL_EXT_draw_buffers2 GL_ARB_point_sprite GL_ARB_texture_cube_map GL_EXT_texture_cube_map GL_EXT_fog_coord GL_EXT_separate_specular_color GL_EXT_rescale_normal GL_ARB_ES2_compatibility GL_ARB_fragment_shader GL_ARB_vertex_shader GL_ARB_shader_objects GL_ARB_shading_language_100 GL_ATI_texture_env_combine3 GL_ATIX_texture_env_route GL_NV_texture_env_combine4 GL_NV_fog_distance GL_ARB_draw_instanced GL_ARB_instanced_arrays GL_ARB_vertex_program GL_ARB_fragment_program GL_EXT_program_parameters 
+GL_MAX_TEXTURE_SIZE: 4096
+GL_MAX_TEXTURE_UNITS_ARB: 16
+
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:N/A
+GAMMA: software w/ 0 overbright bits
+rendering primitives: single glDrawElements
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 0
+texture bits: 32
+multitexture: enabled
+compiled vertex arrays: enabled
+texenv add: disabled
+compressed textures: disabled
+----- finished R_Init -----
+------ Initializing Sound ------
+Sound disabled.
+--------------------------------
+Try loading dll file M6R2:home/baseq3/ui68k.dll
+Sys_LoadDll(M6R2:home/baseq3/ui68k.dll)... 
+35 arenas parsed
+32 bots parsed
+--- Common Initialization Complete ---
+Hostname: localhost
+IP: 127.0.0.1
+Opening IP socket: 0.0.0.0:27960
+Demo file: demos/four.dm_68
+We are looking in the current search path:
+M6R2:home/baseq3
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak8.pk3 (9 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak7.pk3 (4 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak6.pk3 (64 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak5.pk3 (7 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak4.pk3 (272 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak3.pk3 (4 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak2.pk3 (148 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak1.pk3 (26 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak0.pk3 (3539 files)
+
+handle 1: qconsole.log
+handle 2: demos/four.dm_68
+----------------------
+8146 files in pk3 files
+RE_Shutdown( 0 )
+Hunk_Clear: reset the hunk ok
+----- R_Init -----
+Initializing Shaders
+
+GL_VENDOR: GL4ES wrapping ogles2.library
+GL_RENDERER: GL4ES using V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+GL_VERSION: 2.1 gl4es wrapper 1.1.7
+GL_EXTENSIONS: GL_EXT_abgr GL_MGL_packed_pixels GL_EXT_packed_pixels GL_EXT_compiled_vertex_array GL_EXT_compiled_vertex_arrays GL_ARB_vertex_buffer_object GL_ARB_vertex_array_object GL_ARB_vertex_buffer GL_EXT_vertex_array GL_EXT_secondary_color GL_ARB_multitexture GL_ARB_texture_border_clamp GL_ARB_texture_env_add GL_EXT_texture_env_add GL_ARB_texture_env_combine GL_EXT_texture_env_combine GL_ARB_texture_env_crossbar GL_EXT_texture_env_crossbar GL_ARB_texture_env_dot3 GL_EXT_texture_env_dot3 GL_SGIS_generate_mipmap GL_EXT_draw_range_elements GL_EXT_bgra GL_ARB_texture_compression GL_EXT_texture_compression_s3tc GL_OES_texture_compression_S3TC GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_dxt3 GL_EXT_texture_compression_dxt5 GL_ARB_point_parameters GL_EXT_point_parameters GL_EXT_stencil_wrap GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp GL_EXT_direct_state_access GL_EXT_multi_draw_arrays GL_SUN_multi_draw_arrays GL_ARB_multisample GL_EXT_texture_object GL_EXT_polygon_offset GL_GL4ES_hint GL_ARB_draw_elements_base_vertex GL_EXT_draw_elements_base_vertex GL_ARB_map_buffer_range GL_NV_blend_square GL_ARB_texture_rectangle GL_APPLE_texture_2D_limited_npot GL_ARB_texture_non_power_of_two GL_EXT_blend_color GL_EXT_blend_minmax GL_EXT_blend_equation_separate GL_EXT_blend_func_separate GL_EXT_blend_subtract GL_ARB_texture_mirrored_repeat GL_ARB_framebuffer_object GL_EXT_framebuffer_object GL_EXT_packed_depth_stencil GL_EXT_framebuffer_blit GL_ARB_draw_buffers GL_EXT_draw_buffers2 GL_ARB_point_sprite GL_ARB_texture_cube_map GL_EXT_texture_cube_map GL_EXT_fog_coord GL_EXT_separate_specular_color GL_EXT_rescale_normal GL_ARB_ES2_compatibility GL_ARB_fragment_shader GL_ARB_vertex_shader GL_ARB_shader_objects GL_ARB_shading_language_100 GL_ATI_texture_env_combine3 GL_ATIX_texture_env_route GL_NV_texture_env_combine4 GL_NV_fog_distance GL_ARB_draw_instanced GL_ARB_instanced_arrays GL_ARB_vertex_program GL_ARB_fragment_program GL_EXT_program_parameters 
+GL_MAX_TEXTURE_SIZE: 4096
+GL_MAX_TEXTURE_UNITS_ARB: 16
+
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:N/A
+GAMMA: software w/ 0 overbright bits
+rendering primitives: single glDrawElements
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 0
+texture bits: 32
+multitexture: enabled
+compiled vertex arrays: enabled
+texenv add: disabled
+compressed textures: disabled
+----- finished R_Init -----
+Try loading dll file M6R2:home/baseq3/ui68k.dll
+Sys_LoadDll(M6R2:home/baseq3/ui68k.dll)... 
+35 arenas parsed
+32 bots parsed
+Try loading dll file M6R2:home/baseq3/cgame68k.dll
+Sys_LoadDll(M6R2:home/baseq3/cgame68k.dll)... 
+stitched 0 LoD cracks
+...loaded 3728 faces, 358 meshes, 180 trisurfs, 52 flares
+Failed to load model file models/players/characters/james/lower.md3
+CL_InitCGame:  9.98 seconds
+marty^7 almost dodged Thanatar^7's rocket
+^2F^7red^2o^7 was gunned down by THEINDIGO^7
+Willits^7 ate Asuka^7's rocket
+Thanatar^7 was machinegunned by Duffy^7
+Asuka^7 almost dodged ^2F^7red^2o^7's rocket
+Duffy^7 melted himself.
+Trillian^7 was machinegunned by Asuka^7
+Thanatar^7 was melted by Willits^7's plasmagun
+marty^7 was gunned down by THEINDIGO^7
+THEINDIGO^7 almost dodged ^2F^7red^2o^7's rocket
+Willits^7 was melted by Asuka^7's plasmagun
+Duffy^7 ate ^2F^7red^2o^7's rocket
+Trillian^7 was melted by Asuka^7's plasmagun
+Asuka^7 was machinegunned by Willits^7
+Thanatar^7 was machinegunned by THEINDIGO^7
+Willits^7 was machinegunned by Duffy^7
+Duffy^7 was machinegunned by Trillian^7
+Trillian^7 was melted by marty^7's plasmagun
+THEINDIGO^7 almost dodged marty^7's rocket
+Trillian^7 was machinegunned by THEINDIGO^7
+Willits^7 almost dodged marty^7's rocket
+Thanatar^7 melted himself.
+Duffy^7 was melted by Willits^7's plasmagun
+Willits^7 ate ^2F^7red^2o^7's rocket
+^2F^7red^2o^7 was melted by THEINDIGO^7's plasmagun
+Thanatar^7 ate Asuka^7's rocket
+Asuka^7 blew itself up.
+marty^7 blew himself up.
+Trillian^7 was machinegunned by marty^7
+Thanatar^7 was melted by THEINDIGO^7's plasmagun
+Duffy^7 ate Willits^7's rocket
+Asuka^7 ate Willits^7's rocket
+Willits^7 almost dodged marty^7's rocket
+Trillian^7 almost dodged marty^7's rocket
+THEINDIGO^7 hit the fraglimit.
+marty^7 was melted by THEINDIGO^7's plasmagun
+1260 frames 30.6 seconds 41.2 fps 10.0/24.3/194.0/7.3 ms
+----- Client Shutdown (Client quit) -----
+RE_Shutdown( 1 )
+gl profile: 1294 frames; per frame 130 draws taking 7626 us (gl4es and ogles2), 57 us locking arrays, 0 us in glEnd, 361 us swapping, 2613 state calls taking 2069 us
+gl profile: glEnable                        104 calls    163 us a frame
+gl profile: glDisable                       336 calls    468 us a frame
+gl profile: glEnableClientState             284 calls    184 us a frame
+gl profile: glDisableClientState             95 calls     75 us a frame
+gl profile: glTexCoordPointer               166 calls     94 us a frame
+gl profile: glColorPointer                   93 calls     56 us a frame
+gl profile: glVertexPointer                  99 calls     64 us a frame
+gl profile: glBindTexture                   128 calls    198 us a frame
+gl profile: glActiveTextureARB               72 calls     20 us a frame
+gl profile: glClientActiveTextureARB         72 calls     25 us a frame
+gl profile: glMatrixMode                    497 calls    149 us a frame
+gl profile: glLoadMatrixf                    66 calls    105 us a frame
+gl profile: glLoadIdentity                  488 calls    246 us a frame
+gl profile: glDepthRange                      1 calls     10 us a frame
+gl profile: glDepthMask                      37 calls     62 us a frame
+gl profile: glDepthFunc                      12 calls     21 us a frame
+gl profile: glAlphaFunc                       1 calls      4 us a frame
+gl profile: glBlendFunc                      27 calls     86 us a frame
+gl profile: glCullFace                       21 calls     21 us a frame
+gl profile: glTexEnvi                         0 calls      0 us a frame
+gl profile: glColor4f                         0 calls      0 us a frame
+gl profile: glPolygonOffset                   3 calls      6 us a frame
+gl profile: glShadeModel                      0 calls      0 us a frame
+GLimp_Shutdown: input
+GLimp_Shutdown: the context
+GLimp_Shutdown: done
+Hunk_Clear: reset the hunk ok
+-----------------------

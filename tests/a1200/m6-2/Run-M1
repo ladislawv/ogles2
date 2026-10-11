@@ -1,0 +1,80 @@
+; Run-M1 - ogles2 M6 run 2: Quake III Arena on gl4es and ogles2. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   With the game elsewhere:       Execute Run-M1 Q3DATA=<the directory with baseq3>
+;   The whole demo (1260 frames):  Execute Run-M1 FRAMES=0
+; Nothing is installed and nothing is written to the game's directory: the
+; game's own files (config, logs) go to home/ here. Output goes to results/.
+.key Q3DATA/K,FRAMES/K
+.def FRAMES 400
+.def Q3DATA "Stuff:Quake3-68k-beta10/Quake3-68k-beta10"
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m6-2 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+If NOT EXISTS "{Q3DATA}/baseq3/pak0.pk3"
+  Echo "No Quake III data at {Q3DATA}/baseq3: run Execute Run-M1 Q3DATA=<directory>"
+  Quit 20
+EndIf
+
+Assign M6R2: ""
+If NOT EXISTS M6R2:results
+  MakeDir M6R2:results
+EndIf
+If NOT EXISTS M6R2:cache
+  MakeDir M6R2:cache
+EndIf
+Echo "ogles2 M6 run 2" >>M6R2:results/00-progress.txt
+Date >>M6R2:results/00-progress.txt
+Assign LIBS: M6R2:libs ADD
+Assign OGLES2Cache: M6R2:cache
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M6R2:results/ogles2.log
+; The modules load from the current directory.
+CD M6R2:bin
+
+Echo "Quake III's demo 'four' as a timedemo, full screen 640x480."
+Echo "  The first start compiles gl4es's shaders: the screen may stay black"
+Echo "  for a minute. Then the demo plays as fast as it can and the game quits."
+; r_primitives 0: one glDrawElements a batch. The MiniGL build's default (1,
+; Cowcat's) splits each batch into triangle strips, a draw each: about
+; 2,100 draws a frame of a few indices, which MiniGL takes cheaply and gl4es
+; and ogles2 do not (M6).
+; Probes T and P (ogles2_internal.h): the deletes and the context's end
+; step by step, and the timing every 256 frames.
+SetEnv OGLES2/Probe TP
+; gl4es's calls into ogles2.library, timed (ports/gl4es/gen_glue.py).
+SetEnv GL4ES_GLUE_PROFILE 1
+If {FRAMES} EQ 0 VAL
+  M6R2:bin/quake3-gl4es +set fs_basepath "{Q3DATA}" +set fs_homepath M6R2:home +set r_fullscreen 1 +set r_mode 3 +set s_initsound 0 +set r_primitives 0 +set logfile 2 +set nextdemo quit +timedemo 1 +demo four >M6R2:results/1-timedemo.txt
+Else
+  ; The game quits after {FRAMES} frames ("wait N" holds the rest of the
+  ; command line that many frames; loading takes about 230 of them): no
+  ; timedemo line, ogles2.log has the timing. (+set com_speeds 1 adds the
+  ; game's own split, but its log line a frame, flushed, costs ~8 ms.)
+  Echo "  It stops after {FRAMES} frames."
+  M6R2:bin/quake3-gl4es +set fs_basepath "{Q3DATA}" +set fs_homepath M6R2:home +set r_fullscreen 1 +set r_mode 3 +set s_initsound 0 +set r_primitives 0 +set logfile 2 +set nextdemo quit +timedemo 1 +demo four +wait {FRAMES} +quit >M6R2:results/1-timedemo.txt
+EndIf
+UnSetEnv OGLES2/Probe
+UnSetEnv GL4ES_GLUE_PROFILE
+Echo "timedemo done" >>M6R2:results/00-progress.txt
+
+CD M6R2:
+UnSetEnv OGLES2/LogFile
+Assign OGLES2Cache:
+Assign LIBS: M6R2:libs REMOVE
+If NOT EXISTS M6R2:results/notes.txt
+  Copy M6R2:notes-template.txt M6R2:results/notes.txt
+EndIf
+Copy M6R2:home/baseq3/qconsole.log M6R2:results/qconsole.log QUIET
+List M6R2:cache >M6R2:results/98-cache.txt
+List M6R2:results >M6R2:results/99-files.txt
+Echo "finished" >>M6R2:results/00-progress.txt
+Date >>M6R2:results/00-progress.txt
+Assign M6R2:
+Echo ""
+Echo "Done. Results are in results/."

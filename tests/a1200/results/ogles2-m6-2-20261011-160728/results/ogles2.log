@@ -1,0 +1,25 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x08F2C810
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: fullscreen, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FBC33C, 640x480
+    15 compiler: started (0 s)
+    16 compiler: shader failed in 1280 ms
+    17 compiler: shader failed in 40 ms
+    18 compiler: shader failed in 40 ms
+    19 glLinkProgram: OGLES2Cache:7ed7abf47358a282c8ca6708.v3dp (5 variants, 1224 bytes of code)
+    20 glLinkProgram: OGLES2Cache:6a9a5f2065e7601eda260dae.v3dp (5 variants, 1248 bytes of code)
+    21 job: depth and stencil kept across a mid-frame flush (logged once)
+    22 glLinkProgram: OGLES2Cache:d743c055789b4d39db82c455.v3dp (5 variants, 1512 bytes of code)
+    23 glLinkProgram: OGLES2Cache:e3ff7ea86f1d60e12190ce26.v3dp (5 variants, 1512 bytes of code)
+    24 glLinkProgram: OGLES2Cache:6b35572bbc15d8acd0465545.v3dp (5 variants, 1296 bytes of code)
+    25 texture 2 changed after a draw used it in the same frame: renamed (logged once)

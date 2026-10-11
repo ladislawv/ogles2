@@ -1,0 +1,27 @@
+ogles2 (ports/gl4es): the fixed-function state's hash reads it a long word at
+a time. On Emu68 every memory access costs; the byte loop over the ~300-byte
+state took about 4 us a draw whenever the state changed (Quake III: most draws).
+
+diff --git a/src/gl/fpe_cache.c b/src/gl/fpe_cache.c
+index 4f16639e..3e403a9d 100644
+--- a/src/gl/fpe_cache.c
++++ b/src/gl/fpe_cache.c
+@@ -35,9 +35,15 @@ static const char PSA_SIGN[] = "GL4ES PrecompiledShaderArchive";
+ 
+ static kh_inline khint_t _hash_fpe(fpe_state_t *p)
+ {
+-    const char* s = (const char*)p;
+-    khint_t h = (khint_t)*s;
+-    for (int i=1 ; i<sizeof(fpe_state_t); ++i) h = (h << 5) - h + (khint_t)*(++s);
++    const unsigned char* s = (const unsigned char*)p;
++    khint_t h = 0;
++    int i = 0;
++    for ( ; i+4<=(int)sizeof(fpe_state_t); i+=4) {
++        khint_t w;
++        memcpy(&w, s+i, 4);
++        h = (h << 5) - h + w;
++    }
++    for ( ; i<(int)sizeof(fpe_state_t); ++i) h = (h << 5) - h + (khint_t)s[i];
+     return h;
+ }
+ 

@@ -91,10 +91,13 @@ static void set_cap(struct OGLES2Context *ctx, GLenum cap, int on)
         ogles2_error(ctx, GL_INVALID_ENUM);
         return;
     }
+    if (!(ctx->state.caps & bit) == !on)
+        return; /* unchanged: gl4es disables what is off on every draw */
     if (on)
         ctx->state.caps |= bit;
     else
         ctx->state.caps &= ~bit;
+    ctx->state_ver++;
 }
 
 void ogles2_glEnable(struct OGLES2Context *ctx, GLenum cap)
@@ -123,8 +126,10 @@ GLboolean ogles2_glIsEnabled(struct OGLES2Context *ctx, GLenum cap)
 
 void ogles2_glDepthMask(struct OGLES2Context *ctx, GLboolean flag)
 {
-    if (ogles2_context_valid(ctx))
+    if (ogles2_context_valid(ctx)) {
         ctx->state.depth_mask = flag ? GL_TRUE : GL_FALSE;
+        ctx->state_ver++;
+    }
 }
 
 void ogles2_glColorMask(struct OGLES2Context *ctx, GLboolean red, GLboolean green,
@@ -136,6 +141,7 @@ void ogles2_glColorMask(struct OGLES2Context *ctx, GLboolean red, GLboolean gree
     ctx->state.color_mask[1] = green ? GL_TRUE : GL_FALSE;
     ctx->state.color_mask[2] = blue ? GL_TRUE : GL_FALSE;
     ctx->state.color_mask[3] = alpha ? GL_TRUE : GL_FALSE;
+    ctx->state_ver++;
 }
 
 void ogles2_glClearColor(struct OGLES2Context *ctx, GLfloat red, GLfloat green, GLfloat blue,
@@ -164,6 +170,7 @@ void ogles2_glLineWidth(struct OGLES2Context *ctx, GLfloat width)
         return;
     }
     ctx->state.line_width = width;
+    ctx->state_ver++;
 }
 
 void ogles2_glDepthRangef(struct OGLES2Context *ctx, GLfloat n, GLfloat f)
@@ -172,6 +179,7 @@ void ogles2_glDepthRangef(struct OGLES2Context *ctx, GLfloat n, GLfloat f)
         return;
     ctx->state.depth_range[0] = clamp01(n);
     ctx->state.depth_range[1] = clamp01(f);
+    ctx->state_ver++;
 }
 
 void ogles2_glPolygonOffset(struct OGLES2Context *ctx, GLfloat factor, GLfloat units)
@@ -180,6 +188,7 @@ void ogles2_glPolygonOffset(struct OGLES2Context *ctx, GLfloat factor, GLfloat u
         return;
     ctx->state.polygon_offset_factor = factor;
     ctx->state.polygon_offset_units = units;
+    ctx->state_ver++;
 }
 
 void ogles2_glSampleCoverage(struct OGLES2Context *ctx, GLfloat value, GLboolean invert)
@@ -266,6 +275,7 @@ void ogles2_glCullFace(struct OGLES2Context *ctx, GLenum mode)
         return;
     }
     ctx->state.cull_face_mode = mode;
+    ctx->state_ver++;
 }
 
 void ogles2_glFrontFace(struct OGLES2Context *ctx, GLenum mode)
@@ -277,6 +287,7 @@ void ogles2_glFrontFace(struct OGLES2Context *ctx, GLenum mode)
         return;
     }
     ctx->state.front_face = mode;
+    ctx->state_ver++;
 }
 
 void ogles2_glDepthFunc(struct OGLES2Context *ctx, GLenum func)
@@ -288,6 +299,7 @@ void ogles2_glDepthFunc(struct OGLES2Context *ctx, GLenum func)
         return;
     }
     ctx->state.depth_func = func;
+    ctx->state_ver++;
 }
 
 static int blend_factor_ok(GLenum f, int is_dst)
@@ -322,6 +334,7 @@ void ogles2_glBlendFuncSeparate(struct OGLES2Context *ctx, GLenum srcRGB, GLenum
     s->blend_dst_rgb = dstRGB;
     s->blend_src_alpha = srcAlpha;
     s->blend_dst_alpha = dstAlpha;
+    ctx->state_ver++;
 }
 
 void ogles2_glBlendFunc(struct OGLES2Context *ctx, GLenum sfactor, GLenum dfactor)
@@ -345,6 +358,7 @@ void ogles2_glBlendEquationSeparate(struct OGLES2Context *ctx, GLenum modeRGB, G
     }
     ctx->state.blend_eq_rgb = modeRGB;
     ctx->state.blend_eq_alpha = modeAlpha;
+    ctx->state_ver++;
 }
 
 void ogles2_glBlendEquation(struct OGLES2Context *ctx, GLenum mode)
@@ -363,6 +377,7 @@ void ogles2_glBlendColor(struct OGLES2Context *ctx, GLfloat red, GLfloat green, 
     c[1] = clamp01(green);
     c[2] = clamp01(blue);
     c[3] = clamp01(alpha);
+    ctx->state_ver++;
 }
 
 /* ---- stencil ---- */
@@ -390,6 +405,7 @@ void ogles2_glStencilFuncSeparate(struct OGLES2Context *ctx, GLenum face, GLenum
             ctx->state.stencil_ref[i] = ref;
             ctx->state.stencil_value_mask[i] = mask;
         }
+    ctx->state_ver++;
 }
 
 void ogles2_glStencilFunc(struct OGLES2Context *ctx, GLenum func, GLint ref, GLuint mask)
@@ -409,6 +425,7 @@ void ogles2_glStencilMaskSeparate(struct OGLES2Context *ctx, GLenum face, GLuint
     for (i = 0; i < 2; i++)
         if (f & (1 << i))
             ctx->state.stencil_write_mask[i] = mask;
+    ctx->state_ver++;
 }
 
 void ogles2_glStencilMask(struct OGLES2Context *ctx, GLuint mask)
@@ -444,6 +461,7 @@ void ogles2_glStencilOpSeparate(struct OGLES2Context *ctx, GLenum face, GLenum s
             ctx->state.stencil_zfail[i] = dpfail;
             ctx->state.stencil_zpass[i] = dppass;
         }
+    ctx->state_ver++;
 }
 
 void ogles2_glStencilOp(struct OGLES2Context *ctx, GLenum fail, GLenum zfail, GLenum zpass)
@@ -515,6 +533,15 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
         return 1;
     case GL_MAX_VERTEX_ATTRIBS:
         v->kind = K_INT; v->n = 1; v->i[0] = OGLES2_MAX_VERTEX_ATTRIBS;
+        return 1;
+    /* The compiler's (Mesa's v3d_screen.c): a 64 KB constant buffer per
+     * stage, 4096 vec4; V3D_MAX_FS_INPUTS / 4 varyings. */
+    case GL_MAX_VERTEX_UNIFORM_VECTORS:
+    case GL_MAX_FRAGMENT_UNIFORM_VECTORS:
+        v->kind = K_INT; v->n = 1; v->i[0] = 4096;
+        return 1;
+    case GL_MAX_VARYING_VECTORS:
+        v->kind = K_INT; v->n = 1; v->i[0] = 16;
         return 1;
     case GL_VIEWPORT:
         v->kind = K_INT; v->n = 4;

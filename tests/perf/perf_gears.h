@@ -244,9 +244,9 @@ static void pg_place(int k, float angle, float *tx, float *ty, float *rz)
 #define PG_VIEW_ROTY 30.0f
 #define PG_ANGLE_STEP 2.0f /* degrees per frame */
 
-/* ---- arguments: [BITMAP|WINDOW] [SECONDS=n] [TEETH=n] [PATH=name] ---- */
+/* ---- arguments: [BITMAP|WINDOW|FULLSCREEN] [SECONDS=n] [TEETH=n] [PATH=name] ---- */
 struct pg_args {
-    int window;
+    int window, fullscreen;
     int seconds;
     int mult;
     const char *path;
@@ -263,13 +263,15 @@ static int pg_eq(const char *a, const char *b)
 static void pg_parse(int argc, char **argv, struct pg_args *a, const char *default_path)
 {
     int i;
-    a->window = 0;
+    a->window = a->fullscreen = 0;
     a->seconds = 5;
     a->mult = 1;
     a->path = default_path;
     for (i = 1; i < argc; i++) {
         if (pg_eq(argv[i], "WINDOW"))
             a->window = 1;
+        else if (pg_eq(argv[i], "FULLSCREEN"))
+            a->fullscreen = 1;
         else if (pg_eq(argv[i], "BITMAP"))
             a->window = 0;
         else if (!strncmp(argv[i], "SECONDS=", 8))

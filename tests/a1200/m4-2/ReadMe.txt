@@ -13,6 +13,8 @@ lasts 5 seconds and prints its frames per second.
   Step 3:        a window on the Workbench, 4 runs of 5 seconds: three
                  gears (red, green, blue) turning, the window title names
                  the library. Both libraries should look the same.
+  Step 4:        full screen, 4 runs of 5 seconds: the screen switches to
+                 the gears and back, once per run.
 
 The two libraries take turns: never both at once. The package brings its
 own minigl.library 29.1 (used only if LIBS: has none).
@@ -24,7 +26,7 @@ How to run by hand
 1. Open a Shell and type:
        CD <where you copied it>/ogles2-m4-2
        Execute Run-M2
-2. Three steps, about 2 minutes.
+2. Four steps, about 2.5 minutes.
 3. Send me the whole results directory.
 
 If the machine hangs or crashes

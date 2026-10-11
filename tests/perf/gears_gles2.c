@@ -1,6 +1,6 @@
 /*
  * The gears speed comparison, ogles2.library side (perf_gears.h).
- *   usage: gears_gles2 [BITMAP|WINDOW] [SECONDS=5] [TEETH=1] [PATH=VBO|ARRAYS]
+ *   usage: gears_gles2 [BITMAP|WINDOW|FULLSCREEN] [SECONDS=5] [TEETH=1] [PATH=VBO|ARRAYS]
  * VBO: each gear's vertices in a buffer object, uploaded once; ARRAYS: from
  * client memory, converted for the GPU every draw. One glDrawArrays per gear,
  * the lighting in the vertex shader (tests/common/lit_shaders.h).
@@ -139,9 +139,15 @@ int main(int argc, char **argv)
         pt_close();
         return 20;
     }
-    ctx = aglCreateContextTags2(&err, a.window ? OGLES2_CCT_WINDOW : OGLES2_CCT_BITMAP,
-                                a.window ? (ULONG)pt_win : (ULONG)pt_bm, OGLES2_CCT_DEPTH, 24,
-                                OGLES2_CCT_VSYNC, FALSE, TAG_DONE);
+    if (a.fullscreen) {
+        ULONG mode = pt_find_mode();
+        ctx = aglCreateContextTags2(&err, OGLES2_CCT_MODEID, mode, OGLES2_CCT_DEPTH, 24, OGLES2_CCT_VSYNC,
+                                    FALSE, TAG_DONE);
+    } else {
+        ctx = aglCreateContextTags2(&err, a.window ? OGLES2_CCT_WINDOW : OGLES2_CCT_BITMAP,
+                                    a.window ? (ULONG)pt_win : (ULONG)pt_bm, OGLES2_CCT_DEPTH, 24,
+                                    OGLES2_CCT_VSYNC, FALSE, TAG_DONE);
+    }
     if (!ctx) {
         printf("aglCreateContext2 failed (%lu)\n", (unsigned long)err);
         goto out;

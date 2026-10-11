@@ -32,6 +32,8 @@
 #include "v3d_texture.h"
 #include "etc1.h"
 
+extern v3d_u32 g_v3d_cl_generation; /* v3d_frame.c: bumped whenever a control list restarts */
+
 #define MAX_LEVELS 13 /* 4096 = 2^12 */
 #define MAX_SIZE   4096
 
@@ -56,6 +58,13 @@ struct OGLES2Texture
     UBYTE hw_type, cpp, swizzle[4]; /* the stored format (storage_of), set with gpu */
     ULONG face_stride;              /* a cube map: bytes from one face's levels to the next */
     ULONG used_serial;              /* the job that last drew with it */
+    BOOL warned_incomplete;         /* sampled while incomplete: logged once */
+    /* The state records last made for a draw (ogles2_texture_state), reused
+     * by the job's later draws while what they hold is the same. */
+    ULONG st_gen;                   /* the control list they are in (g_v3d_cl_generation) */
+    APTR st_mem;                    /* the GPU copy they point at */
+    GLenum st_min, st_mag, st_ws, st_wt;
+    ULONG st_tex, st_smp;
 };
 
 /* ---- the context's texture state ---- */
@@ -160,7 +169,9 @@ static void before_change(struct OGLES2Context *ctx, struct OGLES2TexState *ts,
      * render that job first. Then the RAM copies are made current. */
     ogles2_fbo_texture_changing(ctx, t);
     sync(t);
-    if (!v || !ogles2_job_has_draws(ctx) || t->used_serial != ctx->job_serial)
+    /* A job not rendered yet uses it: the open one, or the one submitted
+     * and still running (M6 overlap). */
+    if (!v || !t->used_serial || !ogles2_job_uses(ctx, t->used_serial))
         return;
     if (t->gpu && v->frame.retire_count < V3D_RETIRE_MAX - 8) {
         if (t->gpu->texture_mem.hostptr)
@@ -168,6 +179,7 @@ static void before_change(struct OGLES2Context *ctx, struct OGLES2TexState *ts,
         FreeVec(t->gpu);
         t->gpu = 0;
         t->used_serial = 0;
+        ctx->n_renames++;
         if (!ts->warned_flush) {
             ts->warned_flush = TRUE;
             ogles2_log("texture %ld changed after a draw used it in the same frame: renamed "
@@ -178,6 +190,7 @@ static void before_change(struct OGLES2Context *ctx, struct OGLES2TexState *ts,
     ogles2_log("texture %ld changed after a draw used it: the frame is rendered first "
                "(too many renamed blocks in this frame)", (ULONG)t->name);
     ogles2_job_flush(ctx, FALSE);
+    ogles2_job_finish(ctx);
 }
 
 /* ---- names and binding ---- */
@@ -259,6 +272,7 @@ void ogles2_glDeleteTextures(struct OGLES2Context *ctx, GLsizei n, const GLuint 
     }
     if (!(ts = ts_get(ctx)) || !textures)
         return;
+    ogles2_trace(ctx, "glDeleteTextures", n, n ? textures[0] : 0);
     for (k = 0; k < n; k++) {
         struct OGLES2Texture *t = by_name(ts, textures[k]);
         if (!t)
@@ -770,9 +784,14 @@ static void store_box(struct OGLES2Texture *t, int k, int l, const UBYTE *src, i
 {
     V3DTexture tmp;
     ULONG row = (ULONG)w * t->cpp;
-    UBYTE *packed = AllocVec(row * h + 4, MEMF_ANY);
+    UBYTE *packed;
     int j;
-    if (!packed)
+    /* RGBA8 is stored as the RAM copy holds it: straight from there. */
+    if (t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGBA8) {
+        v3d_texture_store(ogles2_device(), face_gpu(t, k, &tmp), (v3d_u8)l, src, (ULONG)w * 4, x, y, w, h);
+        return;
+    }
+    if (!(packed = AllocVec(row * h + 4, MEMF_ANY)))
         return;
     for (j = 0; j < h; j++)
         pack(t, src + (ULONG)j * w * 4, packed + (ULONG)j * row, (ULONG)w);
@@ -831,6 +850,14 @@ static BOOL upload_all(struct OGLES2Texture *t)
     if (faces(t) > 1 && !cube_memory(t)) {
         free_gpu(t);
         return FALSE;
+    }
+    {
+        extern int g_v3d_uif_fast; /* v3dcore's direct UIF store, checked at its first use */
+        static BOOL told;
+        if (g_v3d_uif_fast == 2 && !told) {
+            told = TRUE;
+            ogles2_log("texture: v3dcore's direct UIF store differed from its general one: not used");
+        }
     }
     for (k = 0; k < faces(t); k++)
         for (l = 0; l < n; l++)
@@ -971,7 +998,7 @@ void ogles2_texture_hidden_free(struct OGLES2Context *ctx, struct OGLES2Texture 
     FreeVec(t);
 }
 
-void ogles2_glTexImage2D(struct OGLES2Context *ctx, GLenum target, GLint level, GLint internalformat,
+static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLint internalformat,
                          GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type,
                          const void *pixels)
 {
@@ -1025,18 +1052,30 @@ void ogles2_glTexImage2D(struct OGLES2Context *ctx, GLenum target, GLint level, 
     if (!ctx->v3d)
         return; /* a state-only context keeps the images only */
     /* No GPU texture yet, a new level 0, or a level the chain has no room
-     * for: rebuild (a cube map's faces arrive one by one: rebuilt each time
-     * until the six agree, then per level). */
+     * for: rebuilt at its first use (a draw, ogles2_texture_state; a
+     * framebuffer, ogles2_texture_surface). A program sends level 0 and
+     * then each mip level: rebuilding at each stored every level before it
+     * again (Quake III's load, M6). No job uses the old copy (before_change). */
     if (!t->gpu || (level == 0 && (faces(t) == 1 || t->gpu->width != f->w[0])) ||
         level >= t->gpu->num_levels || t->gpu->width != t->f[0].w[0] || t->gpu->height != t->f[0].h[0]) {
-        if (!upload_all(t))
-            ogles2_error(ctx, GL_OUT_OF_MEMORY);
+        free_gpu(t);
     } else if (consistent(f, level) && img) {
         upload_level(t, k, level);
     }
 }
 
-void ogles2_glTexSubImage2D(struct OGLES2Context *ctx, GLenum target, GLint level, GLint xoffset,
+/* Timed for probe P (frame.c). */
+void ogles2_glTexImage2D(struct OGLES2Context *ctx, GLenum target, GLint level, GLint internalformat,
+                         GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type,
+                         const void *pixels)
+{
+    ULONG t0 = ogles2_clock_us();
+    tex_image(ctx, target, level, internalformat, width, height, border, format, type, pixels);
+    if (ogles2_context_valid(ctx))
+        ctx->sum_teximage += (double)(ULONG)(ogles2_clock_us() - t0);
+}
+
+static void tex_sub_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLint xoffset,
                             GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type,
                             const void *pixels)
 {
@@ -1088,6 +1127,17 @@ void ogles2_glTexSubImage2D(struct OGLES2Context *ctx, GLenum target, GLint leve
     else if (!t->gpu && ctx->v3d && !upload_all(t)) /* renamed: a new copy, whole */
         ogles2_error(ctx, GL_OUT_OF_MEMORY);
     FreeVec(sub);
+}
+
+/* Timed for probe P (frame.c). */
+void ogles2_glTexSubImage2D(struct OGLES2Context *ctx, GLenum target, GLint level, GLint xoffset,
+                            GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type,
+                            const void *pixels)
+{
+    ULONG t0 = ogles2_clock_us();
+    tex_sub_image(ctx, target, level, xoffset, yoffset, width, height, format, type, pixels);
+    if (ogles2_context_valid(ctx))
+        ctx->sum_teximage += (double)(ULONG)(ogles2_clock_us() - t0);
 }
 
 /* ---- copies from the framebuffer (glCopyTexImage2D, glCopyTexSubImage2D) ----
@@ -1391,10 +1441,31 @@ BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, BOOL cube, ULONG 
     if (!ts)
         return FALSE;
     t = cube ? ts->unitcube[unit] : ts->unit2d[unit];
+    /* The same records as the job's last draw with it: a texture a draw of
+     * this job used gets a new GPU copy (another address) when its images
+     * change (before_change); its parameters are compared here. */
+    if (t->gpu && t->st_gen == g_v3d_cl_generation && t->st_mem == t->gpu->texture_mem.hostptr &&
+        t->st_min == t->min_filter && t->st_mag == t->mag_filter && t->st_ws == t->wrap_s &&
+        t->st_wt == t->wrap_t) {
+        t->used_serial = ctx->job_serial;
+        *tex_state = t->st_tex;
+        *sampler_state = t->st_smp;
+        return TRUE;
+    }
     /* A renamed texture gets its new copy at its first draw at the latest. */
     if (!t->gpu && t != &ts->fallback)
         upload_all(t);
     if (!complete(t, &levels)) {
+        if (!t->warned_incomplete && t != &ts->fallback) {
+            int l, n = mipmapped(t->min_filter) && t->f[0].w[0] ? level_count(t->f[0].w[0], t->f[0].h[0]) : 1;
+            t->warned_incomplete = TRUE;
+            for (l = 1; l < n && consistent(&t->f[0], l); l++)
+                ;
+            ogles2_log("texture %ld sampled while incomplete (it reads black): %s, level 0 %ldx%ld, "
+                       "min filter 0x%04lx, level %ld of %ld missing or inconsistent (logged once a texture)",
+                       (ULONG)t->name, (ULONG)(!t->gpu ? "no GPU copy" : base_ok(t) ? "mip chain" : "level 0"),
+                       (ULONG)t->f[0].w[0], (ULONG)t->f[0].h[0], (ULONG)t->min_filter, (ULONG)l, (ULONG)n);
+        }
         if (!(t = fallback(ts)))
             return FALSE;
         levels = 1;
@@ -1462,5 +1533,13 @@ BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, BOOL cube, ULONG 
     swivel16 = (UWORD *)ss;
     swivel16[3] = LE16(swivel16[3]);
     *sampler_state = (ULONG)ss;
+    t->st_gen = g_v3d_cl_generation;
+    t->st_mem = g->texture_mem.hostptr;
+    t->st_min = t->min_filter;
+    t->st_mag = t->mag_filter;
+    t->st_ws = t->wrap_s;
+    t->st_wt = t->wrap_t;
+    t->st_tex = *tex_state;
+    t->st_smp = *sampler_state;
     return TRUE;
 }

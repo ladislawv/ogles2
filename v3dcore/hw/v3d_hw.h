@@ -1883,6 +1883,13 @@ void v3d_buffer_align(v3d_static_buffer* buffer, unsigned int alignment);
 // pointer, or 0 for a claim too large for the scratch buffer (see v3d_hw.c).
 void* v3d_buffer_claim_memory(v3d_static_buffer* buffer, v3d_uintptr dataSize);
 
+/* ogles2: the direct store of 32-bit texels into UIF (v3d_hw.c): 0 not
+ * checked yet, 1 used, 2 not (it differed from the general path). The check
+ * takes two scratch buffers of V3D_UIF_CHECK_BYTES (v3d_texture_store). */
+#define V3D_UIF_CHECK_BYTES (200 * 256)
+extern int g_v3d_uif_fast;
+void v3d_uif_fast_check(v3d_u8* a, v3d_u8* b);
+
 /* v3d_buffer_claim_memory with its fits-case inline: the same test and the
  * same arithmetic. A claim that does not fit calls it, so the scratch fallback
  * and the overflowed flag work exactly as there. */

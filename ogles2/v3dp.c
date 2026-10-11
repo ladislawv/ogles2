@@ -414,10 +414,34 @@ struct OGLES2Image *ogles2_v3dp_load(const UBYTE *file, ULONG len, char *why, UL
                  * indexed uniform arrays); others are GLES3 uniform blocks. */
                 if (rt[j] == OGLES2_U_UBO_ADDR && (rd2[j] >> 24) != 0)
                     FAIL("a uniform block other than the default one", 0, rd2[j] >> 24);
+                if (rt[j] == OGLES2_U_UBO_ADDR)
+                    v->uses_ubo = 1;
             }
             v->nrecipe = (UWORD)n;
             v->rtype = rt;
             v->rdata = rd2;
+            {
+                UWORD *ui = alloc(im, n * 4 + 4), *sp = ui ? ui + n : 0, ns = 0;
+                if (!ui)
+                    FAIL("out of memory", 0, ~0UL);
+                for (j = 0; j < n; j++) {
+                    if (rt[j] == OGLES2_U_UNIFORM && rd2[j] < 65536) {
+                        ui[j] = (UWORD)rd2[j];
+                    } else {
+                        ui[j] = 0;
+                        sp[ns++] = (UWORD)j;
+                    }
+                }
+                v->uidx = ui;
+                v->special = sp;
+                v->nspecial = ns;
+                v->no_textures = 1;
+                for (j = 0; j < n; j++)
+                    if (rt[j] == OGLES2_U_TMU_CONFIG_P0 || rt[j] == OGLES2_U_TMU_CONFIG_P1 ||
+                        rt[j] == OGLES2_U_UBO_ADDR ||
+                        (rt[j] >= OGLES2_U_BLEND_CONSTANT_R && rt[j] <= OGLES2_U_BLEND_CONSTANT_R + 3))
+                        v->no_textures = 0; /* nor the blend colour: not in draw.c's key */
+            }
             if (v->spill_size)
                 FAIL("a shader that spills is not supported yet", 0, ~0UL);
             codelen = u32(&s);

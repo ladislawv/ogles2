@@ -1,0 +1,20 @@
+ogles2 (ports/gl4es): a mip chain the program uploads level by level down to
+1x1 counts as done. gl4es marked it done only if mipmapping was already asked
+for at upload time; Quake III sets its mipmapping filter after uploading every
+level, so each texture's chain was generated again on the CPU at its first
+draw (glGenerateMipmap: 1.2 s over the timedemo on the A1200).
+
+diff --git a/src/gl/texture.c b/src/gl/texture.c
+index c0d479a8..c488e3b3 100644
+--- a/src/gl/texture.c
++++ b/src/gl/texture.c
+@@ -1514,6 +1514,9 @@ void APIENTRY_GL4ES gl4es_glTexImage2D(GLenum target, GLint level, GLint interna
+             if(level == maxlevel(bound->width, bound->height))
+                 bound->mipmap_done = 1;
+         }
++        /* ogles2: the whole chain given by the program, down to 1x1 */
++        if(level && level == maxlevel(bound->width, bound->height))
++            bound->mipmap_done = 1;
+     }
+     if ((target==GL_TEXTURE_2D) && globals4es.texcopydata && ((globals4es.texstream && !bound->streamed) || !globals4es.texstream)) {
+         if (bound->data) 

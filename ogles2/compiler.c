@@ -57,11 +57,22 @@ const char *ogles2_cache_dir(void)
     return ogles2_cache_assigned() ? "OGLES2Cache:" : "T:";
 }
 
-BOOL ogles2_compiler_installed(void)
+/* The installed compiler: its size, hashed (never 0), or 0 when there is
+ * none. A shader record of a failed compile carries it, so another
+ * compiler compiles that shader again (program.c). Not the file's date:
+ * copying the same compiler again (as every A1200 test package does)
+ * changes it. Found once while the library is open. */
+static ULONG compiler_id;
+
+ULONG ogles2_compiler_id(void)
 {
     struct Process *me = (struct Process *)FindTask(0);
+    struct FileInfoBlock *fib;
     APTR win = 0;
     BPTR lock;
+    ULONG id = 0;
+    if (compiler_id)
+        return compiler_id;
     /* LIBS: always exists; no requester either way, but be safe. */
     if (me->pr_Task.tc_Node.ln_Type == NT_PROCESS) {
         win = me->pr_WindowPtr;
@@ -71,9 +82,20 @@ BOOL ogles2_compiler_installed(void)
     if (me->pr_Task.tc_Node.ln_Type == NT_PROCESS)
         me->pr_WindowPtr = win;
     if (!lock)
-        return FALSE;
+        return 0;
+    if ((fib = AllocDosObject(DOS_FIB, 0))) {
+        if (Examine(lock, fib))
+            id = (ULONG)fib->fib_Size * 2654435761UL;
+        FreeDosObject(DOS_FIB, fib);
+    }
     UnLock(lock);
-    return TRUE;
+    compiler_id = id ? id : 1;
+    return compiler_id;
+}
+
+BOOL ogles2_compiler_installed(void)
+{
+    return ogles2_compiler_id() != 0;
 }
 
 static BOOL start_server(void)

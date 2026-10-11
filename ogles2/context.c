@@ -92,6 +92,10 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
                     ctx->probe |= OGLES2_PROBE_FLIP_Y;
                 else if (*p == 'S')
                     ctx->probe |= OGLES2_PROBE_SEMAPHORE;
+                else if (*p == 'T')
+                    ctx->probe |= OGLES2_PROBE_TRACE;
+                else if (*p == 'P')
+                    ctx->probe |= OGLES2_PROBE_PERIODIC;
                 else if (*p == 'A')
                     ctx->probe |= OGLES2_PROBE_ADDR;
             }
@@ -143,6 +147,9 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
             why = OGLES2_CCE_NOMEM;
             goto fail_ctx;
         }
+        ObtainSemaphore(&OGLES2LibBase->lock);
+        OGLES2LibBase->contexts++;
+        ReleaseSemaphore(&OGLES2LibBase->lock);
     }
     ogles2_fb_update(ctx); /* the default framebuffer is drawn into */
     ctx->viewport[2] = ctx->scissor[2] = (GLint)ctx->width;
@@ -175,17 +182,60 @@ void ogles2_aglDestroyContext(struct OGLES2Context *ctx)
 {
     if (!ogles2_context_valid(ctx))
         return;
+    ogles2_log("aglDestroyContext: context 0x%08lx: freeing", (ULONG)ctx);
     ogles2_job_discard(ctx);
+    ogles2_trace(ctx, "aglDestroyContext: the job finished", -1, 0);
     ogles2_draw_free(ctx);
     ogles2_job_free(ctx);
+    ogles2_trace(ctx, "aglDestroyContext: draw and job state freed", -1, 0);
     ogles2_objects_free(ctx);
+    ogles2_trace(ctx, "aglDestroyContext: programs and shaders freed", -1, 0);
     ogles2_fbo_free(ctx); /* before the textures: renderbuffers' colour storage is theirs */
     ogles2_textures_free(ctx);
+    ogles2_trace(ctx, "aglDestroyContext: framebuffers and textures freed", -1, 0);
     ogles2_buffers_free(ctx);
+    ogles2_trace(ctx, "aglDestroyContext: buffers freed", -1, 0);
+    if (ctx->v3d) {
+        ObtainSemaphore(&OGLES2LibBase->lock);
+        OGLES2LibBase->contexts--;
+        ReleaseSemaphore(&OGLES2LibBase->lock);
+    }
     ogles2_device_context_free(ctx->v3d);
     ogles2_display_close(&ctx->display);
     ogles2_log("aglDestroyContext: context 0x%08lx (%lu frames, %lu dropped, %lu binning blocks added)",
                (ULONG)ctx, ctx->frames, ctx->frames_dropped, ctx->chained_blocks);
+    if (ctx->n_jobs)
+        ogles2_log("timing: %lu jobs, each on average: %lu us of CPU work before its flush, %lu us "
+                   "waiting for binning, %lu us for the render",
+                   ctx->n_jobs, (ULONG)(ctx->sum_build / ctx->n_jobs), (ULONG)(ctx->sum_bin / ctx->n_jobs),
+                   (ULONG)(ctx->sum_render / ctx->n_jobs));
+    if (ctx->n_jobs)
+        ogles2_log("timing: and in each flush %lu us building the render list, %lu us for the CPU cache "
+                   "before the GPU, %lu us after",
+                   (ULONG)(ctx->sum_list / ctx->n_jobs), (ULONG)(ctx->sum_pre / ctx->n_jobs),
+                   (ULONG)(ctx->sum_post / ctx->n_jobs));
+    if (ctx->n_swaps > 1)
+        ogles2_log("timing: %lu swaps, %lu us from one to the next on average, %lu us of it presenting",
+                   ctx->n_swaps, (ULONG)(ctx->sum_frame / (ctx->n_swaps - 1)),
+                   (ULONG)(ctx->sum_present / ctx->n_swaps));
+    if (ctx->n_swaps) {
+        /* Uploads as totals: most happen while the program loads. */
+        ogles2_log("timing: per frame %lu draws, %lu us in them; in all %lu ms in glBuffer(Sub)Data, "
+                   "%lu ms in glTex(Sub)Image2D",
+                   ctx->n_draws / ctx->n_swaps, (ULONG)(ctx->sum_draw / ctx->n_swaps),
+                   (ULONG)(ctx->sum_bufdata / 1000), (ULONG)(ctx->sum_teximage / 1000));
+        if (ctx->probe & OGLES2_PROBE_PERIODIC)
+            ogles2_log("timing: per frame in draws: %lu us checks, %lu shaders, %lu textures, %lu uniforms, "
+                       "%lu vertex data, %lu record, %lu indices, %lu binning list",
+                       (ULONG)(ctx->stage[0] / ctx->n_swaps), (ULONG)(ctx->stage[1] / ctx->n_swaps),
+                       (ULONG)(ctx->stage[2] / ctx->n_swaps), (ULONG)(ctx->stage[3] / ctx->n_swaps),
+                       (ULONG)(ctx->stage[4] / ctx->n_swaps), (ULONG)(ctx->stage[5] / ctx->n_swaps),
+                       (ULONG)(ctx->stage[6] / ctx->n_swaps), (ULONG)(ctx->stage[7] / ctx->n_swaps));
+        if ((ctx->probe & OGLES2_PROBE_PERIODIC) && ctx->n_draws)
+            ogles2_log("timing: per draw %lu uniform stream words, %lu bytes of vertex data, %lu indices",
+                       (ULONG)(ctx->n_uwords / ctx->n_draws), (ULONG)(ctx->n_vbytes / ctx->n_draws),
+                       (ULONG)(ctx->n_indices / ctx->n_draws));
+    }
     ctx->magic = 0;
     FreeVec(ctx);
     ogles2_log_flush(); /* the caller is the application: DOS calls are fine */

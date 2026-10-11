@@ -1,9 +1,10 @@
 /*
  * The Amiga half of the speed comparison (perf_gears.h): the target both
- * libraries render into (a hidden 640x480 BGRA32 bitmap, or a Workbench
- * window of that inner size), the clock (DateStamp ticks, 1/50 s) and the
- * result line. The bitmap measures the libraries alone; the window adds
- * each library's own copy to the window (ClipBlit, both).
+ * libraries render into (a hidden 640x480 BGRA32 bitmap, a Workbench window
+ * of that inner size, or a 640x480 screen of each library's own), the clock
+ * (DateStamp ticks, 1/50 s) and the result line. The bitmap measures the
+ * libraries alone; the window adds each library's own copy to the window
+ * (ClipBlit, both); the screen is shown as the GPU writes it.
  */
 #ifndef PERF_TARGET_H
 #define PERF_TARGET_H
@@ -33,6 +34,8 @@ static int pt_open(const struct pg_args *a, const char *title)
     CyberGfxBase = OpenLibrary((STRPTR) "cybergraphics.library", 41);
     if (!IntuitionBase || !GfxBase || !CyberGfxBase)
         return 0;
+    if (a->fullscreen)
+        return 1; /* the library opens the screen */
     if (a->window)
         pt_win = OpenWindowTags(0, WA_Title, (ULONG)title, WA_InnerWidth, PG_W, WA_InnerHeight, PG_H,
                                 WA_DragBar, TRUE, WA_DepthGadget, TRUE, WA_Activate, TRUE,
@@ -56,6 +59,25 @@ static void pt_close(void)
         CloseLibrary((struct Library *)GfxBase);
     if (IntuitionBase)
         CloseLibrary((struct Library *)IntuitionBase);
+}
+
+/* A 640x480 RTG mode the GPU can store into: BGRA32 or RGBA32 (ogles2's
+ * fullscreen; BestCModeID may offer ARGB32). */
+static ULONG pt_find_mode(void)
+{
+    ULONG id = INVALID_ID, best = INVALID_ID;
+    while ((id = NextDisplayInfo(id)) != (ULONG)INVALID_ID) {
+        if (IsCyberModeID(id)) {
+            ULONG f = GetCyberIDAttr(CYBRIDATTR_PIXFMT, id);
+            if ((f == PIXFMT_BGRA32 || f == PIXFMT_RGBA32) && GetCyberIDAttr(CYBRIDATTR_WIDTH, id) == PG_W &&
+                GetCyberIDAttr(CYBRIDATTR_HEIGHT, id) == PG_H)
+                return id;
+            if ((f == PIXFMT_BGRA32 || f == PIXFMT_RGBA32) && best == (ULONG)INVALID_ID &&
+                GetCyberIDAttr(CYBRIDATTR_WIDTH, id) >= PG_W && GetCyberIDAttr(CYBRIDATTR_HEIGHT, id) >= PG_H)
+                best = id;
+        }
+    }
+    return best;
 }
 
 static ULONG pt_ticks(void)
@@ -104,7 +126,7 @@ static void pt_report(const char *lib, const struct pg_args *a, ULONG frames, UL
 {
     ULONG fps10 = ticks ? frames * 500UL / ticks : 0;
     printf("RESULT %-6s %-9s %-6s TEETH=%-2d %6d triangles: %5lu frames in %3lu.%02lu s = %4lu.%lu fps\n", lib,
-           a->path, a->window ? "window" : "bitmap", a->mult, pg_triangles(), (unsigned long)frames,
+           a->path, a->fullscreen ? "screen" : a->window ? "window" : "bitmap", a->mult, pg_triangles(), (unsigned long)frames,
            (unsigned long)(ticks / 50), (unsigned long)(ticks % 50 * 2), (unsigned long)(fps10 / 10),
            (unsigned long)(fps10 % 10));
 }

@@ -1,0 +1,313 @@
+logfile opened on Sun Oct 11 16:12:16 2026
+
+----- Client Initialization -----
+----- Initializing Renderer ----
+-------------------------------
+QKEY found.
+----- Client Initialization Complete -----
+----- R_Init -----
+===== quake3-68k on gl4es and ogles2.library =====
+Initializing OpenGL subsystem
+...setting mode 3: 640 480 fullscreen
+...ogles2 context 640x480 through gl4es
+Initializing OpenGL extensions
+...GL_S3_s3tc not used
+...GL_EXT_texture_env_add not used
+...using GL_ARB_multitexture
+...using GL_EXT_compiled_vertex_array
+... Sys_EventPort at 0x84e5e30
+Initializing Shaders
+
+GL_VENDOR: GL4ES wrapping ogles2.library
+GL_RENDERER: GL4ES using V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+GL_VERSION: 2.1 gl4es wrapper 1.1.7
+GL_EXTENSIONS: GL_EXT_abgr GL_MGL_packed_pixels GL_EXT_packed_pixels GL_EXT_compiled_vertex_array GL_EXT_compiled_vertex_arrays GL_ARB_vertex_buffer_object GL_ARB_vertex_array_object GL_ARB_vertex_buffer GL_EXT_vertex_array GL_EXT_secondary_color GL_ARB_multitexture GL_ARB_texture_border_clamp GL_ARB_texture_env_add GL_EXT_texture_env_add GL_ARB_texture_env_combine GL_EXT_texture_env_combine GL_ARB_texture_env_crossbar GL_EXT_texture_env_crossbar GL_ARB_texture_env_dot3 GL_EXT_texture_env_dot3 GL_SGIS_generate_mipmap GL_EXT_draw_range_elements GL_EXT_bgra GL_ARB_texture_compression GL_EXT_texture_compression_s3tc GL_OES_texture_compression_S3TC GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_dxt3 GL_EXT_texture_compression_dxt5 GL_ARB_point_parameters GL_EXT_point_parameters GL_EXT_stencil_wrap GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp GL_EXT_direct_state_access GL_EXT_multi_draw_arrays GL_SUN_multi_draw_arrays GL_ARB_multisample GL_EXT_texture_object GL_EXT_polygon_offset GL_GL4ES_hint GL_ARB_draw_elements_base_vertex GL_EXT_draw_elements_base_vertex GL_ARB_map_buffer_range GL_NV_blend_square GL_ARB_texture_rectangle GL_APPLE_texture_2D_limited_npot GL_ARB_texture_non_power_of_two GL_EXT_blend_color GL_EXT_blend_minmax GL_EXT_blend_equation_separate GL_EXT_blend_func_separate GL_EXT_blend_subtract GL_ARB_texture_mirrored_repeat GL_ARB_framebuffer_object GL_EXT_framebuffer_object GL_EXT_packed_depth_stencil GL_EXT_framebuffer_blit GL_ARB_draw_buffers GL_EXT_draw_buffers2 GL_ARB_point_sprite GL_ARB_texture_cube_map GL_EXT_texture_cube_map GL_EXT_fog_coord GL_EXT_separate_specular_color GL_EXT_rescale_normal GL_ARB_ES2_compatibility GL_ARB_fragment_shader GL_ARB_vertex_shader GL_ARB_shader_objects GL_ARB_shading_language_100 GL_ATI_texture_env_combine3 GL_ATIX_texture_env_route GL_NV_texture_env_combine4 GL_NV_fog_distance GL_ARB_draw_instanced GL_ARB_instanced_arrays GL_ARB_vertex_program GL_ARB_fragment_program GL_EXT_program_parameters 
+GL_MAX_TEXTURE_SIZE: 4096
+GL_MAX_TEXTURE_UNITS_ARB: 16
+
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:N/A
+GAMMA: software w/ 0 overbright bits
+rendering primitives: multiple glArrayElement
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 0
+texture bits: 32
+multitexture: enabled
+compiled vertex arrays: enabled
+texenv add: disabled
+compressed textures: disabled
+----- finished R_Init -----
+------ Initializing Sound ------
+Sound disabled.
+--------------------------------
+Try loading dll file M6R2:home/baseq3/ui68k.dll
+Sys_LoadDll(M6R2:home/baseq3/ui68k.dll)... 
+35 arenas parsed
+32 bots parsed
+--- Common Initialization Complete ---
+Hostname: localhost
+IP: 127.0.0.1
+Opening IP socket: 0.0.0.0:27960
+Demo file: demos/four.dm_68
+We are looking in the current search path:
+M6R2:home/baseq3
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak8.pk3 (9 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak7.pk3 (4 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak6.pk3 (64 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak5.pk3 (7 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak4.pk3 (272 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak3.pk3 (4 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak2.pk3 (148 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak1.pk3 (26 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak0.pk3 (3539 files)
+
+handle 1: qconsole.log
+handle 2: demos/four.dm_68
+----------------------
+8146 files in pk3 files
+RE_Shutdown( 0 )
+Hunk_Clear: reset the hunk ok
+----- R_Init -----
+Initializing Shaders
+
+GL_VENDOR: GL4ES wrapping ogles2.library
+GL_RENDERER: GL4ES using V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+GL_VERSION: 2.1 gl4es wrapper 1.1.7
+GL_EXTENSIONS: GL_EXT_abgr GL_MGL_packed_pixels GL_EXT_packed_pixels GL_EXT_compiled_vertex_array GL_EXT_compiled_vertex_arrays GL_ARB_vertex_buffer_object GL_ARB_vertex_array_object GL_ARB_vertex_buffer GL_EXT_vertex_array GL_EXT_secondary_color GL_ARB_multitexture GL_ARB_texture_border_clamp GL_ARB_texture_env_add GL_EXT_texture_env_add GL_ARB_texture_env_combine GL_EXT_texture_env_combine GL_ARB_texture_env_crossbar GL_EXT_texture_env_crossbar GL_ARB_texture_env_dot3 GL_EXT_texture_env_dot3 GL_SGIS_generate_mipmap GL_EXT_draw_range_elements GL_EXT_bgra GL_ARB_texture_compression GL_EXT_texture_compression_s3tc GL_OES_texture_compression_S3TC GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_dxt3 GL_EXT_texture_compression_dxt5 GL_ARB_point_parameters GL_EXT_point_parameters GL_EXT_stencil_wrap GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp GL_EXT_direct_state_access GL_EXT_multi_draw_arrays GL_SUN_multi_draw_arrays GL_ARB_multisample GL_EXT_texture_object GL_EXT_polygon_offset GL_GL4ES_hint GL_ARB_draw_elements_base_vertex GL_EXT_draw_elements_base_vertex GL_ARB_map_buffer_range GL_NV_blend_square GL_ARB_texture_rectangle GL_APPLE_texture_2D_limited_npot GL_ARB_texture_non_power_of_two GL_EXT_blend_color GL_EXT_blend_minmax GL_EXT_blend_equation_separate GL_EXT_blend_func_separate GL_EXT_blend_subtract GL_ARB_texture_mirrored_repeat GL_ARB_framebuffer_object GL_EXT_framebuffer_object GL_EXT_packed_depth_stencil GL_EXT_framebuffer_blit GL_ARB_draw_buffers GL_EXT_draw_buffers2 GL_ARB_point_sprite GL_ARB_texture_cube_map GL_EXT_texture_cube_map GL_EXT_fog_coord GL_EXT_separate_specular_color GL_EXT_rescale_normal GL_ARB_ES2_compatibility GL_ARB_fragment_shader GL_ARB_vertex_shader GL_ARB_shader_objects GL_ARB_shading_language_100 GL_ATI_texture_env_combine3 GL_ATIX_texture_env_route GL_NV_texture_env_combine4 GL_NV_fog_distance GL_ARB_draw_instanced GL_ARB_instanced_arrays GL_ARB_vertex_program GL_ARB_fragment_program GL_EXT_program_parameters 
+GL_MAX_TEXTURE_SIZE: 4096
+GL_MAX_TEXTURE_UNITS_ARB: 16
+
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:N/A
+GAMMA: software w/ 0 overbright bits
+rendering primitives: multiple glArrayElement
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 0
+texture bits: 32
+multitexture: enabled
+compiled vertex arrays: enabled
+texenv add: disabled
+compressed textures: disabled
+----- finished R_Init -----
+Try loading dll file M6R2:home/baseq3/ui68k.dll
+Sys_LoadDll(M6R2:home/baseq3/ui68k.dll)... 
+35 arenas parsed
+32 bots parsed
+Try loading dll file M6R2:home/baseq3/cgame68k.dll
+Sys_LoadDll(M6R2:home/baseq3/cgame68k.dll)... 
+stitched 0 LoD cracks
+...loaded 3728 faces, 358 meshes, 180 trisurfs, 52 flares
+Failed to load model file models/players/characters/james/lower.md3
+CL_InitCGame: 10.16 seconds
+frame:0 all: 19 sv:  0 ev:17287 cl:  2 gm:  0 rf:  0 bk: 17
+frame:1 all:1101 sv:  0 ev:  0 cl: 14 gm:  0 rf:  5 bk:1082
+frame:2 all:109 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:105
+frame:3 all: 96 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 91
+frame:4 all: 90 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 87
+frame:5 all: 94 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 91
+frame:6 all: 94 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 90
+frame:7 all: 90 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 87
+frame:8 all: 95 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 92
+frame:9 all: 91 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 88
+frame:10 all:246 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:242
+frame:11 all: 75 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 71
+frame:12 all: 76 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 73
+frame:13 all: 93 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 90
+frame:14 all: 88 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 85
+frame:15 all: 75 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 72
+frame:16 all: 70 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 67
+frame:17 all: 72 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 69
+frame:18 all: 75 sv:  0 ev:  1 cl:  0 gm:  0 rf:  2 bk: 73
+frame:19 all: 72 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 69
+frame:20 all: 70 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 67
+frame:21 all: 58 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 55
+frame:22 all: 41 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 38
+frame:23 all: 38 sv:  0 ev:  1 cl:  0 gm:  0 rf:  2 bk: 36
+frame:24 all: 38 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 35
+frame:25 all: 37 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 34
+frame:26 all: 37 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 35
+frame:27 all: 38 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 36
+frame:28 all: 35 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 33
+frame:29 all: 37 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 35
+frame:30 all: 32 sv:  0 ev:  0 cl:  2 gm:  0 rf:  0 bk: 30
+frame:31 all: 32 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 30
+frame:32 all: 32 sv:  0 ev:  1 cl:  0 gm:  0 rf:  2 bk: 30
+frame:33 all: 32 sv:  0 ev:  0 cl:  2 gm:  0 rf:  0 bk: 30
+frame:34 all: 54 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 52
+frame:35 all: 59 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 56
+frame:36 all: 76 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 74
+frame:37 all: 63 sv:  0 ev:  0 cl:  2 gm:  0 rf:  0 bk: 61
+frame:38 all: 62 sv:  0 ev:  1 cl:  0 gm:  0 rf:  2 bk: 60
+frame:39 all: 67 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 64
+frame:40 all: 62 sv:  0 ev:  0 cl:  0 gm:  0 rf:  2 bk: 60
+frame:41 all: 59 sv:  0 ev:  0 cl:  2 gm:  0 rf:  0 bk: 57
+frame:42 all: 60 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 58
+frame:43 all: 68 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 65
+frame:44 all: 74 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 72
+frame:45 all: 75 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 72
+frame:46 all: 79 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 76
+frame:47 all: 64 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 62
+frame:48 all: 66 sv:  0 ev:  1 cl:  3 gm:  0 rf:  0 bk: 63
+frame:49 all: 62 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 59
+frame:50 all: 66 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 63
+frame:51 all: 62 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 60
+frame:52 all: 68 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 65
+frame:53 all: 70 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 68
+frame:54 all: 71 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 69
+frame:55 all: 69 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 67
+frame:56 all: 72 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 70
+frame:57 all: 70 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 67
+frame:58 all: 72 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 69
+frame:59 all: 78 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 73
+frame:60 all: 72 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 69
+frame:61 all: 69 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 67
+frame:62 all: 73 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 70
+frame:63 all: 71 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 68
+frame:64 all: 72 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 69
+frame:65 all: 66 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 64
+frame:66 all: 71 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 68
+frame:67 all: 67 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 64
+frame:68 all: 69 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 66
+frame:69 all: 67 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 64
+frame:70 all: 72 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 69
+frame:71 all: 74 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 71
+frame:72 all: 68 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 66
+frame:73 all: 67 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 64
+frame:74 all: 70 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 66
+frame:75 all: 66 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 63
+frame:76 all: 67 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 65
+frame:77 all: 66 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 62
+frame:78 all: 46 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 43
+frame:79 all: 47 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 45
+frame:80 all: 72 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 68
+frame:81 all: 66 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 63
+frame:82 all: 67 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 64
+frame:83 all: 65 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 61
+frame:84 all: 68 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 66
+marty^7 almost dodged Thanatar^7's rocket
+frame:85 all: 74 sv:  0 ev:  0 cl: 10 gm:  0 rf:  1 bk: 63
+frame:86 all: 68 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 65
+frame:87 all: 68 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 65
+frame:88 all: 71 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 69
+frame:89 all: 71 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 68
+frame:90 all: 74 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 71
+frame:91 all: 72 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 69
+frame:92 all: 74 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 71
+frame:93 all: 72 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk: 70
+frame:94 all: 74 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 71
+frame:95 all: 72 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 69
+frame:96 all: 77 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 74
+frame:97 all: 75 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 72
+frame:98 all: 79 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 76
+frame:99 all: 74 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 71
+frame:100 all: 87 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 83
+frame:101 all: 75 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 73
+frame:102 all: 80 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 77
+frame:103 all: 75 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 72
+frame:104 all: 76 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 73
+frame:105 all: 72 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 69
+frame:106 all: 75 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 73
+frame:107 all: 71 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 68
+frame:108 all: 74 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 71
+frame:109 all: 70 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 68
+frame:110 all: 76 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 74
+frame:111 all: 74 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 71
+frame:112 all: 73 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 70
+frame:113 all: 70 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 68
+frame:114 all: 72 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 69
+frame:115 all: 75 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 72
+frame:116 all: 70 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk: 68
+frame:117 all: 70 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 67
+frame:118 all: 73 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 70
+frame:119 all: 74 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 70
+frame:120 all: 91 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 86
+frame:121 all: 90 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 87
+frame:122 all: 94 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 90
+frame:123 all: 86 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 82
+frame:124 all: 80 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 77
+frame:125 all: 83 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 79
+frame:126 all: 84 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 80
+frame:127 all: 79 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 76
+frame:128 all: 90 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 86
+frame:129 all: 86 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 83
+frame:130 all: 88 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk: 85
+frame:131 all: 84 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 81
+frame:132 all: 91 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 88
+frame:133 all: 89 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 86
+frame:134 all: 90 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 87
+frame:135 all: 83 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 80
+frame:136 all: 80 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 77
+frame:137 all: 79 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 75
+frame:138 all: 85 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 82
+frame:139 all: 87 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 83
+^2F^7red^2o^7 was gunned down by THEINDIGO^7
+frame:140 all:135 sv:  0 ev:  0 cl:  9 gm:  0 rf:  2 bk:124
+frame:141 all:126 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:121
+frame:142 all:127 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:123
+frame:143 all:130 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:126
+frame:144 all:128 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:124
+frame:145 all:127 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:123
+frame:146 all:119 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:116
+frame:147 all:117 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:113
+frame:148 all:118 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk:114
+frame:149 all:119 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk:115
+frame:150 all:122 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:118
+frame:151 all:120 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:116
+frame:152 all:113 sv:  1 ev:  0 cl:  2 gm:  0 rf:  1 bk:109
+frame:153 all:116 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:112
+frame:154 all:114 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:109
+frame:155 all:114 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:110
+frame:156 all:113 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:110
+frame:157 all:113 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:110
+frame:158 all:115 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:112
+frame:159 all:114 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:110
+frame:160 all:113 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:110
+frame:161 all:114 sv:  0 ev:  0 cl:  4 gm:  0 rf:  0 bk:110
+frame:162 all:111 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:108
+frame:163 all: 90 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 86
+frame:164 all: 89 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 85
+frame:165 all: 89 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 85
+frame:166 all: 89 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 86
+frame:167 all: 90 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 86
+frame:168 all: 94 sv:  0 ev:  0 cl:  8 gm:  0 rf:  1 bk: 85
+frame:169 all: 90 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 86
+frame:170 all: 89 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 85
+frame:171 all: 89 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 86
+frame:172 all: 89 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 85
+frame:173 all: 88 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 84
+frame:174 all: 87 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 84
+frame:175 all: 89 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 85
+Willits^7 ate Asuka^7's rocket
+frame:176 all:138 sv:  0 ev:  0 cl:  5 gm:  0 rf:  3 bk:130
+frame:177 all:101 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 97
+frame:178 all:102 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 98
+frame:179 all:100 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk: 96
+frame:180 all:103 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 99
+frame:181 all: 97 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 91
+frame:182 all: 99 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 95
+frame:183 all: 87 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 83
+frame:184 all: 90 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 86
+frame:185 all: 93 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 89
+frame:186 all:101 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 98
+frame:187 all: 86 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 82
+frame:188 all: 96 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 92
+frame:189 all: 84 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 80
+frame:190 all: 89 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 86
+frame:191 all:123 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:119
+frame:192 all:121 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:117
+frame:193 all:123 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:120
+frame:194 all:115 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:111
+frame:195 all:112 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:109
+frame:196 all:108 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:104
+frame:197 all:104 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:100
+frame:198 all:104 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:101
+frame:199 all:108 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:104
+----- Client Shutdown (Client quit) -----
+RE_Shutdown( 1 )
+gl profile: 234 frames; per frame 1408 draws taking 62009 us (gl4es and ogles2), 48 us locking arrays, 0 us in glEnd, 612 us swapping
+GLimp_Shutdown: input
+GLimp_Shutdown: the context
+GLimp_Shutdown: done
+Hunk_Clear: reset the hunk ok
+-----------------------

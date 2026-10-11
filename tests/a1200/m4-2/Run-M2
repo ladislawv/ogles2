@@ -28,7 +28,7 @@ Version minigl.library FULL >M4R2:results/0-minigl-version.txt
 Avail FLUSH >NIL:
 
 If NOT {FROM} GT 1 VAL
-  Echo "Step 1 of 3: ogles2 on a hidden bitmap, 6 runs of 5 seconds (nothing to see)"
+  Echo "Step 1 of 4: ogles2 on a hidden bitmap, 6 runs of 5 seconds (nothing to see)"
   M4R2:bin/gears_gles2 TEETH=1  PATH=VBO    >M4R2:results/1-gles2.txt
   M4R2:bin/gears_gles2 TEETH=1  PATH=ARRAYS >>M4R2:results/1-gles2.txt
   M4R2:bin/gears_gles2 TEETH=10 PATH=VBO    >>M4R2:results/1-gles2.txt
@@ -40,7 +40,7 @@ If NOT {FROM} GT 1 VAL
 EndIf
 
 If NOT {FROM} GT 2 VAL
-  Echo "Step 2 of 3: MiniGL on a hidden bitmap, 9 runs of 5 seconds (nothing to see)"
+  Echo "Step 2 of 4: MiniGL on a hidden bitmap, 9 runs of 5 seconds (nothing to see)"
   M4R2:bin/gears_mgl TEETH=1  PATH=IMMEDIATE >M4R2:results/2-mgl.txt
   M4R2:bin/gears_mgl TEETH=1  PATH=ARRAYS    >>M4R2:results/2-mgl.txt
   M4R2:bin/gears_mgl TEETH=1  PATH=LIST      >>M4R2:results/2-mgl.txt
@@ -55,7 +55,7 @@ If NOT {FROM} GT 2 VAL
 EndIf
 
 If NOT {FROM} GT 3 VAL
-  Echo "Step 3 of 3: in a window, 4 runs of 5 seconds each."
+  Echo "Step 3 of 4: in a window, 4 runs of 5 seconds each."
   Echo "  Look for: three gears (red, green, blue) turning; the window title"
   Echo "  names the library. Both should look the same."
   Echo "  ogles2, 800 triangles..."
@@ -71,6 +71,21 @@ If NOT {FROM} GT 3 VAL
   M4R2:bin/gears_mgl WINDOW TEETH=10 PATH=LIST >>M4R2:results/3-window.txt
   Avail FLUSH >NIL:
   Echo "step 3 done" >>M4R2:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 4: full screen, 4 runs of 5 seconds each."
+  Echo "  Look for: the screen switches to the three gears, then back; the"
+  Echo "  same as in the window, without the window around them."
+  M4R2:bin/gears_gles2 FULLSCREEN TEETH=1 PATH=VBO >M4R2:results/4-screen.txt
+  Avail FLUSH >NIL:
+  M4R2:bin/gears_mgl FULLSCREEN TEETH=1 PATH=LIST >>M4R2:results/4-screen.txt
+  Avail FLUSH >NIL:
+  M4R2:bin/gears_gles2 FULLSCREEN TEETH=10 PATH=VBO >>M4R2:results/4-screen.txt
+  Avail FLUSH >NIL:
+  M4R2:bin/gears_mgl FULLSCREEN TEETH=10 PATH=LIST >>M4R2:results/4-screen.txt
+  Avail FLUSH >NIL:
+  Echo "step 4 done" >>M4R2:results/00-progress.txt
 EndIf
 
 Assign LIBS: M4R2:libs REMOVE

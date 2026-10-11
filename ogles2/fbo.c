@@ -166,11 +166,14 @@ static BOOL rb_zs_storage(struct OGLES2Renderbuffer *rb)
 
 /* ---- the job of the framebuffer an attachment change touches ---- */
 
-/* The open job draws into fb: render it before fb changes. */
+/* The open job draws into fb: render it before fb changes; and a running
+ * render into an object finishes first (M6 overlap). */
 static void before_fb_change(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb)
 {
     if (ctx->v3d && ctx->v3d->frame_active && ctx->job_fb == fb && fb)
         ogles2_job_flush(ctx, FALSE);
+    if (ctx->pend && ctx->pend_fb)
+        ogles2_job_finish(ctx);
 }
 
 /* The open job draws into a framebuffer that uses rb. */
@@ -178,23 +181,32 @@ static void before_rb_change(struct OGLES2Context *ctx, struct OGLES2Renderbuffe
 {
     struct OGLES2Framebuffer *fb = ctx->job_fb;
     int a;
+    if (ctx->pend && ctx->pend_fb)
+        ogles2_job_finish(ctx);
     if (!ctx->v3d || !ctx->v3d->frame_active || !fb)
         return;
     for (a = 0; a < 3; a++)
         if (fb->att[a].type == GL_RENDERBUFFER && fb->att[a].rb == rb) {
             ogles2_job_flush(ctx, FALSE);
+            ogles2_job_finish(ctx);
             return;
         }
 }
 
+/* fb's colour image is texture t (a renderbuffer's own included). */
+static BOOL draws_into(const struct OGLES2Framebuffer *fb, const struct OGLES2Texture *t)
+{
+    return fb && ((fb->att[ATT_COLOR].type == GL_TEXTURE && fb->att[ATT_COLOR].tex == t) ||
+                  (fb->att[ATT_COLOR].type == GL_RENDERBUFFER && fb->att[ATT_COLOR].rb &&
+                   fb->att[ATT_COLOR].rb->color == t));
+}
+
 void ogles2_fbo_texture_changing(struct OGLES2Context *ctx, struct OGLES2Texture *t)
 {
-    struct OGLES2Framebuffer *fb = ctx->job_fb;
-    if (ctx->v3d && ctx->v3d->frame_active && fb &&
-        ((fb->att[ATT_COLOR].type == GL_TEXTURE && fb->att[ATT_COLOR].tex == t) ||
-         (fb->att[ATT_COLOR].type == GL_RENDERBUFFER && fb->att[ATT_COLOR].rb &&
-          fb->att[ATT_COLOR].rb->color == t)))
+    if (ctx->v3d && ctx->v3d->frame_active && draws_into(ctx->job_fb, t))
         ogles2_job_flush(ctx, FALSE);
+    if (ctx->pend && draws_into(ctx->pend_fb, t)) /* the running render writes it */
+        ogles2_job_finish(ctx);
 }
 
 void ogles2_fbo_texture_deleted(struct OGLES2Context *ctx, struct OGLES2Texture *t)
@@ -758,6 +770,7 @@ static BOOL pools(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, struc
     if (tiles <= mine)
         return TRUE;
     if (fb->pool_tiles < tiles) {
+        ogles2_job_finish(ctx); /* a running render may use the old pools */
         if (fb->pool_alloc.hostptr)
             v3d_mem_free(ogles2_device(), &fb->pool_alloc);
         if (fb->pool_state.hostptr)

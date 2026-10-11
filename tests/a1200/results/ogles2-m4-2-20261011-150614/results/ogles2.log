@@ -1,0 +1,842 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FBADB4, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08FBADB4 (4928 frames, 0 dropped, 0 binning blocks added)
+    18 close (count 0)
+    19 open (count 1)
+    20 display: application bitmap, 640x480, BGRA
+    21 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    22 aglCreateContext2: context 0x08F2D0CC, 640x480
+    23 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    24 device: context freed, 0 bytes of GPU memory still in use
+    25 aglDestroyContext: context 0x08F2D0CC (3680 frames, 0 dropped, 0 binning blocks added)
+    26 close (count 0)
+    27 open (count 1)
+    28 display: application bitmap, 640x480, BGRA
+    29 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    30 aglCreateContext2: context 0x08F2D0CC, 640x480
+    31 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    32 device: context freed, 0 bytes of GPU memory still in use
+    33 aglDestroyContext: context 0x08F2D0CC (3521 frames, 0 dropped, 0 binning blocks added)
+    34 close (count 0)
+    35 open (count 1)
+    36 display: application bitmap, 640x480, BGRA
+    37 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    38 aglCreateContext2: context 0x08FBB1D4, 640x480
+    39 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    40 device: context freed, 0 bytes of GPU memory still in use
+    41 aglDestroyContext: context 0x08FBB1D4 (978 frames, 0 dropped, 0 binning blocks added)
+    42 close (count 0)
+    43 open (count 1)
+    44 display: application bitmap, 640x480, BGRA
+    45 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    46 aglCreateContext2: context 0x08F2B604, 640x480
+    47 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    48 device: context freed, 0 bytes of GPU memory still in use
+    49 aglDestroyContext: context 0x08F2B604 (2096 frames, 0 dropped, 0 binning blocks added)
+    50 close (count 0)
+    51 open (count 1)
+    52 display: application bitmap, 640x480, BGRA
+    53 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    54 aglCreateContext2: context 0x08F2C0A4, 640x480
+    55 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    56 device: context freed, 0 bytes of GPU memory still in use
+    57 aglDestroyContext: context 0x08F2C0A4 (297 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08F2C4A4, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08F2C4A4 (2434 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08F2C4A4, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08F2C4A4 (2082 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x084E4354, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x084E4354 (4026 frames, 0 dropped, 0 binning blocks added)
+    18 close (count 0)
+    19 open (count 1)
+    20 display: application bitmap, 640x480, BGRA
+    21 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    22 aglCreateContext2: context 0x08F2B604, 640x480
+    23 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    24 device: context freed, 0 bytes of GPU memory still in use
+    25 aglDestroyContext: context 0x08F2B604 (3319 frames, 0 dropped, 0 binning blocks added)
+    26 close (count 0)
+    27 open (count 1)
+    28 display: application bitmap, 640x480, BGRA
+    29 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    30 aglCreateContext2: context 0x08F2B604, 640x480
+    31 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    32 device: context freed, 0 bytes of GPU memory still in use
+    33 aglDestroyContext: context 0x08F2B604 (3028 frames, 0 dropped, 0 binning blocks added)
+    34 close (count 0)
+    35 open (count 1)
+    36 display: application bitmap, 640x480, BGRA
+    37 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    38 aglCreateContext2: context 0x084E3A8C, 640x480
+    39 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    40 device: context freed, 0 bytes of GPU memory still in use
+    41 aglDestroyContext: context 0x084E3A8C (855 frames, 0 dropped, 0 binning blocks added)
+    42 close (count 0)
+    43 open (count 1)
+    44 display: application bitmap, 640x480, BGRA
+    45 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    46 aglCreateContext2: context 0x08F2BA24, 640x480
+    47 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    48 device: context freed, 0 bytes of GPU memory still in use
+    49 aglDestroyContext: context 0x08F2BA24 (1881 frames, 0 dropped, 0 binning blocks added)
+    50 close (count 0)
+    51 open (count 1)
+    52 display: application bitmap, 640x480, BGRA
+    53 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    54 aglCreateContext2: context 0x084E3A8C, 640x480
+    55 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    56 device: context freed, 0 bytes of GPU memory still in use
+    57 aglDestroyContext: context 0x084E3A8C (253 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x084E3EAC, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x084E3EAC (2096 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08F2BA24, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08F2BA24 (1908 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FE0ABC, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08FE0ABC (3469 frames, 0 dropped, 0 binning blocks added)
+    18 close (count 0)
+    19 open (count 1)
+    20 display: application bitmap, 640x480, BGRA
+    21 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    22 aglCreateContext2: context 0x08FE17DC, 640x480
+    23 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    24 device: context freed, 0 bytes of GPU memory still in use
+    25 aglDestroyContext: context 0x08FE17DC (2917 frames, 0 dropped, 0 binning blocks added)
+    26 close (count 0)
+    27 open (count 1)
+    28 display: application bitmap, 640x480, BGRA
+    29 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    30 aglCreateContext2: context 0x08FE17DC, 640x480
+    31 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    32 device: context freed, 0 bytes of GPU memory still in use
+    33 aglDestroyContext: context 0x08FE17DC (2860 frames, 0 dropped, 0 binning blocks added)
+    34 close (count 0)
+    35 open (count 1)
+    36 display: application bitmap, 640x480, BGRA
+    37 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    38 aglCreateContext2: context 0x08FE1BFC, 640x480
+    39 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    40 device: context freed, 0 bytes of GPU memory still in use
+    41 aglDestroyContext: context 0x08FE1BFC (814 frames, 0 dropped, 0 binning blocks added)
+    42 close (count 0)
+    43 open (count 1)
+    44 display: application bitmap, 640x480, BGRA
+    45 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    46 aglCreateContext2: context 0x08FE1BFC, 640x480
+    47 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    48 device: context freed, 0 bytes of GPU memory still in use
+    49 aglDestroyContext: context 0x08FE1BFC (1928 frames, 0 dropped, 0 binning blocks added)
+    50 close (count 0)
+    51 open (count 1)
+    52 display: application bitmap, 640x480, BGRA
+    53 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    54 aglCreateContext2: context 0x08FE1BFC, 640x480
+    55 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    56 device: context freed, 0 bytes of GPU memory still in use
+    57 aglDestroyContext: context 0x08FE1BFC (254 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FE1BFC, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08FE1BFC (1882 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FEC96C, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08FEC96C (1818 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FEF204, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08FEF204 (4175 frames, 0 dropped, 0 binning blocks added)
+    18 close (count 0)
+    19 open (count 1)
+    20 display: application bitmap, 640x480, BGRA
+    21 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    22 aglCreateContext2: context 0x09184EF4, 640x480
+    23 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    24 device: context freed, 0 bytes of GPU memory still in use
+    25 aglDestroyContext: context 0x09184EF4 (3197 frames, 0 dropped, 0 binning blocks added)
+    26 close (count 0)
+    27 open (count 1)
+    28 display: application bitmap, 640x480, BGRA
+    29 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    30 aglCreateContext2: context 0x09184EF4, 640x480
+    31 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    32 device: context freed, 0 bytes of GPU memory still in use
+    33 aglDestroyContext: context 0x09184EF4 (3251 frames, 0 dropped, 0 binning blocks added)
+    34 close (count 0)
+    35 open (count 1)
+    36 display: application bitmap, 640x480, BGRA
+    37 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    38 aglCreateContext2: context 0x09185314, 640x480
+    39 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    40 device: context freed, 0 bytes of GPU memory still in use
+    41 aglDestroyContext: context 0x09185314 (928 frames, 0 dropped, 0 binning blocks added)
+    42 close (count 0)
+    43 open (count 1)
+    44 display: application bitmap, 640x480, BGRA
+    45 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    46 aglCreateContext2: context 0x09185314, 640x480
+    47 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    48 device: context freed, 0 bytes of GPU memory still in use
+    49 aglDestroyContext: context 0x09185314 (2060 frames, 0 dropped, 0 binning blocks added)
+    50 close (count 0)
+    51 open (count 1)
+    52 display: application bitmap, 640x480, BGRA
+    53 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    54 aglCreateContext2: context 0x09179A24, 640x480
+    55 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    56 device: context freed, 0 bytes of GPU memory still in use
+    57 aglDestroyContext: context 0x09179A24 (293 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x09179A24, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x09179A24 (2290 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x091846EC, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x091846EC (1981 frames, 0 dropped, 0 binning blocks added)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x0918353C, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x0918353C (3673 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 3673 jobs, each on average: 276 us of CPU work before its flush, 48 us waiting for binning, 494 us for the render
+    19 timing: 3673 swaps, 1359 us from one to the next on average, 22 us of it presenting
+    20 close (count 0)
+    21 open (count 1)
+    22 display: application bitmap, 640x480, BGRA
+    23 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    24 aglCreateContext2: context 0x0918395C, 640x480
+    25 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    26 device: context freed, 0 bytes of GPU memory still in use
+    27 aglDestroyContext: context 0x0918395C (2919 frames, 0 dropped, 0 binning blocks added)
+    28 timing: 2919 jobs, each on average: 627 us of CPU work before its flush, 49 us waiting for binning, 484 us for the render
+    29 timing: 2919 swaps, 1711 us from one to the next on average, 22 us of it presenting
+    30 close (count 0)
+    31 open (count 1)
+    32 display: application bitmap, 640x480, BGRA
+    33 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    34 aglCreateContext2: context 0x09183D7C, 640x480
+    35 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    36 device: context freed, 0 bytes of GPU memory still in use
+    37 aglDestroyContext: context 0x09183D7C (2944 frames, 0 dropped, 0 binning blocks added)
+    38 timing: 2944 jobs, each on average: 278 us of CPU work before its flush, 131 us waiting for binning, 744 us for the render
+    39 timing: 2944 swaps, 1697 us from one to the next on average, 22 us of it presenting
+    40 close (count 0)
+    41 open (count 1)
+    42 display: application bitmap, 640x480, BGRA
+    43 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    44 aglCreateContext2: context 0x091845BC, 640x480
+    45 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    46 device: context freed, 0 bytes of GPU memory still in use
+    47 aglDestroyContext: context 0x091845BC (914 frames, 0 dropped, 0 binning blocks added)
+    48 timing: 914 jobs, each on average: 3923 us of CPU work before its flush, 130 us waiting for binning, 739 us for the render
+    49 timing: 914 swaps, 5517 us from one to the next on average, 22 us of it presenting
+    50 close (count 0)
+    51 open (count 1)
+    52 display: application bitmap, 640x480, BGRA
+    53 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    54 aglCreateContext2: context 0x0917EFDC, 640x480
+    55 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    56 device: context freed, 0 bytes of GPU memory still in use
+    57 aglDestroyContext: context 0x0917EFDC (1937 frames, 0 dropped, 0 binning blocks added)
+    58 timing: 1937 jobs, each on average: 275 us of CPU work before its flush, 421 us waiting for binning, 1345 us for the render
+    59 timing: 1937 swaps, 2581 us from one to the next on average, 22 us of it presenting
+    60 close (count 0)
+    61 open (count 1)
+    62 display: application bitmap, 640x480, BGRA
+    63 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    64 aglCreateContext2: context 0x09181504, 640x480
+    65 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    66 device: context freed, 0 bytes of GPU memory still in use
+    67 aglDestroyContext: context 0x09181504 (295 frames, 0 dropped, 0 binning blocks added)
+    68 timing: 295 jobs, each on average: 14697 us of CPU work before its flush, 426 us waiting for binning, 1358 us for the render
+    69 timing: 295 swaps, 17296 us from one to the next on average, 23 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x09180CFC, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x09180CFC (2132 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 2132 jobs, each on average: 276 us of CPU work before its flush, 47 us waiting for binning, 487 us for the render
+    19 timing: 2132 swaps, 2348 us from one to the next on average, 996 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x09180CFC, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x09180CFC (1851 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 1851 jobs, each on average: 274 us of CPU work before its flush, 134 us waiting for binning, 748 us for the render
+    19 timing: 1851 swaps, 2703 us from one to the next on average, 998 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x09180CEC, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x09180CEC (3519 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 3519 jobs, each on average: 274 us of CPU work before its flush, 53 us waiting for binning, 486 us for the render
+    19 timing: and in each flush 89 us building the render list, 251 us for the CPU cache before the GPU, 91 us after
+    20 timing: 3519 swaps, 1419 us from one to the next on average, 22 us of it presenting
+    21 close (count 0)
+    22 open (count 1)
+    23 display: application bitmap, 640x480, BGRA
+    24 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    25 aglCreateContext2: context 0x091849DC, 640x480
+    26 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    27 device: context freed, 0 bytes of GPU memory still in use
+    28 aglDestroyContext: context 0x091849DC (2840 frames, 0 dropped, 0 binning blocks added)
+    29 timing: 2840 jobs, each on average: 613 us of CPU work before its flush, 46 us waiting for binning, 494 us for the render
+    30 timing: and in each flush 89 us building the render list, 256 us for the CPU cache before the GPU, 90 us after
+    31 timing: 2840 swaps, 1763 us from one to the next on average, 23 us of it presenting
+    32 close (count 0)
+    33 open (count 1)
+    34 display: application bitmap, 640x480, BGRA
+    35 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    36 aglCreateContext2: context 0x091877EC, 640x480
+    37 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    38 device: context freed, 0 bytes of GPU memory still in use
+    39 aglDestroyContext: context 0x091877EC (2861 frames, 0 dropped, 0 binning blocks added)
+    40 timing: 2861 jobs, each on average: 263 us of CPU work before its flush, 130 us waiting for binning, 752 us for the render
+    41 timing: and in each flush 90 us building the render list, 249 us for the CPU cache before the GPU, 89 us after
+    42 timing: 2861 swaps, 1746 us from one to the next on average, 22 us of it presenting
+    43 close (count 0)
+    44 open (count 1)
+    45 display: application bitmap, 640x480, BGRA
+    46 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    47 aglCreateContext2: context 0x09182144, 640x480
+    48 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    49 device: context freed, 0 bytes of GPU memory still in use
+    50 aglDestroyContext: context 0x09182144 (908 frames, 0 dropped, 0 binning blocks added)
+    51 timing: 908 jobs, each on average: 3913 us of CPU work before its flush, 130 us waiting for binning, 739 us for the render
+    52 timing: and in each flush 101 us building the render list, 401 us for the CPU cache before the GPU, 84 us after
+    53 timing: 908 swaps, 5554 us from one to the next on average, 22 us of it presenting
+    54 close (count 0)
+    55 open (count 1)
+    56 display: application bitmap, 640x480, BGRA
+    57 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    58 aglCreateContext2: context 0x09180424, 640x480
+    59 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    60 device: context freed, 0 bytes of GPU memory still in use
+    61 aglDestroyContext: context 0x09180424 (1892 frames, 0 dropped, 0 binning blocks added)
+    62 timing: 1892 jobs, each on average: 274 us of CPU work before its flush, 428 us waiting for binning, 1341 us for the render
+    63 timing: and in each flush 94 us building the render list, 251 us for the CPU cache before the GPU, 94 us after
+    64 timing: 1892 swaps, 2644 us from one to the next on average, 21 us of it presenting
+    65 close (count 0)
+    66 open (count 1)
+    67 display: application bitmap, 640x480, BGRA
+    68 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    69 aglCreateContext2: context 0x09180844, 640x480
+    70 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    71 device: context freed, 0 bytes of GPU memory still in use
+    72 aglDestroyContext: context 0x09180844 (291 frames, 0 dropped, 0 binning blocks added)
+    73 timing: 291 jobs, each on average: 14803 us of CPU work before its flush, 416 us waiting for binning, 1399 us for the render
+    74 timing: and in each flush 126 us building the render list, 451 us for the CPU cache before the GPU, 98 us after
+    75 timing: 291 swaps, 17494 us from one to the next on average, 23 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x09182144, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x09182144 (2072 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 2072 jobs, each on average: 273 us of CPU work before its flush, 46 us waiting for binning, 491 us for the render
+    19 timing: and in each flush 91 us building the render list, 271 us for the CPU cache before the GPU, 91 us after
+    20 timing: 2072 swaps, 2415 us from one to the next on average, 996 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x09182984, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x09182984 (1810 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 1810 jobs, each on average: 282 us of CPU work before its flush, 131 us waiting for binning, 747 us for the render
+    19 timing: and in each flush 91 us building the render list, 269 us for the CPU cache before the GPU, 88 us after
+    20 timing: 1810 swaps, 2764 us from one to the next on average, 1004 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x09187C0C, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x09187C0C (4092 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 4092 jobs, each on average: 257 us of CPU work before its flush, 26 us waiting for binning, 474 us for the render
+    19 timing: and in each flush 64 us building the render list, 229 us for the CPU cache before the GPU, 65 us after
+    20 timing: 4092 swaps, 1221 us from one to the next on average, 2 us of it presenting
+    21 close (count 0)
+    22 open (count 1)
+    23 display: application bitmap, 640x480, BGRA
+    24 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    25 aglCreateContext2: context 0x0918802C, 640x480
+    26 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    27 device: context freed, 0 bytes of GPU memory still in use
+    28 aglDestroyContext: context 0x0918802C (3178 frames, 0 dropped, 0 binning blocks added)
+    29 timing: 3178 jobs, each on average: 600 us of CPU work before its flush, 25 us waiting for binning, 467 us for the render
+    30 timing: and in each flush 71 us building the render list, 234 us for the CPU cache before the GPU, 68 us after
+    31 timing: 3178 swaps, 1573 us from one to the next on average, 1 us of it presenting
+    32 close (count 0)
+    33 open (count 1)
+    34 display: application bitmap, 640x480, BGRA
+    35 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    36 aglCreateContext2: context 0x0918C1E4, 640x480
+    37 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    38 device: context freed, 0 bytes of GPU memory still in use
+    39 aglDestroyContext: context 0x0918C1E4 (3209 frames, 0 dropped, 0 binning blocks added)
+    40 timing: 3209 jobs, each on average: 247 us of CPU work before its flush, 109 us waiting for binning, 732 us for the render
+    41 timing: and in each flush 69 us building the render list, 228 us for the CPU cache before the GPU, 67 us after
+    42 timing: 3209 swaps, 1557 us from one to the next on average, 2 us of it presenting
+    43 close (count 0)
+    44 open (count 1)
+    45 display: application bitmap, 640x480, BGRA
+    46 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    47 aglCreateContext2: context 0x0918C1E4, 640x480
+    48 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    49 device: context freed, 0 bytes of GPU memory still in use
+    50 aglDestroyContext: context 0x0918C1E4 (949 frames, 0 dropped, 0 binning blocks added)
+    51 timing: 949 jobs, each on average: 3830 us of CPU work before its flush, 111 us waiting for binning, 726 us for the render
+    52 timing: and in each flush 76 us building the render list, 372 us for the CPU cache before the GPU, 72 us after
+    53 timing: 949 swaps, 5295 us from one to the next on average, 1 us of it presenting
+    54 close (count 0)
+    55 open (count 1)
+    56 display: application bitmap, 640x480, BGRA
+    57 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    58 aglCreateContext2: context 0x0918C604, 640x480
+    59 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    60 device: context freed, 0 bytes of GPU memory still in use
+    61 aglDestroyContext: context 0x0918C604 (2053 frames, 0 dropped, 0 binning blocks added)
+    62 timing: 2053 jobs, each on average: 249 us of CPU work before its flush, 387 us waiting for binning, 1347 us for the render
+    63 timing: and in each flush 68 us building the render list, 226 us for the CPU cache before the GPU, 62 us after
+    64 timing: 2053 swaps, 2438 us from one to the next on average, 2 us of it presenting
+    65 close (count 0)
+    66 open (count 1)
+    67 display: application bitmap, 640x480, BGRA
+    68 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    69 aglCreateContext2: context 0x0918C604, 640x480
+    70 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    71 device: context freed, 0 bytes of GPU memory still in use
+    72 aglDestroyContext: context 0x0918C604 (300 frames, 0 dropped, 0 binning blocks added)
+    73 timing: 300 jobs, each on average: 14411 us of CPU work before its flush, 392 us waiting for binning, 1377 us for the render
+    74 timing: and in each flush 87 us building the render list, 440 us for the CPU cache before the GPU, 129 us after
+    75 timing: 300 swaps, 16968 us from one to the next on average, 1 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x0918D5DC, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x0918D5DC (2278 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 2278 jobs, each on average: 248 us of CPU work before its flush, 25 us waiting for binning, 473 us for the render
+    19 timing: and in each flush 67 us building the render list, 248 us for the CPU cache before the GPU, 71 us after
+    20 timing: 2278 swaps, 2197 us from one to the next on average, 962 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x091A1974, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x091A1974 (1964 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 1964 jobs, each on average: 248 us of CPU work before its flush, 116 us waiting for binning, 726 us for the render
+    19 timing: and in each flush 66 us building the render list, 247 us for the CPU cache before the GPU, 67 us after
+    20 timing: 1964 swaps, 2543 us from one to the next on average, 970 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x091A21B4, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x091A21B4 (4109 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 4109 jobs, each on average: 260 us of CPU work before its flush, 25 us waiting for binning, 470 us for the render
+    19 timing: and in each flush 68 us building the render list, 227 us for the CPU cache before the GPU, 64 us after
+    20 timing: 4109 swaps, 1215 us from one to the next on average, 2 us of it presenting
+    21 close (count 0)
+    22 open (count 1)
+    23 display: application bitmap, 640x480, BGRA
+    24 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    25 aglCreateContext2: context 0x091A25D4, 640x480
+    26 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    27 device: context freed, 0 bytes of GPU memory still in use
+    28 aglDestroyContext: context 0x091A25D4 (3218 frames, 0 dropped, 0 binning blocks added)
+    29 timing: 3218 jobs, each on average: 590 us of CPU work before its flush, 27 us waiting for binning, 470 us for the render
+    30 timing: and in each flush 66 us building the render list, 233 us for the CPU cache before the GPU, 65 us after
+    31 timing: 3218 swaps, 1553 us from one to the next on average, 2 us of it presenting
+    32 close (count 0)
+    33 open (count 1)
+    34 display: application bitmap, 640x480, BGRA
+    35 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    36 aglCreateContext2: context 0x091D2BEC, 640x480
+    37 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    38 device: context freed, 0 bytes of GPU memory still in use
+    39 aglDestroyContext: context 0x091D2BEC (3234 frames, 0 dropped, 0 binning blocks added)
+    40 timing: 3234 jobs, each on average: 245 us of CPU work before its flush, 116 us waiting for binning, 725 us for the render
+    41 timing: and in each flush 64 us building the render list, 227 us for the CPU cache before the GPU, 66 us after
+    42 timing: 3234 swaps, 1545 us from one to the next on average, 1 us of it presenting
+    43 close (count 0)
+    44 open (count 1)
+    45 display: application bitmap, 640x480, BGRA
+    46 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    47 aglCreateContext2: context 0x091D2BEC, 640x480
+    48 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    49 device: context freed, 0 bytes of GPU memory still in use
+    50 aglDestroyContext: context 0x091D2BEC (969 frames, 0 dropped, 0 binning blocks added)
+    51 timing: 969 jobs, each on average: 3709 us of CPU work before its flush, 110 us waiting for binning, 727 us for the render
+    52 timing: and in each flush 78 us building the render list, 380 us for the CPU cache before the GPU, 73 us after
+    53 timing: 969 swaps, 5183 us from one to the next on average, 2 us of it presenting
+    54 close (count 0)
+    55 open (count 1)
+    56 display: application bitmap, 640x480, BGRA
+    57 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    58 aglCreateContext2: context 0x091D300C, 640x480
+    59 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    60 device: context freed, 0 bytes of GPU memory still in use
+    61 aglDestroyContext: context 0x091D300C (2063 frames, 0 dropped, 0 binning blocks added)
+    62 timing: 2063 jobs, each on average: 246 us of CPU work before its flush, 386 us waiting for binning, 1345 us for the render
+    63 timing: and in each flush 70 us building the render list, 224 us for the CPU cache before the GPU, 65 us after
+    64 timing: 2063 swaps, 2431 us from one to the next on average, 2 us of it presenting
+    65 close (count 0)
+    66 open (count 1)
+    67 display: application bitmap, 640x480, BGRA
+    68 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    69 aglCreateContext2: context 0x091D384C, 640x480
+    70 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    71 device: context freed, 0 bytes of GPU memory still in use
+    72 aglDestroyContext: context 0x091D384C (303 frames, 0 dropped, 0 binning blocks added)
+    73 timing: 303 jobs, each on average: 14403 us of CPU work before its flush, 394 us waiting for binning, 1309 us for the render
+    74 timing: and in each flush 100 us building the render list, 440 us for the CPU cache before the GPU, 68 us after
+    75 timing: 303 swaps, 16817 us from one to the next on average, 2 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x091D384C, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x091D384C (2330 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 2330 jobs, each on average: 245 us of CPU work before its flush, 25 us waiting for binning, 476 us for the render
+    19 timing: and in each flush 66 us building the render list, 204 us for the CPU cache before the GPU, 63 us after
+    20 timing: 2330 swaps, 2148 us from one to the next on average, 972 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application window, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x091D44AC, 640x480
+    15 glLinkProgram: PROGDIR:9ce4fe2951afb8872d2570fc.v3dp (5 variants, 1136 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x091D44AC (2002 frames, 0 dropped, 0 binning blocks added)
+    18 timing: 2002 jobs, each on average: 250 us of CPU work before its flush, 111 us waiting for binning, 741 us for the render
+    19 timing: and in each flush 66 us building the render list, 203 us for the CPU cache before the GPU, 63 us after
+    20 timing: 2002 swaps, 2502 us from one to the next on average, 974 us of it presenting
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: mode 0x50031300 has pixel format 11, needs 32-bit BGRA or RGBA
+    13 aglCreateContext2: failed, error 4
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: mode 0x50031300 has pixel format 11, needs 32-bit BGRA or RGBA
+    13 aglCreateContext2: failed, error 4

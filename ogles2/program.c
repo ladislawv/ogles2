@@ -62,13 +62,13 @@ static const ULONG smooth_rdata[20] = {0, 0, 0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10,
 static const struct OGLES2Variant smooth_variants[3] = {
     {OGLES2_VARIANT_CS, 4, 1, 0, 0, 4, 0, 0, 0, {3}, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
      {0}, {0}, {0}, 0, builtin_coordinate, sizeof(builtin_coordinate), 0, 20, smooth_rtype,
-     smooth_rdata},
+     smooth_rdata, 0, 0, 0, 0, 0},
     {OGLES2_VARIANT_VS, 4, 1, 0, 0, 4, 0, 0, 0, {3, 4}, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
      {0}, {0}, {0}, 0, builtin_vertex_smooth, sizeof(builtin_vertex_smooth),
-     sizeof(builtin_coordinate), 20, smooth_rtype, smooth_rdata},
+     sizeof(builtin_coordinate), 20, smooth_rtype, smooth_rdata, 0, 0, 0, 0, 0},
     {OGLES2_VARIANT_FS, 4, 0, 0, 0, 0, 0, 0, 0, {0}, 0, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 0,
      {0}, {0}, {0}, 0, builtin_fragment_smooth, sizeof(builtin_fragment_smooth),
-     sizeof(builtin_coordinate) + sizeof(builtin_vertex_smooth), 0, 0, 0},
+     sizeof(builtin_coordinate) + sizeof(builtin_vertex_smooth), 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
 static const struct OGLES2Image builtin_smooth = {
@@ -186,7 +186,9 @@ static void unlink_program(struct OGLES2Context *ctx, struct OGLES2Program *p)
     for (k = 0; k < 2; k++) {
         if (p->cbuf[k])
             FreeVec(p->cbuf[k]);
-        p->cbuf[k] = 0;
+        if (p->cbuf_le[k])
+            FreeVec(p->cbuf_le[k]);
+        p->cbuf[k] = p->cbuf_le[k] = 0;
     }
     if (p->loc_uniform)
         FreeVec(p->loc_uniform);
@@ -195,9 +197,21 @@ static void unlink_program(struct OGLES2Context *ctx, struct OGLES2Program *p)
     p->loc_uniform = p->loc_element = 0;
     p->sampler_unit = 0;
     p->nlocations = 0;
+    if (p->rec_tmpl)
+        FreeVec(p->rec_tmpl);
+    p->rec_tmpl = 0;
+    p->var_ok = FALSE;
+    p->nsamplers = 0xff;
     p->image = 0; /* images belong to the context's cache */
     p->linked = GL_FALSE;
     (void)ctx;
+}
+
+void ogles2_cbuf_set(struct OGLES2Program *p, int stage, ULONG at, ULONG w)
+{
+    p->cbuf_ver[stage]++; /* draw.c's kept uniform streams are made again */
+    p->cbuf[stage][at] = w;
+    p->cbuf_le[stage][at] = (w >> 24) | ((w >> 8) & 0xff00UL) | ((w << 8) & 0xff0000UL) | (w << 24);
 }
 
 static void set_log(struct OGLES2Program *p, const char *a, const char *b)
@@ -336,8 +350,9 @@ void ogles2_glShaderSource(struct OGLES2Context *ctx, GLuint shader, GLsizei cou
 }
 
 static void shader_record_path(char *path, const struct OGLES2Shader *s);
-static BOOL read_record(const char *path, char **log);
+static int read_record(const char *path, ULONG compiler, char **log);
 static void write_record(const char *path, const char *log);
+static void write_fail_record(const char *path, ULONG compiler, const char *log);
 static char *dup_text(const char *t, ULONG n);
 
 /* With the on-target compiler (plan 8.4) a shader is compiled here, for
@@ -349,6 +364,7 @@ void ogles2_glCompileShader(struct OGLES2Context *ctx, GLuint shader)
 {
     struct OGLES2Shader *s;
     char path[96], *log;
+    ULONG compiler;
     int rc;
     if (!ogles2_context_valid(ctx))
         return;
@@ -360,13 +376,17 @@ void ogles2_glCompileShader(struct OGLES2Context *ctx, GLuint shader)
     s->compiled = GL_FALSE;
     if (!s->source)
         return;
-    if (!ogles2_compiler_installed()) {
+    if (!(compiler = ogles2_compiler_id())) {
         s->compiled = GL_TRUE;
         return;
     }
     shader_record_path(path, s);
-    if (read_record(path, &s->info_log)) {
-        s->compiled = GL_TRUE;
+    /* A record: compiled before, or failed with this compiler (gl4es tries
+     * shaders for optional features at every start that fail by design: the
+     * compiler need not be started for them, about a second). */
+    rc = read_record(path, compiler, &s->info_log);
+    if (rc >= 0) {
+        s->compiled = rc ? GL_TRUE : GL_FALSE;
         return;
     }
     if (!(log = AllocVec(4096, MEMF_ANY | MEMF_CLEAR))) {
@@ -382,6 +402,8 @@ void ogles2_glCompileShader(struct OGLES2Context *ctx, GLuint shader)
             s->info_log = dup_text(log, str_len(log));
         if (rc)
             write_record(path, log);
+        else
+            write_fail_record(path, compiler, log);
     }
     FreeVec(log);
 }
@@ -616,10 +638,14 @@ static UBYTE *read_file(const char *path, ULONG *len)
 }
 
 /* ---- shader records (plan 8.4): <24 hex digits>.v3ds in the disk cache,
- * one per shader the compiler accepted, holding its info log. The hash is
- * BLAKE3 over the shader's stage and source, as for a one-shader program;
- * the first line tags the file (a record with no messages is not empty). */
+ * one per shader the compiler accepted, holding its info log, or refused,
+ * holding its errors. The hash is BLAKE3 over the shader's stage and
+ * source, as for a one-shader program; the first line tags the file (a
+ * record with no messages is not empty): "v3ds 1", or "v3ds 0 <the
+ * compiler's id, 8 hex digits>" (ogles2_compiler_id: another compiler
+ * tries the shader again). */
 #define RECORD_TAG "v3ds 1\n"
+#define FAIL_TAG "v3ds 0 "
 
 static void shader_record_path(char *path, const struct OGLES2Shader *s)
 {
@@ -655,15 +681,52 @@ static char *dup_text(const char *t, ULONG n)
     return d;
 }
 
-static BOOL read_record(const char *path, char **log)
+static void hex8(char *d, ULONG x)
 {
-    ULONG len = 0, tag = str_len(RECORD_TAG);
+    static const char digits[] = "0123456789abcdef";
+    int k;
+    for (k = 7; k >= 0; k--, x >>= 4)
+        d[k] = digits[x & 15];
+    d[8] = 0;
+}
+
+/* 1: compiled (its log in *log), 0: refused by `compiler` (its errors), -1:
+ * no record, or one of another compiler's refusals. */
+static int read_record(const char *path, ULONG compiler, char **log)
+{
+    ULONG len = 0, tag = str_len(RECORD_TAG), ftag = str_len(FAIL_TAG) + 9;
     UBYTE *file = read_file(path, &len);
-    BOOL ok = file && len >= tag && !memcmp(file, RECORD_TAG, tag);
-    *log = ok && len > tag ? dup_text((const char *)file + tag, len - tag) : 0;
-    if (file)
-        FreeVec(file);
-    return ok;
+    char id[12];
+    int rc = -1;
+    *log = 0;
+    if (!file)
+        return -1;
+    hex8(id, compiler);
+    id[8] = '\n';
+    if (len >= tag && !memcmp(file, RECORD_TAG, tag)) {
+        rc = 1;
+        *log = len > tag ? dup_text((const char *)file + tag, len - tag) : 0;
+    } else if (len >= ftag && !memcmp(file, FAIL_TAG, ftag - 9) && !memcmp(file + ftag - 9, id, 9)) {
+        rc = 0;
+        *log = len > ftag ? dup_text((const char *)file + ftag, len - ftag) : 0;
+    }
+    FreeVec(file);
+    return rc;
+}
+
+static void write_fail_record(const char *path, ULONG compiler, const char *log)
+{
+    BPTR fh = Open((STRPTR)path, MODE_NEWFILE);
+    char id[12];
+    if (!fh)
+        return;
+    hex8(id, compiler);
+    FPuts(fh, (STRPTR)FAIL_TAG);
+    FPuts(fh, (STRPTR)id);
+    FPuts(fh, (STRPTR) "\n");
+    if (log && log[0])
+        FPuts(fh, (STRPTR)log);
+    Close(fh);
 }
 
 static void write_record(const char *path, const char *log)
@@ -680,13 +743,14 @@ static void write_record(const char *path, const char *log)
 static void mark_compiled(const struct OGLES2Shader *s)
 {
     char path[96], *log;
+    int rc;
     shader_record_path(path, s);
-    if (read_record(path, &log)) {
-        if (log)
-            FreeVec(log);
+    rc = read_record(path, ogles2_compiler_id(), &log);
+    if (log)
+        FreeVec(log);
+    if (rc == 1)
         return;
-    }
-    write_record(path, s->info_log);
+    write_record(path, s->info_log); /* also over a refusal: it linked after all */
 }
 
 /* Appends a program without a binary to T:ogles2_missing_shaders.txt, for
@@ -799,6 +863,11 @@ static BOOL bind_image(struct OGLES2Program *p, const struct OGLES2Image *im)
     int a, i, k, n;
     UWORD u, nloc = 0;
 
+    p->var_ok = FALSE;     /* draw.c's per-program caches start empty */
+    p->us_var[0] = p->us_var[1] = 0;
+    p->nsamplers = 0xff;
+    p->nslots = 0xff;
+
     /* Attribute locations: glBindAttribLocation first, then the lowest free
      * run (a matrix takes one location per column). */
     for (a = 0; a < im->nattribs; a++) {
@@ -833,9 +902,12 @@ static BOOL bind_image(struct OGLES2Program *p, const struct OGLES2Image *im)
             nloc += im->uniforms[u].array ? im->uniforms[u].array : 1;
     p->loc_uniform = AllocVec(nloc * 4 + 4, MEMF_ANY);
     p->sampler_unit = AllocVec(im->nuniforms + 1, MEMF_ANY | MEMF_CLEAR);
-    for (k = 0; k < 2; k++)
+    for (k = 0; k < 2; k++) {
         p->cbuf[k] = AllocVec(im->cbuf_words[k] * 4 + 4, MEMF_ANY | MEMF_CLEAR);
-    if (!p->loc_uniform || !p->sampler_unit || !p->cbuf[0] || !p->cbuf[1]) {
+        p->cbuf_le[k] = AllocVec(im->cbuf_words[k] * 4 + 4, MEMF_ANY | MEMF_CLEAR);
+    }
+    if (!p->loc_uniform || !p->sampler_unit || !p->cbuf[0] || !p->cbuf[1] || !p->cbuf_le[0] ||
+        !p->cbuf_le[1]) {
         set_log(p, "out of memory", 0);
         return FALSE;
     }
@@ -854,8 +926,11 @@ static BOOL bind_image(struct OGLES2Program *p, const struct OGLES2Image *im)
     }
     p->nlocations = nloc;
     for (k = 0; k < 2; k++)
-        if (im->cbuf_template[k])
-            memcpy(p->cbuf[k], im->cbuf_template[k], im->cbuf_words[k] * 4);
+        if (im->cbuf_template[k]) {
+            UWORD w;
+            for (w = 0; w < im->cbuf_words[k]; w++)
+                ogles2_cbuf_set(p, k, w, im->cbuf_template[k][w]);
+        }
     p->image = im;
     return TRUE;
 }
@@ -1289,7 +1364,6 @@ static void set_uniform(struct OGLES2Context *ctx, GLint location, GLsizei count
     }
     for (pl = 0; pl < u->nplaces; pl++) {
         const struct OGLES2Place *place = &u->places[pl];
-        ULONG *cb = p->cbuf[place->stage];
         for (i = 0, e = first; i < count; i++, e++)
             for (c = 0; c < cols; c++)
                 for (k = 0; k < comps; k++) {
@@ -1305,7 +1379,7 @@ static void set_uniform(struct OGLES2Context *ctx, GLint location, GLsizei count
                         w = fbits(fv[src]);
                     }
                     if (at < p->image->cbuf_words[place->stage])
-                        cb[at] = w;
+                        ogles2_cbuf_set(p, place->stage, at, w);
                 }
     }
 }

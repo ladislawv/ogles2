@@ -15,14 +15,14 @@ not in git) or from AMICTL_HOST / AMICTL_PORT / AMICTL_TOKEN.
   amictl getenv NAME | setenv NAME VALUE | unsetenv NAME
   amictl up [SECONDS]              wait until the station answers (after a reboot)
   amictl reboot | restart NEWBINARY | quit
-  amictl runpkg PACKAGEDIR [-t SECONDS] [--shots SECONDS]
+  amictl runpkg PACKAGEDIR [-t SECONDS] [--shots SECONDS] [-a "KEY=VALUE ..."]
                                    upload, run its Run-* script, fetch results/;
                                    --shots: a screenshot every SECONDS meanwhile
   amictl gentoken FILE             write a new random token
 
 MIT licence (tools/amictl/LICENSE).
 """
-import datetime, json, os, secrets, socket, struct, sys, time, zlib
+import datetime, json, os, re, secrets, socket, struct, sys, time, zlib
 
 MAGIC = b"AMC1"
 CMD = {"HELLO": 1, "INFO": 2, "PUT": 3, "GET": 4, "LIST": 5, "DELETE": 6, "MAKEDIR": 7,
@@ -235,10 +235,14 @@ def run_with_shots(st, command, directory, timeout, every, shotdir):
             return (rc if done else None), out, True, n
 
 
-def runpkg(st, pkgdir, timeout, shots=0):
+def runpkg(st, pkgdir, timeout, shots=0, script_args=""):
     """Upload a package (tests/a1200/<name>/ built into tests/a1200/out/ogles2-<name>/),
     run its Run-* script, fetch results/ into tests/a1200/results/<package>-<time>/.
-    With shots, a screenshot about every `shots` seconds goes into shots/ there."""
+    With shots, a screenshot about every `shots` seconds goes into shots/ there.
+    script_args (KEY=VALUE words) go to the script's .key line."""
+    if script_args and not re.fullmatch(r"[A-Za-z0-9_]+=[A-Za-z0-9_.]+( [A-Za-z0-9_]+=[A-Za-z0-9_.]+)*",
+                                        script_args):
+        raise SystemExit("amictl: script arguments must be KEY=VALUE words: %r" % script_args)
     pkgdir = os.path.abspath(pkgdir)
     name = os.path.basename(pkgdir.rstrip("/\\"))
     scripts = [f for f in os.listdir(pkgdir) if f.startswith("Run-")]
@@ -262,11 +266,12 @@ def runpkg(st, pkgdir, timeout, shots=0):
                         "%s-%s" % (name, datetime.datetime.now().strftime("%Y%m%d-%H%M%S")))
     t0 = time.time()
     if shots:
-        rc, out, timed_out, n = run_with_shots(st, "Execute " + scripts[0], remote, timeout,
+        rc, out, timed_out, n = run_with_shots(st, ("Execute %s %s" % (scripts[0], script_args)).strip(),
+                                               remote, timeout,
                                                shots, os.path.join(dest, "shots"))
         print("%d screenshots -> %s" % (n, os.path.join(dest, "shots")))
     else:
-        rc, out, timed_out = st.run("Execute " + scripts[0], remote, timeout)
+        rc, out, timed_out = st.run(("Execute %s %s" % (scripts[0], script_args)).strip(), remote, timeout)
     print(out.decode("latin-1", "replace"), end="")
     print("%s: rc=%s%s, %.1f s" % (scripts[0], rc, " (TIMED OUT)" if timed_out else "",
                                    time.time() - t0))
@@ -358,7 +363,8 @@ def main(argv):
             if "-t" in args:
                 timeout = float(args[args.index("-t") + 1])
             shots = float(args[args.index("--shots") + 1]) if "--shots" in args else 0
-            rc = runpkg(st, args[0], timeout, shots)
+            script_args = args[args.index("-a") + 1] if "-a" in args else ""
+            rc = runpkg(st, args[0], timeout, shots, script_args)
             return rc if isinstance(rc, int) and 0 <= rc < 256 else 1
         else:
             print("amictl: unknown command %s" % cmd, file=sys.stderr)

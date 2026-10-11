@@ -72,6 +72,17 @@ static void put_bounded(register UBYTE c __asm("d0"), register struct fmt_buf *b
 
 /* RawDoFmt into buf (size bytes with the NUL); 32-bit arguments as for
  * ogles2_log. Returns the length written. */
+/* Probe T: one line per call (n < 0: a step, no count). */
+void ogles2_trace(struct OGLES2Context *ctx, const char *what, LONG n, ULONG first)
+{
+    if (!(ctx->probe & OGLES2_PROBE_TRACE))
+        return;
+    if (n < 0)
+        ogles2_log("trace: %s", (ULONG)what);
+    else
+        ogles2_log("trace: %s #%lu: %ld names from %lu", (ULONG)what, ++ctx->n_deletes, n, first);
+}
+
 ULONG ogles2_format(char *buf, ULONG size, const char *fmt, ...)
 {
     struct fmt_buf b;

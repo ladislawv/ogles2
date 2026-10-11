@@ -53,7 +53,7 @@ CLIENT_OBJ := $(patsubst %.c,$(B)/obj/%.o,$(CLIENT_SRC)) $(B)/obj/client/lvo.o \
 
 .PHONY: all gen clean vbcc
 all: $(B)/fpcheck.ok $(B)/libv3dcore.a $(B)/ogles2.library $(B)/libogles2.a $(B)/tests/abi_layout $(B)/tests/smoke \
-     $(B)/tests/abi_probe $(B)/tests/m1_clear $(B)/tests/m1_probe $(B)/tests/m1_draw $(B)/tests/m1_hwprobe $(B)/tests/m1_soak $(B)/tests/m2_link $(B)/tests/m2_texture $(B)/tests/m2_elements $(B)/tests/m2_buffers $(B)/tests/m4_stress $(B)/tests/m4_depth $(B)/tests/m4_setbitmap $(B)/tests/gears_gles2 $(B)/tests/m5_fbo \
+     $(B)/tests/abi_probe $(B)/tests/m1_clear $(B)/tests/m1_probe $(B)/tests/m1_draw $(B)/tests/m1_hwprobe $(B)/tests/m1_soak $(B)/tests/m2_link $(B)/tests/m2_texture $(B)/tests/m2_elements $(B)/tests/m2_buffers $(B)/tests/m4_stress $(B)/tests/m4_depth $(B)/tests/m4_setbitmap $(B)/tests/gears_gles2 $(B)/tests/cachetime $(B)/tests/emuspeed $(B)/tests/m5_fbo \
      $(B)/cmd/OGLES2Log $(B)/amictl/amictld
 
 # ---- generated code (plan section 6.6). Re-run when the inputs or the set of
@@ -159,6 +159,12 @@ $(B)/tests/m4_stress: tests/m4_stress/m4_stress.c $(B)/libogles2.a
 $(B)/tests/m4_depth: tests/m4_depth/m4_depth.c $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/cachetime: tests/perf/cachetime.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -fno-builtin $< -o $@
+$(B)/tests/emuspeed: tests/perf/emuspeed.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $< -o $@
 $(B)/tests/m5_fbo: tests/m5_fbo/m5_fbo.c $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
@@ -169,6 +175,15 @@ $(B)/tests/gears_gles2: tests/perf/gears_gles2.c tests/perf/perf_gears.h tests/p
                        tests/common/lit_shaders.h $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -fno-builtin $(INC) $< -L$(B) -logles2 -lm881 -o $@
+
+# ---- gl4es (desktop OpenGL on GLES2, M6): ports/gl4es builds libgl4es.a from
+# gl4es's sources (cloned into GL4ES_SRC); gears_gl4es is gears_mgl.c on it.
+GL4ES_SRC ?= $(HOME)/gl4es
+.PHONY: gl4es
+gl4es: $(B)/libogles2.a $(GEN_STAMP)
+	B=$(B) GL4ES_SRC=$(GL4ES_SRC) bash ports/gl4es/build.sh
+	@mkdir -p $(B)/tests
+	$(CC) $(CFLAGS) -fno-builtin -DGEARS_GL4ES -I$(GL4ES_SRC)/include -Iports/gl4es/include $(INC) 	    tests/perf/gears_mgl.c -L$(B)/gl4es -L$(B) -lgl4es -logles2 -lm881 -o $(B)/tests/gears_gl4es
 
 # ---- the MiniGL side of the speed comparison (tests/perf): needs the SDK
 # directory of PiStorm3D 29.1 (Aminet util/libs/PiStorm3D.lha, SDK/).

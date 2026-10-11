@@ -16,10 +16,56 @@ static BOOL has_surface(struct OGLES2Context *ctx)
 
 void ogles2_aglSwapBuffers(struct OGLES2Context *ctx)
 {
+    ULONG t0, t1;
     if (!has_surface(ctx))
         return;
     ogles2_job_flush(ctx, TRUE);
+    t0 = ogles2_clock_us();
     ogles2_display_present(&ctx->display);
+    t1 = ogles2_clock_us();
+    ctx->sum_present += (double)(ULONG)(t1 - t0);
+    if (ctx->n_swaps++)
+        ctx->sum_frame += (double)(ULONG)(t1 - ctx->t_last_swap);
+    ctx->t_last_swap = t1;
+    /* Probe P: the last 256 frames, to see a program slow down over time. */
+    if ((ctx->probe & OGLES2_PROBE_PERIODIC) && !(ctx->n_swaps & 255)) {
+        ULONG jobs = ctx->n_jobs - ctx->p_jobs;
+        if (!jobs)
+            jobs = 1;
+        ogles2_log("periodic: frames to %lu: %lu us a frame, %lu jobs; per job %lu us of CPU work, %lu us "
+                   "render list, %lu us cache, %lu us render wait; %lu textures renamed; %lu bytes of GPU memory",
+                   ctx->n_swaps, (ULONG)((ctx->sum_frame - ctx->p_frame) / 256), jobs,
+                   (ULONG)((ctx->sum_build - ctx->p_build) / jobs), (ULONG)((ctx->sum_list - ctx->p_list) / jobs),
+                   (ULONG)((ctx->sum_pre - ctx->p_pre) / jobs), (ULONG)((ctx->sum_render - ctx->p_render) / jobs),
+                   ctx->n_renames - ctx->p_renames, ogles2_device_bytes());
+        ogles2_log("periodic: per frame %lu draws, %lu us in them, %lu us in glBuffer(Sub)Data, %lu us in "
+                   "glTex(Sub)Image2D",
+                   (ctx->n_draws - ctx->p_draws) / 256, (ULONG)((ctx->sum_draw - ctx->p_draw) / 256),
+                   (ULONG)((ctx->sum_bufdata - ctx->p_bufdata) / 256),
+                   (ULONG)((ctx->sum_teximage - ctx->p_teximage) / 256));
+        ogles2_log("periodic: per frame in draws: %lu us checks, %lu shaders, %lu textures, %lu uniforms, "
+                   "%lu vertex data, %lu record, %lu indices, %lu binning list",
+                   (ULONG)((ctx->stage[0] - ctx->p_stage[0]) / 256), (ULONG)((ctx->stage[1] - ctx->p_stage[1]) / 256),
+                   (ULONG)((ctx->stage[2] - ctx->p_stage[2]) / 256), (ULONG)((ctx->stage[3] - ctx->p_stage[3]) / 256),
+                   (ULONG)((ctx->stage[4] - ctx->p_stage[4]) / 256), (ULONG)((ctx->stage[5] - ctx->p_stage[5]) / 256),
+                   (ULONG)((ctx->stage[6] - ctx->p_stage[6]) / 256), (ULONG)((ctx->stage[7] - ctx->p_stage[7]) / 256));
+        {
+            int k;
+            for (k = 0; k < 8; k++)
+                ctx->p_stage[k] = ctx->stage[k];
+        }
+        ctx->p_draws = ctx->n_draws;
+        ctx->p_draw = ctx->sum_draw;
+        ctx->p_bufdata = ctx->sum_bufdata;
+        ctx->p_teximage = ctx->sum_teximage;
+        ctx->p_frame = ctx->sum_frame;
+        ctx->p_build = ctx->sum_build;
+        ctx->p_list = ctx->sum_list;
+        ctx->p_pre = ctx->sum_pre;
+        ctx->p_render = ctx->sum_render;
+        ctx->p_jobs = ctx->n_jobs;
+        ctx->p_renames = ctx->n_renames;
+    }
 }
 
 void ogles2_glFlush(struct OGLES2Context *ctx)
@@ -30,9 +76,10 @@ void ogles2_glFlush(struct OGLES2Context *ctx)
 
 void ogles2_glFinish(struct OGLES2Context *ctx)
 {
-    /* Phase 1 jobs finish before ogles2_job_flush returns (plan 7.1). */
-    if (has_surface(ctx))
+    if (has_surface(ctx)) {
         ogles2_job_flush(ctx, FALSE);
+        ogles2_job_finish(ctx); /* a flush may leave its render running (M6) */
+    }
 }
 
 /* RGBA / UNSIGNED_BYTE, which is also the implementation's read format
@@ -71,6 +118,7 @@ void ogles2_glReadPixels(struct OGLES2Context *ctx, GLint x, GLint y, GLsizei wi
     if (x0 >= x1 || y0 >= y1)
         return;
     ogles2_job_flush(ctx, FALSE);
+    ogles2_job_finish(ctx);
     stride = ((ULONG)width * 4 + ctx->pack_alignment - 1) & ~(ULONG)(ctx->pack_alignment - 1);
     if (ctx->draw_fb) {
         if (!ogles2_fbo_read(ctx, (int)x0, (int)y0, (int)(x1 - x0), (int)(y1 - y0),
@@ -149,6 +197,7 @@ void ogles2_glViewport(struct OGLES2Context *ctx, GLint x, GLint y, GLsizei widt
     ctx->viewport[1] = y;
     ctx->viewport[2] = width > OGLES2_MAX_VIEWPORT ? OGLES2_MAX_VIEWPORT : width;
     ctx->viewport[3] = height > OGLES2_MAX_VIEWPORT ? OGLES2_MAX_VIEWPORT : height;
+    ctx->state_ver++;
 }
 
 void ogles2_glScissor(struct OGLES2Context *ctx, GLint x, GLint y, GLsizei width, GLsizei height)
@@ -163,6 +212,7 @@ void ogles2_glScissor(struct OGLES2Context *ctx, GLint x, GLint y, GLsizei width
     ctx->scissor[1] = y;
     ctx->scissor[2] = width;
     ctx->scissor[3] = height;
+    ctx->state_ver++;
 }
 
 /* Retarget a bitmap context (OGLES2_CCT_BITMAP): the open frame is rendered
@@ -177,6 +227,7 @@ void ogles2_aglSetBitmap(struct OGLES2Context *ctx, struct BitMap *bitmap)
     if (bitmap == ctx->display.bitmap)
         return;
     ogles2_job_flush(ctx, TRUE);
+    ogles2_job_finish(ctx);
     old = ctx->display;
     if (!ogles2_display_set_bitmap(&ctx->display, bitmap))
         return;

@@ -16,6 +16,15 @@
  *    EGL leaves them undefined after a swap). This replaces PiStorm3D's
  *    depth_persist_seen heuristic and its one possibly corrupted frame.
  *  - No intermediate passes yet: nothing draws in the first M1 step.
+ *  - M6 overlap: a flush may return once the render is submitted, so the
+ *    CPU builds the next job while the GPU renders (PiStorm3D's deferred
+ *    wait): an object's job, and a job on a fullscreen screen of our own,
+ *    which shows what the GPU writes. The job keeps the GPU lock (not the
+ *    screen's bitmap lock: see may_defer) until ogles2_job_finish: at the next
+ *    flush, or before the CPU reads what it writes or changes what it
+ *    reads (texture.c, buffer.c, fbo.c, frame.c). Only while one context
+ *    exists: the lock is polled, and a second program would wait out the
+ *    timeout (plan 7.1, phase 2 needs a shared submission component).
  *  - A job renders into the default framebuffer or into a framebuffer
  *    object (M5, plan 7.7; fbo.c): ctx->job_fb. Drawing into another
  *    framebuffer renders the open job first (jobs v1). An object's job loads
@@ -23,6 +32,7 @@
  *    and stencil every time, without the Y flip, with tile pools of its own
  *    when it has more tiles than the default framebuffer.
  */
+#include <exec/execbase.h>
 #include <proto/exec.h>
 #include "ogles2_internal.h"
 #include "v3d_context.h"
@@ -178,6 +188,7 @@ void ogles2_job_begin(struct OGLES2Context *ctx)
         }
     }
     ctx->job_fb = ctx->draw_fb;
+    ctx->t_job_begin = ogles2_clock_us();
     ctx->job_discard = 0;
     ctx->job_noload = ctx->draw_fb ? ogles2_fbo_take_discarded(ctx->draw_fb) : 0;
     v->frame.tilesX = (w + 63) / 64;
@@ -516,19 +527,88 @@ static void build_render_fbo(struct OGLES2Context *ctx, const struct OGLES2Targe
     DoCommand(v, v3d_OP_END_OF_RENDERING);
 }
 
-/* The colour image around the GPU's write (the CPU reads it back later:
- * texture.c's sync, glReadPixels): cleaned before, invalidated after. Depth
- * and stencil images are never read by the CPU. */
+/* The colour image after the GPU's write (the CPU reads it back later:
+ * texture.c's sync, glReadPixels): invalidated. It was cleaned before the
+ * render with everything else (clean_all). Depth and stencil images are
+ * never read by the CPU. */
 static void target_dma(const struct OGLES2Target *tg, BOOL after)
 {
     ULONG len;
-    if (!tg->has_color)
+    if (!tg->has_color || !after)
         return;
     len = tg->color.bytes;
-    if (after)
-        CachePostDMA((APTR)tg->color.addr, &len, 0);
-    else
-        CachePreDMA((APTR)tg->color.addr, &len, 0);
+    CachePostDMA((APTR)tg->color.addr, &len, 0);
+}
+
+/* Before the GPU reads anything the CPU wrote since the last flush (the
+ * control lists, the state buffer, buffer copies, the render target): one
+ * clean of the whole data cache. On Emu68 every exec cache call cleans the
+ * whole cache whatever its range, about 41 microseconds each
+ * (tests/perf/cachetime.c), and the flush made five of them (M6). Data
+ * only: clearing the instruction cache would make Emu68 drop its
+ * translated code. */
+static void clean_all(void)
+{
+    CacheClearE(0, ~0UL, CACRF_ClearD); /* length ~0: the whole cache */
+}
+
+/* After a render: a GPU that did not finish reset, the CPU cache over what
+ * it wrote, the locks released, the retire list, the colour image marked. */
+static void after_render(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, const struct OGLES2Target *tg,
+                         v3d_wait_result wr)
+{
+    V3DContext *v = ctx->v3d;
+    ULONG t0;
+    if (wr != v3d_wait_result_success)
+        ogles2_device_reset("a render job it did not finish");
+    t0 = ogles2_clock_us();
+    if (fb) {
+        target_dma(tg, TRUE);
+    } else {
+        ogles2_display_dma(&ctx->display, TRUE);
+        ogles2_display_unlock(&ctx->display);
+    }
+    ctx->sum_post += (double)(ULONG)(ogles2_clock_us() - t0);
+    v3d_gpu_unlock(ogles2_device_gpu_lock());
+    if (wr == v3d_wait_result_success) {
+        v3d_frame_retire(ogles2_device(), &v->frame);
+        if (fb)
+            ogles2_fbo_rendered(ctx, fb);
+    } else {
+        ogles2_log("job: render %s", (ULONG)(wr == v3d_wait_result_timed_out ? "timed out" : "failed"));
+        if (!fb)
+            ctx->zs_saved = FALSE;
+    }
+}
+
+void ogles2_job_finish(struct OGLES2Context *ctx)
+{
+    v3d_wait_result wr;
+    ULONG t0;
+    if (!ctx->pend)
+        return;
+    ctx->pend = FALSE;
+    t0 = ogles2_clock_us();
+    wr = v3d_wait_render_timeout(ctx->pend_frame);
+    ctx->sum_render += (double)(ULONG)(ogles2_clock_us() - t0);
+    after_render(ctx, ctx->pend_fb, &ctx->pend_tg, wr);
+}
+
+BOOL ogles2_job_uses(struct OGLES2Context *ctx, ULONG serial)
+{
+    return (ctx->v3d && ctx->v3d->frame_active && serial == ctx->job_serial) ||
+           (ctx->pend && serial == ctx->pend_serial);
+}
+
+/* A flush may leave its render running (see the top): a framebuffer
+ * object's job, or one on a screen of our own. Never one whose bitmap lock
+ * someone else may need: an application's bitmap can be drawn into by
+ * another task, and the window mode's copy needs the finished frame. */
+static BOOL may_defer(struct OGLES2Context *ctx, BOOL object)
+{
+    if (OGLES2LibBase->contexts != 1)
+        return FALSE;
+    return object || ctx->display.own_screen;
 }
 
 static BOOL any_overflow(V3DContext *v)
@@ -554,12 +634,18 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
     ULONG ts = (ULONG)v->tile_state_mem.hostptr;
 
     struct zs_save *store_zs = 0;
+    ULONG t0, t1, t2, t3;
 
+    ogles2_job_finish(ctx); /* the previous render, if it still runs */
+    s = v->build_slot;
     if (!v->frame_active) {
         if (frame_end)
             ctx->zs_saved = FALSE;
         return TRUE;
     }
+    t0 = t1 = t2 = t3 = ogles2_clock_us();
+    ctx->sum_build += (double)(ULONG)(t0 - ctx->t_job_begin);
+    ctx->n_jobs++;
     if (!fb && !frame_end && v->draw_state_configured &&
         !(ctx->job_discard & (OGLES2_DISCARD_DEPTH | OGLES2_DISCARD_STENCIL)))
         store_zs = zs_get(ctx); /* NULL without depth and stencil, or memory */
@@ -600,12 +686,9 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
         drop = "a control list overflowed";
         goto out;
     }
-    if (fb)
-        target_dma(&tg, FALSE);
-    else
-        ogles2_display_dma(&ctx->display, FALSE);
-
-    v3d_context_flush_for_dma(dev, v);
+    t1 = ogles2_clock_us();
+    ctx->sum_list += (double)(ULONG)(t1 - t0);
+    clean_all(); /* the target's lines and v3d_context_flush_for_dma's buffers */
     v3d_invalidate_caches();
     if (ctx->probe & OGLES2_PROBE_SEMAPHORE) {
         /* Probe S: both lists go to the GPU at once; the render list waits
@@ -624,12 +707,17 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
         goto waited;
     }
     {
-        v3d_u8 last = v3d_submit_binning(dev, &v->frame, (v3d_address)(ULONG)v->binning_mem[s].hostptr,
-                                         (v3d_address)((ULONG)v->binning_buf[s].start +
-                                                       v->binning_buf[s].used),
-                                         (v3d_address)ta, (v3d_u32)ta_size, (v3d_address)ts);
+        v3d_u8 last;
+        t2 = ogles2_clock_us();
+        ctx->sum_pre += (double)(ULONG)(t2 - t1);
+        t1 = t2;
+        last = v3d_submit_binning(dev, &v->frame, (v3d_address)(ULONG)v->binning_mem[s].hostptr,
+                                  (v3d_address)((ULONG)v->binning_buf[s].start + v->binning_buf[s].used),
+                                  (v3d_address)ta, (v3d_u32)ta_size, (v3d_address)ts);
         wb = v3d_wait_binning_timeout(dev, &v->frame, last);
+        t2 = ogles2_clock_us();
     }
+    ctx->sum_bin += (double)(ULONG)(t2 - t1);
     if (wb == v3d_wait_result_success) {
         v3d_u8 frame_no;
         v3d_invalidate_caches();
@@ -637,21 +725,51 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
                                      (v3d_address)((ULONG)v->render_buf[s].start +
                                                    v->render_buf[s].used));
         v3d_frame_render_submitted(&v->frame);
+        if (may_defer(ctx, fb != 0)) {
+            /* The render runs on; ogles2_job_finish waits for it. The
+             * screen's bitmap is unlocked now: it is on display, so it does
+             * not move, and the lock held across the program's next frame
+             * blocked input.device (P96's pointer is drawn into the screen
+             * bitmap): ioquake3's input handler removal hung on it at exit. */
+            if (!fb)
+                ogles2_display_unlock(&ctx->display);
+            ctx->pend = TRUE;
+            ctx->pend_frame = frame_no;
+            ctx->pend_serial = ctx->job_serial;
+            ctx->pend_fb = fb;
+            if (fb)
+                ctx->pend_tg = tg;
+            ctx->frames++;
+            v->build_slot = 1 - v->build_slot;
+            g_v3d_cl_generation++;
+            v->frame_active = FALSE;
+            if (fb) {
+                if (frame_end)
+                    ctx->zs_saved = FALSE;
+            } else {
+                ctx->zs_saved = store_zs != 0; /* undone if the render fails */
+            }
+            return TRUE;
+        }
         wr = v3d_wait_render_timeout(frame_no);
+        t3 = ogles2_clock_us();
+        ctx->sum_render += (double)(ULONG)(t3 - t2);
     }
 waited:
-    /* A job the GPU did not finish leaves it busy or stopped: reset it
-     * before anyone submits again (plan 9 M4). */
-    if (wb != v3d_wait_result_success || wr != v3d_wait_result_success)
-        ogles2_device_reset(wb != v3d_wait_result_success ? "a binning job it did not finish"
-                                                          : "a render job it did not finish");
-    if (fb) {
-        target_dma(&tg, TRUE);
+    if (wb == v3d_wait_result_success) {
+        after_render(ctx, fb, &tg, wr);
     } else {
-        ogles2_display_dma(&ctx->display, TRUE);
-        ogles2_display_unlock(&ctx->display);
+        /* A job the GPU did not finish leaves it busy or stopped: reset it
+         * before anyone submits again (plan 9 M4). */
+        ogles2_device_reset("a binning job it did not finish");
+        if (fb) {
+            target_dma(&tg, TRUE);
+        } else {
+            ogles2_display_dma(&ctx->display, TRUE);
+            ogles2_display_unlock(&ctx->display);
+        }
+        v3d_gpu_unlock(gpu);
     }
-    v3d_gpu_unlock(gpu);
 
     if (wb != v3d_wait_result_success) {
         drop = wb == v3d_wait_result_timed_out ? "binning timed out" : "binning failed";
@@ -663,10 +781,6 @@ waited:
                    (ULONG)v->binning_buf[s].start + v->binning_buf[s].used, (ULONG)v->binning_buf[s].start,
                    (LONG)v->frame.job_spills);
     }
-    else if (wr != v3d_wait_result_success)
-        ogles2_log("job: render %s", (ULONG)(wr == v3d_wait_result_timed_out ? "timed out" : "failed"));
-    else
-        v3d_frame_retire(dev, &v->frame); /* only after a successful wait */
     ctx->frames++;
     v->build_slot = 1 - v->build_slot;
     g_v3d_cl_generation++;
@@ -678,8 +792,6 @@ out:
          * next job, unless the frame ends here. */
         if (frame_end)
             ctx->zs_saved = FALSE;
-        if (!drop && wr == v3d_wait_result_success)
-            ogles2_fbo_rendered(ctx, fb);
     } else {
         /* The next job loads depth and stencil only if this one stored them
          * and rendered (a frame end stores nothing). */
@@ -701,6 +813,7 @@ BOOL ogles2_job_has_draws(struct OGLES2Context *ctx)
 /* aglDestroyContext: forget an open job (nothing was submitted). */
 void ogles2_job_discard(struct OGLES2Context *ctx)
 {
+    ogles2_job_finish(ctx);
     if (ctx->v3d)
         ctx->v3d->frame_active = FALSE;
 }

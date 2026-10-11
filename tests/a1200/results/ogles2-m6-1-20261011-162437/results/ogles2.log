@@ -1,0 +1,130 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x08258150
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 640x480, BGRA
+    13 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08F2C19C, 640x480
+    15 compiler: started (0 s)
+    16 compiler: shader failed in 1280 ms
+    17 compiler: shader failed in 40 ms
+    18 compiler: shader failed in 20 ms
+    19 glLinkProgram: OGLES2Cache:3107b655130c46b17680b77c.v3dp (5 variants, 1384 bytes of code)
+    20 aglDestroyContext: context 0x08F2C19C: freeing
+    21 device: context freed, 0 bytes of GPU memory still in use
+    22 aglDestroyContext: context 0x08F2C19C (836 frames, 0 dropped, 0 binning blocks added)
+    23 timing: 836 jobs, each on average: 5249 us of CPU work before its flush, 25 us waiting for binning, 427 us for the render
+    24 timing: and in each flush 65 us building the render list, 95 us for the CPU cache before the GPU, 79 us after
+    25 timing: 836 swaps, 6016 us from one to the next on average, 2 us of it presenting
+    26 close (count 0)
+    27 open (count 1)
+    28 display: application bitmap, 640x480, BGRA
+    29 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    30 aglCreateContext2: context 0x08F885CC, 640x480
+    31 compiler: shader failed in 20 ms
+    32 compiler: shader failed in 40 ms
+    33 compiler: shader failed in 20 ms
+    34 glLinkProgram: OGLES2Cache:3107b655130c46b17680b77c.v3dp (5 variants, 1384 bytes of code)
+    35 aglDestroyContext: context 0x08F885CC: freeing
+    36 device: context freed, 0 bytes of GPU memory still in use
+    37 aglDestroyContext: context 0x08F885CC (2879 frames, 0 dropped, 0 binning blocks added)
+    38 timing: 2879 jobs, each on average: 983 us of CPU work before its flush, 27 us waiting for binning, 405 us for the render
+    39 timing: and in each flush 67 us building the render list, 72 us for the CPU cache before the GPU, 69 us after
+    40 timing: 2879 swaps, 1738 us from one to the next on average, 2 us of it presenting
+    41 close (count 0)
+    42 open (count 1)
+    43 display: application bitmap, 640x480, BGRA
+    44 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    45 aglCreateContext2: context 0x08F2C19C, 640x480
+    46 compiler: shader failed in 20 ms
+    47 compiler: shader failed in 20 ms
+    48 compiler: shader failed in 40 ms
+    49 glLinkProgram: OGLES2Cache:3107b655130c46b17680b77c.v3dp (5 variants, 1384 bytes of code)
+    50 aglDestroyContext: context 0x08F2C19C: freeing
+    51 device: context freed, 0 bytes of GPU memory still in use
+    52 aglDestroyContext: context 0x08F2C19C (2713 frames, 0 dropped, 0 binning blocks added)
+    53 timing: 2713 jobs, each on average: 1089 us of CPU work before its flush, 26 us waiting for binning, 411 us for the render
+    54 timing: and in each flush 70 us building the render list, 74 us for the CPU cache before the GPU, 62 us after
+    55 timing: 2713 swaps, 1846 us from one to the next on average, 1 us of it presenting
+    56 close (count 0)
+    57 open (count 1)
+    58 display: application bitmap, 640x480, BGRA
+    59 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    60 aglCreateContext2: context 0x08F885CC, 640x480
+    61 compiler: shader failed in 40 ms
+    62 compiler: shader failed in 40 ms
+    63 compiler: shader failed in 20 ms
+    64 glLinkProgram: OGLES2Cache:3107b655130c46b17680b77c.v3dp (5 variants, 1384 bytes of code)
+    65 aglDestroyContext: context 0x08F885CC: freeing
+    66 device: context freed, 0 bytes of GPU memory still in use
+    67 aglDestroyContext: context 0x08F885CC (112 frames, 0 dropped, 0 binning blocks added)
+    68 timing: 112 jobs, each on average: 46095 us of CPU work before its flush, 121 us waiting for binning, 746 us for the render
+    69 timing: and in each flush 82 us building the render list, 417 us for the CPU cache before the GPU, 71 us after
+    70 timing: 112 swaps, 47422 us from one to the next on average, 2 us of it presenting
+    71 close (count 0)
+    72 open (count 1)
+    73 display: application bitmap, 640x480, BGRA
+    74 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    75 aglCreateContext2: context 0x08F885CC, 640x480
+    76 compiler: shader failed in 20 ms
+    77 compiler: shader failed in 20 ms
+    78 compiler: shader failed in 40 ms
+    79 glLinkProgram: OGLES2Cache:3107b655130c46b17680b77c.v3dp (5 variants, 1384 bytes of code)
+    80 aglDestroyContext: context 0x08F885CC: freeing
+    81 device: context freed, 0 bytes of GPU memory still in use
+    82 aglDestroyContext: context 0x08F885CC (760 frames, 0 dropped, 0 binning blocks added)
+    83 timing: 760 jobs, each on average: 5293 us of CPU work before its flush, 139 us waiting for binning, 716 us for the render
+    84 timing: and in each flush 96 us building the render list, 185 us for the CPU cache before the GPU, 87 us after
+    85 timing: 760 swaps, 6616 us from one to the next on average, 2 us of it presenting
+    86 close (count 0)
+    87 open (count 1)
+    88 display: application bitmap, 640x480, BGRA
+    89 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    90 aglCreateContext2: context 0x08F885CC, 640x480
+    91 compiler: shader failed in 40 ms
+    92 compiler: shader failed in 20 ms
+    93 compiler: shader failed in 20 ms
+    94 glLinkProgram: OGLES2Cache:3107b655130c46b17680b77c.v3dp (5 variants, 1384 bytes of code)
+    95 aglDestroyContext: context 0x08F885CC: freeing
+    96 device: context freed, 0 bytes of GPU memory still in use
+    97 aglDestroyContext: context 0x08F885CC (672 frames, 0 dropped, 0 binning blocks added)
+    98 timing: 672 jobs, each on average: 6204 us of CPU work before its flush, 125 us waiting for binning, 720 us for the render
+    99 timing: and in each flush 100 us building the render list, 168 us for the CPU cache before the GPU, 68 us after
+   100 timing: 672 swaps, 7495 us from one to the next on average, 2 us of it presenting
+   101 close (count 0)
+   102 open (count 1)
+   103 display: application window, 640x480, BGRA
+   104 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+   105 aglCreateContext2: context 0x08F885CC, 640x480
+   106 compiler: shader failed in 40 ms
+   107 compiler: shader failed in 40 ms
+   108 compiler: shader failed in 20 ms
+   109 glLinkProgram: OGLES2Cache:3107b655130c46b17680b77c.v3dp (5 variants, 1384 bytes of code)
+   110 aglDestroyContext: context 0x08F885CC: freeing
+   111 device: context freed, 0 bytes of GPU memory still in use
+   112 aglDestroyContext: context 0x08F885CC (1733 frames, 0 dropped, 0 binning blocks added)
+   113 timing: 1733 jobs, each on average: 1111 us of CPU work before its flush, 25 us waiting for binning, 394 us for the render
+   114 timing: and in each flush 68 us building the render list, 78 us for the CPU cache before the GPU, 62 us after
+   115 timing: 1733 swaps, 2885 us from one to the next on average, 1046 us of it presenting
+   116 close (count 0)
+   117 open (count 1)
+   118 display: fullscreen, 640x480, BGRA
+   119 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+   120 aglCreateContext2: context 0x08F885CC, 640x480
+   121 compiler: shader failed in 40 ms
+   122 compiler: shader failed in 20 ms
+   123 compiler: shader failed in 40 ms
+   124 glLinkProgram: OGLES2Cache:3107b655130c46b17680b77c.v3dp (5 variants, 1384 bytes of code)
+   125 aglDestroyContext: context 0x08F885CC: freeing
+   126 device: context freed, 0 bytes of GPU memory still in use
+   127 aglDestroyContext: context 0x08F885CC (3580 frames, 0 dropped, 0 binning blocks added)
+   128 timing: 3580 jobs, each on average: 1084 us of CPU work before its flush, 27 us waiting for binning, 2 us for the render
+   129 timing: and in each flush 64 us building the render list, 74 us for the CPU cache before the GPU, 2 us after
+   130 timing: 3580 swaps, 1400 us from one to the next on average, 3 us of it presenting

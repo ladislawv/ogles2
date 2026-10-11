@@ -330,10 +330,10 @@ BOOL ogles2_display_lock(struct OGLES2Display *d)
  * one pixel of a frame stale now and then; PiStorm3D's context.c names the
  * same "stale 64-byte CPU cache lines of the previous frame"). Where the CPU
  * reads the bitmap -- the application's own, or the window's copy -- each
- * job cleans its lines before the render and invalidates them after, while
- * locked (exec's rule for a device writing memory). A fullscreen screen is
- * read by the display, not the CPU: ogles2_display_read invalidates what it
- * reads. */
+ * job cleans its lines before the render (job.c cleans the whole data
+ * cache then, M6) and invalidates them after, while locked (exec's rule for
+ * a device writing memory). A fullscreen screen is read by the display, not
+ * the CPU: ogles2_display_read invalidates what it reads. */
 void ogles2_display_dma(struct OGLES2Display *d, BOOL after)
 {
     ULONG len;

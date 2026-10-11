@@ -779,6 +779,18 @@ void v3d_texture_store(V3DDevice* device, V3DTexture* tex, v3d_u8 level, const v
     ULONG len;
 
     if (level >= tex->num_levels || width <= 0 || height <= 0) return;
+    if (!g_v3d_uif_fast) {
+        /* ogles2: the direct UIF store, checked once (v3d_hw.c) */
+        v3d_u8 *ca = AllocVec(V3D_UIF_CHECK_BYTES, MEMF_ANY), *cb = AllocVec(V3D_UIF_CHECK_BYTES, MEMF_ANY);
+        if (ca && cb)
+            v3d_uif_fast_check(ca, cb);
+        else
+            g_v3d_uif_fast = 2;
+        if (ca)
+            FreeVec(ca);
+        if (cb)
+            FreeVec(cb);
+    }
     tiledData = (char*)V3D_ALIGN_UP((v3d_uintptr)tex->texture_mem.hostptr, 256)
                 + tex->levels[level].offset;
     box.x = x;
@@ -790,8 +802,10 @@ void v3d_texture_store(V3DDevice* device, V3DTexture* tex, v3d_u8 level, const v
     v3d_store_tiled_image(tiledData, tex->levels[level].stride, (void*)src, srcStride,
                           (enum v3d_memory_format)tex->levels[level].tiling_format, cpp,
                           tex->levels[level].padded_h, &box);
-    len = (ULONG)tex->texture_mem.size;
-    CachePreDMA(tex->texture_mem.hostptr, &len, 0);
+    /* ogles2: no CachePreDMA here (an exec call, about 40 us, for every
+     * level): every job cleans the whole data cache before the GPU starts
+     * (ogles2/job.c, clean_all), and only a job reads a texture. */
+    (void)len;
     if (level > tex->max_level_uploaded)
         tex->max_level_uploaded = level;
 }

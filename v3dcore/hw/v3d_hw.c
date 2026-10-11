@@ -626,11 +626,87 @@ static inline void v3d_move_pixels_general(
 	}
 }
 
+/* ogles2: 32-bit texels stored into UIF a whole UIF block (2x2 utiles, 8x8
+ * texels, 256 bytes) at a time: one address computation a block, and each
+ * 16-byte utile row moved with two movem (Emu68 charges per memory access;
+ * the general path computes an address and calls memcpy per utile row).
+ * Checked once against the general path (g_v3d_uif_fast: 0 not yet, 1 the
+ * same, 2 not, and not used). */
+int g_v3d_uif_fast;
+
+static inline void v3d_copy16(void* d, const void* s)
+{
+	__asm__ volatile("movem.l (%0),%%d0-%%d3\n\tmovem.l %%d0-%%d3,(%1)"
+		             : : "a"(s), "a"(d) : "d0", "d1", "d2", "d3", "memory");
+}
+
+static void v3d_store_uif32_blocks(void* gpu, void* cpu, v3d_u32 cpu_stride, v3d_u32 image_h,
+	                               const v3d_texture_box* box, v3d_bool do_xor)
+{
+	for (v3d_u32 y = 0; y < (v3d_u32)box->height; y += 8)
+	{
+		for (v3d_u32 x = 0; x < (v3d_u32)box->width; x += 8)
+		{
+			v3d_u8* mb = (v3d_u8*)gpu + v3d_get_uif_pixel_offset(4, image_h, box->x + x, box->y + y, do_xor);
+			const v3d_u8* src = (const v3d_u8*)cpu + y * cpu_stride + x * 4;
+			for (int r = 0; r < 8; r++, src += cpu_stride)
+			{
+				v3d_u8* d = mb + (r >> 2) * 128 + (r & 3) * 16; /* top/bottom utiles, their row */
+				v3d_copy16(d, src);                              /* the left utile */
+				v3d_copy16(d + 64, src + 16);                    /* the right one */
+			}
+		}
+	}
+}
+
+static inline void v3d_move_tiled_image(void* gpu, v3d_u32 gpu_stride, void* cpu,
+	                                    v3d_u32 cpu_stride, enum v3d_memory_format tiling_format,
+	                                    int componentsPerPixel, v3d_u32 image_h,
+	                                    const v3d_texture_box* box, v3d_bool is_load);
+
+/* Both ways on a 64-texel-wide strip of a 256-row image, with and without
+ * XOR (block columns 4-7 have block row bit 4 flipped: the 256 rows keep it
+ * inside the image), compared. a and b: V3D_UIF_CHECK_BYTES each. */
+static v3d_u8 g_uif_test_cpu[64 * 16 * 4];
+
+void v3d_uif_fast_check(v3d_u8* a, v3d_u8* b)
+{
+	v3d_texture_box tb = {0};
+	int ok = 1, x;
+	tb.width = 64;
+	tb.height = 16;
+	tb.depth = 1;
+	for (x = 0; x < (int)sizeof(g_uif_test_cpu); x++)
+		g_uif_test_cpu[x] = (v3d_u8)(x * 7 + (x >> 8));
+	g_v3d_uif_fast = 2; /* the general path below, while testing */
+	for (x = 0; x < 2 && ok; x++)
+	{
+		enum v3d_memory_format f = x ? V3D_MEMORY_FORMAT_UIF_XOR : V3D_MEMORY_FORMAT_UIF_NO_XOR;
+		for (int i = 0; i < V3D_UIF_CHECK_BYTES; i++)
+			a[i] = b[i] = 0;
+		v3d_move_tiled_image(a, 0, g_uif_test_cpu, 64 * 4, f, 4, 256, &tb, FALSE);
+		v3d_store_uif32_blocks(b, g_uif_test_cpu, 64 * 4, 256, &tb, x != 0);
+		for (int i = 0; i < V3D_UIF_CHECK_BYTES; i++)
+			if (a[i] != b[i])
+				ok = 0;
+	}
+	g_v3d_uif_fast = ok ? 1 : 2;
+}
+
 static inline void v3d_move_tiled_image(void* gpu, v3d_u32 gpu_stride, void* cpu,
 	                                    v3d_u32 cpu_stride, enum v3d_memory_format tiling_format,
 	                                    int componentsPerPixel, v3d_u32 image_h,
 	                                    const v3d_texture_box* box, v3d_bool is_load)
 {
+	if (!is_load && componentsPerPixel == 4 &&
+	    (tiling_format == V3D_MEMORY_FORMAT_UIF_XOR || tiling_format == V3D_MEMORY_FORMAT_UIF_NO_XOR) &&
+	    !(box->x & 7) && !(box->y & 7) && !(box->width & 7) && !(box->height & 7) &&
+	    g_v3d_uif_fast == 1)
+	{
+		v3d_store_uif32_blocks(gpu, cpu, cpu_stride, image_h, box,
+			                   tiling_format == V3D_MEMORY_FORMAT_UIF_XOR);
+		return;
+	}
 	switch (tiling_format)
 	{
 		case V3D_MEMORY_FORMAT_UIF_XOR:

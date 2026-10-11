@@ -14,9 +14,12 @@ state and next steps).
   `OES_compressed_ETC1_RGB8_texture`, `EXT_texture_format_BGRA8888`, `OES_mapbuffer`,
   `EXT_blend_minmax`, `OES_draw_elements_base_vertex`, `OES_rgb8_rgba8`,
   `OES_packed_depth_stencil`, `OES_fbo_render_mipmap`, `EXT_discard_framebuffer`.
-- Faster than MiniGL: the same gears scene at 640x480 runs at 834 fps on ogles2's vertex
-  buffers against 669 fps for PiStorm3D 29.1's MiniGL (display lists, its fastest path), and at
-  411 against 47 fps with 32,000 triangles (`tests/perf`, plan §13).
+- Faster than MiniGL: the same gears scene at 640x480 runs full screen at 1734 fps on ogles2's
+  vertex buffers against 791 fps for PiStorm3D 29.1's MiniGL (display lists, its fastest path),
+  1171 against 161 fps with 8,000 triangles, and 445 against 47 fps with 32,000 triangles on a
+  hidden bitmap (`tests/perf`, plan §13).
+- Desktop OpenGL programs run through gl4es (`ports/gl4es`), which writes its shaders at run time
+  for the on-target compiler.
 - Real programs run unmodified: es2gears and ten samples from the *OpenGL ES 2.0 Programming
   Guide* match Mesa's reference images on a real A1200 (`tests/corpus`, 11 of 11).
 - **Shaders compile on the Amiga** (M3): with the compiler installed as

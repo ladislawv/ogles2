@@ -82,7 +82,7 @@ static void drop_copy(struct OGLES2Context *ctx, struct gpu_copy *c)
 {
     if (!c->mem.hostptr)
         return;
-    if (ctx->v3d && ctx->v3d->frame_active && c->used_job == ctx->job_serial)
+    if (c->used_job && ogles2_job_uses(ctx, c->used_job)) /* the open job, or the running one */
         v3d_frame_defer_free(&ctx->v3d->frame, &c->mem); /* empties c->mem */
     else
         v3d_mem_free(ogles2_device(), &c->mem);
@@ -186,6 +186,8 @@ void ogles2_glGenBuffers(struct OGLES2Context *ctx, GLsizei n, GLuint *buffers)
 
 void ogles2_glDeleteBuffers(struct OGLES2Context *ctx, GLsizei n, const GLuint *buffers)
 {
+    if (ogles2_context_valid(ctx))
+        ogles2_trace(ctx, "glDeleteBuffers", n, n > 0 && buffers ? buffers[0] : 0);
     struct OGLES2BufState *bs;
     GLsizei k;
     int a;
@@ -262,7 +264,7 @@ static struct OGLES2Buffer *bound(struct OGLES2Context *ctx, struct OGLES2BufSta
     return 0;
 }
 
-void ogles2_glBufferData(struct OGLES2Context *ctx, GLenum target, GLsizeiptr size, const void *data,
+static void buffer_data(struct OGLES2Context *ctx, GLenum target, GLsizeiptr size, const void *data,
                          GLenum usage)
 {
     struct OGLES2BufState *bs;
@@ -302,6 +304,16 @@ void ogles2_glBufferData(struct OGLES2Context *ctx, GLenum target, GLsizeiptr si
     b->serial++;
 }
 
+/* Timed for probe P (frame.c). */
+void ogles2_glBufferData(struct OGLES2Context *ctx, GLenum target, GLsizeiptr size, const void *data,
+                         GLenum usage)
+{
+    ULONG t0 = ogles2_clock_us();
+    buffer_data(ctx, target, size, data, usage);
+    if (ogles2_context_valid(ctx))
+        ctx->sum_bufdata += (double)(ULONG)(ogles2_clock_us() - t0);
+}
+
 /* Bytes [off, off+len) of the shadow changed (plan 7.5): each copy the open
  * job does not read re-converts the elements those bytes touch, in place;
  * a copy the open job reads is retired with it and rebuilt at its next use.
@@ -315,7 +327,7 @@ static void patch_copies(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULON
         if (!c->mem.hostptr)
             continue;
         if (c->serial != b->serial - 1 || !c->convert ||
-            (ctx->v3d && ctx->v3d->frame_active && c->used_job == ctx->job_serial)) {
+            (c->used_job && ogles2_job_uses(ctx, c->used_job))) {
             drop_copy(ctx, c);
             continue;
         }
@@ -331,16 +343,14 @@ static void patch_copies(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULON
         if (i0 > i1)
             continue;
         n = i1 - i0 + 1;
+        /* No cache call: the next flush cleans the whole data cache before
+         * the GPU reads (job.c, clean_all). */
         c->convert((UBYTE *)c->mem.hostptr + i0 * c->dst_stride, c->dst_stride,
                    b->data + c->offset + i0 * stride, stride, n, c->size, c->type);
-        {
-            ULONG flush = n * c->dst_stride;
-            CachePreDMA((UBYTE *)c->mem.hostptr + i0 * c->dst_stride, &flush, 0);
-        }
     }
 }
 
-void ogles2_glBufferSubData(struct OGLES2Context *ctx, GLenum target, GLintptr offset, GLsizeiptr size,
+static void buffer_sub_data(struct OGLES2Context *ctx, GLenum target, GLintptr offset, GLsizeiptr size,
                             const void *data)
 {
     struct OGLES2BufState *bs;
@@ -364,6 +374,16 @@ void ogles2_glBufferSubData(struct OGLES2Context *ctx, GLenum target, GLintptr o
     memcpy(b->data + offset, data, (ULONG)size);
     b->serial++;
     patch_copies(ctx, b, (ULONG)offset, (ULONG)size);
+}
+
+/* Timed for probe P (frame.c). */
+void ogles2_glBufferSubData(struct OGLES2Context *ctx, GLenum target, GLintptr offset, GLsizeiptr size,
+                            const void *data)
+{
+    ULONG t0 = ogles2_clock_us();
+    buffer_sub_data(ctx, target, offset, size, data);
+    if (ogles2_context_valid(ctx))
+        ctx->sum_bufdata += (double)(ULONG)(ogles2_clock_us() - t0);
 }
 
 void ogles2_glGetBufferParameteriv(struct OGLES2Context *ctx, GLenum target, GLenum pname,
@@ -513,7 +533,7 @@ ULONG ogles2_buffer_copy(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULON
                                          ULONG src_stride, ULONG count, GLint size, GLenum type))
 {
     struct gpu_copy *c, *victim = 0;
-    ULONG src_stride = stride ? (ULONG)stride : elem_bytes, n, len;
+    ULONG src_stride = stride ? (ULONG)stride : elem_bytes, n;
     int k;
     for (k = 0; k < OGLES2_BUFFER_COPIES; k++) {
         c = &b->copy[k];
@@ -540,9 +560,9 @@ ULONG ogles2_buffer_copy(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULON
         memset(c, 0, sizeof(*c));
         return 0;
     }
+    /* The job that reads it is flushed after a clean of the whole data
+     * cache (job.c, clean_all): no cache call here. */
     convert((UBYTE *)c->mem.hostptr, c->dst_stride, b->data + offset, src_stride, n, size, type);
-    len = c->mem.size;
-    CachePreDMA(c->mem.hostptr, &len, 0);
     c->serial = b->serial;
     c->elem_bytes = elem_bytes;
     c->convert = convert;
