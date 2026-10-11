@@ -1,0 +1,65 @@
+ogles2 (ports/gl4es): fpe_program remembers the raw fixed-function states
+of its last four programs.
+
+fpe_program ran fpe_ReleventState at every draw: a copy of fpe_state_t and
+dozens of bitfield clears for each of the 16 texture units, about 10 us a
+draw on a 68k under Emu68 (Quake III, 130 draws a frame: 1.2 ms). The raw
+state is now compared with the ones the last four programs were chosen for
+(a long-word memcmp, ports/gl4es/os3_string.c; Quake III's stages alternate
+between a few); on a match that program is taken. The memo is cleared when
+the glstate changes and when a context is destroyed (gl4es_fpe_memo_clear,
+from ports/gl4es/agl_os3.c); the fpe cache's programs live as long as the
+glstate does.
+
+diff --git a/src/gl/fpe.c b/src/gl/fpe.c
+index 758761d0..72066a30 100644
+--- a/src/gl/fpe.c
++++ b/src/gl/fpe.c
+@@ -379,8 +379,35 @@ void APIENTRY_GL4ES fpe_oldprogram(fpe_state_t* state) {
+ }
+ 
+ // ********* Shader stuffs handling *********
++/* ogles2 (ports/gl4es): the raw states the last FPE programs were chosen
++ * for (a program alternates with a few others: Quake III's stages). A draw
++ * whose raw state is one of them takes its program without
++ * fpe_ReleventState, which clears bitfields of all 16 texture units every
++ * draw (about 10 us on a 68k under Emu68: Quake III's 1.2 ms a frame). The
++ * cache's programs live as long as the glstate. */
++#define OGLES2_FPE_MEMO 4
++static fpe_state_t ogles2_fpe_raw[OGLES2_FPE_MEMO];
++static fpe_fpe_t *ogles2_fpe_for[OGLES2_FPE_MEMO];
++static void *ogles2_fpe_glstate;
++static int ogles2_fpe_next;
++
++/* agl_os3.c, when a context goes (a new glstate may get its address). */
++void gl4es_fpe_memo_clear(void) {
++    memset(ogles2_fpe_for, 0, sizeof(ogles2_fpe_for));
++    ogles2_fpe_glstate = NULL;
++}
++
+ void APIENTRY_GL4ES fpe_program(int ispoint) {
+     glstate->fpe_state->point = ispoint;
++    if(ogles2_fpe_glstate!=glstate) {
++        memset(ogles2_fpe_for, 0, sizeof(ogles2_fpe_for));
++        ogles2_fpe_glstate = glstate;
++    }
++    for(int m=0; m<OGLES2_FPE_MEMO; m++)
++        if(ogles2_fpe_for[m] && !memcmp(&ogles2_fpe_raw[m], glstate->fpe_state, sizeof(fpe_state_t))) {
++            glstate->fpe = ogles2_fpe_for[m];
++            return;
++        }
+     fpe_state_t state;
+     fpe_ReleventState(&state, glstate->fpe_state, 1);
+     if(glstate->fpe==NULL || memcmp(&glstate->fpe->state, &state, sizeof(fpe_state_t))) {
+@@ -451,6 +478,11 @@ void APIENTRY_GL4ES fpe_program(int ispoint) {
+         // all done
+         DBG(printf("%s FPE shader : %d(%p)\n", from_psa?"Using Precomp":"Creating", glstate->fpe->prog, glstate->fpe->glprogram);)
+     }
++    if(glstate->fpe->glprogram) {
++        memcpy(&ogles2_fpe_raw[ogles2_fpe_next], glstate->fpe_state, sizeof(fpe_state_t));
++        ogles2_fpe_for[ogles2_fpe_next] = glstate->fpe;
++        ogles2_fpe_next = (ogles2_fpe_next+1) % OGLES2_FPE_MEMO;
++    }
+ }
+ 
+ program_t* APIENTRY_GL4ES fpe_CustomShader(program_t* glprogram, fpe_state_t* state)

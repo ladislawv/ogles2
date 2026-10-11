@@ -151,6 +151,7 @@ static void make_current(void *context)
 }
 
 void gl4es_glue_profile(ULONG frames); /* ogles2_glue.c: GL4ES_GLUE_PROFILE */
+void gl4es_fpe_memo_clear(void);        /* patches/0003: fpe_program's memo */
 static ULONG swaps;
 
 void aglDestroyContext(void *context)
@@ -163,6 +164,7 @@ void aglDestroyContext(void *context)
     if (context != agl_current_ctx)
         make_current(context);
     agl_context_remove(context);
+    gl4es_fpe_memo_clear(); /* its glstate is gone: a new one may get the address */
     if (context != agl_current_ctx)
         make_current(agl_current_ctx);
     else

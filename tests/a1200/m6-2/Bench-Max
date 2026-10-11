@@ -1,0 +1,55 @@
+; Bench-Max - Quake III's demo 'four' as a timedemo at 1600x1200 with the
+; highest graphics settings (max.cfg): the gl4es build on ogles2.library,
+; then the MiniGL build of the installed game (its own quake3), the same
+; settings.
+;   CD to the ogles2-m6-2 directory, then:   Execute Bench-Max
+;   With the game elsewhere:   Execute Bench-Max Q3DATA=<the directory with baseq3>
+; Output goes to results/max-*. Each game's own files go to home-max/ here
+; (gl4es) and RAM:q3mgl-max (MiniGL); max.cfg is their autoexec.cfg.
+.key Q3DATA/K
+.def Q3DATA "Stuff:Quake3-68k-beta10/Quake3-68k-beta10"
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m6-2 directory first,"
+  Echo "then run:  Execute Bench-Max"
+  Quit 20
+EndIf
+
+Assign M6R2: ""
+If NOT EXISTS M6R2:results
+  MakeDir M6R2:results
+EndIf
+If NOT EXISTS M6R2:cache
+  MakeDir M6R2:cache
+EndIf
+If NOT EXISTS M6R2:home-max/baseq3
+  MakeDir M6R2:home-max M6R2:home-max/baseq3
+EndIf
+If NOT EXISTS RAM:q3mgl-max/baseq3
+  MakeDir RAM:q3mgl-max RAM:q3mgl-max/baseq3
+EndIf
+Copy M6R2:max.cfg M6R2:home-max/baseq3/autoexec.cfg QUIET
+Copy M6R2:max.cfg RAM:q3mgl-max/baseq3/autoexec.cfg QUIET
+
+Echo "Quake III, demo 'four' at 1600x1200, highest settings: gl4es on ogles2."
+Echo "  The screen may stay black while the textures load."
+Assign LIBS: M6R2:libs ADD
+Assign OGLES2Cache: M6R2:cache
+CD M6R2:bin
+M6R2:bin/quake3-gl4es +set fs_basepath "{Q3DATA}" +set fs_homepath M6R2:home-max +set logfile 2 +set nextdemo quit +timedemo 1 +demo four >M6R2:results/max-gl4es.txt
+Assign OGLES2Cache:
+Assign LIBS: M6R2:libs REMOVE
+Copy M6R2:home-max/baseq3/qconsole.log M6R2:results/max-gl4es-console.log QUIET
+
+Echo "The same on MiniGL (the installed quake3)."
+Wait 2
+CD "{Q3DATA}"
+quake3 +set fs_basepath "{Q3DATA}" +set fs_homepath RAM:q3mgl-max +set logfile 2 +set nextdemo quit +timedemo 1 +demo four >M6R2:results/max-minigl.txt
+Copy RAM:q3mgl-max/baseq3/qconsole.log M6R2:results/max-minigl-console.log QUIET
+
+CD M6R2:
+Assign M6R2:
+Echo "Done. Results are in results/max-*."

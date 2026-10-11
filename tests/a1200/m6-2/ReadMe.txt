@@ -27,6 +27,10 @@ How to run by hand
    1260 frames. The whole demo:  Execute Run-M1 FRAMES=0
 3. Send me the whole results directory.
 
+To play the game instead (not timed; frame rate shown, no sound):
+       Execute Play-Quake
+   Quit from the game's menu (Escape, Exit).
+
 If the machine hangs or crashes
 -------------------------------
 Reboot and send me the results directory as it is.
@@ -34,6 +38,7 @@ Reboot and send me the results directory as it is.
 Contents
 --------
 Run-M1                    the test script
+Play-Quake                the game to play
 libs/ogles2.library       the library (logs every line at once)
 libs/v3dglslc             the shader compiler (started by the library)
 bin/quake3-gl4es          the game on gl4es

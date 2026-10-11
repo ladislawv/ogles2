@@ -29,6 +29,10 @@ and `gl4es_agl.h` (`ports/gl4es/include`), and links `-lgl4es -logles2 -lm881`, 
     Quake III sets its mipmapping filter after the upload, so gl4es generated every chain again
     on the CPU at the texture's first draw (1.2 s over the timedemo).
   - `0002-fpe-hash-by-long-words`: the fixed-function state's hash reads long words, not bytes.
+  - `0003-fpe-program-unchanged`: `fpe_program` remembers the raw fixed-function states of
+    its last four programs and takes the program on a match, without `fpe_ReleventState`
+    (bitfield clears for all 16 texture units, every draw). `agl_os3.c` clears the memo when
+    a context is destroyed.
 - **`os3_string.c`**: a `memcmp` comparing long words, linked before clib2's (a byte at a
   time, 2.4 us for 256 bytes on Emu68); gl4es compares its state structs with it every draw.
 - **`os3_build.h`**, force-included: gl4es exports every GL name as a GCC `alias` of its
