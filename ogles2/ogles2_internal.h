@@ -20,6 +20,7 @@ struct OGLES2Library
     struct Library lib;
     BPTR segList;
     struct SignalSemaphore lock; /* library-wide state: context list, log */
+    struct SignalSemaphore compiler_lock; /* starting the shader compiler (compiler.c) */
 };
 
 /* A GL context. Opaque to clients (struct OGLES2Context in the headers). */
@@ -209,6 +210,7 @@ struct OGLES2Shader
     GLuint name;
     GLenum type;          /* GL_VERTEX_SHADER, GL_FRAGMENT_SHADER */
     char *source;         /* AllocVec'd, NUL-terminated */
+    char *info_log;       /* AllocVec'd or NULL: the compiler's messages (plan 8.4) */
     GLboolean compiled;
     UWORD attached;       /* programs it is attached to */
 };
@@ -289,7 +291,59 @@ struct OGLES2Context
     ULONG job_serial;               /* counts jobs; textures note the last that drew with them */
     struct OGLES2Image *images;     /* program cache: every image loaded, by hash (plan 7.8) */
     struct OGLES2BufState *buf;     /* buffer.c's, NULL until first used */
+    BOOL debug_shader_log;          /* OGLES2_CCT_DEBUG_SHADER_LOG: link logs describe the variants */
+    ULONG chained_blocks;           /* binning-list blocks added (job.c); the first is logged */
+    void *zs_save;                  /* job.c: memory for depth/stencil across a mid-frame flush */
+    BOOL zs_saved;                  /* the next job of this frame loads depth/stencil from it */
+    BOOL zs_logged;
+    /* Framebuffer objects (fbo.c, plan 7.7). width/height/depth_bits/
+     * stencil_bits/depth_format above are the default framebuffer's; the
+     * fb_* fields describe the framebuffer drawn into now (ogles2_fb_update). */
+    struct OGLES2FboState *fbo;     /* fbo.c's, NULL until first used */
+    struct OGLES2Framebuffer *draw_fb; /* GL_FRAMEBUFFER binding; NULL: the default */
+    struct OGLES2Framebuffer *job_fb;  /* what the open job renders into */
+    UWORD fb_w, fb_h;
+    BOOL fb_flip;                   /* the default framebuffer: drawn upside down (plan 7.11) */
+    UBYTE fb_depth_bits, fb_stencil_bits, fb_depth_format;
+    UBYTE job_discard;              /* EXT_discard_framebuffer: OGLES2_DISCARD_* the open job does not store */
+    UBYTE job_noload;               /* and those it does not load (discarded before it began) */
 };
+
+#define OGLES2_DISCARD_COLOR   1
+#define OGLES2_DISCARD_DEPTH   2
+#define OGLES2_DISCARD_STENCIL 4
+
+/* ---- framebuffer objects (fbo.c) ----
+ * One image a job's tile buffer loads from and stores to (Mesa's
+ * load_general/store_general fields). */
+struct OGLES2Surface
+{
+    ULONG addr;            /* the image's first byte */
+    ULONG bytes;           /* its extent, for the CPU cache */
+    UBYTE mem_format;      /* V3D_MEMORY_FORMAT_* (the level's own tiling) */
+    UBYTE format;          /* V3D_OUTPUT_IMAGE_FORMAT_* */
+    UBYTE force_alpha1;    /* load: an RGB format */
+    ULONG ub;              /* UIF: padded height in UIF blocks; else 0 */
+};
+
+/* What a framebuffer object's job renders into (ogles2_fbo_target). */
+struct OGLES2Texture;
+struct OGLES2Target
+{
+    UWORD w, h;
+    BOOL has_color, has_z, has_s, packed_zs; /* packed: one D24S8 image for both */
+    struct OGLES2Surface color, z, s;
+    UBYTE depth_type;      /* V3D_INTERNAL_TYPE_DEPTH* for the tile buffer */
+    ULONG ta_addr, ta_size, ts_addr; /* own tile pools, 4096-aligned; 0: the context's fit */
+    struct OGLES2Texture *tex; /* the colour image's texture (a renderbuffer's too) */
+    UBYTE face, level;
+};
+
+/* EXT_blend_minmax (gl2ext.h) */
+#ifndef GL_MIN_EXT
+#define GL_MIN_EXT 0x8007
+#define GL_MAX_EXT 0x8008
+#endif
 
 #define OGLES2_DEPTH_16  0
 #define OGLES2_DEPTH_24  1 /* with 8 stencil bits */
@@ -313,6 +367,10 @@ BOOL ogles2_display_libs_open(void);
 void ogles2_display_libs_close(void);
 BOOL ogles2_display_open(struct OGLES2Display *d, struct TagItem *tags, ULONG *why);
 void ogles2_display_close(struct OGLES2Display *d);
+BOOL ogles2_display_set_bitmap(struct OGLES2Display *d, struct BitMap *bitmap);
+/* Locked: the CPU cache around the GPU's write of the bitmap (before: clean;
+ * after: invalidate), where the CPU reads it. */
+void ogles2_display_dma(struct OGLES2Display *d, BOOL after);
 BOOL ogles2_display_lock(struct OGLES2Display *d);
 void ogles2_display_unlock(struct OGLES2Display *d);
 void ogles2_display_present(struct OGLES2Display *d);
@@ -328,11 +386,56 @@ void ogles2_draw_free(struct OGLES2Context *ctx);    /* aglDestroyContext, after
 const struct OGLES2Image *ogles2_builtin_image(void);
 /* texture.c */
 void ogles2_textures_free(struct OGLES2Context *ctx);
+/* for fbo.c */
+struct OGLES2Texture *ogles2_texture_get(struct OGLES2Context *ctx, GLuint name); /* NULL: none */
+GLuint ogles2_texture_name(const struct OGLES2Texture *t);
+GLenum ogles2_texture_target(const struct OGLES2Texture *t); /* 0 until first bound */
+/* The image of face k, level l: FALSE if not defined. */
+BOOL ogles2_texture_image(const struct OGLES2Texture *t, int k, int l, UWORD *w, UWORD *h,
+                          GLenum *format, GLenum *type);
+/* Colour-renderable (plan 7.7): RGBA8, RGB565, RGBA4, RGB5_A1 storage. */
+BOOL ogles2_texture_renderable(const struct OGLES2Texture *t, int k, int l);
+/* The image as a render target, its GPU storage made first; FALSE: none. */
+BOOL ogles2_texture_surface(struct OGLES2Context *ctx, struct OGLES2Texture *t, int k, int l,
+                            struct OGLES2Surface *s);
+void ogles2_texture_rendered(struct OGLES2Texture *t, int k, int l); /* the GPU's copy is newer */
+/* A box of the image as RGBA8 rows (row 0 = GL's bottom), from the GPU's copy. */
+BOOL ogles2_texture_read(struct OGLES2Texture *t, int k, int l, int x, int y, int w, int h,
+                         UBYTE *rgba, ULONG stride);
+/* A renderbuffer's colour storage: a texture of its own, in no name table. */
+struct OGLES2Texture *ogles2_texture_hidden(struct OGLES2Context *ctx, UWORD w, UWORD h,
+                                            GLenum format, GLenum type);
+void ogles2_texture_hidden_free(struct OGLES2Context *ctx, struct OGLES2Texture *t);
+/* fbo.c */
+void ogles2_fb_update(struct OGLES2Context *ctx);       /* the fb_* fields from the binding */
+GLenum ogles2_fb_status(struct OGLES2Context *ctx);     /* of the draw framebuffer */
+BOOL ogles2_fb_ready(struct OGLES2Context *ctx);        /* complete; else GL_INVALID_FRAMEBUFFER_OPERATION */
+BOOL ogles2_fbo_target(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, BOOL surfaces,
+                       struct OGLES2Target *t);
+void ogles2_fbo_rendered(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb);
+UBYTE ogles2_fbo_take_discarded(struct OGLES2Framebuffer *fb); /* OGLES2_DISCARD_* since its last job */
+/* glReadPixels from the bound framebuffer object: RGBA8 rows, GL's order. */
+BOOL ogles2_fbo_read(struct OGLES2Context *ctx, int x, int y, int w, int h, UBYTE *rgba, ULONG stride);
+void ogles2_fbo_texture_changing(struct OGLES2Context *ctx, struct OGLES2Texture *t);
+void ogles2_fbo_texture_deleted(struct OGLES2Context *ctx, struct OGLES2Texture *t);
+BOOL ogles2_fbo_query(struct OGLES2Context *ctx, GLenum pname, GLint *v);
+void ogles2_fbo_free(struct OGLES2Context *ctx);
 BOOL ogles2_texture_query(struct OGLES2Context *ctx, GLenum pname, GLint *v);
 /* The texture and sampler state of texture unit `unit` (its 2D or cube
  * binding), written into the open job's state buffer; FALSE: no memory. */
 BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, BOOL cube, ULONG *tex_state,
                           ULONG *sampler_state);
+ULONG ogles2_format(char *buf, ULONG size, const char *fmt, ...); /* log.c: RawDoFmt, bounded */
+/* compiler.c: the on-target shader compiler (plan 8.4) */
+BOOL ogles2_cache_assigned(void);   /* OGLES2Cache: exists */
+const char *ogles2_cache_dir(void); /* where compiled programs go: OGLES2Cache: or T: */
+BOOL ogles2_compiler_installed(void);
+BOOL ogles2_compile_program(const char *vs, const char *fs, const char *path, char *log,
+                            ULONG log_size);
+/* One shader through the front end: 1 compiled, 0 GLSL errors (in log),
+ * -1 the compiler could not be run. */
+int ogles2_compile_shader(BOOL fragment, const char *src, char *log, ULONG log_size);
+void ogles2_compiler_stop(void);
 /* buffer.c */
 void ogles2_buffers_free(struct OGLES2Context *ctx);
 BOOL ogles2_buffer_query(struct OGLES2Context *ctx, GLenum pname, GLint *v);
@@ -353,7 +456,8 @@ BOOL ogles2_job_has_draws(struct OGLES2Context *ctx);
 /* ---- jobs (job.c) ---- */
 void ogles2_job_begin(struct OGLES2Context *ctx);
 void ogles2_job_clear(struct OGLES2Context *ctx, GLbitfield mask);
-BOOL ogles2_job_flush(struct OGLES2Context *ctx);
+BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end); /* FALSE: dropped. Mid-frame (frame_end FALSE): depth and stencil are kept for the next job */
+void ogles2_job_free(struct OGLES2Context *ctx); /* aglDestroyContext: job.c's memory */
 void ogles2_job_discard(struct OGLES2Context *ctx);
 
 extern struct ExecBase *SysBase;
@@ -379,12 +483,16 @@ BOOL ogles2_device_gpu_reachable(ULONG addr, ULONG size);
 struct SignalSemaphore *ogles2_device_gpu_lock(void);
 /* TRUE once the device initialised (a state-only context may have none). */
 BOOL ogles2_device_ready(void);
+void ogles2_device_reset(const char *why); /* the GPU did not finish a job: reset it (lock held) */
 /* v3dcore's device (struct V3DDevice); valid after ogles2_device_open. */
 struct V3DDevice *ogles2_device(void);
 /* Allocates a context's GPU pools and control lists for a w x h default
  * framebuffer with depth_bits 16 (D16) or 32 (D32F); NULL if out of memory. */
 struct V3DContext *ogles2_device_context_new(UWORD w, UWORD h, int depth_bits);
 void ogles2_device_context_free(struct V3DContext *v);
+/* Sizes the pools for a new w x h (no frame open); FALSE if out of memory,
+ * the old size kept where it can be. */
+BOOL ogles2_device_context_resize(struct V3DContext *v, UWORD w, UWORD h);
 
 /* ---- log (log.c; plan section 10) ----
  * Lines go to a RAM ring buffer, appended to the log file (T:ogles2.log, or

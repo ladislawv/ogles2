@@ -263,6 +263,34 @@ void power_on_V3D(V3DDevice* device)
     while ((ASB_V3D_M_CTRL) & ASB_ACK);
 }
 
+/* ogles2: a reset of the V3D core through its reset line in the power
+ * manager, as Linux's bcm2835-power does for BCM2835_RESET_V3D: stop the
+ * AXI bridges (master first), hold the core in reset, then power_on_V3D
+ * releases it and the bridges; the performance counters are set up again
+ * as v3d_init does (every other register is programmed per job). For a
+ * GPU that stopped: a binning job abandoned while the binner waited for
+ * memory leaves control list thread 0 running forever, and only this, or
+ * switching the Raspberry Pi off, brings it back (an Amiga reboot does
+ * not reset the Pi). Returns 0 if the core answers with its identity. */
+int v3d_gpu_reset(V3DDevice* device)
+{
+    struct DOSBase* const DOSBase = device->dosbase;
+    ULONG n;
+
+    ASB_V3D_M_CTRL = ((ASB_V3D_M_CTRL) | PASSWORD | ASB_REQ_STOP);
+    for (n = 0; n < 1000000 && !((ASB_V3D_M_CTRL) & ASB_ACK); n++)
+        ;
+    ASB_V3D_S_CTRL = ((ASB_V3D_S_CTRL) | PASSWORD | ASB_REQ_STOP);
+    for (n = 0; n < 1000000 && !((ASB_V3D_S_CTRL) & ASB_ACK); n++)
+        ;
+    PM_GRAFX = (((PM_GRAFX) & ~PM_V3DRSTN) | PASSWORD);
+    Delay(1);
+    power_on_V3D(device);
+    V3D_PCTRE = V3D_PCTRC = LE32((1U<<(30-16)) - 1);
+    V3D_PCTRE = LE32(LE32(V3D_PCTRE) | 0x80000000);
+    return LE32(V3D_IDENT0) == 0x04443356 ? 0 : -1;
+}
+
 void v3d_read_info(V3DDevice* device)
 {
     ULONG identity1 = LE32(V3D_HUB_IDENT1);

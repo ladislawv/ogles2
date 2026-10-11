@@ -8,7 +8,9 @@
  * name being the hash's first 24 hex digits (FFS allows 30 characters); the
  * full hash in the file must match. A
  * program with no binary fails to link; its sources go to
- * T:ogles2_missing_shaders.txt for the offline compiler. Loaded images stay
+ * T:ogles2_missing_shaders.txt for the offline compiler; with the on-target
+ * compiler installed (LIBS:v3dglslc, compiler.c) the program is compiled
+ * into the disk cache first. Loaded images stay
  * in the context's program cache, by hash, until the context goes: a
  * relink, or another program with the same sources, reuses them (plan 7.8).
  *
@@ -163,6 +165,8 @@ static void free_shader(struct OGLES2Context *ctx, struct OGLES2Shader *s)
     ctx->objects[s->name] = 0;
     if (s->source)
         FreeVec(s->source);
+    if (s->info_log)
+        FreeVec(s->info_log);
     FreeVec(s);
 }
 
@@ -331,15 +335,55 @@ void ogles2_glShaderSource(struct OGLES2Context *ctx, GLuint shader, GLsizei cou
     s->source = src;
 }
 
+static void shader_record_path(char *path, const struct OGLES2Shader *s);
+static BOOL read_record(const char *path, char **log);
+static void write_record(const char *path, const char *log);
+static char *dup_text(const char *t, ULONG n);
+
+/* With the on-target compiler (plan 8.4) a shader is compiled here, for
+ * its GL_COMPILE_STATUS and info log; its record in the disk cache
+ * (shader_record) answers for it next time without the compiler. Without
+ * the compiler (S1, plan 7.8) the source is only kept and linking does the
+ * real work. */
 void ogles2_glCompileShader(struct OGLES2Context *ctx, GLuint shader)
 {
     struct OGLES2Shader *s;
+    char path[96], *log;
+    int rc;
     if (!ogles2_context_valid(ctx))
         return;
     if (!(s = lookup(ctx, shader, OGLES2_OBJ_SHADER)))
         return;
-    /* S1 (plan 7.8): the source is only kept; linking does the real work. */
-    s->compiled = s->source ? GL_TRUE : GL_FALSE;
+    if (s->info_log)
+        FreeVec(s->info_log);
+    s->info_log = 0;
+    s->compiled = GL_FALSE;
+    if (!s->source)
+        return;
+    if (!ogles2_compiler_installed()) {
+        s->compiled = GL_TRUE;
+        return;
+    }
+    shader_record_path(path, s);
+    if (read_record(path, &s->info_log)) {
+        s->compiled = GL_TRUE;
+        return;
+    }
+    if (!(log = AllocVec(4096, MEMF_ANY | MEMF_CLEAR))) {
+        s->compiled = GL_TRUE; /* checked again at link */
+        return;
+    }
+    rc = ogles2_compile_shader(s->type == GL_FRAGMENT_SHADER, s->source, log, 4096);
+    if (rc < 0) {
+        s->compiled = GL_TRUE; /* no compiler after all: as S1, the link decides */
+    } else {
+        s->compiled = rc ? GL_TRUE : GL_FALSE;
+        if (log[0])
+            s->info_log = dup_text(log, str_len(log));
+        if (rc)
+            write_record(path, log);
+    }
+    FreeVec(log);
 }
 
 void ogles2_glGetShaderiv(struct OGLES2Context *ctx, GLuint shader, GLenum pname, GLint *params)
@@ -353,7 +397,7 @@ void ogles2_glGetShaderiv(struct OGLES2Context *ctx, GLuint shader, GLenum pname
     case GL_SHADER_TYPE:          *params = (GLint)s->type; break;
     case GL_DELETE_STATUS:        *params = s->delete_pending ? GL_TRUE : GL_FALSE; break;
     case GL_COMPILE_STATUS:       *params = s->compiled; break;
-    case GL_INFO_LOG_LENGTH:      *params = 0; break; /* no log */
+    case GL_INFO_LOG_LENGTH:      *params = s->info_log ? (GLint)str_len(s->info_log) + 1 : 0; break;
     case GL_SHADER_SOURCE_LENGTH: *params = s->source ? (GLint)str_len(s->source) + 1 : 0; break;
     default:                      ogles2_error(ctx, GL_INVALID_ENUM); break;
     }
@@ -362,6 +406,7 @@ void ogles2_glGetShaderiv(struct OGLES2Context *ctx, GLuint shader, GLenum pname
 void ogles2_glGetShaderInfoLog(struct OGLES2Context *ctx, GLuint shader, GLsizei bufSize,
                                GLsizei *length, GLchar *infoLog)
 {
+    struct OGLES2Shader *s;
     GLsizei n;
     if (!ogles2_context_valid(ctx))
         return;
@@ -369,9 +414,9 @@ void ogles2_glGetShaderInfoLog(struct OGLES2Context *ctx, GLuint shader, GLsizei
         ogles2_error(ctx, GL_INVALID_VALUE);
         return;
     }
-    if (!lookup(ctx, shader, OGLES2_OBJ_SHADER))
+    if (!(s = lookup(ctx, shader, OGLES2_OBJ_SHADER)))
         return;
-    n = copy_out(infoLog, bufSize, "");
+    n = copy_out(infoLog, bufSize, s->info_log ? s->info_log : "");
     if (length)
         *length = n;
 }
@@ -570,6 +615,80 @@ static UBYTE *read_file(const char *path, ULONG *len)
     return buf;
 }
 
+/* ---- shader records (plan 8.4): <24 hex digits>.v3ds in the disk cache,
+ * one per shader the compiler accepted, holding its info log. The hash is
+ * BLAKE3 over the shader's stage and source, as for a one-shader program;
+ * the first line tags the file (a record with no messages is not empty). */
+#define RECORD_TAG "v3ds 1\n"
+
+static void shader_record_path(char *path, const struct OGLES2Shader *s)
+{
+    static const char digits[] = "0123456789abcdef";
+    struct blake3 h;
+    UBYTE out[32], w[8];
+    ULONG stage = s->type == GL_FRAGMENT_SHADER ? 4 : 0, len = str_len(s->source), i;
+    char *q;
+    blake3_init(&h);
+    for (i = 0; i < 4; i++) {
+        w[i] = (UBYTE)(stage >> (8 * i));
+        w[4 + i] = (UBYTE)(len >> (8 * i));
+    }
+    blake3_update(&h, w, 8);
+    blake3_update(&h, s->source, len);
+    blake3_final(&h, out);
+    strcpy(path, ogles2_cache_dir());
+    q = path + str_len(path);
+    for (i = 0; i < 12; i++) { /* 24 digits + ".v3ds": FFS's 30 characters */
+        *q++ = digits[out[i] >> 4];
+        *q++ = digits[out[i] & 15];
+    }
+    strcpy(q, ".v3ds");
+}
+
+static char *dup_text(const char *t, ULONG n)
+{
+    char *d = AllocVec(n + 1, MEMF_ANY);
+    if (d) {
+        memcpy(d, t, n);
+        d[n] = 0;
+    }
+    return d;
+}
+
+static BOOL read_record(const char *path, char **log)
+{
+    ULONG len = 0, tag = str_len(RECORD_TAG);
+    UBYTE *file = read_file(path, &len);
+    BOOL ok = file && len >= tag && !memcmp(file, RECORD_TAG, tag);
+    *log = ok && len > tag ? dup_text((const char *)file + tag, len - tag) : 0;
+    if (file)
+        FreeVec(file);
+    return ok;
+}
+
+static void write_record(const char *path, const char *log)
+{
+    BPTR fh = Open((STRPTR)path, MODE_NEWFILE);
+    if (!fh)
+        return;
+    FPuts(fh, (STRPTR)RECORD_TAG);
+    if (log && log[0])
+        FPuts(fh, (STRPTR)log);
+    Close(fh);
+}
+
+static void mark_compiled(const struct OGLES2Shader *s)
+{
+    char path[96], *log;
+    shader_record_path(path, s);
+    if (read_record(path, &log)) {
+        if (log)
+            FreeVec(log);
+        return;
+    }
+    write_record(path, s->info_log);
+}
+
 /* Appends a program without a binary to T:ogles2_missing_shaders.txt, for
  * the offline compiler (plan 7.8). */
 static void note_missing(const struct OGLES2Program *p, const char *hex)
@@ -590,35 +709,79 @@ static void note_missing(const struct OGLES2Program *p, const char *hex)
 
 #define FILE_HASH_DIGITS 24 /* + ".v3dp": 29 characters, FFS's limit is 30 */
 
-static struct OGLES2Image *load_image(struct OGLES2Program *p, const UBYTE *hash, const char *hex)
+/* Reads and checks one .v3dp file: the image, or 0 (with *refused set and
+ * the program's log when the file exists but is not usable). */
+static struct OGLES2Image *try_file(struct OGLES2Program *p, const UBYTE *hash, const char *path,
+                                    BOOL *refused)
 {
-    static const char *const dirs[] = {"PROGDIR:", "OGLES2Cache:"};
-    char path[96], why[120];
+    char why[120];
     struct OGLES2Image *im;
     UBYTE *file;
     ULONG len = 0;
+    *refused = FALSE;
+    if (!(file = read_file(path, &len)))
+        return 0;
+    im = ogles2_v3dp_load(file, len, why, sizeof(why));
+    FreeVec(file);
+    if (im && memcmp(im->hash, hash, 32)) {
+        /* The same first 24 digits, another program: not ours. */
+        ogles2_log("glLinkProgram: %s is another program (hash differs)", (ULONG)path);
+        ogles2_image_free(im, 0);
+        return 0;
+    }
+    if (im) {
+        ogles2_log("glLinkProgram: %s (%ld variants, %ld bytes of code)", (ULONG)path,
+                   (LONG)im->nvariants, im->code_total);
+        return im;
+    }
+    ogles2_log("glLinkProgram: %s refused: %s", (ULONG)path, (ULONG)why);
+    set_log(p, "the program binary was refused: ", why);
+    *refused = TRUE;
+    return 0;
+}
+
+static void file_path(char *path, const char *dir, const char *hex)
+{
+    strcpy(path, dir);
+    strncat(path, hex, FILE_HASH_DIGITS);
+    strcat(path, ".v3dp");
+}
+
+/* Plan 7.8: PROGDIR:, the disk cache (OGLES2Cache:, or T: when it is not
+ * assigned: that is where compiled programs go then), the on-target
+ * compiler, else the sources go to T:ogles2_missing_shaders.txt. */
+static struct OGLES2Image *load_image(struct OGLES2Program *p, const UBYTE *hash, const char *hex)
+{
+    char path[96];
+    struct OGLES2Image *im;
+    BOOL refused;
+    const char *dirs[2];
     int d;
+    dirs[0] = "PROGDIR:";
+    dirs[1] = ogles2_cache_dir();
     for (d = 0; d < 2; d++) {
-        strcpy(path, dirs[d]);
-        strncat(path, hex, FILE_HASH_DIGITS);
-        strcat(path, ".v3dp");
-        if (!(file = read_file(path, &len)))
-            continue;
-        im = ogles2_v3dp_load(file, len, why, sizeof(why));
-        FreeVec(file);
-        if (im && memcmp(im->hash, hash, 32)) {
-            /* The same first 24 digits, another program: not ours. */
-            ogles2_log("glLinkProgram: %s is another program (hash differs)", (ULONG)path);
-            ogles2_image_free(im, 0);
-            continue;
+        file_path(path, dirs[d], hex);
+        if ((im = try_file(p, hash, path, &refused)) || refused)
+            return im;
+    }
+    if (ogles2_compiler_installed()) {
+        char *log = AllocVec(4096, MEMF_ANY | MEMF_CLEAR);
+        BOOL ok;
+        if (!log) {
+            set_log(p, "out of memory", 0);
+            return 0;
         }
-        if (im) {
-            ogles2_log("glLinkProgram: %s (%ld variants, %ld bytes of code)", (ULONG)path,
-                       (LONG)im->nvariants, im->code_total);
+        file_path(path, dirs[1], hex);
+        ok = ogles2_compile_program(p->vs->source, p->fs->source, path, log, 4096);
+        if (ok && (im = try_file(p, hash, path, &refused))) {
+            FreeVec(log);
             return im;
         }
-        ogles2_log("glLinkProgram: %s refused: %s", (ULONG)path, (ULONG)why);
-        set_log(p, "the program binary was refused: ", why);
+        if (!ok) {
+            ogles2_log("glLinkProgram: the compiler failed: %s", (ULONG)log);
+            set_log(p, log[0] ? log : "the shader compiler could not be run", 0);
+        }
+        FreeVec(log);
         return 0;
     }
     ogles2_log("glLinkProgram: no binary for program %s (sources in T:ogles2_missing_shaders.txt)",
@@ -697,6 +860,8 @@ static BOOL bind_image(struct OGLES2Program *p, const struct OGLES2Image *im)
     return TRUE;
 }
 
+static void describe_variants(struct OGLES2Program *p, const struct OGLES2Image *im, const char *hex);
+
 void ogles2_glLinkProgram(struct OGLES2Context *ctx, GLuint program)
 {
     struct OGLES2Program *p;
@@ -711,7 +876,13 @@ void ogles2_glLinkProgram(struct OGLES2Context *ctx, GLuint program)
      * the job's records already point at its code (ogles2_image_free defers). */
     unlink_program(ctx, p);
     if (!p->vs || !p->fs || !p->vs->compiled || !p->fs->compiled) {
-        set_log(p, "a compiled vertex shader and fragment shader must be attached", 0);
+        /* Say which shader failed, with its compiler messages. */
+        if (p->vs && p->fs && !p->vs->compiled)
+            set_log(p, "the vertex shader did not compile:\n", p->vs->info_log);
+        else if (p->vs && p->fs && !p->fs->compiled)
+            set_log(p, "the fragment shader did not compile:\n", p->fs->info_log);
+        else
+            set_log(p, "a compiled vertex shader and fragment shader must be attached", 0);
         return;
     }
     program_hash(p, hash, hex);
@@ -722,13 +893,52 @@ void ogles2_glLinkProgram(struct OGLES2Context *ctx, GLuint program)
             return;
         im->next = ctx->images;
         ctx->images = im;
+        /* A binary proves both shaders compile: record them, so the next
+         * glCompileShader of either needs no compiler. */
+        if (ogles2_compiler_installed()) {
+            mark_compiled(p->vs);
+            mark_compiled(p->fs);
+        }
     }
     if (!bind_image(p, im)) {
         unlink_program(ctx, p);
         return;
     }
     p->linked = GL_TRUE;
-    set_log(p, "", 0);
+    if (ctx->debug_shader_log)
+        describe_variants(p, im, hex);
+    else
+        set_log(p, "", 0);
+}
+
+/* OGLES2_CCT_DEBUG_SHADER_LOG (plan 8.4): the link log describes what the
+ * program runs, one line per compiled variant, as Mesa's shader-db
+ * statistics do; also in the library's log. */
+static void describe_variants(struct OGLES2Program *p, const struct OGLES2Image *im, const char *hex)
+{
+    ULONG size = 80 + 96UL * im->nvariants, n;
+    char *t = AllocVec(size, MEMF_ANY);
+    UWORD i;
+    if (!t) {
+        set_log(p, "", 0);
+        return;
+    }
+    n = ogles2_format(t, size, "program %.24s: %ld variants\n", (ULONG)hex, (LONG)im->nvariants);
+    for (i = 0; i < im->nvariants; i++) {
+        const struct OGLES2Variant *v = &im->variants[i];
+        const char *what = v->stage == OGLES2_VARIANT_FS
+                               ? (v->is_points ? "fragment, points" : v->is_lines ? "fragment, lines"
+                                                                                  : "fragment, triangles")
+                               : v->stage == OGLES2_VARIANT_CS
+                                     ? (v->per_vertex_point_size ? "binning, points" : "binning")
+                                     : (v->per_vertex_point_size ? "vertex, points" : "vertex");
+        n += ogles2_format(t + n, size - n, "  %s: %ld instructions, %ld threads, %ld spill bytes, %ld uniforms\n",
+                           (ULONG)what, (LONG)(v->code_bytes / 8), (LONG)v->threads, (LONG)v->spill_size,
+                           (LONG)v->nrecipe);
+    }
+    set_log(p, t, 0);
+    ogles2_log("glLinkProgram: %s", (ULONG)t);
+    FreeVec(t);
 }
 
 /* A program on the built-in image (draw.c's clears). */
@@ -1316,11 +1526,6 @@ void ogles2_glGetShaderPrecisionFormat(struct OGLES2Context *ctx, GLenum shadert
     }
     if (precision)
         *precision = is_float ? 23 : 0;
-}
-
-void ogles2_glReleaseShaderCompiler(struct OGLES2Context *ctx)
-{
-    (void)ctx; /* nothing is held between compiles */
 }
 
 /* No shader binary formats (GL_NUM_SHADER_BINARY_FORMATS is 0): programs

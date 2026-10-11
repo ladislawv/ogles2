@@ -1,0 +1,86 @@
+; Run-M2 - ogles2 M4 run 2: gears, ogles2 against MiniGL. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M2
+;   After a reboot in the middle:  Execute Run-M2 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/. One library at a time: Avail FLUSH between
+; the two, so neither stays in memory while the other uses the GPU.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m4-2 directory first,"
+  Echo "then run:  Execute Run-M2"
+  Quit 20
+EndIf
+
+Assign M4R2: ""
+If NOT EXISTS M4R2:results
+  MakeDir M4R2:results
+EndIf
+Echo "ogles2 M4 run 2, starting at step {FROM}" >>M4R2:results/00-progress.txt
+Date >>M4R2:results/00-progress.txt
+Assign LIBS: M4R2:libs ADD
+Avail FLUSH >NIL:
+Version minigl.library FULL >M4R2:results/0-minigl-version.txt
+Avail FLUSH >NIL:
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 3: ogles2 on a hidden bitmap, 6 runs of 5 seconds (nothing to see)"
+  M4R2:bin/gears_gles2 TEETH=1  PATH=VBO    >M4R2:results/1-gles2.txt
+  M4R2:bin/gears_gles2 TEETH=1  PATH=ARRAYS >>M4R2:results/1-gles2.txt
+  M4R2:bin/gears_gles2 TEETH=10 PATH=VBO    >>M4R2:results/1-gles2.txt
+  M4R2:bin/gears_gles2 TEETH=10 PATH=ARRAYS >>M4R2:results/1-gles2.txt
+  M4R2:bin/gears_gles2 TEETH=40 PATH=VBO    >>M4R2:results/1-gles2.txt
+  M4R2:bin/gears_gles2 TEETH=40 PATH=ARRAYS >>M4R2:results/1-gles2.txt
+  Avail FLUSH >NIL:
+  Echo "step 1 done" >>M4R2:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 3: MiniGL on a hidden bitmap, 9 runs of 5 seconds (nothing to see)"
+  M4R2:bin/gears_mgl TEETH=1  PATH=IMMEDIATE >M4R2:results/2-mgl.txt
+  M4R2:bin/gears_mgl TEETH=1  PATH=ARRAYS    >>M4R2:results/2-mgl.txt
+  M4R2:bin/gears_mgl TEETH=1  PATH=LIST      >>M4R2:results/2-mgl.txt
+  M4R2:bin/gears_mgl TEETH=10 PATH=IMMEDIATE >>M4R2:results/2-mgl.txt
+  M4R2:bin/gears_mgl TEETH=10 PATH=ARRAYS    >>M4R2:results/2-mgl.txt
+  M4R2:bin/gears_mgl TEETH=10 PATH=LIST      >>M4R2:results/2-mgl.txt
+  M4R2:bin/gears_mgl TEETH=40 PATH=IMMEDIATE >>M4R2:results/2-mgl.txt
+  M4R2:bin/gears_mgl TEETH=40 PATH=ARRAYS    >>M4R2:results/2-mgl.txt
+  M4R2:bin/gears_mgl TEETH=40 PATH=LIST      >>M4R2:results/2-mgl.txt
+  Avail FLUSH >NIL:
+  Echo "step 2 done" >>M4R2:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 3: in a window, 4 runs of 5 seconds each."
+  Echo "  Look for: three gears (red, green, blue) turning; the window title"
+  Echo "  names the library. Both should look the same."
+  Echo "  ogles2, 800 triangles..."
+  M4R2:bin/gears_gles2 WINDOW TEETH=1 PATH=VBO >M4R2:results/3-window.txt
+  Avail FLUSH >NIL:
+  Echo "  MiniGL, 800 triangles..."
+  M4R2:bin/gears_mgl WINDOW TEETH=1 PATH=LIST >>M4R2:results/3-window.txt
+  Avail FLUSH >NIL:
+  Echo "  ogles2, 8000 triangles (fine teeth)..."
+  M4R2:bin/gears_gles2 WINDOW TEETH=10 PATH=VBO >>M4R2:results/3-window.txt
+  Avail FLUSH >NIL:
+  Echo "  MiniGL, 8000 triangles (fine teeth)..."
+  M4R2:bin/gears_mgl WINDOW TEETH=10 PATH=LIST >>M4R2:results/3-window.txt
+  Avail FLUSH >NIL:
+  Echo "step 3 done" >>M4R2:results/00-progress.txt
+EndIf
+
+Assign LIBS: M4R2:libs REMOVE
+If NOT EXISTS M4R2:results/notes.txt
+  Copy M4R2:notes-template.txt M4R2:results/notes.txt
+EndIf
+Copy T:ogles2.log M4R2:results/ogles2.log QUIET
+List M4R2:results >M4R2:results/99-files.txt
+Echo "finished" >>M4R2:results/00-progress.txt
+Date >>M4R2:results/00-progress.txt
+Assign M4R2:
+Echo ""
+Echo "Done. Results are in results/."

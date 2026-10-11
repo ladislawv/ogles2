@@ -1,0 +1,48 @@
+ogles2 M2: linking from program binaries, uniforms
+     smooth: link ok
+PASS: smooth: links from its binary
+PASS: smooth: 2 active attributes
+PASS: smooth: 1 active uniform
+PASS: smooth: u_mvp is a mat4
+PASS: smooth: attribute locations
+PASS: smooth: uniform locations
+PASS: smooth: glUniformMatrix4fv reads back
+PASS: smooth: transpose TRUE is GL_INVALID_VALUE
+PASS: smooth: glUniform4f on a mat4 is GL_INVALID_OPERATION
+PASS: smooth: location -1 is ignored
+     light: link ok
+PASS: light: links from its binary
+PASS: light: mat3 (columns 4 words apart) reads back
+PASS: light: array element locations
+PASS: light: light_dir[2] reads back
+PASS: light: a count past the array's end is cut
+PASS: light: int uniform reads back
+PASS: light: glUniform1f on an int is GL_INVALID_OPERATION
+PASS: light: 5 active uniforms
+PASS: light: glGetActiveUniform names light_dir[0], size 4
+     skin: link ok
+PASS: skin: links from its binary
+     smooth again: link ok
+PASS: smooth: links a second time (program cache)
+     state: link ok
+PASS: state: links from its binary
+     tex: link ok
+PASS: tex: links from its binary
+     smooth+comment: link ok
+PASS: a program without a binary is compiled on the Amiga (LIBS:v3dglslc)
+     broken: link failed: the vertex shader did not compile:
+0:2(33): error: `undefined_name' undeclared
+0:2(29): error: operands to arithmetic operators must be numeric
+
+PASS: a GLSL error fails the link, with the compiler's message in the info log
+     info log: the vertex shader did not compile:
+0:2(33): error: `undefined_name' undeclared
+0:2(29): error: operands to arithmetic operators must be numeric
+
+PASS: glCompileShader: GL_COMPILE_STATUS false, the message in the shader's info log
+     shader info log: 0:2(33): error: `undefined_name' undeclared
+0:2(29): error: operands to arithmetic operators must be numeric
+
+PASS: glCompileShader: a correct shader compiles
+PASS: no GL error left over
+ALL PASSED: 28 of 28 checks passed

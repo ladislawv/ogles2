@@ -1,0 +1,11 @@
+ogles2 M4: one frame of 400000 draws
+PASS: smooth: links
+     400000 draws issued in 4560 ms, 87719 draws/s
+     column 48: 00ff00, expected 701aff (draw 399984)
+     column 49: 00ff00, expected 711aff (draw 399985)
+     column 50: 00ff00, expected 721aff (draw 399986)
+FAIL: every column shows its last draw's colour (16 of 64 wrong)
+PASS: no GL error
+PASS: the next frame: column 10 ff0000 red, column 20 00ff00 green
+PASS: destroy returns the memory (0 bytes difference)
+FAILED: 4 of 5 checks passed

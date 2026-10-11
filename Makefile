@@ -39,9 +39,9 @@ GEN_STAMP := $(B)/gen/.stamp
 LIB_SRC   := ogles2/library.c ogles2/log.c ogles2/context.c ogles2/device.c ogles2/runtime.c \
              ogles2/state.c ogles2/display.c ogles2/job.c ogles2/frame.c ogles2/program.c \
              ogles2/draw.c ogles2/v3dp.c ogles2/blake3.c ogles2/texture.c \
-             ogles2/buffer.c
+             ogles2/buffer.c ogles2/compiler.c ogles2/etc1.c ogles2/fbo.c
 # Library files that use v3dcore directly
-V3D_USERS := device job draw v3dp texture buffer
+V3D_USERS := device job draw v3dp texture buffer fbo
 GEN_LIB   := $(B)/gen/ogles2/dispatch_table.c $(B)/gen/ogles2/stubs.c
 CLIENT_SRC := client/ogles2_open.c client/agl.c
 GEN_CLIENT := $(B)/gen/client/agl_gen.c $(B)/gen/client/procaddr.c
@@ -53,7 +53,7 @@ CLIENT_OBJ := $(patsubst %.c,$(B)/obj/%.o,$(CLIENT_SRC)) $(B)/obj/client/lvo.o \
 
 .PHONY: all gen clean vbcc
 all: $(B)/fpcheck.ok $(B)/libv3dcore.a $(B)/ogles2.library $(B)/libogles2.a $(B)/tests/abi_layout $(B)/tests/smoke \
-     $(B)/tests/abi_probe $(B)/tests/m1_clear $(B)/tests/m1_probe $(B)/tests/m1_draw $(B)/tests/m1_hwprobe $(B)/tests/m1_soak $(B)/tests/m2_link $(B)/tests/m2_texture $(B)/tests/m2_elements $(B)/tests/m2_buffers \
+     $(B)/tests/abi_probe $(B)/tests/m1_clear $(B)/tests/m1_probe $(B)/tests/m1_draw $(B)/tests/m1_hwprobe $(B)/tests/m1_soak $(B)/tests/m2_link $(B)/tests/m2_texture $(B)/tests/m2_elements $(B)/tests/m2_buffers $(B)/tests/m4_stress $(B)/tests/m4_depth $(B)/tests/m4_setbitmap $(B)/tests/gears_gles2 $(B)/tests/m5_fbo \
      $(B)/cmd/OGLES2Log $(B)/amictl/amictld
 
 # ---- generated code (plan section 6.6). Re-run when the inputs or the set of
@@ -153,6 +153,33 @@ $(B)/tests/m2_elements: tests/m2_elements/m2_elements.c $(B)/libogles2.a
 $(B)/tests/m2_buffers: tests/m2_buffers/m2_buffers.c $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m4_stress: tests/m4_stress/m4_stress.c $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m4_depth: tests/m4_depth/m4_depth.c $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m5_fbo: tests/m5_fbo/m5_fbo.c $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m4_setbitmap: tests/m4_setbitmap/m4_setbitmap.c $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/gears_gles2: tests/perf/gears_gles2.c tests/perf/perf_gears.h tests/perf/perf_target.h \
+                       tests/common/lit_shaders.h $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -fno-builtin $(INC) $< -L$(B) -logles2 -lm881 -o $@
+
+# ---- the MiniGL side of the speed comparison (tests/perf): needs the SDK
+# directory of PiStorm3D 29.1 (Aminet util/libs/PiStorm3D.lha, SDK/).
+MGL_SDK ?= $(HOME)/minigl-29.1/SDK
+.PHONY: perf-mgl
+perf-mgl: $(B)/tests/gears_mgl
+$(B)/tests/gears_mgl: tests/perf/gears_mgl.c tests/perf/perf_gears.h tests/perf/perf_target.h
+	@test -f $(MGL_SDK)/lib/libminigl.a || { echo "MGL_SDK=$(MGL_SDK): no PiStorm3D 29.1 SDK there"; exit 1; }
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -fno-builtin -Wno-sign-compare -I$(MGL_SDK)/minigl-shared-library/include $< -L$(MGL_SDK)/lib -lminigl -lm881 -o $@
+
 $(B)/tests/m2_texture: tests/m2_texture/m2_texture.c $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
@@ -236,6 +263,15 @@ $(B)/v3dp/.stamp: $(wildcard tests/common/*.h) tools/v3dp_tests/emit.c v3dp/v3dp
 	    $(V3DGLSLC) -o .. $$v $${v%.vert}.frag || exit 1; done
 	$(PYTHON) v3dp/v3dp_hashname.py $(B)/v3dp/*.v3dp
 	touch $@
+
+# ---- host check of ogles2/etc1.c against Mesa's ETC1 decoder
+.PHONY: etc1-test
+etc1-test:
+	@mkdir -p $(B)/host
+	gcc -O2 -DETC1_HOST_TEST -DUTIL_ARCH_LITTLE_ENDIAN=1 -DUTIL_ARCH_BIG_ENDIAN=0 -Iogles2 -I$(MESA_SRC) -I$(MESA_SRC)/../include \
+	    tools/etc1_test/etc1_test.c ogles2/etc1.c $(MESA_SRC)/util/format/u_format_etc.c \
+	    -o $(B)/host/etc1_test
+	$(B)/host/etc1_test
 
 # ---- host check of ogles2/blake3.c against Mesa's BLAKE3
 MESA_SRC ?= $(HOME)/mesa-build/mesa/src

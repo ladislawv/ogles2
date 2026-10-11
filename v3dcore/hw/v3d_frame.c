@@ -215,7 +215,7 @@ void v3d_frame_retire(V3DDevice* device, V3DFrame* frame)
             int spill = frame->retire[i].is_spill;
 
             frame->retire[i] = frame->retire[--frame->retire_count];   /* swap-remove; re-test slot i */
-            if (spill && frame->spill_count < V3D_MAX_SPILL_BLOCKS)
+            if (spill && frame->spill_count < V3D_SPILL_POOL) /* ogles2: the pool, not the per-job cap */
                 frame->spill_blocks[frame->spill_count++] = m;
             else
                 v3d_mem_free(device, &m);

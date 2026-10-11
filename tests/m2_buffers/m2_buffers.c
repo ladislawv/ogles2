@@ -333,6 +333,92 @@ static void test_mixed(void)
     }
 }
 
+/* glBufferSubData between frames: the copy is patched where the bytes
+ * changed (plan 7.5); the other quads keep theirs. */
+static void test_partial(void)
+{
+    struct vtx v[16];
+    unsigned long p[4];
+    char msg[160];
+    GLuint b;
+    int i;
+    quad(v, 0, 1, 0, 0);
+    quad(v + 4, 1, 0, 1, 0);
+    quad(v + 8, 2, 0, 0, 1);
+    quad(v + 12, 3, 1, 1, 1);
+    glGenBuffers(1, &b);
+    glBindBuffer(GL_ARRAY_BUFFER, b);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_DYNAMIC_DRAW);
+    interleaved();
+    glClear(GL_COLOR_BUFFER_BIT);
+    for (i = 0; i < 4; i++)
+        glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
+    aglSwapBuffers();
+    /* Quad 2's colours only (bytes in the middle of the buffer). */
+    for (i = 8; i < 12; i++) {
+        v[i].r = 1;
+        v[i].g = 0;
+        v[i].b = 1;
+    }
+    glBufferSubData(GL_ARRAY_BUFFER, 8 * sizeof(struct vtx), 4 * sizeof(struct vtx), v + 8);
+    glClear(GL_COLOR_BUFFER_BIT);
+    for (i = 0; i < 4; i++)
+        glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
+    aglSwapBuffers();
+    for (i = 0; i < 4; i++)
+        p[i] = at(i);
+    sprintf(msg, "glBufferSubData of quad 2 between frames: %06lx %06lx %06lx %06lx (ff0000 00ff00 ff00ff ffffff)",
+            p[0], p[1], p[2], p[3]);
+    check(p[0] == 0xFF0000 && p[1] == 0x00FF00 && p[2] == 0xFF00FF && p[3] == 0xFFFFFF, msg);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &b);
+}
+
+/* OES_mapbuffer: the mapped buffer is written through the pointer. */
+static void test_map(void)
+{
+    struct vtx v[4], *m;
+    void *ptr = (void *)1;
+    GLint mapped = -1, access = 0;
+    unsigned long c;
+    char msg[160];
+    const char *ext = (const char *)glGetString(GL_EXTENSIONS);
+    GLuint b;
+    int i;
+    quad(v, 0, 1, 0, 0);
+    glGenBuffers(1, &b);
+    glBindBuffer(GL_ARRAY_BUFFER, b);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_DYNAMIC_DRAW);
+    interleaved();
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); /* red, then mapped and changed */
+    aglSwapBuffers();
+    m = (struct vtx *)glMapBufferOES(GL_ARRAY_BUFFER, 0x88B9 /* GL_WRITE_ONLY_OES */);
+    glGetBufferParameteriv(GL_ARRAY_BUFFER, 0x88BC /* GL_BUFFER_MAPPED_OES */, &mapped);
+    glGetBufferParameteriv(GL_ARRAY_BUFFER, 0x88BB /* GL_BUFFER_ACCESS_OES */, &access);
+    glGetBufferPointervOES(GL_ARRAY_BUFFER, 0x88BD /* GL_BUFFER_MAP_POINTER_OES */, &ptr);
+    check(ext && strstr(ext, "GL_OES_mapbuffer") && m && mapped == GL_TRUE && access == 0x88B9 && ptr == m,
+          "glMapBufferOES: a pointer, GL_BUFFER_MAPPED_OES, the access, glGetBufferPointervOES");
+    glMapBufferOES(GL_ARRAY_BUFFER, 0x88B9);
+    check(glGetError() == GL_INVALID_OPERATION, "a second glMapBufferOES: GL_INVALID_OPERATION");
+    if (m)
+        for (i = 0; i < 4; i++) {
+            m[i].r = 0;
+            m[i].g = 0;
+            m[i].b = 1;
+        }
+    check(glUnmapBufferOES(GL_ARRAY_BUFFER) == GL_TRUE, "glUnmapBufferOES returns GL_TRUE");
+    glGetBufferParameteriv(GL_ARRAY_BUFFER, 0x88BC, &mapped);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    aglSwapBuffers();
+    c = at(0);
+    sprintf(msg, "drawn after the mapping: %06lx (0000ff), mapped now %ld", c, (long)mapped);
+    check(c == 0x0000FF && mapped == GL_FALSE, msg);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &b);
+}
+
 static void test_reuse(void)
 {
     struct vtx v[4];
@@ -391,6 +477,8 @@ int main(void)
         test_rename();
         test_elements();
         test_mixed();
+        test_partial();
+        test_map();
         test_reuse();
         glUseProgram(0);
         glDeleteProgram(prog);

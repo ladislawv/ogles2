@@ -1,0 +1,97 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 300x300, BGRA
+    13 device: context pools for 300x300, D32F, 17936512 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08F2C694, 300x300
+    15 glLinkProgram: PROGDIR:116c7f8ab592b44a27c26df0.v3dp (5 variants, 1208 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08F2C694 (60 frames, 0 dropped, 0 binning blocks added)
+    18 close (count 0)
+    19 open (count 1)
+    20 display: own window, 320x240, BGRA
+    21 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    22 aglCreateContext2: context 0x08F2CF54, 320x240
+    23 glLinkProgram: PROGDIR:66ac464d160a81e721423e14.v3dp (5 variants, 488 bytes of code)
+    24 device: context freed, 0 bytes of GPU memory still in use
+    25 aglDestroyContext: context 0x08F2CF54 (60 frames, 0 dropped, 0 binning blocks added)
+    26 close (count 0)
+    27 open (count 1)
+    28 display: own window, 320x240, BGRA
+    29 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    30 aglCreateContext2: context 0x08F2CF2C, 320x240
+    31 glLinkProgram: PROGDIR:7257e433dac541553f148da1.v3dp (5 variants, 784 bytes of code)
+    32 device: context freed, 0 bytes of GPU memory still in use
+    33 aglDestroyContext: context 0x08F2CF2C (60 frames, 0 dropped, 0 binning blocks added)
+    34 close (count 0)
+    35 open (count 1)
+    36 display: own window, 320x240, BGRA
+    37 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    38 aglCreateContext2: context 0x08FBC59C, 320x240
+    39 glLinkProgram: PROGDIR:7af46f2bb57ef22b5eaba45e.v3dp (5 variants, 632 bytes of code)
+    40 device: context freed, 0 bytes of GPU memory still in use
+    41 aglDestroyContext: context 0x08FBC59C (60 frames, 0 dropped, 0 binning blocks added)
+    42 close (count 0)
+    43 open (count 1)
+    44 display: own window, 320x240, BGRA
+    45 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    46 aglCreateContext2: context 0x08FBC59C, 320x240
+    47 glLinkProgram: PROGDIR:bca9c42c70e7f7a108913d9d.v3dp (5 variants, 640 bytes of code)
+    48 device: context freed, 0 bytes of GPU memory still in use
+    49 aglDestroyContext: context 0x08FBC59C (60 frames, 0 dropped, 0 binning blocks added)
+    50 close (count 0)
+    51 open (count 1)
+    52 display: own window, 640x480, BGRA
+    53 device: context pools for 640x480, D16, 18196864 bytes of GPU memory in use
+    54 aglCreateContext2: context 0x08FBC59C, 640x480
+    55 glLinkProgram: PROGDIR:bca9c42c70e7f7a108913d9d.v3dp (5 variants, 640 bytes of code)
+    56 device: context freed, 0 bytes of GPU memory still in use
+    57 aglDestroyContext: context 0x08FBC59C (60 frames, 0 dropped, 0 binning blocks added)
+    58 close (count 0)
+    59 open (count 1)
+    60 display: own window, 320x240, BGRA
+    61 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    62 aglCreateContext2: context 0x08F2CEDC, 320x240
+    63 glLinkProgram: PROGDIR:6d2a1e12b9ff17e0aab9a912.v3dp (5 variants, 840 bytes of code)
+    64 device: context freed, 0 bytes of GPU memory still in use
+    65 aglDestroyContext: context 0x08F2CEDC (60 frames, 0 dropped, 0 binning blocks added)
+    66 close (count 0)
+    67 open (count 1)
+    68 display: own window, 320x240, BGRA
+    69 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    70 aglCreateContext2: context 0x08F2CEDC, 320x240
+    71 glLinkProgram: PROGDIR:990b2b682ad48101576dd1a2.v3dp (5 variants, 800 bytes of code)
+    72 device: context freed, 0 bytes of GPU memory still in use
+    73 aglDestroyContext: context 0x08F2CEDC (60 frames, 0 dropped, 0 binning blocks added)
+    74 close (count 0)
+    75 open (count 1)
+    76 display: own window, 320x240, BGRA
+    77 device: context pools for 320x240, D32F, 17847680 bytes of GPU memory in use
+    78 aglCreateContext2: context 0x08F2CEDC, 320x240
+    79 glLinkProgram: PROGDIR:f918689ef7239515ab686e39.v3dp (5 variants, 512 bytes of code)
+    80 device: context freed, 0 bytes of GPU memory still in use
+    81 aglDestroyContext: context 0x08F2CEDC (60 frames, 0 dropped, 0 binning blocks added)
+    82 close (count 0)
+    83 open (count 1)
+    84 display: own window, 320x240, BGRA
+    85 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    86 aglCreateContext2: context 0x08F2CEDC, 320x240
+    87 glLinkProgram: PROGDIR:f918689ef7239515ab686e39.v3dp (5 variants, 512 bytes of code)
+    88 device: context freed, 0 bytes of GPU memory still in use
+    89 aglDestroyContext: context 0x08F2CEDC (60 frames, 0 dropped, 0 binning blocks added)
+    90 close (count 0)
+    91 open (count 1)
+    92 display: own window, 640x480, BGRA
+    93 device: context pools for 640x480, D16, 18196864 bytes of GPU memory in use
+    94 aglCreateContext2: context 0x08F2CEDC, 640x480
+    95 glLinkProgram: PROGDIR:792b5f51feb2b90c5ddfefa7.v3dp (7 variants, 1712 bytes of code)
+    96 device: context freed, 0 bytes of GPU memory still in use
+    97 aglDestroyContext: context 0x08F2CEDC (60 frames, 0 dropped, 0 binning blocks added)

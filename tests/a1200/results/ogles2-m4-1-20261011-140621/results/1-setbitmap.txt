@@ -1,0 +1,16 @@
+ogles2 M4: aglSetBitmap
+PASS: smooth: links
+PASS: A (256x128): red
+PASS: after aglSetBitmap(B): the size queries answer 160x96 (160x96)
+PASS: A untouched by B's clear
+PASS: B: depth across glReadPixels at the new size: left 0000ff (0000ff), right ff00ff (ff00ff), read 0000ff
+PASS: B: the frame reaches B's corners: 0000ff ff00ff 0000ff ff00ff
+PASS: A keeps its frame (red)
+PASS: a planar bitmap is refused: still 160x96, B yellow
+PASS: back to A: 256x128, A cyan to its corners, B still yellow
+PASS: A2 (same size): magenta, A still cyan
+PASS: an unswapped frame is rendered into the old bitmap (A2 white), A still cyan
+FAIL: A after that: blue
+PASS: no GL error
+PASS: destroy returns the memory (0 bytes difference)
+FAILED: 13 of 14 checks passed

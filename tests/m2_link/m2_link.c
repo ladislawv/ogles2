@@ -191,21 +191,83 @@ static void test_links(const char *name)
     glDeleteProgram(p);
 }
 
+/* OGLES2_CCT_DEBUG_SHADER_LOG (the context has it): a linked program's
+ * info log describes its variants. */
+static void test_debug_log(void)
+{
+    GLint ok;
+    char log[1024];
+    GLuint p = link_files("tex", &ok);
+    log[0] = 0;
+    glGetProgramInfoLog(p, sizeof(log), 0, log);
+    check(ok && strstr(log, "fragment, points: ") && strstr(log, " instructions, ") &&
+              strstr(log, "binning"),
+          "OGLES2_CCT_DEBUG_SHADER_LOG: the link log lists the variants");
+    glDeleteProgram(p);
+}
+
+/* A program no binary exists for: compiled on the Amiga when the compiler
+ * is installed (LIBS:v3dglslc, plan 8.4), else a link failure that leaves
+ * its sources in T:ogles2_missing_shaders.txt. */
 static void test_missing(void)
 {
     GLint ok;
     BPTR l;
     char vs[600];
     GLuint p;
+    BOOL compiler;
+    l = Lock((STRPTR) "LIBS:v3dglslc", ACCESS_READ);
+    compiler = l != 0;
+    if (l)
+        UnLock(l);
     sprintf(vs, "%s// a comment no binary has\n", smooth_vs);
     DeleteFile((STRPTR) "T:ogles2_missing_shaders.txt");
     p = link("smooth+comment", vs, smooth_fs, &ok);
-    check(!ok, "a program without a binary fails to link");
-    l = Lock((STRPTR) "T:ogles2_missing_shaders.txt", ACCESS_READ);
-    check(l != 0, "its sources are in T:ogles2_missing_shaders.txt");
-    if (l)
-        UnLock(l);
+    if (compiler) {
+        check(ok, "a program without a binary is compiled on the Amiga (LIBS:v3dglslc)");
+    } else {
+        check(!ok, "a program without a binary fails to link");
+        l = Lock((STRPTR) "T:ogles2_missing_shaders.txt", ACCESS_READ);
+        check(l != 0, "its sources are in T:ogles2_missing_shaders.txt");
+        if (l)
+            UnLock(l);
+    }
     glDeleteProgram(p);
+    if (compiler) {
+        /* GLSL errors reach the program's info log. */
+        static const char bad_vs[] = "attribute vec4 a;\nvoid main() { gl_Position = a + undefined_name; }\n";
+        char log[512];
+        log[0] = 0;
+        p = link("broken", bad_vs, smooth_fs, &ok);
+        glGetProgramInfoLog(p, sizeof(log), 0, log);
+        check(!ok && strstr(log, "undefined_name") != 0,
+              "a GLSL error fails the link, with the compiler's message in the info log");
+        printf("     info log: %.200s\n", log);
+        glDeleteProgram(p);
+        {
+            /* ... and glCompileShader reports it already. */
+            const char *src = bad_vs;
+            GLuint s = glCreateShader(GL_VERTEX_SHADER);
+            GLint status = -1, len = 0;
+            glShaderSource(s, 1, &src, 0);
+            glCompileShader(s);
+            glGetShaderiv(s, GL_COMPILE_STATUS, &status);
+            glGetShaderiv(s, GL_INFO_LOG_LENGTH, &len);
+            log[0] = 0;
+            glGetShaderInfoLog(s, sizeof(log), 0, log);
+            check(status == GL_FALSE && len > 1 && strstr(log, "undefined_name") != 0,
+                  "glCompileShader: GL_COMPILE_STATUS false, the message in the shader's info log");
+            printf("     shader info log: %.200s\n", log);
+            glDeleteShader(s);
+            src = smooth_vs;
+            s = glCreateShader(GL_VERTEX_SHADER);
+            glShaderSource(s, 1, &src, 0);
+            glCompileShader(s);
+            glGetShaderiv(s, GL_COMPILE_STATUS, &status);
+            check(status == GL_TRUE, "glCompileShader: a correct shader compiles");
+            glDeleteShader(s);
+        }
+    }
 }
 
 int main(int argc, char **argv)
@@ -221,7 +283,8 @@ int main(int argc, char **argv)
         printf("cannot open %s\n", OGLES2NAME);
         return 20;
     }
-    ctx = aglCreateContextTags2(&err, OGLES2_CCT_PISTORM_STATE_ONLY, TRUE, TAG_DONE);
+    ctx = aglCreateContextTags2(&err, OGLES2_CCT_PISTORM_STATE_ONLY, TRUE,
+                                OGLES2_CCT_DEBUG_SHADER_LOG, TRUE, TAG_DONE);
     if (!ctx) {
         printf("FAIL: create a state-only context (error %lu)\n", (unsigned long)err);
         return 20;
@@ -239,6 +302,7 @@ int main(int argc, char **argv)
     }
     test_links("state");
     test_links("tex");
+    test_debug_log();
     test_missing();
     check(glGetError() == GL_NO_ERROR, "no GL error left over");
     aglDestroyContext(ctx);

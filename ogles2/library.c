@@ -67,6 +67,7 @@ static struct OGLES2Library *LibInit(REG("d0", struct OGLES2Library *, base),
     base->lib.lib_IdString = (char *)LibId;
     base->segList = seglist;
     InitSemaphore(&base->lock);
+    InitSemaphore(&base->compiler_lock);
     OGLES2LibBase = base;
 
     DOSBase = (struct DosLibrary *)OpenLibrary("dos.library", 37);
@@ -110,6 +111,7 @@ static BPTR LibExpunge(REG("a6", struct OGLES2Library *, base))
     }
     seg = base->segList;
     Remove((struct Node *)base);
+    ogles2_compiler_stop(); /* exec only: no waiting under Forbid() */
     ogles2_display_libs_close();
     ogles2_log_term();
     close_system_libraries();

@@ -5,19 +5,30 @@ OpenGL ES 2.0 for 68k AmigaOS, drawn by the Raspberry Pi 4's GPU (Broadcom V3D 4
 [Emu68](https://github.com/michalsc/Emu68). The API is source-compatible with AmigaOS 4's
 `ogles2.library`: the GLES2 functions plus the `agl*` context calls.
 
-**Status: milestone M2 of 8 is complete** (see [the development plan](docs/DEVELOPMENT_PLAN.md),
-§9 for the milestones and §13 for the current state and next steps).
+**Status: milestones M0 to M5 of 8 are complete** (see
+[the development plan](docs/DEVELOPMENT_PLAN.md), §9 for the milestones and §13 for the current
+state and next steps).
 
-- 129 of the 148 entry points are implemented. The 19 left are framebuffer objects (M5),
-  `glCopyTex(Sub)Image2D`, `glCompressedTex(Sub)Image2D` and `aglSetBitmap`.
+- All 148 entry points are implemented (the GLES2 core and the `agl*` context calls),
+  framebuffer objects included. Extensions: `OES_element_index_uint`,
+  `OES_compressed_ETC1_RGB8_texture`, `EXT_texture_format_BGRA8888`, `OES_mapbuffer`,
+  `EXT_blend_minmax`, `OES_draw_elements_base_vertex`, `OES_rgb8_rgba8`,
+  `OES_packed_depth_stencil`, `OES_fbo_render_mipmap`, `EXT_discard_framebuffer`.
+- Faster than MiniGL: the same gears scene at 640x480 runs at 834 fps on ogles2's vertex
+  buffers against 669 fps for PiStorm3D 29.1's MiniGL (display lists, its fastest path), and at
+  411 against 47 fps with 32,000 triangles (`tests/perf`, plan §13).
 - Real programs run unmodified: es2gears and ten samples from the *OpenGL ES 2.0 Programming
   Guide* match Mesa's reference images on a real A1200 (`tests/corpus`, 11 of 11).
-- **Shaders are compiled offline for now.** The library loads a program's compiled shaders
-  from a `.v3dp` file found by the hash of its GLSL sources. Compiling GLSL on the Amiga is
-  the next milestone (M3). A program whose `.v3dp` is missing fails to link and its sources
-  are written to `T:ogles2_missing_shaders.txt` for the offline compiler.
-- Not yet: framebuffer objects, native (non-RGBA8) texture formats, multisampling, depth and
-  stencil kept across a frame boundary. This is development software, not a release.
+- **Shaders compile on the Amiga** (M3): with the compiler installed as
+  `LIBS:v3dglslc`, a program the library has no binary for is compiled at `glLinkProgram`
+  (about 0.2 s, after a one-time start of the compiler) into the disk cache, bit-identical
+  to the offline compiler's output. Without it, the library loads binaries compiled on a PC
+  (`.v3dp` files, found by the hash of the GLSL sources) and writes the sources of missing
+  ones to `T:ogles2_missing_shaders.txt`. `glCompileShader` reports GLSL errors with the
+  compiler's messages; `OGLES2_CCT_DEBUG_SHADER_LOG` makes link logs describe each compiled
+  variant (instructions, threads, spills).
+- Not yet: multisampling, several contexts sharing objects. This is development software, not a
+  release.
 
 ## Requirements
 
@@ -48,10 +59,13 @@ with `-lm881`, not `-lm` (see [CONTRIBUTING.md](CONTRIBUTING.md#traps)). Without
 screen tag the library opens its own window; `OGLES2_CCT_WINDOW`, `OGLES2_CCT_MODEID` and
 `OGLES2_CCT_BITMAP` render into yours (`include/libraries/ogles2.h`).
 
-**Shaders:** run the program once; the library appends each missing program's sources to
-`T:ogles2_missing_shaders.txt`. On the PC, `v3dp/split_shaders.py` splits that file,
-`v3dglslc` (`tools/v3dglslc`) compiles each pair to `.v3dp`, and `v3dp/v3dp_hashname.py`
-names the files by hash. Put them next to the program (`PROGDIR:`) or in `OGLES2Cache:`.
+**Shaders:** with `LIBS:v3dglslc` installed nothing is needed: programs are compiled when they
+link, into `OGLES2Cache:` if that assign exists (kept), else `T:`. To ship binaries instead (or
+without the compiler): run the program once; the library appends each missing program's
+sources to `T:ogles2_missing_shaders.txt`. On the PC, `v3dp/split_shaders.py` splits that
+file, `v3dglslc` (`tools/v3dglslc`) compiles each pair to `.v3dp`, and
+`v3dp/v3dp_hashname.py` names the files by hash. Put them next to the program (`PROGDIR:`)
+or in `OGLES2Cache:`.
 
 **Logging:** the library logs to `T:ogles2.log`, or to the file named in `ENV:OGLES2/LogFile`;
 `OGLES2Log` (in `cmd/`) writes the buffered log while a program is still running.

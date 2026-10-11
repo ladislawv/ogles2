@@ -24,11 +24,16 @@ jobs:
       - name: Remote test station (amictld host build + amictl client)
         run: make amictl-test B=build
 
-      - name: BLAKE3 against Mesa's (Mesa at the pinned commit, src/util/blake3 only)
+      - name: Mesa at the pinned commit (src/util and include only)
         run: |
           git init -q mesa
           git -C mesa remote add origin https://gitlab.freedesktop.org/mesa/mesa.git
-          git -C mesa sparse-checkout set --no-cone /src/util/blake3/
-          git -C mesa fetch -q --depth 1 origin 74b69717c52b73494200e11e2dd97aa346d552dd
+          git -C mesa sparse-checkout set --no-cone /src/util/ /include/
+          git -C mesa fetch -q --depth 1 --filter=blob:none origin 74b69717c52b73494200e11e2dd97aa346d552dd
           git -C mesa -c advice.detachedHead=false checkout -q FETCH_HEAD
-          make blake3-test B=build MESA_SRC=$PWD/mesa/src
+
+      - name: BLAKE3 against Mesa's
+        run: make blake3-test B=build MESA_SRC=$PWD/mesa/src
+
+      - name: ETC1 decoding against Mesa's
+        run: make etc1-test B=build MESA_SRC=$PWD/mesa/src

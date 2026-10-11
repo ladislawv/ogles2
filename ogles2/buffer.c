@@ -7,9 +7,12 @@
  * sources an attribute from a buffer gets a GPU copy of the whole buffer
  * read with that attribute's layout (offset, size, type, stride), converted
  * once (byte-swapped, tightly packed at a 4-byte stride, as client arrays
- * are) and kept, up to OGLES2_BUFFER_COPIES layouts per buffer, until the
- * data change. Changing the data while the open job still uses a copy
- * retires that copy with the job (renaming, plan 7.3), so nothing waits.
+ * are) and kept, up to OGLES2_BUFFER_COPIES layouts per buffer. A change of
+ * part of the data (glBufferSubData) re-converts only the elements it
+ * touches in each copy the open job does not use; a copy the open job uses
+ * is retired with the job instead (renaming, plan 7.3), so nothing waits.
+ * glBufferData and glUnmapBufferOES (OES_mapbuffer: the mapping is the
+ * shadow itself) start every copy afresh.
  * Element buffers are read from the shadow: their indices are copied per
  * draw, as client indices are.
  */
@@ -23,6 +26,14 @@
 
 #define OGLES2_BUFFER_COPIES 8
 
+/* OES_mapbuffer (gl2ext.h) */
+#ifndef GL_WRITE_ONLY_OES
+#define GL_WRITE_ONLY_OES         0x88B9
+#define GL_BUFFER_ACCESS_OES      0x88BB
+#define GL_BUFFER_MAPPED_OES      0x88BC
+#define GL_BUFFER_MAP_POINTER_OES 0x88BD
+#endif
+
 struct gpu_copy
 {
     v3d_mem mem;
@@ -35,6 +46,9 @@ struct gpu_copy
     ULONG dst_stride;
     ULONG used_job;          /* the job that last drew from it */
     BOOL normalized;
+    ULONG elem_bytes;        /* one element as the application stores it */
+    void (*convert)(UBYTE *dst, ULONG dst_stride, const UBYTE *src, ULONG src_stride, ULONG count,
+                    GLint size, GLenum type); /* draw.c's, for partial updates */
 };
 
 struct OGLES2Buffer
@@ -45,6 +59,7 @@ struct OGLES2Buffer
     UBYTE *data;             /* shadow, AllocVec'd; NULL while size is 0 */
     ULONG serial;            /* bumped on every change of the data */
     BOOL bound_once;         /* a buffer object exists once bound (GLES 2.0 2.9) */
+    BOOL mapped;             /* OES_mapbuffer: glMapBufferOES handed out the shadow */
     struct gpu_copy copy[OGLES2_BUFFER_COPIES];
 };
 
@@ -283,7 +298,46 @@ void ogles2_glBufferData(struct OGLES2Context *ctx, GLenum target, GLsizeiptr si
     b->data = shadow;
     b->size = (ULONG)size;
     b->usage = usage;
+    b->mapped = FALSE; /* new storage: an old mapping is gone */
     b->serial++;
+}
+
+/* Bytes [off, off+len) of the shadow changed (plan 7.5): each copy the open
+ * job does not read re-converts the elements those bytes touch, in place;
+ * a copy the open job reads is retired with it and rebuilt at its next use.
+ * The data serial has been bumped already. */
+static void patch_copies(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULONG off, ULONG len)
+{
+    int k;
+    for (k = 0; k < OGLES2_BUFFER_COPIES; k++) {
+        struct gpu_copy *c = &b->copy[k];
+        ULONG stride, i0, i1, n;
+        if (!c->mem.hostptr)
+            continue;
+        if (c->serial != b->serial - 1 || !c->convert ||
+            (ctx->v3d && ctx->v3d->frame_active && c->used_job == ctx->job_serial)) {
+            drop_copy(ctx, c);
+            continue;
+        }
+        c->serial = b->serial;
+        stride = c->stride ? (ULONG)c->stride : c->elem_bytes;
+        /* Element i spans [c->offset + i*stride, + elem_bytes). */
+        if (off + len <= c->offset)
+            continue;
+        i0 = off + 1 > c->offset + c->elem_bytes ? (off + 1 - c->offset - c->elem_bytes + stride - 1) / stride : 0;
+        i1 = (off + len - 1 - c->offset) / stride;
+        if (i1 >= c->vertices)
+            i1 = c->vertices - 1;
+        if (i0 > i1)
+            continue;
+        n = i1 - i0 + 1;
+        c->convert((UBYTE *)c->mem.hostptr + i0 * c->dst_stride, c->dst_stride,
+                   b->data + c->offset + i0 * stride, stride, n, c->size, c->type);
+        {
+            ULONG flush = n * c->dst_stride;
+            CachePreDMA((UBYTE *)c->mem.hostptr + i0 * c->dst_stride, &flush, 0);
+        }
+    }
 }
 
 void ogles2_glBufferSubData(struct OGLES2Context *ctx, GLenum target, GLintptr offset, GLsizeiptr size,
@@ -308,10 +362,8 @@ void ogles2_glBufferSubData(struct OGLES2Context *ctx, GLenum target, GLintptr o
     if (!size || !data)
         return;
     memcpy(b->data + offset, data, (ULONG)size);
-    /* v1: every copy is rebuilt whole at its next use (plan 7.5 wants only
-     * the changed range re-swapped: later). */
-    drop_copies(ctx, b);
     b->serial++;
+    patch_copies(ctx, b, (ULONG)offset, (ULONG)size);
 }
 
 void ogles2_glGetBufferParameteriv(struct OGLES2Context *ctx, GLenum target, GLenum pname,
@@ -333,8 +385,71 @@ void ogles2_glGetBufferParameteriv(struct OGLES2Context *ctx, GLenum target, GLe
         *params = (GLint)b->size;
     else if (pname == GL_BUFFER_USAGE)
         *params = (GLint)b->usage;
+    else if (pname == GL_BUFFER_ACCESS_OES)
+        *params = GL_WRITE_ONLY_OES;
+    else if (pname == GL_BUFFER_MAPPED_OES)
+        *params = b->mapped ? GL_TRUE : GL_FALSE;
     else
         ogles2_error(ctx, GL_INVALID_ENUM);
+}
+
+/* ---- OES_mapbuffer: the mapping is the shadow ---- */
+
+void *ogles2_glMapBufferOES(struct OGLES2Context *ctx, GLenum target, GLenum access)
+{
+    struct OGLES2BufState *bs;
+    struct OGLES2Buffer *b;
+    if (!ogles2_context_valid(ctx) || !(bs = bs_get(ctx)))
+        return 0;
+    if ((target != GL_ARRAY_BUFFER && target != GL_ELEMENT_ARRAY_BUFFER) || access != GL_WRITE_ONLY_OES) {
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        return 0;
+    }
+    if (!(b = bound(ctx, bs, target)) || b->mapped) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return 0;
+    }
+    b->mapped = TRUE;
+    return b->data;
+}
+
+GLboolean ogles2_glUnmapBufferOES(struct OGLES2Context *ctx, GLenum target)
+{
+    struct OGLES2BufState *bs;
+    struct OGLES2Buffer *b;
+    if (!ogles2_context_valid(ctx) || !(bs = bs_get(ctx)))
+        return GL_FALSE;
+    if (target != GL_ARRAY_BUFFER && target != GL_ELEMENT_ARRAY_BUFFER) {
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        return GL_FALSE;
+    }
+    if (!(b = bound(ctx, bs, target)) || !b->mapped) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return GL_FALSE;
+    }
+    b->mapped = FALSE;
+    /* Anything may have changed: every copy starts afresh. */
+    drop_copies(ctx, b);
+    b->serial++;
+    return GL_TRUE;
+}
+
+void ogles2_glGetBufferPointervOES(struct OGLES2Context *ctx, GLenum target, GLenum pname, void **params)
+{
+    struct OGLES2BufState *bs;
+    struct OGLES2Buffer *b;
+    if (!ogles2_context_valid(ctx) || !params || !(bs = bs_get(ctx)))
+        return;
+    if ((target != GL_ARRAY_BUFFER && target != GL_ELEMENT_ARRAY_BUFFER) ||
+        pname != GL_BUFFER_MAP_POINTER_OES) {
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        return;
+    }
+    if (!(b = bound(ctx, bs, target))) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    *params = b->mapped ? b->data : 0;
 }
 
 /* ---- for the rest of the library ---- */
@@ -429,6 +544,8 @@ ULONG ogles2_buffer_copy(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULON
     len = c->mem.size;
     CachePreDMA(c->mem.hostptr, &len, 0);
     c->serial = b->serial;
+    c->elem_bytes = elem_bytes;
+    c->convert = convert;
     c->offset = offset;
     c->size = size;
     c->type = type;

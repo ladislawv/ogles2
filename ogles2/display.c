@@ -225,6 +225,28 @@ static BOOL open_own_window(struct OGLES2Display *d)
     return open_window_target(d, w);
 }
 
+/* aglSetBitmap: an application-bitmap display renders into another bitmap
+ * from the next frame (its size may differ). Unlocked: between jobs. */
+BOOL ogles2_display_set_bitmap(struct OGLES2Display *d, struct BitMap *bitmap)
+{
+    struct OGLES2Display old = *d;
+    if (!bitmap || !d->bitmap || d->window || d->own_screen || d->own_bitmap) {
+        ogles2_log("aglSetBitmap: %s", (ULONG)(bitmap ? "the context was not created with OGLES2_CCT_BITMAP"
+                                                      : "no bitmap"));
+        return FALSE;
+    }
+    d->bitmap = bitmap;
+    d->width = (UWORD)GetBitMapAttr(bitmap, BMA_WIDTH);
+    d->height = (UWORD)GetBitMapAttr(bitmap, BMA_HEIGHT);
+    if (d->width < 1 || d->height < 1 || d->width > 4096 || d->height > 4096 || !probe_bitmap(d)) {
+        ogles2_log("aglSetBitmap: bitmap 0x%08lx (%ldx%ld) refused, the old one stays", (ULONG)bitmap,
+                   (ULONG)d->width, (ULONG)d->height);
+        *d = old;
+        return FALSE;
+    }
+    return TRUE;
+}
+
 void ogles2_display_close(struct OGLES2Display *d)
 {
     ogles2_display_unlock(d);
@@ -303,6 +325,27 @@ BOOL ogles2_display_lock(struct OGLES2Display *d)
     return d->lock != 0;
 }
 
+/* The GPU writes the render bitmap by DMA, past the CPU's caches: a line
+ * the CPU read before keeps the previous frame's bytes (A1200, m4_setbitmap:
+ * one pixel of a frame stale now and then; PiStorm3D's context.c names the
+ * same "stale 64-byte CPU cache lines of the previous frame"). Where the CPU
+ * reads the bitmap -- the application's own, or the window's copy -- each
+ * job cleans its lines before the render and invalidates them after, while
+ * locked (exec's rule for a device writing memory). A fullscreen screen is
+ * read by the display, not the CPU: ogles2_display_read invalidates what it
+ * reads. */
+void ogles2_display_dma(struct OGLES2Display *d, BOOL after)
+{
+    ULONG len;
+    if (!d->lock || d->own_screen)
+        return;
+    len = d->bprow * d->height;
+    if (after)
+        CachePostDMA((APTR)d->base, &len, 0);
+    else
+        CachePreDMA((APTR)d->base, &len, 0);
+}
+
 void ogles2_display_unlock(struct OGLES2Display *d)
 {
     if (d->lock) {
@@ -316,6 +359,12 @@ void ogles2_display_read(struct OGLES2Display *d, UWORD x, UWORD y, UWORD w, UWO
 {
     struct RastPort rp;
     UWORD r;
+    if (d->own_screen && h && ogles2_display_lock(d)) {
+        /* The rows y .. y+h-1, bottom-up: in memory from the top one. */
+        ULONG len = d->bprow * h;
+        CachePostDMA((APTR)(d->base + d->bprow * (ULONG)(d->height - (y + h))), &len, 0);
+        ogles2_display_unlock(d);
+    }
     InitRastPort(&rp);
     rp.BitMap = d->bitmap;
     for (r = 0; r < h; r++)

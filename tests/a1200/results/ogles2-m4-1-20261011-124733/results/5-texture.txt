@@ -1,0 +1,25 @@
+ogles2 M2: textures
+FAIL: bitmap: 2x2 texture: bottom 00000c 00000c (red green), top 00000c 00000c (blue white)
+FAIL: bitmap: REPEAT: s 1.25 00000c, s 1.75 00000c (ff0000, 00ff00)
+FAIL: bitmap: CLAMP_TO_EDGE: s 1.25 00000c, s 1.75 00000c (00ff00, 00ff00)
+FAIL: bitmap: MIRRORED_REPEAT: s 1.25 00000c, s 1.75 00000c (00ff00, ff0000)
+FAIL: bitmap: glTexSubImage2D: top right 00000c (0000ff)
+PASS: bitmap: deleting the bound texture binds 0
+FAIL: bitmap: format RGB: 9b570d (0a141e)
+FAIL: bitmap: format LUMINANCE: 9b570d (404040)
+FAIL: bitmap: format ALPHA (0,0,0,A): 9b570d (000000)
+FAIL: bitmap: format LUMINANCE_ALPHA: 9b570d (606060)
+FAIL: bitmap: format RGB 5_6_5 red: 9b570d (ff0000)
+FAIL: bitmap: format RGBA 4_4_4_4 green: 9b570d (00ff00)
+FAIL: bitmap: format RGBA 5_5_5_1 blue: 9b570d (0000ff)
+FAIL: bitmap: unpack alignment 4 and 1: second row 2aae27 and 2aae27 (0000ff)
+FAIL: bitmap: linear filter: centre 9b570d (about 808080), left edge e80a0d (black)
+FAIL: bitmap: mip levels: 8x8 draw 00000c (level 3, ffffff), 64x64 draw a0253a (level 0, ff0000)
+FAIL: bitmap: incomplete texture samples (0,0,0,1): 9b570d (000000)
+FAIL: bitmap: glGenerateMipmap: a 4x4 draw of a 64x64 checkerboard 00000c (about 808080)
+FAIL: bitmap: two units: 9b570d (ff8000)
+FAIL: bitmap: texture replaced between draws: left d31f0d (red), right 00000c (green)
+PASS: bitmap: glTexImage2D errors: 0502 0501 0500 0502 (0502 0501 0500 0502)
+PASS: bitmap: no GL error left over
+PASS: bitmap: destroy returns the memory (-56 bytes difference)
+FAILED: 4 of 23 checks passed

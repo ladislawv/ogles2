@@ -40,6 +40,7 @@ static BOOL known_tag(Tag t)
     case OGLES2_CCT_PISTORM_WIDTH:
     case OGLES2_CCT_PISTORM_HEIGHT:
     case OGLES2_CCT_PISTORM_GET_WINDOW:
+    case OGLES2_CCT_DEBUG_SHADER_LOG:
         return TRUE;
     default:
         return FALSE;
@@ -53,6 +54,7 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
     BOOL state_only = GetTagData(OGLES2_CCT_PISTORM_STATE_ONLY, FALSE, tags) ? TRUE : FALSE;
     ULONG depth = GetTagData(OGLES2_CCT_DEPTH, 0, tags);
     ULONG stencil = GetTagData(OGLES2_CCT_STENCIL, 0, tags);
+    BOOL debug_shader_log = GetTagData(OGLES2_CCT_DEBUG_SHADER_LOG, FALSE, tags) ? TRUE : FALSE;
     ULONG why = OGLES2_CCE_OK;
 
     /* Opened even for a state-only context, so GL_RENDERER is real when a
@@ -67,6 +69,7 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
         goto fail;
     }
     ctx->magic = OGLES2_CONTEXT_MAGIC;
+    ctx->debug_shader_log = debug_shader_log;
     ctx->error = GL_NO_ERROR;
     ogles2_state_init(ctx);
 
@@ -141,6 +144,7 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
             goto fail_ctx;
         }
     }
+    ogles2_fb_update(ctx); /* the default framebuffer is drawn into */
     ctx->viewport[2] = ctx->scissor[2] = (GLint)ctx->width;
     ctx->viewport[3] = ctx->scissor[3] = (GLint)ctx->height;
 
@@ -173,13 +177,15 @@ void ogles2_aglDestroyContext(struct OGLES2Context *ctx)
         return;
     ogles2_job_discard(ctx);
     ogles2_draw_free(ctx);
+    ogles2_job_free(ctx);
     ogles2_objects_free(ctx);
+    ogles2_fbo_free(ctx); /* before the textures: renderbuffers' colour storage is theirs */
     ogles2_textures_free(ctx);
     ogles2_buffers_free(ctx);
     ogles2_device_context_free(ctx->v3d);
     ogles2_display_close(&ctx->display);
-    ogles2_log("aglDestroyContext: context 0x%08lx (%lu frames, %lu dropped)", (ULONG)ctx,
-               ctx->frames, ctx->frames_dropped);
+    ogles2_log("aglDestroyContext: context 0x%08lx (%lu frames, %lu dropped, %lu binning blocks added)",
+               (ULONG)ctx, ctx->frames, ctx->frames_dropped, ctx->chained_blocks);
     ctx->magic = 0;
     FreeVec(ctx);
     ogles2_log_flush(); /* the caller is the application: DOS calls are fine */
@@ -216,7 +222,10 @@ const GLubyte *ogles2_glGetString(struct OGLES2Context *ctx, GLenum name)
     case GL_SHADING_LANGUAGE_VERSION: /* must begin "OpenGL ES GLSL ES 1.00" */
         return (const GLubyte *)"OpenGL ES GLSL ES 1.00";
     case GL_EXTENSIONS:
-        return (const GLubyte *)"GL_OES_element_index_uint";
+        return (const GLubyte *)"GL_OES_element_index_uint GL_OES_compressed_ETC1_RGB8_texture GL_EXT_texture_format_BGRA8888 "
+                                 "GL_OES_mapbuffer GL_EXT_blend_minmax GL_OES_draw_elements_base_vertex "
+                                 "GL_OES_rgb8_rgba8 GL_OES_packed_depth_stencil GL_OES_fbo_render_mipmap "
+                                 "GL_EXT_discard_framebuffer";
     default:
         ogles2_error(ctx, GL_INVALID_ENUM);
         return 0;

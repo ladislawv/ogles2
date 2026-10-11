@@ -9,12 +9,15 @@
  */
 #include <exec/execbase.h>
 #include <proto/exec.h>
+#include <proto/dos.h>
 #include "ogles2_internal.h"
 #include <exec/memory.h>
 #include "v3d_device.h"
 #include "v3d_context.h"
 #include "v3d_frame.h"
 #include "v3d_gpu_lock.h"
+#include "v3d_hw.h"
+#include "v3d_regs.h"
 #include "devicetree_protos.h"
 
 static V3DDevice device;
@@ -172,6 +175,8 @@ struct SignalSemaphore *ogles2_device_gpu_lock(void)
     return gpu_lock;
 }
 
+static void reset_if_stopped(void);
+
 BOOL ogles2_device_open(void)
 {
     ObtainSemaphore(&OGLES2LibBase->lock);
@@ -206,6 +211,7 @@ BOOL ogles2_device_open(void)
             check_memory_regions();
             device.gpu_reachable = gpu_reachable_hook;
             state = 1;
+            reset_if_stopped();
         } else {
             ogles2_log("device: v3d_init failed (%ld: %s)", ret, (ULONG)init_error(ret));
             state = ret;
@@ -213,6 +219,34 @@ BOOL ogles2_device_open(void)
     }
     ReleaseSemaphore(&OGLES2LibBase->lock);
     return state == 1;
+}
+
+/* The GPU did not finish a job (plan 9 M4): reset it, so the next job
+ * finds it idle. The caller holds the GPU submission lock. */
+void ogles2_device_reset(const char *why)
+{
+    int r = v3d_gpu_reset(&device);
+    ogles2_log("device: GPU reset after %s: %s", (ULONG)why, (ULONG)(r == 0 ? "the core answers" : "NO ANSWER"));
+}
+
+/* A GPU left stopped by an earlier program (control list thread 0 still
+ * running, its address standing still) is reset before first use. Only
+ * with the submission lock: a client rendering now holds it. */
+static void reset_if_stopped(void)
+{
+    ULONG cs, ca1, ca2;
+    if (!v3d_gpu_lock(gpu_lock, 200))
+        return;
+    cs = LE32(V3D_CT0CS);
+    ca1 = V3D_CT0CA;
+    Delay(2);
+    ca2 = V3D_CT0CA;
+    if ((cs & 0x20) && ca1 == ca2 && LE32(V3D_CT0CA) != LE32(V3D_CT0EA)) {
+        ogles2_log("device: binning thread stopped at 0x%08lx (CT0CS 0x%08lx), left by an earlier program",
+                   (ULONG)LE32(ca1), cs);
+        ogles2_device_reset("finding it stopped");
+    }
+    v3d_gpu_unlock(gpu_lock);
 }
 
 BOOL ogles2_device_ready(void)
@@ -247,6 +281,22 @@ V3DContext *ogles2_device_context_new(UWORD w, UWORD h, int depth_bits)
                (ULONG)h, (LONG)v->zbuffer_bits, (ULONG)(v->zbuffer_bits == 32 ? "F" : ""),
                (ULONG)device.BytesAllocated);
     return v;
+}
+
+BOOL ogles2_device_context_resize(V3DContext *v, UWORD w, UWORD h)
+{
+    UWORD ow = v->width, oh = v->height;
+    int ret = v3d_context_resize(v, &device, w, h);
+    if (ret == 0) {
+        ogles2_log("device: context pools for %ldx%ld, %lu bytes of GPU memory in use", (ULONG)w,
+                   (ULONG)h, (ULONG)device.BytesAllocated);
+        return TRUE;
+    }
+    ogles2_log("device: v3d_context_resize(%ldx%ld) failed (%ld): out of memory", (ULONG)w, (ULONG)h,
+               (LONG)ret);
+    if (v3d_context_resize(v, &device, ow, oh) != 0)
+        ogles2_log("device: and back to %ldx%ld failed too", (ULONG)ow, (ULONG)oh);
+    return FALSE;
 }
 
 void ogles2_device_context_free(V3DContext *v)

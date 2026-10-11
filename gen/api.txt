@@ -3,3 +3,8 @@
 #   command <name>      one more command (an extension entry point), once it is implemented
 # The table's order is not taken from here but from abi_order.txt (append-only).
 feature GL_ES_VERSION_2_0
+command glMapBufferOES
+command glUnmapBufferOES
+command glGetBufferPointervOES
+command glDrawElementsBaseVertexOES
+command glDiscardFramebufferEXT

@@ -184,7 +184,14 @@ static void v3d_texture_level_layout(v3d_u32 level_w, v3d_u32 level_h,
 
 int v3d_texture_alloc(V3DDevice* device, V3DTexture* tex, v3d_u16 width, v3d_u16 height)
 {
-    v3d_u32 numComponents = 4;
+    return v3d_texture_alloc_cpp(device, tex, width, height, 4);
+}
+
+/* ogles2: v3d_texture_alloc with the bytes per texel as a parameter (it was 4). */
+int v3d_texture_alloc_cpp(V3DDevice* device, V3DTexture* tex, v3d_u16 width, v3d_u16 height,
+                          v3d_u8 cpp)
+{
+    v3d_u32 numComponents = cpp;
     v3d_u32 utile_w, utile_h, mb_width, mb_height;
     v3d_u32 padded_width, padded_height;
     enum v3d_memory_format format;
@@ -232,6 +239,7 @@ int v3d_texture_alloc(V3DDevice* device, V3DTexture* tex, v3d_u16 width, v3d_u16
 
     tex->width = width;
     tex->height = height;
+    tex->cpp = cpp;
     tex->format = V3D_SRCFMT_RGBA8;
     tex->min_filter = V3D_TEXFILTER_NEAREST;
     tex->mag_filter = V3D_TEXFILTER_NEAREST;
@@ -282,7 +290,7 @@ int v3d_texture_alloc(V3DDevice* device, V3DTexture* tex, v3d_u16 width, v3d_u16
  */
 int v3d_texture_alloc_mipchain(V3DDevice* device, V3DTexture* tex, v3d_u8 want_levels)
 {
-    v3d_u32 numComponents = 4;
+    v3d_u32 numComponents = tex->cpp ? tex->cpp : 4; /* ogles2: was 4 */
     v3d_u32 utile_w = v3d_utile_width((int)numComponents);
     v3d_u32 utile_h = v3d_utile_height((int)numComponents);
     v3d_u32 mb_height = utile_h * 2;
@@ -758,6 +766,63 @@ void v3d_texture_upload_rgba8_subimage(V3DDevice* device, V3DTexture* tex, v3d_u
      * cheap enough not to bother. */
     len = (ULONG)tex->texture_mem.size;
     CachePreDMA(tex->texture_mem.hostptr, &len, 0);
+}
+
+/* ogles2: see v3d_texture.h. */
+void v3d_texture_store(V3DDevice* device, V3DTexture* tex, v3d_u8 level, const void* src,
+                       v3d_u32 srcStride, int x, int y, int width, int height)
+{
+    struct ExecBase* const SysBase = device->sysbase;
+    int cpp = tex->cpp ? tex->cpp : 4;
+    char* tiledData;
+    v3d_texture_box box;
+    ULONG len;
+
+    if (level >= tex->num_levels || width <= 0 || height <= 0) return;
+    tiledData = (char*)V3D_ALIGN_UP((v3d_uintptr)tex->texture_mem.hostptr, 256)
+                + tex->levels[level].offset;
+    box.x = x;
+    box.y = y;
+    box.z = 0;
+    box.width = width;
+    box.height = height;
+    box.depth = 1;
+    v3d_store_tiled_image(tiledData, tex->levels[level].stride, (void*)src, srcStride,
+                          (enum v3d_memory_format)tex->levels[level].tiling_format, cpp,
+                          tex->levels[level].padded_h, &box);
+    len = (ULONG)tex->texture_mem.size;
+    CachePreDMA(tex->texture_mem.hostptr, &len, 0);
+    if (level > tex->max_level_uploaded)
+        tex->max_level_uploaded = level;
+}
+
+/* ogles2: the inverse of v3d_texture_store, for a level the GPU rendered
+ * into (render to texture, plan 7.7): the box into dst (`dstStride` bytes a
+ * row), texels of tex->cpp bytes in the GPU's byte order. The CPU cache over
+ * the level is invalidated first: the GPU wrote it past the cache. */
+void v3d_texture_load(V3DDevice* device, V3DTexture* tex, v3d_u8 level, void* dst,
+                      v3d_u32 dstStride, int x, int y, int width, int height)
+{
+    struct ExecBase* const SysBase = device->sysbase;
+    int cpp = tex->cpp ? tex->cpp : 4;
+    char* tiledData;
+    v3d_texture_box box;
+    ULONG len;
+
+    if (level >= tex->num_levels || width <= 0 || height <= 0) return;
+    tiledData = (char*)V3D_ALIGN_UP((v3d_uintptr)tex->texture_mem.hostptr, 256)
+                + tex->levels[level].offset;
+    len = (ULONG)tex->levels[level].stride * tex->levels[level].padded_h;
+    CachePostDMA(tiledData, &len, 0);
+    box.x = x;
+    box.y = y;
+    box.z = 0;
+    box.width = width;
+    box.height = height;
+    box.depth = 1;
+    v3d_load_tiled_image(dst, dstStride, tiledData, tex->levels[level].stride,
+                         (enum v3d_memory_format)tex->levels[level].tiling_format, cpp,
+                         tex->levels[level].padded_h, &box);
 }
 
 /*

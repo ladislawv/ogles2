@@ -1,0 +1,275 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086CED68
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 256x128, BGRA
+    13 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08F2C414, 256x128
+    15 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    16 job: the binning list outgrew its block; continued in a new one (logged once)
+    17 job: frame dropped: binning timed out
+    18 job: frame dropped: binning timed out
+    19 device: context freed, 0 bytes of GPU memory still in use
+    20 aglDestroyContext: context 0x08F2C414 (2 frames, 2 dropped, 1 binning blocks added)
+    21 close (count 0)
+    22 open (count 1)
+    23 display: application bitmap, 256x128, BGRA
+    24 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    25 aglCreateContext2: context 0x08FBBCF4, 256x128
+    26 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    27 job: frame dropped: binning timed out
+    28 job: frame dropped: binning timed out
+    29 job: frame dropped: binning timed out
+    30 glDrawElements: the indices lie outside the element buffer; nothing drawn
+    31 job: frame dropped: binning timed out
+    32 glDrawArrays: attribute 0 reads past the end of buffer 1; nothing drawn
+    33 job: frame dropped: binning timed out
+    34 glDrawArrays: attribute 0 is enabled without an array; nothing drawn
+    35 job: frame dropped: binning timed out
+    36 job: frame dropped: binning timed out
+    37 job: frame dropped: binning timed out
+    38 job: frame dropped: binning timed out
+    39 job: frame dropped: binning timed out
+    40 job: frame dropped: binning timed out
+    41 job: frame dropped: binning timed out
+    42 job: frame dropped: binning timed out
+    43 job: frame dropped: binning timed out
+    44 job: frame dropped: binning timed out
+    45 job: frame dropped: binning timed out
+    46 job: frame dropped: binning timed out
+    47 job: frame dropped: binning timed out
+    48 job: frame dropped: binning timed out
+    49 job: frame dropped: binning timed out
+    50 job: frame dropped: binning timed out
+    51 job: frame dropped: binning timed out
+    52 job: frame dropped: binning timed out
+    53 job: frame dropped: binning timed out
+    54 job: frame dropped: binning timed out
+    55 job: frame dropped: binning timed out
+    56 job: frame dropped: binning timed out
+    57 job: frame dropped: binning timed out
+    58 job: frame dropped: binning timed out
+    59 job: frame dropped: binning timed out
+    60 job: frame dropped: binning timed out
+    61 job: frame dropped: binning timed out
+    62 job: frame dropped: binning timed out
+    63 job: frame dropped: binning timed out
+    64 job: frame dropped: binning timed out
+    65 job: frame dropped: binning timed out
+    66 device: context freed, 0 bytes of GPU memory still in use
+    67 aglDestroyContext: context 0x08FBBCF4 (36 frames, 36 dropped, 0 binning blocks added)
+    68 close (count 0)
+    69 open (count 1)
+    70 display: application bitmap, 256x128, BGRA
+    71 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    72 aglCreateContext2: context 0x08FBBCF4, 256x128
+    73 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    74 job: frame dropped: binning timed out
+    75 job: frame dropped: binning timed out
+    76 glLinkProgram: PROGDIR:979ada9f17d3d1821c3b45bb.v3dp (5 variants, 3120 bytes of code)
+    77 job: frame dropped: binning timed out
+    78 job: frame dropped: binning timed out
+    79 device: context freed, 0 bytes of GPU memory still in use
+    80 aglDestroyContext: context 0x08FBBCF4 (4 frames, 4 dropped, 0 binning blocks added)
+    81 close (count 0)
+    82 open (count 1)
+    83 aglCreateContext2: context 0x08F2C424, 0x0, state only
+    84 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    85 glLinkProgram: program b5dddc8cd309fdea4d334b4b: 5 variants
+  fragment, triangles: 9 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 46 instructions, 4 threads, 0 spill bytes, 33 uniforms
+  binning: 40 instructions, 4 threads, 
+    86 glLinkProgram: PROGDIR:d59c497ea5e22752b642e93f.v3dp (5 variants, 1528 bytes of code)
+    87 glLinkProgram: program d59c497ea5e22752b642e93f: 5 variants
+  fragment, triangles: 8 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 127 instructions, 4 threads, 0 spill bytes, 76 uniforms
+  binning: 40 instructions, 4 threads,
+    88 glLinkProgram: PROGDIR:979ada9f17d3d1821c3b45bb.v3dp (5 variants, 3120 bytes of code)
+    89 glLinkProgram: program 979ada9f17d3d1821c3b45bb: 5 variants
+  fragment, triangles: 6 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 186 instructions, 4 threads, 0 spill bytes, 67 uniforms
+  binning: 186 instructions, 4 threads
+    90 glLinkProgram: program b5dddc8cd309fdea4d334b4b: 5 variants
+  fragment, triangles: 9 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 46 instructions, 4 threads, 0 spill bytes, 33 uniforms
+  binning: 40 instructions, 4 threads, 
+    91 glLinkProgram: PROGDIR:ac1ecb1e7ef3afc88d3666c9.v3dp (7 variants, 2656 bytes of code)
+    92 glLinkProgram: program ac1ecb1e7ef3afc88d3666c9: 7 variants
+  fragment, triangles: 36 instructions, 4 threads, 0 spill bytes, 11 uniforms
+  vertex: 66 instructions, 4 threads, 0 spill bytes, 51 uniforms
+  binning: 45 instructions, 4 threads
+    93 glLinkProgram: PROGDIR:645f9567abe1c3a6e41839b9.v3dp (5 variants, 1176 bytes of code)
+    94 glLinkProgram: program 645f9567abe1c3a6e41839b9: 5 variants
+  fragment, triangles: 21 instructions, 4 threads, 0 spill bytes, 8 uniforms
+  vertex: 44 instructions, 4 threads, 0 spill bytes, 30 uniforms
+  binning: 40 instructions, 4 threads,
+    95 glLinkProgram: program 645f9567abe1c3a6e41839b9: 5 variants
+  fragment, triangles: 21 instructions, 4 threads, 0 spill bytes, 8 uniforms
+  vertex: 44 instructions, 4 threads, 0 spill bytes, 30 uniforms
+  binning: 40 instructions, 4 threads,
+    96 glLinkProgram: no binary for program 6525c1a37d1f1d6e8cf661b41e0f00d750e0262e59c8e751a37cc6a1d42bde99 (sources in T:ogles2_missing_shaders.txt)
+    97 aglDestroyContext: context 0x08F2C424 (0 frames, 0 dropped, 0 binning blocks added)
+    98 close (count 0)
+    99 open (count 1)
+   100 display: application bitmap, 256x128, BGRA
+   101 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+   102 aglCreateContext2: context 0x08FBB8E4, 256x128
+   103 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+   104 glLinkProgram: PROGDIR:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+   105 job: frame dropped: binning timed out
+   106 job: frame dropped: binning timed out
+   107 job: frame dropped: binning timed out
+   108 job: frame dropped: binning timed out
+   109 job: frame dropped: binning timed out
+   110 job: frame dropped: binning timed out
+   111 job: frame dropped: binning timed out
+   112 job: frame dropped: binning timed out
+   113 job: frame dropped: binning timed out
+   114 job: frame dropped: binning timed out
+   115 job: frame dropped: binning timed out
+   116 job: frame dropped: binning timed out
+   117 job: frame dropped: binning timed out
+   118 job: frame dropped: binning timed out
+   119 job: frame dropped: binning timed out
+   120 job: frame dropped: binning timed out
+   121 job: frame dropped: binning timed out
+   122 job: frame dropped: binning timed out
+   123 job: frame dropped: binning timed out
+   124 texture 1 changed after a draw used it in the same frame: the frame is rendered first (logged once)
+   125 job: frame dropped: binning timed out
+   126 job: frame dropped: binning timed out
+   127 device: context freed, 0 bytes of GPU memory still in use
+   128 aglDestroyContext: context 0x08FBB8E4 (21 frames, 21 dropped, 0 binning blocks added)
+   129 close (count 0)
+   130 open (count 1)
+   131 display: application bitmap, 320x240, BGRA
+   132 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+   133 aglCreateContext2: context 0x08FBB8E4, 320x240
+   134 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   135 job: frame dropped: binning timed out
+   136 job: frame dropped: binning timed out
+   137 job: frame dropped: binning timed out
+   138 job: frame dropped: binning timed out
+   139 job: frame dropped: binning timed out
+   140 job: frame dropped: binning timed out
+   141 job: frame dropped: binning timed out
+   142 job: frame dropped: binning timed out
+   143 job: frame dropped: binning timed out
+   144 job: frame dropped: binning timed out
+   145 job: frame dropped: binning timed out
+   146 job: frame dropped: binning timed out
+   147 job: frame dropped: binning timed out
+   148 job: frame dropped: binning timed out
+   149 job: frame dropped: binning timed out
+   150 job: frame dropped: binning timed out
+   151 job: frame dropped: binning timed out
+   152 job: frame dropped: binning timed out
+   153 job: frame dropped: binning timed out
+   154 job: frame dropped: binning timed out
+   155 job: frame dropped: binning timed out
+   156 job: frame dropped: binning timed out
+   157 job: frame dropped: binning timed out
+   158 job: frame dropped: binning timed out
+   159 job: frame dropped: binning timed out
+   160 job: frame dropped: binning timed out
+   161 job: frame dropped: binning timed out
+   162 job: frame dropped: binning timed out
+   163 job: frame dropped: binning timed out
+   164 job: frame dropped: binning timed out
+   165 job: frame dropped: binning timed out
+   166 job: frame dropped: binning timed out
+   167 job: frame dropped: binning timed out
+   168 job: frame dropped: binning timed out
+   169 job: frame dropped: binning timed out
+   170 job: frame dropped: binning timed out
+   171 job: frame dropped: binning timed out
+   172 job: frame dropped: binning timed out
+   173 job: frame dropped: binning timed out
+   174 job: frame dropped: binning timed out
+   175 job: frame dropped: binning timed out
+   176 job: frame dropped: binning timed out
+   177 job: frame dropped: binning timed out
+   178 job: frame dropped: binning timed out
+   179 job: frame dropped: binning timed out
+   180 job: frame dropped: binning timed out
+   181 job: frame dropped: binning timed out
+   182 job: frame dropped: binning timed out
+   183 job: frame dropped: binning timed out
+   184 job: frame dropped: binning timed out
+   185 job: frame dropped: binning timed out
+   186 job: frame dropped: binning timed out
+   187 job: frame dropped: binning timed out
+   188 job: frame dropped: binning timed out
+   189 job: frame dropped: binning timed out
+   190 job: frame dropped: binning timed out
+   191 job: frame dropped: binning timed out
+   192 job: frame dropped: binning timed out
+   193 job: frame dropped: binning timed out
+   194 job: frame dropped: binning timed out
+   195 job: frame dropped: binning timed out
+   196 job: frame dropped: binning timed out
+   197 job: frame dropped: binning timed out
+   198 job: frame dropped: binning timed out
+   199 job: frame dropped: binning timed out
+   200 job: frame dropped: binning timed out
+   201 job: frame dropped: binning timed out
+   202 job: frame dropped: binning timed out
+   203 job: frame dropped: binning timed out
+   204 job: frame dropped: binning timed out
+   205 job: frame dropped: binning timed out
+   206 job: frame dropped: binning timed out
+   207 job: frame dropped: binning timed out
+   208 job: frame dropped: binning timed out
+   209 job: frame dropped: binning timed out
+   210 job: frame dropped: binning timed out
+   211 job: frame dropped: binning timed out
+   212 job: frame dropped: binning timed out
+   213 job: frame dropped: binning timed out
+   214 job: frame dropped: binning timed out
+   215 job: frame dropped: binning timed out
+   216 job: frame dropped: binning timed out
+   217 job: frame dropped: binning timed out
+   218 job: frame dropped: binning timed out
+   219 job: frame dropped: binning timed out
+   220 job: frame dropped: binning timed out
+   221 job: frame dropped: binning timed out
+   222 job: frame dropped: binning timed out
+   223 job: frame dropped: binning timed out
+   224 job: frame dropped: binning timed out
+   225 job: frame dropped: binning timed out
+   226 job: frame dropped: binning timed out
+   227 job: frame dropped: binning timed out
+   228 job: frame dropped: binning timed out
+   229 job: frame dropped: binning timed out
+   230 job: frame dropped: binning timed out
+   231 job: frame dropped: binning timed out
+   232 job: frame dropped: binning timed out
+   233 job: frame dropped: binning timed out
+   234 job: frame dropped: binning timed out
+   235 job: frame dropped: binning timed out
+   236 job: frame dropped: binning timed out
+   237 job: frame dropped: binning timed out
+   238 job: frame dropped: binning timed out
+   239 job: frame dropped: binning timed out
+   240 job: frame dropped: binning timed out
+   241 job: frame dropped: binning timed out
+   242 job: frame dropped: binning timed out
+   243 job: frame dropped: binning timed out
+   244 job: frame dropped: binning timed out
+   245 job: frame dropped: binning timed out
+   246 job: frame dropped: binning timed out
+   247 job: frame dropped: binning timed out
+   248 job: frame dropped: binning timed out
+   249 job: frame dropped: binning timed out
+   250 job: frame dropped: binning timed out
+   251 job: frame dropped: binning timed out
+   252 job: frame dropped: binning timed out
+   253 device: context freed, 0 bytes of GPU memory still in use
+   254 aglDestroyContext: context 0x08FBB8E4 (118 frames, 118 dropped, 0 binning blocks added)

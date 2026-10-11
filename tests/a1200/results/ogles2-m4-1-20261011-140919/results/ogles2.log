@@ -1,0 +1,145 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838D180
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 256x128, BGRA
+    13 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FDE664, 256x128
+    15 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    16 device: context freed, 0 bytes of GPU memory still in use
+    17 aglDestroyContext: context 0x08FDE664 (2 frames, 0 dropped, 0 binning blocks added)
+    18 close (count 0)
+    19 open (count 1)
+    20 display: application bitmap, 256x128, BGRA
+    21 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    22 aglCreateContext2: context 0x08FDE664, 256x128
+    23 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    24 job: binning list block full at 0x3C569000 + 4194296: BRANCH to a new block at 0x33937C80 (8388592 bytes)
+    25 device: context freed, 0 bytes of GPU memory still in use
+    26 aglDestroyContext: context 0x08FDE664 (2 frames, 0 dropped, 1 binning blocks added)
+    27 close (count 0)
+    28 open (count 1)
+    29 display: application bitmap, 256x128, BGRA
+    30 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    31 aglCreateContext2: context 0x08FDE664, 256x128
+    32 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    33 job: binning list block full at 0x3C569000 + 4194296: BRANCH to a new block at 0x33937C80 (8388592 bytes)
+    34 device: context freed, 0 bytes of GPU memory still in use
+    35 aglDestroyContext: context 0x08FDE664 (2 frames, 0 dropped, 1 binning blocks added)
+    36 close (count 0)
+    37 open (count 1)
+    38 display: application bitmap, 256x128, BGRA
+    39 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    40 aglCreateContext2: context 0x08FDE664, 256x128
+    41 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    42 job: depth and stencil kept across a mid-frame flush (logged once)
+    43 device: context freed, 0 bytes of GPU memory still in use
+    44 aglDestroyContext: context 0x08FDE664 (3 frames, 0 dropped, 0 binning blocks added)
+    45 display: application bitmap, 256x128, BGRA
+    46 device: context pools for 256x128, D32F, 17645952 bytes of GPU memory in use
+    47 aglCreateContext2: context 0x08FDE664, 256x128
+    48 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    49 job: depth and stencil kept across a mid-frame flush (logged once)
+    50 device: context freed, 0 bytes of GPU memory still in use
+    51 aglDestroyContext: context 0x08FDE664 (7 frames, 0 dropped, 0 binning blocks added)
+    52 close (count 0)
+    53 open (count 1)
+    54 display: application bitmap, 256x128, BGRA
+    55 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    56 aglCreateContext2: context 0x08FE1FFC, 256x128
+    57 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    58 device: context pools for 160x96, 17565448 bytes of GPU memory in use
+    59 aglSetBitmap: bitmap 0x0843328C, 160x96
+    60 job: depth and stencil kept across a mid-frame flush (logged once)
+    61 display: the render bitmap cannot be locked (not an RTG bitmap?)
+    62 aglSetBitmap: bitmap 0x0843223C (64x64) refused, the old one stays
+    63 device: context pools for 256x128, 17581320 bytes of GPU memory in use
+    64 aglSetBitmap: bitmap 0x08433104, 256x128
+    65 aglSetBitmap: bitmap 0x08439044, 256x128
+    66 aglSetBitmap: bitmap 0x08433104, 256x128
+    67 device: context freed, 0 bytes of GPU memory still in use
+    68 aglDestroyContext: context 0x08FE1FFC (8 frames, 0 dropped, 0 binning blocks added)
+    69 close (count 0)
+    70 open (count 1)
+    71 display: application bitmap, 256x128, BGRA
+    72 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    73 aglCreateContext2: context 0x08FDE664, 256x128
+    74 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    75 glDrawElements: the indices lie outside the element buffer; nothing drawn
+    76 glDrawArrays: attribute 0 reads past the end of buffer 1; nothing drawn
+    77 glDrawArrays: attribute 0 is enabled without an array; nothing drawn
+    78 device: context freed, 0 bytes of GPU memory still in use
+    79 aglDestroyContext: context 0x08FDE664 (40 frames, 0 dropped, 0 binning blocks added)
+    80 close (count 0)
+    81 open (count 1)
+    82 display: application bitmap, 256x128, BGRA
+    83 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    84 aglCreateContext2: context 0x08FDE664, 256x128
+    85 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    86 glLinkProgram: PROGDIR:979ada9f17d3d1821c3b45bb.v3dp (5 variants, 3120 bytes of code)
+    87 device: context freed, 0 bytes of GPU memory still in use
+    88 aglDestroyContext: context 0x08FDE664 (10 frames, 0 dropped, 0 binning blocks added)
+    89 close (count 0)
+    90 open (count 1)
+    91 aglCreateContext2: context 0x08FDE674, 0x0, state only
+    92 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    93 glLinkProgram: program b5dddc8cd309fdea4d334b4b: 5 variants
+  fragment, triangles: 9 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 46 instructions, 4 threads, 0 spill bytes, 33 uniforms
+  binning: 40 instructions, 4 threads, 
+    94 glLinkProgram: PROGDIR:d59c497ea5e22752b642e93f.v3dp (5 variants, 1528 bytes of code)
+    95 glLinkProgram: program d59c497ea5e22752b642e93f: 5 variants
+  fragment, triangles: 8 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 127 instructions, 4 threads, 0 spill bytes, 76 uniforms
+  binning: 40 instructions, 4 threads,
+    96 glLinkProgram: PROGDIR:979ada9f17d3d1821c3b45bb.v3dp (5 variants, 3120 bytes of code)
+    97 glLinkProgram: program 979ada9f17d3d1821c3b45bb: 5 variants
+  fragment, triangles: 6 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 186 instructions, 4 threads, 0 spill bytes, 67 uniforms
+  binning: 186 instructions, 4 threads
+    98 glLinkProgram: program b5dddc8cd309fdea4d334b4b: 5 variants
+  fragment, triangles: 9 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 46 instructions, 4 threads, 0 spill bytes, 33 uniforms
+  binning: 40 instructions, 4 threads, 
+    99 glLinkProgram: PROGDIR:ac1ecb1e7ef3afc88d3666c9.v3dp (7 variants, 2656 bytes of code)
+   100 glLinkProgram: program ac1ecb1e7ef3afc88d3666c9: 7 variants
+  fragment, triangles: 36 instructions, 4 threads, 0 spill bytes, 11 uniforms
+  vertex: 66 instructions, 4 threads, 0 spill bytes, 51 uniforms
+  binning: 45 instructions, 4 threads
+   101 glLinkProgram: PROGDIR:645f9567abe1c3a6e41839b9.v3dp (5 variants, 1176 bytes of code)
+   102 glLinkProgram: program 645f9567abe1c3a6e41839b9: 5 variants
+  fragment, triangles: 21 instructions, 4 threads, 0 spill bytes, 8 uniforms
+  vertex: 44 instructions, 4 threads, 0 spill bytes, 30 uniforms
+  binning: 40 instructions, 4 threads,
+   103 glLinkProgram: program 645f9567abe1c3a6e41839b9: 5 variants
+  fragment, triangles: 21 instructions, 4 threads, 0 spill bytes, 8 uniforms
+  vertex: 44 instructions, 4 threads, 0 spill bytes, 30 uniforms
+  binning: 40 instructions, 4 threads,
+   104 glLinkProgram: no binary for program 6525c1a37d1f1d6e8cf661b41e0f00d750e0262e59c8e751a37cc6a1d42bde99 (sources in T:ogles2_missing_shaders.txt)
+   105 aglDestroyContext: context 0x08FDE674 (0 frames, 0 dropped, 0 binning blocks added)
+   106 close (count 0)
+   107 open (count 1)
+   108 display: application bitmap, 256x128, BGRA
+   109 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+   110 aglCreateContext2: context 0x08FE0ABC, 256x128
+   111 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+   112 glLinkProgram: PROGDIR:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+   113 texture 1 changed after a draw used it in the same frame: renamed (logged once)
+   114 job: depth and stencil kept across a mid-frame flush (logged once)
+   115 device: context freed, 0 bytes of GPU memory still in use
+   116 aglDestroyContext: context 0x08FE0ABC (29 frames, 0 dropped, 0 binning blocks added)
+   117 close (count 0)
+   118 open (count 1)
+   119 display: application bitmap, 320x240, BGRA
+   120 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+   121 aglCreateContext2: context 0x08FE0ABC, 320x240
+   122 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   123 device: context freed, 0 bytes of GPU memory still in use
+   124 aglDestroyContext: context 0x08FE0ABC (118 frames, 0 dropped, 0 binning blocks added)

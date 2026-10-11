@@ -91,6 +91,10 @@ int v3d_context_init(V3DContext* context, V3DDevice* device, v3d_u16 width, v3d_
     /* Resolution-scaled render-wait bound: render cost scales with the tile
      * count, so the bound does too -- see v3d_submit_timeout.h. */
     g_v3d_render_timeout_iterations = ((v3d_u32)width * (v3d_u32)height) >> 2;
+    /* ogles2: never below V3D_TIMEOUT_ITERATIONS_RENDER (a 256x128 target got 8192 polls, a few ms,
+     * and a frame of 400,000 draws was reset mid-render); the waits restart the count on progress. */
+    if (g_v3d_render_timeout_iterations < V3D_TIMEOUT_ITERATIONS_RENDER)
+        g_v3d_render_timeout_iterations = V3D_TIMEOUT_ITERATIONS_RENDER;
 
     D(("v3d_context_init: enter, width=%ld height=%ld render_timeout_iterations=%lu\n", (LONG)width, (LONG)height, (ULONG)g_v3d_render_timeout_iterations));
 
@@ -375,6 +379,10 @@ int v3d_context_resize(V3DContext* context, V3DDevice* device, v3d_u16 width, v3
     context->width = width;
     context->height = height;
     g_v3d_render_timeout_iterations = ((v3d_u32)width * (v3d_u32)height) >> 2;
+    /* ogles2: never below V3D_TIMEOUT_ITERATIONS_RENDER (a 256x128 target got 8192 polls, a few ms,
+     * and a frame of 400,000 draws was reset mid-render); the waits restart the count on progress. */
+    if (g_v3d_render_timeout_iterations < V3D_TIMEOUT_ITERATIONS_RENDER)
+        g_v3d_render_timeout_iterations = V3D_TIMEOUT_ITERATIONS_RENDER;
 
     v3d_frame_compute_pool_sizes(width, height, context->zbuffer_bits,
                                   &zbuffer_size, &tile_state_size,

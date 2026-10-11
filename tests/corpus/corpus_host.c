@@ -11,6 +11,7 @@
 #undef glShaderSource
 #undef glLinkProgram
 #undef eglSwapBuffers
+#undef glBindFramebuffer
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,6 +25,13 @@ static EGLDisplay dpy = EGL_NO_DISPLAY;
 static EGLContext ectx = EGL_NO_CONTEXT;
 static GLuint fbo, rb_color, rb_depth;
 static const char *title_;
+
+/* A program's own framebuffer objects work as they are; 0, the window, is
+ * the framebuffer object the capture reads. */
+void corpus_glBindFramebuffer(GLenum target, GLuint framebuffer)
+{
+    glBindFramebuffer(target, framebuffer ? framebuffer : fbo);
+}
 
 int corpus_backend_open(const char *title, int width, int height, int depth, int stencil)
 {

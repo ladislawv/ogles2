@@ -1,6 +1,7 @@
 /*
  * Mesa's V3D driver on a fake DRM device, no window system.
  *   usage: v3dglslc [-d <V3D_DEBUG flags>] [-o <dir>] vs.vert fs.frag [vs2 fs2 ...]
+ *          v3dglslc SERVER   (AmigaOS: the on-target compiler, v3dp/v3dglsl_port.h)
  * Creates a V3D 4.2 screen (compat/fake_drm.c), a surfaceless GLES2 context
  * through the state tracker, and calls Mesa's GL entry points directly.
  * -o writes each program as <dir>/<vs>-<fs>.v3dp (dev/v3dp/FORMAT.md), with
@@ -36,10 +37,16 @@
 #define glLinkProgram        _mesa_LinkProgram
 #define glGetProgramiv       _mesa_GetProgramiv
 #define glGetProgramInfoLog  _mesa_GetProgramInfoLog
+#define glDeleteShader       _mesa_DeleteShader
+#define glDeleteProgram      _mesa_DeleteProgram
 #define V3DC_WRITER
-static int write_program(GLuint p, const char *vs_path, const char *fs_path,
-                         const char *vs_src, const char *fs_src);
+static void program_path(char *out, size_t size, const char *vs_path, const char *fs_path);
+static int write_program(GLuint p, const char *path, const char *vs_src, const char *fs_src);
 #include "compile_common.c"
+#ifdef __amigaos__
+#include <proto/exec.h>
+#include "v3dglsl_port.h"
+#endif
 
 int fake_drm_open(void);
 
@@ -208,15 +215,23 @@ static int draw_key_states(GLuint p)
     return 1;
 }
 
-static int write_program(GLuint p, const char *vs_path, const char *fs_path,
-                         const char *vs_src, const char *fs_src)
+/* -o: <dir>/<vs>-<fs>.v3dp. */
+static void program_path(char *out, size_t size, const char *vs_path, const char *fs_path)
+{
+    char vs_base[32], fs_base[32];
+    size_t n = strlen(out_dir);
+    base_name(vs_base, vs_path);
+    base_name(fs_base, fs_path);
+    snprintf(out, size, "%s%s%s-%s.v3dp", out_dir,
+             n && out_dir[n - 1] != '/' && out_dir[n - 1] != ':' ? "/" : "", vs_base, fs_base);
+}
+
+static int write_program(GLuint p, const char *path, const char *vs_src, const char *fs_src)
 {
     GET_CURRENT_CONTEXT(ctx);
     struct gl_shader_program *prog = _mesa_lookup_shader_program(ctx, p);
     static const unsigned stages[2] = { MESA_SHADER_VERTEX, MESA_SHADER_FRAGMENT };
     const char *sources[2];
-    char vs_base[32], fs_base[32], path[512];
-    size_t n = strlen(out_dir);
     int drawn;
 
     if (!prog)
@@ -228,12 +243,94 @@ static int write_program(GLuint p, const char *vs_path, const char *fs_path,
         return 0;
     sources[0] = vs_src;
     sources[1] = fs_src;
-    base_name(vs_base, vs_path);
-    base_name(fs_base, fs_path);
-    snprintf(path, sizeof(path), "%s%s%s-%s.v3dp", out_dir,
-             n && out_dir[n - 1] != '/' && out_dir[n - 1] != ':' ? "/" : "", vs_base, fs_base);
     return v3dp_write(path, prog, 2, stages, sources) == 0;
 }
+
+#ifdef __amigaos__
+/* A request goes back to its sender; one without a reply port (a QUIT sent
+ * from ogles2.library's expunge, which cannot wait) is ours to free. */
+static void done(struct V3DGLSLRequest *r)
+{
+    if (r->msg.mn_ReplyPort)
+        ReplyMsg(&r->msg);
+    else
+        FreeVec(r);
+}
+
+/* The on-target compiler (plan 8.4): serve V3DGLSL_LINK requests on a
+ * public port until V3DGLSL_QUIT. One context for all of them; each request
+ * deletes its GL objects again. A second server started by a race finds the
+ * port taken and leaves. */
+static int serve(void)
+{
+    struct MsgPort *port;
+    struct V3DGLSLRequest *r;
+    int quit = 0, served = 0;
+
+    Forbid();
+    if (FindPort((CONST_STRPTR)V3DGLSL_PORT_NAME)) {
+        Permit();
+        fprintf(stderr, "v3dglslc: a compiler server is already running\n");
+        return 0;
+    }
+    if (!(port = CreateMsgPort())) {
+        Permit();
+        return 20;
+    }
+    port->mp_Node.ln_Name = (char *)V3DGLSL_PORT_NAME;
+    port->mp_Node.ln_Pri = 0;
+    AddPort(port);
+    Permit();
+    fprintf(stderr, "v3dglslc: serving on \"%s\"\n", V3DGLSL_PORT_NAME);
+
+    while (!quit) {
+        WaitPort(port);
+        while ((r = (struct V3DGLSLRequest *)GetMsg(port))) {
+            if (r->log && r->log_size)
+                r->log[0] = 0;
+            if (r->version != V3DGLSL_VERSION ||
+                (r->op != V3DGLSL_LINK && r->op != V3DGLSL_QUIT && r->op != V3DGLSL_COMPILE) ||
+                (r->op == V3DGLSL_LINK && (!r->vs || !r->fs || !r->out_path)) ||
+                (r->op == V3DGLSL_COMPILE && !r->vs == !r->fs)) {
+                log_add(r->log, r->log_size, "the compiler does not understand this request", NULL);
+                r->result = 3;
+            } else if (r->op == V3DGLSL_QUIT) {
+                r->result = 0;
+                quit = 1;
+            } else if (r->op == V3DGLSL_COMPILE) {
+                /* The front end only: GL_COMPILE_STATUS and the shader's info log. */
+                int ok;
+                GLuint s = compile_src(r->vs ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER,
+                                       r->vs ? "vertex shader" : "fragment shader",
+                                       r->vs ? r->vs : r->fs, &ok, NULL, 0);
+                char info[2048];
+                info[0] = 0;
+                glGetShaderInfoLog(s, sizeof(info), NULL, info);
+                log_add(r->log, r->log_size, info, NULL);
+                glDeleteShader(s);
+                r->result = ok ? 0 : 1;
+            } else {
+                r->result = link_pair("vertex shader", "fragment shader", r->vs, r->fs, r->out_path,
+                                      r->log, r->log_size) ? 0 : 1;
+                served++;
+            }
+            done(r);
+        }
+    }
+    /* Gone from the list first, so nobody queues more; then fail what came. */
+    Forbid();
+    RemPort(port);
+    Permit();
+    while ((r = (struct V3DGLSLRequest *)GetMsg(port))) {
+        log_add(r->log, r->log_size, "the compiler is shutting down", NULL);
+        r->result = 2;
+        done(r);
+    }
+    DeleteMsgPort(port);
+    fprintf(stderr, "v3dglslc: server done, %d program(s)\n", served);
+    return 0;
+}
+#endif
 
 int main(int argc, char **argv)
 {
@@ -262,6 +359,9 @@ int main(int argc, char **argv)
     set_option("MESA_SHADER_CACHE_DISABLE", "true");
 #endif
 
+#ifdef __amigaos__
+    int server = argc == 2 && !strcmp(argv[1], "SERVER");
+#endif
     while (first + 1 < argc && argv[first][0] == '-') {
         if (!strcmp(argv[first], "-d"))
             debug = argv[first + 1];
@@ -305,5 +405,9 @@ int main(int argc, char **argv)
         return 20;
     }
     fprintf(stderr, "v3dglslc: renderer %s\n", (const char *)_mesa_GetString(GL_RENDERER));
+#ifdef __amigaos__
+    if (server)
+        return serve();
+#endif
     return run_pairs(argc, argv, first);
 }

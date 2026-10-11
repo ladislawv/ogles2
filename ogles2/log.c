@@ -56,6 +56,37 @@ static BOOL can_flush_now(void)
 }
 #endif
 
+/* ogles2_format's output hook: a bounded buffer. */
+struct fmt_buf {
+    char *p;
+    ULONG left; /* room for characters, the NUL excluded */
+};
+
+static void put_bounded(register UBYTE c __asm("d0"), register struct fmt_buf *b __asm("a3"))
+{
+    if (c && b->left) {
+        *b->p++ = (char)c;
+        b->left--;
+    }
+}
+
+/* RawDoFmt into buf (size bytes with the NUL); 32-bit arguments as for
+ * ogles2_log. Returns the length written. */
+ULONG ogles2_format(char *buf, ULONG size, const char *fmt, ...)
+{
+    struct fmt_buf b;
+    va_list ap;
+    if (!size)
+        return 0;
+    b.p = buf;
+    b.left = size - 1;
+    va_start(ap, fmt);
+    RawDoFmt((STRPTR)fmt, (APTR)ap, (void (*)())put_bounded, &b);
+    va_end(ap);
+    *b.p = 0;
+    return (ULONG)(b.p - buf);
+}
+
 BOOL ogles2_log_init(void)
 {
     head = used = lost = 0;

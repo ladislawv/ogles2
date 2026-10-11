@@ -42,7 +42,11 @@
  */
 
 #define V3D_SPILL_BLOCK_SIZE (256 * 1024)  /* matches MESA's own chosen chunk size */
-#define V3D_MAX_SPILL_BLOCKS 8               /* spill blocks one binning job may take; past it, fail cleanly rather than loop forever. Also the size of V3DFrame's free-block pool. */
+/* ogles2: up to 96 spill blocks per binning job (24 MB of tile lists; was 8,
+ * which a frame of a few hundred thousand draws outgrows, plan 9 M4), and a
+ * separate, smaller pool of free blocks kept for reuse. */
+#define V3D_MAX_SPILL_BLOCKS 96              /* spill blocks one binning job may take; past it, fail cleanly rather than loop forever */
+#define V3D_SPILL_POOL 8                     /* free spill blocks a frame keeps for reuse */
 
 /* spill_blocks/spill_count hold the POOL of FREE spill blocks kept for reuse.
  * The blocks in use are on the retire list in v3d_frame.c until the GPU is
@@ -51,7 +55,7 @@
 /* ogles2: the retire list and job sequence numbers below were file statics
  * in v3d_frame.c (one list for the whole process); they are per frame, that
  * is per context, now, so two contexts cannot retire each other's blocks. */
-#define V3D_RETIRE_MAX 32
+#define V3D_RETIRE_MAX 128 /* ogles2: was 32; the spill blocks and the binning list's chained blocks of one frame (plan 9 M4) */
 typedef struct {
     v3d_mem mem;
     v3d_u32 seq;
@@ -60,7 +64,7 @@ typedef struct {
 
 typedef struct V3DFrame {
     v3d_u32 tilesX, tilesY;
-    v3d_mem spill_blocks[V3D_MAX_SPILL_BLOCKS];
+    v3d_mem spill_blocks[V3D_SPILL_POOL];
     int spill_count;
     v3d_retire_entry retire[V3D_RETIRE_MAX];
     int     retire_count;

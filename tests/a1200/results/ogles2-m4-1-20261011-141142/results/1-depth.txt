@@ -1,0 +1,14 @@
+ogles2 M4: depth and stencil across a mid-frame flush
+PASS: D16: smooth: links
+PASS: D16: depth kept across glReadPixels: ff0000 (ff0000), read mid-frame ff0000
+PASS: D16: the next frame starts from its own clear: ffff00 (ffff00)
+PASS: D16: no GL error
+PASS: D16: destroy returns the memory (132264 bytes difference)
+PASS: D24S8: smooth: links
+PASS: D24S8: depth kept across glReadPixels: ff0000 (ff0000), read mid-frame ff0000
+PASS: D24S8: stencil kept across glFlush: left 00ff00 (00ff00), right 000000 (000000)
+PASS: D24S8: a depth-only clear after glFinish keeps the stencil: left 000000 (000000), right 0000ff (0000ff)
+PASS: D24S8: the next frame starts from its own clear: ffff00 (ffff00)
+PASS: D24S8: no GL error
+PASS: D24S8: destroy returns the memory (132184 bytes difference)
+ALL PASSED: 12 of 12 checks passed

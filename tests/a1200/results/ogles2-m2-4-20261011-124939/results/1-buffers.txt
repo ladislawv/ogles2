@@ -1,0 +1,29 @@
+ogles2 M2: buffer objects
+PASS: smooth: links
+PASS: glGenBuffers: three distinct names (1 2 3)
+PASS: glIsBuffer: false until first bound
+PASS: glIsBuffer: true once bound
+PASS: GL_ARRAY_BUFFER_BINDING
+PASS: GL_BUFFER_SIZE 100
+PASS: GL_BUFFER_USAGE GL_DYNAMIC_DRAW
+PASS: no error so far
+PASS: glBufferSubData past the end: GL_INVALID_VALUE
+PASS: glBufferData with a bad usage: GL_INVALID_ENUM
+PASS: glBindBuffer with a bad target: GL_INVALID_ENUM
+PASS: glBufferData with no buffer bound: GL_INVALID_OPERATION
+PASS: glBindBuffer creates an unused name
+PASS: glDeleteBuffers: the names are gone
+PASS: GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING names the buffer
+FAIL: buffer arrays: quad 0 f0020d empty, 1 b73b0d red, 2 7e740d green, 3 5aa401 blue (bytes)
+FAIL: glBufferSubData between draws: quad 0 f0020d stays red, quad 1 b73b0d blue
+FAIL: glBufferData between draws: quad 0 f0020d green, quad 1 b73b0d yellow
+PASS: GL_ELEMENT_ARRAY_BUFFER_BINDING
+FAIL: element buffer: quad 0 f0020d empty, 8-bit b73b0d magenta, 16-bit at 8 7e740d cyan
+FAIL: positions from a buffer, colours from client memory: 7e740d orange
+PASS: deleting a bound buffer unbinds it from the attribute
+PASS: ... and from GL_ARRAY_BUFFER
+FAIL: and a draw that needs it draws nothing
+FAIL: 30 frames from one unchanged buffer: 0 drawn
+PASS: no GL error left over
+PASS: destroy returns the memory (-264 bytes difference)
+FAILED: 20 of 27 checks passed

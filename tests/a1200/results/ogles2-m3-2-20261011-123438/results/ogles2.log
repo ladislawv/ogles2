@@ -1,0 +1,214 @@
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0825C0E8
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 aglCreateContext2: context 0x08F87784, 0x0, state only
+    13 compiler: started (0 s)
+    14 compiler: shader compiled in 1240 ms
+    15 compiler: shader compiled in 20 ms
+    16 compiler: program compiled in 200 ms, OGLES2Cache:b5dddc8cd309fdea4d334b4b.v3dp
+    17 glLinkProgram: OGLES2Cache:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    18 compiler: shader compiled in 40 ms
+    19 compiler: shader compiled in 40 ms
+    20 compiler: program compiled in 360 ms, OGLES2Cache:d59c497ea5e22752b642e93f.v3dp
+    21 glLinkProgram: OGLES2Cache:d59c497ea5e22752b642e93f.v3dp (5 variants, 1528 bytes of code)
+    22 compiler: shader compiled in 40 ms
+    23 compiler: shader compiled in 20 ms
+    24 compiler: program compiled in 640 ms, OGLES2Cache:979ada9f17d3d1821c3b45bb.v3dp
+    25 glLinkProgram: OGLES2Cache:979ada9f17d3d1821c3b45bb.v3dp (5 variants, 3120 bytes of code)
+    26 compiler: shader compiled in 40 ms
+    27 compiler: shader compiled in 40 ms
+    28 compiler: program compiled in 300 ms, OGLES2Cache:ac1ecb1e7ef3afc88d3666c9.v3dp
+    29 glLinkProgram: OGLES2Cache:ac1ecb1e7ef3afc88d3666c9.v3dp (7 variants, 2656 bytes of code)
+    30 compiler: shader compiled in 20 ms
+    31 compiler: shader compiled in 20 ms
+    32 compiler: program compiled in 200 ms, OGLES2Cache:645f9567abe1c3a6e41839b9.v3dp
+    33 glLinkProgram: OGLES2Cache:645f9567abe1c3a6e41839b9.v3dp (5 variants, 1176 bytes of code)
+    34 compiler: shader compiled in 20 ms
+    35 compiler: program compiled in 180 ms, OGLES2Cache:6525c1a37d1f1d6e8cf661b4.v3dp
+    36 glLinkProgram: OGLES2Cache:6525c1a37d1f1d6e8cf661b4.v3dp (5 variants, 904 bytes of code)
+    37 compiler: shader failed in 20 ms
+    38 compiler: shader failed in 20 ms
+    39 aglDestroyContext: context 0x08F87784 (0 frames, 0 dropped)
+    40 close (count 0)
+    41 open (count 1)
+    42 display: application bitmap, 256x128, BGRA
+    43 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    44 aglCreateContext2: context 0x08FC4A84, 256x128
+    45 glLinkProgram: OGLES2Cache:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    46 glLinkProgram: OGLES2Cache:979ada9f17d3d1821c3b45bb.v3dp (5 variants, 3120 bytes of code)
+    47 device: context freed, 0 bytes of GPU memory still in use
+    48 aglDestroyContext: context 0x08FC4A84 (4 frames, 0 dropped)
+    49 close (count 0)
+    50 open (count 1)
+    51 display: application bitmap, 256x128, BGRA
+    52 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    53 aglCreateContext2: context 0x08FD98E4, 256x128
+    54 compiler: shader compiled in 40 ms
+    55 compiler: shader compiled in 20 ms
+    56 compiler: program compiled in 180 ms, OGLES2Cache:1656c863a995438bf1702079.v3dp
+    57 glLinkProgram: OGLES2Cache:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+    58 compiler: shader compiled in 20 ms
+    59 compiler: program compiled in 160 ms, OGLES2Cache:fefb2ddbea600443ecbddbd7.v3dp
+    60 glLinkProgram: OGLES2Cache:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+    61 texture 1 changed after a draw used it in the same frame: the frame is rendered first (logged once)
+    62 device: context freed, 0 bytes of GPU memory still in use
+    63 aglDestroyContext: context 0x08FD98E4 (21 frames, 0 dropped)
+    64 close (count 0)
+    65 open (count 1)
+    66 display: application bitmap, 320x240, BGRA
+    67 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    68 aglCreateContext2: context 0x08FD98E4, 320x240
+    69 glLinkProgram: OGLES2Cache:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    70 device: context freed, 0 bytes of GPU memory still in use
+    71 aglDestroyContext: context 0x08FD98E4 (118 frames, 0 dropped)
+    72 close (count 0)
+    73 open (count 1)
+    74 display: own window, 300x300, BGRA
+    75 device: context pools for 300x300, D32F, 17936512 bytes of GPU memory in use
+    76 aglCreateContext2: context 0x08F8755C, 300x300
+    77 compiler: shader compiled in 20 ms
+    78 compiler: shader compiled in 20 ms
+    79 compiler: program compiled in 260 ms, OGLES2Cache:116c7f8ab592b44a27c26df0.v3dp
+    80 glLinkProgram: OGLES2Cache:116c7f8ab592b44a27c26df0.v3dp (5 variants, 1208 bytes of code)
+    81 device: context freed, 0 bytes of GPU memory still in use
+    82 aglDestroyContext: context 0x08F8755C (60 frames, 0 dropped)
+    83 close (count 0)
+    84 open (count 1)
+    85 display: own window, 320x240, BGRA
+    86 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    87 aglCreateContext2: context 0x08F87454, 320x240
+    88 compiler: shader compiled in 20 ms
+    89 compiler: shader compiled in 20 ms
+    90 compiler: program compiled in 140 ms, OGLES2Cache:66ac464d160a81e721423e14.v3dp
+    91 glLinkProgram: OGLES2Cache:66ac464d160a81e721423e14.v3dp (5 variants, 488 bytes of code)
+    92 device: context freed, 0 bytes of GPU memory still in use
+    93 aglDestroyContext: context 0x08F87454 (60 frames, 0 dropped)
+    94 close (count 0)
+    95 open (count 1)
+    96 display: own window, 320x240, BGRA
+    97 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+    98 aglCreateContext2: context 0x08F87454, 320x240
+    99 compiler: shader compiled in 20 ms
+   100 compiler: shader compiled in 20 ms
+   101 compiler: program compiled in 180 ms, OGLES2Cache:7257e433dac541553f148da1.v3dp
+   102 glLinkProgram: OGLES2Cache:7257e433dac541553f148da1.v3dp (5 variants, 784 bytes of code)
+   103 device: context freed, 0 bytes of GPU memory still in use
+   104 aglDestroyContext: context 0x08F87454 (60 frames, 0 dropped)
+   105 close (count 0)
+   106 open (count 1)
+   107 display: own window, 320x240, BGRA
+   108 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+   109 aglCreateContext2: context 0x08F87454, 320x240
+   110 compiler: shader compiled in 20 ms
+   111 compiler: shader compiled in 40 ms
+   112 compiler: program compiled in 140 ms, OGLES2Cache:7af46f2bb57ef22b5eaba45e.v3dp
+   113 glLinkProgram: OGLES2Cache:7af46f2bb57ef22b5eaba45e.v3dp (5 variants, 632 bytes of code)
+   114 device: context freed, 0 bytes of GPU memory still in use
+   115 aglDestroyContext: context 0x08F87454 (60 frames, 0 dropped)
+   116 close (count 0)
+   117 open (count 1)
+   118 display: own window, 320x240, BGRA
+   119 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+   120 aglCreateContext2: context 0x08FD98E4, 320x240
+   121 compiler: shader compiled in 20 ms
+   122 compiler: program compiled in 160 ms, OGLES2Cache:bca9c42c70e7f7a108913d9d.v3dp
+   123 glLinkProgram: OGLES2Cache:bca9c42c70e7f7a108913d9d.v3dp (5 variants, 640 bytes of code)
+   124 device: context freed, 0 bytes of GPU memory still in use
+   125 aglDestroyContext: context 0x08FD98E4 (60 frames, 0 dropped)
+   126 close (count 0)
+   127 open (count 1)
+   128 display: own window, 640x480, BGRA
+   129 device: context pools for 640x480, D16, 18196864 bytes of GPU memory in use
+   130 aglCreateContext2: context 0x08F87454, 640x480
+   131 glLinkProgram: OGLES2Cache:bca9c42c70e7f7a108913d9d.v3dp (5 variants, 640 bytes of code)
+   132 device: context freed, 0 bytes of GPU memory still in use
+   133 aglDestroyContext: context 0x08F87454 (60 frames, 0 dropped)
+   134 close (count 0)
+   135 open (count 1)
+   136 display: own window, 320x240, BGRA
+   137 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+   138 aglCreateContext2: context 0x08F87454, 320x240
+   139 compiler: shader compiled in 20 ms
+   140 compiler: shader compiled in 20 ms
+   141 compiler: program compiled in 140 ms, OGLES2Cache:6d2a1e12b9ff17e0aab9a912.v3dp
+   142 glLinkProgram: OGLES2Cache:6d2a1e12b9ff17e0aab9a912.v3dp (5 variants, 840 bytes of code)
+   143 device: context freed, 0 bytes of GPU memory still in use
+   144 aglDestroyContext: context 0x08F87454 (60 frames, 0 dropped)
+   145 close (count 0)
+   146 open (count 1)
+   147 display: own window, 320x240, BGRA
+   148 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+   149 aglCreateContext2: context 0x08F87454, 320x240
+   150 compiler: shader compiled in 20 ms
+   151 compiler: program compiled in 160 ms, OGLES2Cache:990b2b682ad48101576dd1a2.v3dp
+   152 glLinkProgram: OGLES2Cache:990b2b682ad48101576dd1a2.v3dp (5 variants, 800 bytes of code)
+   153 device: context freed, 0 bytes of GPU memory still in use
+   154 aglDestroyContext: context 0x08F87454 (60 frames, 0 dropped)
+   155 close (count 0)
+   156 open (count 1)
+   157 display: own window, 320x240, BGRA
+   158 device: context pools for 320x240, D32F, 17847680 bytes of GPU memory in use
+   159 aglCreateContext2: context 0x08F87454, 320x240
+   160 compiler: shader compiled in 40 ms
+   161 compiler: shader compiled in 20 ms
+   162 compiler: program compiled in 140 ms, OGLES2Cache:f918689ef7239515ab686e39.v3dp
+   163 glLinkProgram: OGLES2Cache:f918689ef7239515ab686e39.v3dp (5 variants, 512 bytes of code)
+   164 device: context freed, 0 bytes of GPU memory still in use
+   165 aglDestroyContext: context 0x08F87454 (60 frames, 0 dropped)
+   166 close (count 0)
+   167 open (count 1)
+   168 display: own window, 320x240, BGRA
+   169 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+   170 aglCreateContext2: context 0x08F87454, 320x240
+   171 glLinkProgram: OGLES2Cache:f918689ef7239515ab686e39.v3dp (5 variants, 512 bytes of code)
+   172 device: context freed, 0 bytes of GPU memory still in use
+   173 aglDestroyContext: context 0x08F87454 (60 frames, 0 dropped)
+   174 close (count 0)
+   175 open (count 1)
+   176 display: own window, 640x480, BGRA
+   177 device: context pools for 640x480, D16, 18196864 bytes of GPU memory in use
+   178 aglCreateContext2: context 0x08F8755C, 640x480
+   179 compiler: shader compiled in 40 ms
+   180 compiler: shader compiled in 20 ms
+   181 compiler: program compiled in 240 ms, OGLES2Cache:792b5f51feb2b90c5ddfefa7.v3dp
+   182 glLinkProgram: OGLES2Cache:792b5f51feb2b90c5ddfefa7.v3dp (7 variants, 1712 bytes of code)
+   183 device: context freed, 0 bytes of GPU memory still in use
+   184 aglDestroyContext: context 0x08F8755C (60 frames, 0 dropped)
+     1 ogles2.library 1.0 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0825C0E8
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 aglCreateContext2: context 0x08F88734, 0x0, state only
+    13 glLinkProgram: OGLES2Cache:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    14 glLinkProgram: OGLES2Cache:d59c497ea5e22752b642e93f.v3dp (5 variants, 1528 bytes of code)
+    15 glLinkProgram: OGLES2Cache:979ada9f17d3d1821c3b45bb.v3dp (5 variants, 3120 bytes of code)
+    16 glLinkProgram: OGLES2Cache:ac1ecb1e7ef3afc88d3666c9.v3dp (7 variants, 2656 bytes of code)
+    17 glLinkProgram: OGLES2Cache:645f9567abe1c3a6e41839b9.v3dp (5 variants, 1176 bytes of code)
+    18 glLinkProgram: OGLES2Cache:6525c1a37d1f1d6e8cf661b4.v3dp (5 variants, 904 bytes of code)
+    19 compiler: started (0 s)
+    20 compiler: shader failed in 1240 ms
+    21 compiler: shader failed in 40 ms
+    22 aglDestroyContext: context 0x08F88734 (0 frames, 0 dropped)
+    23 close (count 0)
+    24 open (count 1)
+    25 display: own window, 300x300, BGRA
+    26 device: context pools for 300x300, D32F, 17936512 bytes of GPU memory in use
+    27 aglCreateContext2: context 0x08F88734, 300x300
+    28 glLinkProgram: OGLES2Cache:116c7f8ab592b44a27c26df0.v3dp (5 variants, 1208 bytes of code)
+    29 device: context freed, 0 bytes of GPU memory still in use
+    30 aglDestroyContext: context 0x08F88734 (60 frames, 0 dropped)

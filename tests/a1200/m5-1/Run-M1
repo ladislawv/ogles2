@@ -1,0 +1,79 @@
+; Run-M1 - ogles2 M5 run 1: framebuffer objects, and the earlier tests. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m5-1 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M5R1: ""
+If NOT EXISTS M5R1:results
+  MakeDir M5R1:results
+EndIf
+Echo "ogles2 M5 run 1, starting at step {FROM}" >>M5R1:results/00-progress.txt
+Date >>M5R1:results/00-progress.txt
+Assign LIBS: M5R1:libs ADD
+; Expunge libraries nobody has open: an ogles2.library left in memory by an
+; earlier run would otherwise be used instead of this package's.
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M5R1:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 6: framebuffer objects, then a big frame (nothing to see)"
+  M5R1:bin/m5_fbo >M5R1:results/1-fbo.txt
+  M5R1:bin/m4_stress 100000 >M5R1:results/1-stress-100k.txt
+  M5R1:bin/m4_depth >M5R1:results/1-depth.txt
+  M5R1:bin/m4_setbitmap >M5R1:results/1-setbitmap.txt
+  Echo "step 1 done" >>M5R1:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 6: buffer objects (nothing to see)"
+  M5R1:bin/m2_buffers >M5R1:results/2-buffers.txt
+  Echo "step 2 done" >>M5R1:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 6: glDrawElements and an indexed uniform array (nothing to see)"
+  M5R1:bin/m2_elements >M5R1:results/3-elements.txt
+  Echo "step 3 done" >>M5R1:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 6: linking and uniforms (nothing to see)"
+  M5R1:bin/m2_link >M5R1:results/4-link.txt
+  Echo "step 4 done" >>M5R1:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 6: textures on a hidden bitmap (nothing to see)"
+  M5R1:bin/m2_texture BITMAP QUICK >M5R1:results/5-texture.txt
+  Echo "step 5 done" >>M5R1:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 6 VAL
+  Echo "Step 6 of 6: the triangle test on a hidden bitmap (nothing to see)"
+  M5R1:bin/m1_draw BITMAP QUICK >M5R1:results/6-draw.txt
+  Echo "step 6 done" >>M5R1:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M5R1:libs REMOVE
+If NOT EXISTS M5R1:results/notes.txt
+  Copy M5R1:notes-template.txt M5R1:results/notes.txt
+EndIf
+List M5R1:results >M5R1:results/99-files.txt
+Echo "finished" >>M5R1:results/00-progress.txt
+Date >>M5R1:results/00-progress.txt
+Assign M5R1:
+Echo ""
+Echo "Done. Results are in results/."

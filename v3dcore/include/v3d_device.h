@@ -49,6 +49,8 @@ int  v3d_init(V3DDevice* device);
 void v3d_free(V3DDevice* device);
 int  v3d_mem_alloc(V3DDevice* device, v3d_mem* m, unsigned size);
 void v3d_mem_free(V3DDevice* device, v3d_mem* m);
+/* ogles2: reset the V3D core (v3d_device.c); 0 if it answers afterwards. */
+int  v3d_gpu_reset(V3DDevice* device);
 int  v3d_qpu_active(V3DDevice* device);
 
 #endif /* V3D_DEVICE_H */

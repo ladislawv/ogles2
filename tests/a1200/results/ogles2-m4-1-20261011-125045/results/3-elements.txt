@@ -1,0 +1,15 @@
+ogles2 M2: glDrawElements, indirectly indexed uniforms
+PASS: smooth: links
+FAIL: glDrawElements 8-bit (indices 4-7) 678250 red, 16-bit (8-11) 20da66 green, gap 00ff7f
+PASS: GL_EXTENSIONS lists GL_OES_element_index_uint
+FAIL: glReadPixels in the open frame: 20da6608 green
+FAIL: glReadPixels where nothing was drawn: 678250 black
+PASS: implementation read format RGBA, UNSIGNED_BYTE
+PASS: glReadPixels GL_RGB: GL_INVALID_OPERATION
+FAIL: glDrawElements 32-bit (8-11): left 678250 empty, right 20da66 green
+PASS: skin: links (UBO_ADDR)
+FAIL: skin: bone[5] moves the triangle right: 000000 drawn, 0000ff empty
+FAIL: skin: bone[20] moves it up: 6058ff drawn (grey about ac), 0cae00 empty
+PASS: no GL error left over
+PASS: destroy returns the memory (0 bytes difference)
+FAILED: 7 of 13 checks passed

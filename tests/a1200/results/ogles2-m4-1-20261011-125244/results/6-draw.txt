@@ -1,0 +1,27 @@
+ogles2 M1 step 2: first triangles
+PASS: bitmap: create (BITMAP tag, 16-bit depth)
+PASS: bitmap: program: a_position at 0, a_color at 3 (bound to 3), u_mvp at 0
+PASS: bitmap: GL_CURRENT_PROGRAM
+FAIL: bitmap: smooth triangle: bottom left b7b7b7 (red), bottom right 9a9a9a (green), top 4b69af (blue)
+FAIL: bitmap: smooth triangle: inside 010101 is a mix, outside c2bbbb and bdbdb8 are the clear colour
+FAIL: bitmap: constant colour from a disabled array: 010101 (ffff00)
+FAIL: bitmap: matrix (scale 0.5, x + 0.5): 100d13 drawn, 000400 empty
+FAIL: bitmap: culling: back culled keeps it (010101), front culled removes it (010101), front face CW keeps it (010101)
+FAIL: bitmap: depth test (16 bits): overlap 116e9a (blue), far only 030303 (red)
+FAIL: bitmap: depth test off: the later triangle covers the earlier (116e9a, red)
+FAIL: bitmap: viewport (left half): left 000400 drawn, right 100d13 empty
+FAIL: bitmap: scissor box: inside 116e9a white, left 0c141f and top 000000 empty
+FAIL: bitmap: blending (alpha 0.5 red over blue): 010101 (808080 with green 0, +-2)
+FAIL: bitmap: colour mask (red off): 010101 (00ffff)
+FAIL: bitmap: triangle strip 555555 (00ff00) and fan 999999 (ff00ff)
+FAIL: bitmap: line 555555 and point 000000 white, beside the line 44683e empty
+FAIL: bitmap: scissored clear: inside 116e9a red, outside 0c141f black
+FAIL: bitmap: masked clear (green only) over blue: 116e9a (00ffff)
+FAIL: bitmap: clear after a draw covers it: 010101 and c2bbbb (008000)
+FAIL: bitmap: depth clear between draws: the far triangle now passes (010101, red)
+     bitmap: no stencil buffer, stencil test skipped
+PASS: bitmap: no GL error
+     bitmap: 100 frames of 200 triangles in 4502 ms (45.0 ms per frame)
+PASS: bitmap: no GL error after the timing run and deleting the program
+PASS: bitmap: destroy returns the memory (0 bytes difference)
+FAILED: 6 of 23 checks passed

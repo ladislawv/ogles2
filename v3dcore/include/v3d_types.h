@@ -140,6 +140,13 @@ typedef struct v3d_static_buffer {
      * v3d_u8 (not v3d_bool) -- v3d_bool is typedef'd in v3d_hw.h, which
      * itself includes this file, not the other way around. */
     v3d_u8 overflowed;
+    /* ogles2: chaining (plan section 9 M4). When set, a claim that does not
+     * fit goes to grow(), which continues the list in a new block (ending
+     * this one with a BRANCH packet, in bytes kept free past `capacity`) and
+     * returns the claim from there. NULL from grow(), or no grow(), keeps
+     * the overflow behaviour above. */
+    void* (*grow)(struct v3d_static_buffer* buffer, v3d_uintptr dataSize);
+    void* grow_data;
 } v3d_static_buffer;
 
 #endif /* V3D_TYPES_H */

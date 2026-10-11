@@ -8,6 +8,10 @@
  *           above 0 (the runtime copies only the range used and rebases)
  *   skin    (tools/v3dglslc/test/shaders) picks bone[] matrices by a vertex
  *           attribute: the shader reads its constant buffer through the TMU
+ *   base    OES_draw_elements_base_vertex: the same indices drawn with base
+ *           vertex 0, 4 and (from higher indices) -4, client and buffer indices
+ *   minmax  EXT_blend_minmax: GL_MIN and GL_MAX against a grey background,
+ *           with factors that would change the result if they were applied
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,6 +24,11 @@
 #include <proto/cybergraphics.h>
 #include <proto/ogles2.h>
 #include "../common/smooth_shaders.h"
+
+#ifndef GL_MIN_EXT /* EXT_blend_minmax (gl2ext.h) */
+#define GL_MIN_EXT 0x8007
+#define GL_MAX_EXT 0x8008
+#endif
 
 struct GfxBase *GfxBase;
 struct Library *CyberGfxBase;
@@ -233,6 +242,145 @@ static void test_skin(void)
     free(fs);
 }
 
+/* Left quad red (vertices 0-3), right quad green (4-7). */
+static GLfloat q_pos[8 * 3], q_col[8 * 4];
+
+static void two_quads(void)
+{
+    int k;
+    for (k = 0; k < 8; k++) {
+        int q = k & 3;
+        q_pos[k * 3] = (k < 4 ? -0.9f : 0.1f) + ((q & 1) ? 0.8f : 0.0f);
+        q_pos[k * 3 + 1] = (q & 2) ? 0.8f : -0.8f;
+        q_pos[k * 3 + 2] = 0;
+        q_col[k * 4] = k < 4 ? 1.0f : 0.0f;
+        q_col[k * 4 + 1] = k < 4 ? 0.0f : 1.0f;
+        q_col[k * 4 + 2] = 0;
+        q_col[k * 4 + 3] = 1;
+    }
+}
+
+static void test_base_vertex(void)
+{
+    static const UWORD lo[6] = {0, 1, 2, 2, 1, 3}, hi[6] = {4, 5, 6, 6, 5, 7};
+    const char *ext = (const char *)glGetString(GL_EXTENSIONS);
+    unsigned long a, b;
+    char msg[160];
+    GLuint p = link(smooth_vs, smooth_fs), eb;
+    GLint lp, lc;
+    if (!p)
+        return;
+    check(ext && strstr(ext, "GL_OES_draw_elements_base_vertex") != 0,
+          "GL_EXTENSIONS lists GL_OES_draw_elements_base_vertex");
+    two_quads();
+    glUseProgram(p);
+    glUniformMatrix4fv(glGetUniformLocation(p, "u_mvp"), 1, GL_FALSE, identity);
+    lp = glGetAttribLocation(p, "a_position");
+    lc = glGetAttribLocation(p, "a_color");
+    glVertexAttribPointer(lp, 3, GL_FLOAT, GL_FALSE, 0, q_pos);
+    glEnableVertexAttribArray(lp);
+    glVertexAttribPointer(lc, 4, GL_FLOAT, GL_FALSE, 0, q_col);
+    glEnableVertexAttribArray(lc);
+    glClearColor(0, 0, 0, 1);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawElementsBaseVertexOES(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, lo, 4);
+    aglSwapBuffers();
+    a = ndc(-0.5f, 0.0f);
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "indices 0-3 with base vertex 4: left %06lx empty, right %06lx green", a, b);
+    check(a == 0 && b == 0x00FF00, msg);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawElementsBaseVertexOES(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, hi, -4);
+    aglSwapBuffers();
+    a = ndc(-0.5f, 0.0f);
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "indices 4-7 with base vertex -4: left %06lx red, right %06lx empty", a, b);
+    check(a == 0xFF0000 && b == 0, msg);
+
+    /* From an element buffer, at an offset; base vertex 0 is glDrawElements. */
+    glGenBuffers(1, &eb);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eb);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(lo) + sizeof(hi), 0, GL_STATIC_DRAW);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(lo), lo);
+    glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, sizeof(lo), sizeof(hi), hi);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawElementsBaseVertexOES(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void *)sizeof(lo), 0);
+    glDrawElementsBaseVertexOES(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void *)0, 0);
+    aglSwapBuffers();
+    a = ndc(-0.5f, 0.0f);
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "element buffer, base vertex 0: left %06lx red, right %06lx green", a, b);
+    check(a == 0xFF0000 && b == 0x00FF00, msg);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &eb);
+
+    glDrawElementsBaseVertexOES(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, lo, 0);
+    glDrawElementsBaseVertexOES(7 + 100, 6, GL_UNSIGNED_SHORT, lo, 0);
+    check(glGetError() == GL_INVALID_ENUM, "a bad mode: GL_INVALID_ENUM");
+    aglSwapBuffers();
+    glDisableVertexAttribArray(lc);
+    glUseProgram(0);
+    glDeleteProgram(p);
+}
+
+static void test_minmax(void)
+{
+    const char *ext = (const char *)glGetString(GL_EXTENSIONS);
+    unsigned long a, b;
+    char msg[200];
+    GLint eq = 0;
+    GLuint p = link(smooth_vs, smooth_fs);
+    GLint lp, lc;
+    if (!p)
+        return;
+    check(ext && strstr(ext, "GL_EXT_blend_minmax") != 0, "GL_EXTENSIONS lists GL_EXT_blend_minmax");
+    two_quads();
+    glUseProgram(p);
+    glUniformMatrix4fv(glGetUniformLocation(p, "u_mvp"), 1, GL_FALSE, identity);
+    lp = glGetAttribLocation(p, "a_position");
+    lc = glGetAttribLocation(p, "a_color");
+    glVertexAttribPointer(lp, 3, GL_FLOAT, GL_FALSE, 0, q_pos);
+    glEnableVertexAttribArray(lp);
+    glVertexAttribPointer(lc, 4, GL_FLOAT, GL_FALSE, 0, q_col);
+    glEnableVertexAttribArray(lc);
+    /* Grey 0x80 behind red (left) and green (right). MIN: (80,00,00) left,
+     * (00,80,00) right; MAX: (ff,80,80), (80,ff,80). Factors ZERO, ZERO would
+     * make both black if applied. */
+    glClearColor(0.5f, 0.5f, 0.5f, 1);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ZERO, GL_ZERO);
+    glBlendEquation(GL_MIN_EXT);
+    glGetIntegerv(GL_BLEND_EQUATION_RGB, &eq);
+    check(eq == GL_MIN_EXT, "glBlendEquation(GL_MIN_EXT) is queried back");
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
+    aglSwapBuffers();
+    a = ndc(-0.5f, 0.0f);
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "GL_MIN_EXT over grey, factors ZERO: left %06lx (800000), right %06lx (008000)", a, b);
+    check((a == 0x800000 || a == 0x7F0000) && (b == 0x008000 || b == 0x007F00), msg);
+
+    glBlendEquationSeparate(GL_MAX_EXT, GL_FUNC_ADD);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
+    aglSwapBuffers();
+    a = ndc(-0.5f, 0.0f);
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "GL_MAX_EXT over grey, factors ZERO: left %06lx (ff8080), right %06lx (80ff80)", a, b);
+    check((a == 0xFF8080 || a == 0xFF7F7F) && (b == 0x80FF80 || b == 0x7FFF7F), msg);
+
+    glBlendEquation(GL_FUNC_ADD);
+    glBlendFunc(GL_ONE, GL_ZERO);
+    glDisable(GL_BLEND);
+    glDisableVertexAttribArray(lc);
+    glUseProgram(0);
+    glDeleteProgram(p);
+}
+
 int main(int argc, char **argv)
 {
     ULONG err = 0, before, after;
@@ -259,6 +407,8 @@ int main(int argc, char **argv)
     rp.BitMap = bm;
     test_elements();
     test_skin();
+    test_base_vertex();
+    test_minmax();
     check(glGetError() == GL_NO_ERROR, "no GL error left over");
     aglDestroyContext(ctx);
     after = AvailMem(MEMF_ANY);

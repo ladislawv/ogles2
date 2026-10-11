@@ -13,6 +13,7 @@
  * picture stays 1 s (QUICK: no pauses).
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <exec/memory.h>
 #include <intuition/intuition.h>
@@ -364,6 +365,183 @@ static void run(void)
         glDeleteTextures(1, &t);
     }
 
+    /* 11b. A texture changed after a draw of the same frame is renamed, not
+     * rendered first: the frame keeps its depth. The same quad twice with
+     * GL_LESS: the second fails the depth test and the quad stays red. */
+    {
+        static const UBYTE red[4] = {255, 0, 0, 255}, green[4] = {0, 255, 0, 255};
+        t = tex(1, 1, GL_RGBA, GL_UNSIGNED_BYTE, red, GL_NEAREST);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+        glClearColor(0, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        full(1, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, green);
+        full(1, 1);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, red);
+        glDisable(GL_DEPTH_TEST);
+        quad(prog1, pos1, tc1, 0, -1, 1, 1, 1, 1); /* right half: the sub-image (red again) */
+        show();
+        a = px(w / 4, h / 2);
+        b = px(w * 3 / 4, h / 2);
+        sprintf(msg, "texture changed mid-frame keeps the frame's depth: %06lx (ff0000); after glTexSubImage2D %06lx (ff0000)", a, b);
+        check(a == 0xFF0000 && b == 0xFF0000, msg);
+        glDeleteTextures(1, &t);
+    }
+
+    /* 12. Copies from the framebuffer: left half red, right half green
+     * (scissored clears), copied across the boundary. */
+    {
+        static const UBYTE blue2[8] = {0, 0, 255, 255, 0, 0, 255, 255};
+        unsigned long l0, l1;
+        glEnable(GL_SCISSOR_TEST);
+        glScissor(0, 0, w / 2, h);
+        clear(1, 0, 0);
+        glScissor(w / 2, 0, w - w / 2, h);
+        clear(0, 1, 0);
+        glDisable(GL_SCISSOR_TEST);
+        glGenTextures(1, &t);
+        glBindTexture(GL_TEXTURE_2D, t);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w / 2 - 2, h / 2, 4, 1, 0);
+        /* LUMINANCE takes red (GLES 2.0 table 3.15): white from the red half. */
+        glGenTextures(1, &t2);
+        glBindTexture(GL_TEXTURE_2D, t2);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 2, 2, 1, 1, 0);
+        clear(0, 0, 0);
+        glBindTexture(GL_TEXTURE_2D, t);
+        quad(prog1, pos1, tc1, -1, -1, 0, 1, 1, 1);
+        glBindTexture(GL_TEXTURE_2D, t2);
+        quad(prog1, pos1, tc1, 0, -1, 1, 1, 1, 1);
+        show();
+        a = px(w / 16, h / 2);       /* texel 0: red */
+        b = px(w * 7 / 16, h / 2);   /* texel 3: green */
+        c = px(w * 3 / 4, h / 2);    /* the LUMINANCE copy */
+        sprintf(msg, "glCopyTexImage2D: %06lx red, %06lx green; as LUMINANCE %06lx (ffffff)", a, b, c);
+        check(a == 0xFF0000 && b == 0x00FF00 && c == 0xFFFFFF, msg);
+        /* glCopyTexSubImage2D: texel 1 of a blue 2x1 texture from the green half. */
+        glBindTexture(GL_TEXTURE_2D, t);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, blue2);
+        clear(0, 1, 0);
+        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 1, 0, w / 2, h / 2, 1, 1);
+        clear(0, 0, 0);
+        full(1, 1);
+        show();
+        l0 = px(w / 4, h / 2);
+        l1 = px(w * 3 / 4, h / 2);
+        sprintf(msg, "glCopyTexSubImage2D: %06lx blue kept, %06lx green copied", l0, l1);
+        check(l0 == 0x0000FF && l1 == 0x00FF00, msg);
+        glGetError();
+        glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, 1, 1, 1);
+        a = glGetError();
+        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 2, 0, 0, 0, 1, 1); /* past the 2x1 texture */
+        b = glGetError();
+        sprintf(msg, "copy errors: border %04lx (0501), outside the texture %04lx (0501)", a, b);
+        check(a == GL_INVALID_VALUE && b == GL_INVALID_VALUE, msg);
+        glDeleteTextures(1, &t);
+        glDeleteTextures(1, &t2);
+    }
+
+    /* 12b. ETC1 (OES_compressed_ETC1_RGB8_texture): one 4x4 block, individual
+     * mode, no flip: left subblock base (15,0,0), right (0,15,0), modifier
+     * row 0, every index 0 (+2): left (255,2,2), right (2,255,2). */
+    {
+        static const UBYTE block[8] = {0xF0, 0x0F, 0x00, 0x00, 0, 0, 0, 0};
+        GLint n = 0, f = 0;
+        const char *ext = (const char *)glGetString(GL_EXTENSIONS);
+        glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS, &n);
+        glGetIntegerv(GL_COMPRESSED_TEXTURE_FORMATS, &f);
+        check(ext && strstr(ext, "GL_OES_compressed_ETC1_RGB8_texture") && n == 1 && f == 0x8D64,
+              "ETC1: in GL_EXTENSIONS and GL_COMPRESSED_TEXTURE_FORMATS");
+        glGenTextures(1, &t);
+        glBindTexture(GL_TEXTURE_2D, t);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glCompressedTexImage2D(GL_TEXTURE_2D, 0, 0x8D64, 4, 4, 0, 8, block);
+        clear(0, 0, 0);
+        full(1, 1);
+        show();
+        a = px(w / 8, h / 2);
+        b = px(w * 7 / 8, h / 2);
+        sprintf(msg, "ETC1 block: left %06lx (ff0202), right %06lx (02ff02)", a, b);
+        check(a == 0xFF0202 && b == 0x02FF02, msg);
+        glGetError();
+        glCompressedTexImage2D(GL_TEXTURE_2D, 0, 0x8D64, 4, 4, 0, 7, block);
+        a = glGetError();
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, rgbw);
+        b = glGetError();
+        glCompressedTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 4, 4, 0x8D64, 8, block);
+        c = glGetError();
+        sprintf(msg, "ETC1 errors: wrong size %04lx (0501), TexSubImage %04lx (0502), CompressedTexSubImage %04lx (0502)",
+                a, b, c);
+        check(a == GL_INVALID_VALUE && b == GL_INVALID_OPERATION && c == GL_INVALID_OPERATION, msg);
+        glDeleteTextures(1, &t);
+    }
+
+    /* 12c. Non-power-of-two sizes (GLES2: clamp, no mipmaps), RGBA8 and RGB565
+     * storage: a colour per quadrant, sampled near each quadrant's centre. */
+    {
+        static const int sizes[2][2] = {{100, 60}, {50, 30}};
+        int n;
+        for (n = 0; n < 2; n++) {
+            int tw = sizes[n][0], th = sizes[n][1], x, y;
+            UBYTE *img = malloc((size_t)tw * th * 4);
+            unsigned long q[4];
+            if (!img)
+                break;
+            for (y = 0; y < th; y++)
+                for (x = 0; x < tw; x++) {
+                    UBYTE *p = img + ((size_t)y * tw + x) * (n ? 2 : 4);
+                    int quad_ = (x >= tw / 2) + 2 * (y >= th / 2); /* 0 red, 1 green, 2 blue, 3 white */
+                    if (!n) {
+                        p[0] = quad_ == 0 || quad_ == 3 ? 255 : 0;
+                        p[1] = quad_ == 1 || quad_ == 3 ? 255 : 0;
+                        p[2] = quad_ >= 2 ? 255 : 0;
+                        p[3] = 255;
+                    } else {
+                        UWORD v = quad_ == 0 ? 0xF800 : quad_ == 1 ? 0x07E0 : quad_ == 2 ? 0x001F : 0xFFFF;
+                        p[0] = (UBYTE)(v >> 8); /* the application's (big-endian) shorts */
+                        p[1] = (UBYTE)v;
+                    }
+                }
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            t = n ? tex(tw, th, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, img, GL_NEAREST)
+                  : tex(tw, th, GL_RGBA, GL_UNSIGNED_BYTE, img, GL_NEAREST);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+            clear(0, 0, 0);
+            full(1, 1);
+            show();
+            q[0] = px(w / 4, h / 4);
+            q[1] = px(w * 3 / 4, h / 4);
+            q[2] = px(w / 4, h * 3 / 4);
+            q[3] = px(w * 3 / 4, h * 3 / 4);
+            sprintf(msg, "%dx%d %s texture: %06lx %06lx %06lx %06lx (ff0000 00ff00 0000ff ffffff)", tw, th,
+                    n ? "RGB565" : "RGBA8", q[0], q[1], q[2], q[3]);
+            check(q[0] == 0xFF0000 && q[1] == 0x00FF00 && q[2] == 0x0000FF && q[3] == 0xFFFFFF, msg);
+            glDeleteTextures(1, &t);
+            free(img);
+        }
+    }
+
+    /* 12d. EXT_texture_format_BGRA8888: bytes blue, green, red, alpha. */
+    {
+        static const UBYTE bgra[4] = {0x10, 0x80, 0xF0, 0xFF};
+        const char *ext = (const char *)glGetString(GL_EXTENSIONS);
+        t = tex(1, 1, 0x80E1, GL_UNSIGNED_BYTE, bgra, GL_NEAREST);
+        clear(0, 0, 0);
+        full(1, 1);
+        show();
+        a = px(w / 2, h / 2);
+        sprintf(msg, "BGRA8888 texture: %06lx (f08010), in GL_EXTENSIONS", a);
+        check(a == 0xF08010 && ext && strstr(ext, "GL_EXT_texture_format_BGRA8888"), msg);
+        glDeleteTextures(1, &t);
+    }
+
     /* 13. Errors. */
     glGenTextures(1, &t);
     glBindTexture(GL_TEXTURE_2D, t);
@@ -422,7 +600,8 @@ int main(int argc, char **argv)
         struct BitMap *bm = AllocBitMap(256, 128, 32, BMF_MINPLANES | BMF_SPECIALFMT | SHIFT_PIXFMT(PIXFMT_BGRA32), 0);
         kind = "bitmap";
         before = AvailMem(MEMF_ANY);
-        if (bm && (ctx = aglCreateContextTags2(&err, OGLES2_CCT_BITMAP, (ULONG)bm, TAG_DONE))) {
+        if (bm && (ctx = aglCreateContextTags2(&err, OGLES2_CCT_BITMAP, (ULONG)bm, OGLES2_CCT_DEPTH, 16,
+                                               TAG_DONE))) {
             aglMakeCurrent(ctx);
             InitRastPort(&r.own);
             r.own.BitMap = bm;
@@ -444,7 +623,7 @@ int main(int argc, char **argv)
         ULONG w = 0, h = 0;
         kind = "window";
         before = AvailMem(MEMF_ANY);
-        ctx = aglCreateContextTags2(&err, OGLES2_CCT_PISTORM_WIDTH, 320, OGLES2_CCT_PISTORM_HEIGHT, 240,
+        ctx = aglCreateContextTags2(&err, OGLES2_CCT_DEPTH, 16, OGLES2_CCT_PISTORM_WIDTH, 320, OGLES2_CCT_PISTORM_HEIGHT, 240,
                                     OGLES2_CCT_GET_WIDTH, (ULONG)&w, OGLES2_CCT_GET_HEIGHT, (ULONG)&h,
                                     OGLES2_CCT_PISTORM_GET_WINDOW, (ULONG)&win, TAG_DONE);
         if (ctx && win) {

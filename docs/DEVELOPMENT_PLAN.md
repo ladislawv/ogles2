@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Date | Started 2026-10-09; status kept current in §13 |
-| Status | In development: M0 to M2 done (real GLES2 programs with offline-compiled shaders), M3 next |
+| Status | In development: M0 to M5 done (real GLES2 programs, shaders compiled on the Amiga, the whole GLES2 core with framebuffer objects, faster than MiniGL); M6 (ecosystem, sharing, performance) next (§13) |
 | Baseline | PiStorm3D / minigl.library 29.1 (`MiniGL_Library_68k`, branch `PiStorm3D` @ `01f5a3e`) |
 | Target | AmigaOS 3.x, 68k under Emu68 on PiStorm with Raspberry Pi 4B / CM4 (the hardware PiStorm3D supports), RTG (Picasso96 or CyberGraphX) |
 | Team | One developer plus an AI assistant (§2.4) |
@@ -282,7 +282,7 @@ static __inline__ void OGLES2_glViewport(GLint x_, GLint y_, GLsizei width_, GLs
 | `aglMakeCurrent(ctx)` | Sets the client-side current context and tells the library |
 | `aglSwapBuffers()` | Flushes jobs for the default framebuffer, then presents (§7.2) |
 | `aglSetParams2(tags)` / `aglSetParamsTags2(…)` | Change window or bitmap, vsync, resize (uses `v3d_context_resize`) |
-| `aglSetBitmap(bitmap)` | Retarget to a host bitmap (`vid_AdoptBitMap` rules: 4 bytes per pixel, CGX-lockable) |
+| `aglSetBitmap(bitmap)` | Retarget to a host bitmap (`vid_AdoptBitMap` rules: 4 bytes per pixel, CGX-lockable). As built (M4): only for a context created with `OGLES2_CCT_BITMAP`; the open frame is rendered into the old bitmap first; a new size resizes the pools (`v3d_context_resize`), the viewport and scissor stay as the application set them; a bitmap that fails the checks is refused and the old one stays |
 | `aglGetProcAddress(name)` | Returns context-free thunks from `libogles2.a` (§6.5) |
 
 Tag *names* follow OS4 (taken from glSnoop). Their *values* are our own, because only source compatibility is in scope and the OS4 SDK headers are distributed with the commercial Enhancer pack and must not be copied.
@@ -388,8 +388,8 @@ A host-side Python script reads Khronos `xml/gl.xml` for the GLES 2.0 feature se
   - mixed interleaved layouts (float position + ubyte colour): per-element swap following the signature, cached.
 - **Dirty ranges** from `glBufferSubData` re-swap only the affected range in every cached copy. If a pending job references the copy, it is renamed instead (§7.3).
 - **Memory:** for `GL_STATIC_DRAW` buffers whose layout never changed after N draws, the shadow may be dropped. PiStorm systems have plenty of RAM, so this is optional.
-- **v1 as built (`buffer.c`, M2):** one GPU copy per attribute layout (offset, size, type, stride, normalised), of the whole buffer from that offset, packed at a 4-byte stride as client arrays are; up to 8 layouts per buffer, kept until the data change. `glBufferData` and `glBufferSubData` drop every copy (the changed range is not re-swapped alone yet); a copy the open job reads is retired with that job (`v3d_frame_defer_free`), so a change between two draws of one frame neither waits nor flushes. Element buffers are read from the shadow and copied per draw, as client indices are. A draw that would read past a buffer's end is not drawn (logged).
-- **`OES_mapbuffer`:** `glMapBufferOES` returns the shadow and `glUnmapBufferOES` marks it fully dirty.
+- **v1 as built (`buffer.c`, M2):** one GPU copy per attribute layout (offset, size, type, stride, normalised), of the whole buffer from that offset, packed at a 4-byte stride as client arrays are; up to 8 layouts per buffer, kept until the data change. `glBufferData` drops every copy; `glBufferSubData` (since M4) re-converts in place only the elements the changed bytes touch, in each copy the open job does not read; a copy the open job reads is retired with that job (`v3d_frame_defer_free`), so a change between two draws of one frame neither waits nor flushes. Element buffers are read from the shadow and copied per draw, as client indices are. A draw that would read past a buffer's end is not drawn (logged).
+- **`OES_mapbuffer` (as built, M4):** `glMapBufferOES` returns the shadow and `glUnmapBufferOES` marks it fully dirty (every copy starts afresh); `glGetBufferPointervOES`, `GL_BUFFER_ACCESS_OES` and `GL_BUFFER_MAPPED_OES` answer; `glBufferData` ends a mapping.
 - **Client-side arrays** (legal in GLES2):
   - `glDrawArrays`: copy and swap `[first, first+count)` per attribute into `state_buf`;
   - `glDrawElements` with client indices: scan the indices for min/max first and copy only that range, as Mesa's state tracker does. PiStorm3D instead gathers vertex by vertex through the index list, which is not suitable for VBO-style attribute records.
@@ -457,12 +457,18 @@ The swizzles and format pairs match Mesa's `v3dx_format_table.c`.
   - **FBOs:** every attachment is stored unless the application invalidates it with `EXT_discard_framebuffer`, because a later pass may read it.
 - **Dithering:** `GL_DITHER` (on by default in GLES2) selects the store's dither mode, as PiStorm3D's default-framebuffer store already does. It matters for 16-bit targets (RGB565, RGBA4, RGB5A1).
 - **MSAA:** 4× on the tile buffer later (M6+); the hardware supports it at low cost.
+- **As built (M5, `fbo.c`, `job.c`):**
+  - jobs v1 as above: a job belongs to one framebuffer (`ctx->job_fb`); drawing into another renders it first, lazily (binding alone costs nothing); the default framebuffer's depth and stencil are kept across such a switch as at any mid-frame flush (§7.2);
+  - an object's job follows Mesa's `v3dx_rcl.c`: colour loaded unless cleared and always stored, in the image's own layout (texture levels as `v3d_texture.c` laid them out, cube faces at their face stride, the `Clear Colors Part3` UIF pad when the image is 15 or more UIF blocks taller than the job); depth and stencil renderbuffers in UIF without XOR, loaded and stored every job (`EXT_discard_framebuffer` drops either); tile pools of its own only when it has more tiles than the default framebuffer;
+  - colour renderbuffers (RGBA4, RGB5_A1, RGB565, and RGB8/RGBA8 from `OES_rgb8_rgba8`) are textures of their own, so readback and formats are the textures'; the 16-bit stores are `ABGR4444`, `ABGR1555`, `BGR565` without R/B swap, as Mesa's format table;
+  - a level the GPU drew into is newer than its RAM copy: it is read back (`v3d_texture_load`) before anything works from that copy (`glTexSubImage2D`, `glGenerateMipmap`, renaming, a rebuilt chain); a texture changed while the open job draws into it renders that job first;
+  - no dithering of 16-bit targets (Mesa sets no store dither either); deleting a texture or renderbuffer detaches it from every framebuffer object of the context (GLES2 asks this of the bound one only; the others would keep an image whose memory is gone).
 
 ### 7.8 Programs and uniforms
 - **Shader object:** type, source, compile status, info log.
   - **S1:** `glCompileShader` only records the source and reports `COMPILE_STATUS` TRUE. The real work happens at link, against the cache (below). This is a documented deviation until S2.
   - **`GL_SHADER_COMPILER` must report TRUE in S1 as well.** The GLES2 spec requires `glShaderSource`, `glCompileShader`, `glGetShaderPrecisionFormat` and `glReleaseShaderCompiler` to fail with `GL_INVALID_OPERATION` when it is FALSE, which would disable the source-cache path. A build option for a strict binary-only mode (FALSE, binaries only) can come later.
-  - **S2:** compiles for real.
+  - **S2 (with `LIBS:v3dglslc`, M3):** `glCompileShader` compiles the shader in the compiler's front end (request `V3DGLSL_COMPILE`), for a real `GL_COMPILE_STATUS` and info log. A shader the compiler accepted gets a **record** in the disk cache, `<24 hex digits>.v3ds` (BLAKE3 over its stage and source, as for a one-shader program), holding its info log; the next `glCompileShader` of the same source reads the record and needs no compiler. A program that links from a binary records both its shaders too, so programs whose binaries are cached or shipped do not start the compiler again. A link with a shader that failed to compile fails, naming the shader, with its messages.
 - **Program object:** attached shaders, attribute bindings, link status, info log, and after linking:
   - the loaded `.v3dp` image (§8.3), with shader code uploaded once into a code BO;
   - the **uniform table** (name → location, GL type, array size, storage offset) and **attribute table** (name → location → shader input slot);
@@ -471,7 +477,7 @@ The swizzles and format pairs match Mesa's `v3dx_format_table.c`.
 - **`glLinkProgram`** computes the program hash from the vertex and fragment sources (`v3dp/FORMAT.md`, section `PROGRAM`), then looks it up in order. Attribute bindings are not part of the hash: the runtime maps attributes to the shader's input slots by name, so one binary serves any `glBindAttribLocation`.
   1. in-memory cache;
   2. disk cache in a directory named by an assign (`OGLES2Cache:`), checking `PROGDIR:` first so applications can ship their own binaries. The file name is the hash's first 24 hex digits plus `.v3dp` (29 characters: FFS file names are at most 30); the full hash inside the file must match;
-  3. the S2 compiler, if installed;
+  3. the S2 compiler, if installed (`LIBS:v3dglslc`, §8.4): it writes the binary into the disk cache, and the library loads it from there;
   4. otherwise it fails with an info log naming the hash, and appends both sources to `T:ogles2_missing_shaders.txt` so they can be compiled offline.
 - **Variants:** Mesa compiles each shader per *key* (`struct v3d_vs_key` / `v3d_fs_key` in `v3d_compiler.h`; filled in `v3d_program.c`). The parts that GLES2 state can change:
   - **all stages:** `sampler_is_32b`, set when a sampler returns 32-bit data (float textures);
@@ -484,7 +490,8 @@ The swizzles and format pairs match Mesa's `v3dx_format_table.c`.
 
   These fields never change under GLES2: `color_fmt` and `blend` (set only for logic ops and software blending), `f32_color_rb` (32-bit float render targets), `swap_color_rb` (always 0 in current Mesa), `line_smoothing` and `ucp_enables`.
 
-  A `.v3dp` holds one or more variants. At draw time the driver computes the runtime key and picks the matching variant. On a miss it compiles (S2). In S1 it logs the miss and uses the closest variant, so that draw may render wrongly; for example, a triangle variant used for points leaves the point size undefined. The miss log names the key so the variant can be added.
+  A `.v3dp` holds one or more variants. At draw time the driver computes the runtime key and picks the matching variant; on a miss it logs the miss and uses the closest variant, so that draw may render wrongly; for example, a triangle variant used for points leaves the point size undefined. The miss log names the key so the variant can be added.
+  - **Checked against Mesa's key code (`v3d_program.c`, 2026-10-11): with the features implemented now, every GLES2 draw on the default framebuffer matches a variant both compilers always build** (triangles, lines and points). The fragment key's other fields are fixed there: `cbufs` and the colour formats change only with framebuffer objects, `msaa` and the sample fields only with MSAA, `logicop`, `line_smoothing` and `ucp_enables` do not exist in GLES2, and `sampler_is_32b` needs float textures. The one field that does vary, `can_earlyz_with_discard` (set when a shader with `discard` draws without depth or stencil writes), only enables early depth tests: the variant both compilers build (with depth writes on) leaves it off, which is correct in every state and at worst slower. **So compiling variants at draw time becomes necessary with framebuffer objects (M5), MSAA and float textures**, and is done with them: the request then carries the key, and the server adds the variant to the cache file.
 
   In practice most GLES2 programs need **one to three variants**:
   - **primitive class** (triangles, lines, points) is the dimension that varies in real applications;
@@ -612,7 +619,9 @@ The format is specified field by field in **`v3dp/FORMAT.md`** (version 1.0, **f
   - generate the Python- and flex/bison-generated files on the host;
   - build with a plain Makefile listing the sources, as PiStorm3D does; the spike's replay of Meson's compile commands (`dev/spike-c/replay.py`) already holds the exact source list and flags to generate it from;
   - provide a C11-threads shim on Exec semaphores and the freestanding runtime from `runtime_shim.c`, extended as needed.
-- **Packaging:** a separately loaded module (e.g. `v3dglsl.library`) with a C ABI (`compile(manifest) → .v3dp blob`). `ogles2.library` opens it lazily on the first cache miss, and `glReleaseShaderCompiler` closes it. This keeps the core library small and isolates the C++ runtime. Inside, the module creates one V3D screen on the fake device and one surfaceless GLES2 context through the state tracker, as the spike's `v3dc` does, and captures each compiled variant with the same dump code as S1 (§8.2).
+- **Packaging (decided 2026-10-11, M3): a resident server process, not a library.** The compiler is `v3dglslc` itself, installed as `LIBS:v3dglslc` and started as `v3dglslc SERVER`: it creates the V3D screen on the fake device and the surfaceless GLES2 context once, adds the public port `v3dglsl compiler`, and serves requests (`v3dp/v3dglsl_port.h`: both sources and the path of the `.v3dp` to write; the reply carries the result and the compile and link messages). `ogles2.library` (`ogles2/compiler.c`) starts it with `SystemTagList` (asynchronous, 4 MB stack, `NIL:` for input and output) on the first program it has no binary for, sends each such program, waits for the reply (giving up if the port disappears), and loads the written file like any other. Expunging the library, or `glReleaseShaderCompiler`, sends `QUIT` without waiting (a request without a reply port is the server's to free, which is what makes it safe under `Forbid()` in `LibExpunge`).
+  - **Why a process instead of the library planned earlier:** the compiler is Mesa built with GCC 16 and libnix, `ogles2.library` is GCC 6 and clib2. As a separate program each keeps its own C runtime, Mesa's C++ static constructors run at program start as libnix expects, nothing of the spike's runtime list (call table for `malloc`, constructors at open, process-context functions) has to be built, and the binary is exactly the one already verified bit-identical to x86-64. Several programs compiling at once simply queue at the port. The cost of the separate start (about a second) is paid once per session.
+  - **Where binaries go:** `OGLES2Cache:` if that assign exists (kept across reboots), else `T:` (until the next reboot). The library checks for the assign in DOS's list instead of opening it, so a missing assign never puts up an "insert volume" requester.
 - **Build flags:** GCC 16.2, `-mcpu=68020 -msoft-float` (software floating point; see the spike results below for why not the FPU), libnix, `-fno-exceptions -fno-rtti`, plus the defines and the compatibility layer of `dev/spike-c/compat/`.
 - **Acceptance:** for the S1 corpus, S2 output must match `v3dglslc` (same Mesa commit). Bit-identical output is the expectation. Any difference must be explained (for example iteration order of pointer-keyed hash sets, which differs between hosts) and must still render identically in the image tests. Results are written to the disk cache.
 - **Spike first:** build the GLSL front end alone for m68k, then measure code size, memory and compile time on hardware.
@@ -753,6 +762,7 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
   - the in-house functional test suite passes;
   - a stress test that overflows the initial 4 MB binning buffer and the state buffer within one frame shows no dropped frames;
   - the VBO path beats MiniGL on an equivalent gears scene.
+- **Closed (2026-10-11):** the last three criteria were met (§13); the first counted the 14 framebuffer-object entry points, which M5's scope holds, so M4 closed with them moved to M5 (recommended, and the work continued on it). M5 then implemented them: all 142 core entry points exist.
 
 ### M5: Framebuffer objects (M–L)
 - **Scope:**
@@ -760,6 +770,7 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
   - All renderbuffer formats including `OES_packed_depth_stencil`.
   - Multi-job frames, per-FBO tile pools, hazard flushing, `EXT_discard_framebuffer`, `glReadPixels` from FBOs.
 - **Exit criteria:** render-to-texture, post-processing chains and depth-renderbuffer scenes match reference images; the §10 orientation tests pass on both target kinds; no leaks when FBOs are created and destroyed every frame.
+- **Done (2026-10-11):** every criterion met on the A1200 (§13).
 
 ### M6: Ecosystem, sharing and performance (L)
 - **Scope:**
@@ -1088,7 +1099,7 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
 **Done (2026-10-10): M2 textures v1.**
 - **`ogles2/texture.c`:** texture objects (generated names and any name, per-unit 2D and cube bindings, 16 units, the default objects, deletion unbinding), `glTexImage2D`/`glTexSubImage2D` with every GLES2 format and type converted to RGBA8 by GL's rules (`GL_ALPHA` samples (0,0,0,A), the 16-bit formats expanded from the 68k's own byte order) and the unpack alignment, `glTexParameter*`/`glGetTexParameter*`, `glPixelStorei`, `glGenerateMipmap` (CPU 2x2 box filter, plan 7.6), completeness (GLES 2.0 3.7.10) with the 1x1 (0,0,0,1) fallback for incomplete textures, and the texture queries (`GL_MAX_TEXTURE_SIZE` 4096, 16 units, 0 vertex units). Storage and tiling are PiStorm3D's `v3d_texture.c`; the texture and sampler state records are written by ogles2 (32-byte aligned, Mesa's LOD rules: clamped to 1/256 without mipmapping; `MIRRORED_REPEAT`).
 - **The `TMU_CONFIG_P0/P1` recipes** (Mesa's `write_tmu_p0/p1`): each sampler uniform's texture index per stage reads the unit `glUniform1i` set; the state address carries the compiler's configuration in its low bits. `state` and `tex` now link.
-- **v1 simplifications, each logged once:** a texture changed after a draw of the open job used it renders that job first (plan 7.7 hazard 3; renaming comes later); cube maps sampled as incomplete until M2's cube maps (below, §13); every format is stored as RGBA8 (the native 1- and 2-byte formats of the 7.6 table come later).
+- **As built (M4, 2026-10-11):** textures are stored in the hardware format their level 0's format and type map to (Mesa's `v3dx_format_table.c`: `RGB565`, `RGBA4`, `RGB5_A1`, `R8` with swizzle `XXX1` for LUMINANCE and `000X` for ALPHA, `RG8` with `XXXY` for LUMINANCE_ALPHA, else `RGBA8`), packed little-endian from per-level RGBA8 copies kept in RAM (for `glGenerateMipmap` and rebuilds); uploads use Mesa's convention for the tiled layout (the level's padded stride and padded height), which non-power-of-two sizes need. ETC1 is decoded to RGBA8 for now (native ETC1 sampling: later). A texture changed after a draw of the open job used it is **renamed** (the job keeps the old GPU copy until it has rendered; the texture gets a new one), and only a full retire list falls back to rendering the job first.
 - **Found:** growing a mip chain parks the old level-0 block on v3dcore's global park list, which nothing drained (130 KB lost per context in the first run). ogles2 frees it at once (`v3d_texture_drain_parked_all`): nothing can still use it.
 - **A1200 run `ogles2-m2-2`** (`tests/a1200/results/ogles2-m2-2-20261010-223835`), remote: **`m2_texture` 46 of 46** on a bitmap and in a window (orientation, the seven formats, the unpack alignment, nearest and linear filtering, the three wraps, uploaded mip levels, `glGenerateMipmap`, the incomplete fallback, two units, a texture replaced between two draws of one frame, deletion, `glTexImage2D` errors), `m2_link` 25 of 25, `m1_draw` 71 of 71; 0 bytes of GPU memory left after every context. 116 of 148 entries are implemented.
 
@@ -1113,13 +1124,93 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
 - **Cube maps** (`texture.c`): each texture keeps six faces of levels (a 2D texture uses the first). On the GPU a cube map is six copies of the 2D level layout PiStorm3D's `v3d_texture_alloc`/`_mipchain` make, one after another at a face stride (Mesa's `cube_map_stride`, the tree's end aligned to 64 bytes; a 4 KB multiple here, so each face's level 0 keeps the alignment UIF XOR needs), uploaded face by face through a copy of the texture record whose base is moved by the stride. The texture state gets an image depth of 6 and the array stride; the compiled shader selects the face (its `TMUSCM` writes). Cube completeness (six square faces of one size, every face's chain consistent), `glTexSubImage2D` on faces, `glGenerateMipmap` on cube maps (`GL_INVALID_OPERATION` if not cube complete).
 - **A1200 runs:** `ogles2-m2-5-20261010-231719`, **the corpus 11 of 11** (Simple_TextureCubemap 0.01% of the pixels off: the six faces where llvmpipe puts them); `ogles2-m2-4-20261010-231752`, regression: `m2_buffers` 27/27, `m2_elements` 13/13, `m2_link` 26/26, `m2_texture` and `m1_draw` 23/23 each; 0 bytes of GPU memory left everywhere.
 
-**Next, in order (M3 is next by §9's order; these are M2 leftovers that can run alongside):**
-1. **M3: the on-target GLSL compiler** (§8.4, stream C's design): `glCompileShader` compiling on the Amiga when no `.v3dp` is found.
-2. **Native texture formats** (§7.6); texture renaming instead of the mid-frame flush.
-3. **Depth and stencil kept across a mid-frame flush** (§7.2), and optionally across `aglSwapBuffers` for programs like Stencil_Test.
-4. **Buffer copies:** re-swap only the range `glBufferSubData` changed (§7.5).
-5. **More corpus:** SDL2's `testgles2` once an SDL2 build with the ogles2 backend exists.
-6. **Large-reply stall** (`amictld`, when it gets in the way; the corpus's 0.9 MB captures came through).
+**Done (2026-10-11): M3, first part: programs are compiled on the Amiga.**
+- The compiler server (§8.4 "Packaging"): `v3dglslc SERVER` and `ogles2/compiler.c`; `glLinkProgram` falls back to it after `PROGDIR:` and the disk cache, and puts its messages into the program's info log. `compile_common.c` now compiles from memory, collects the messages and deletes its GL objects after each program (the offline compiler's output is unchanged: the corpus binaries are byte-identical before and after).
+- **A1200 run `ogles2-m3-1`** (`tests/a1200/results/ogles2-m3-1-20261011-122828`), remote, a package **without any `.v3dp` file**: `m2_link` 26/26 (with two new checks: a program without a binary links, compiled; a GLSL error fails the link with the compiler's message in the info log), `m2_elements` 13/13, `m2_texture` 23/23, `m1_draw` 23/23, **the corpus 11/11**; 17 programs compiled. **All 16 that have an offline twin are byte-identical to `v3dglslc` on the PC** (the 17th is the test's deliberately unique program). The server started in under a second; the first compile took 1.6 s, the others 0.1 to 0.64 s; the whole run 31 s. After the library's expunge the server was gone from `Status`. 0 bytes of GPU memory left after every context.
+- **M3 exit criteria now:** corpus output identical to `v3dglslc` (met); compile time under 1 s per typical program after the first (met); programs work without a pre-filled cache (met); real compile and link info logs (met by the next step).
+
+**Done (2026-10-11): M3, second part: compile status at `glCompileShader`, shader records** (§7.8 "S2").
+- A third request, `V3DGLSL_COMPILE` (one stage, front end only); `.v3ds` shader records in the disk cache; a link that fails because of a shader names it and carries its messages.
+- **A1200 run `ogles2-m3-2`** (`tests/a1200/results/ogles2-m3-2-20261011-123438`), remote, without `.v3dp` files: `m2_link` 28/28 (new: a broken shader reports `GL_COMPILE_STATUS` false at `glCompileShader`, with Mesa's message `0:2(33): error: 'undefined_name' undeclared` in its info log; a correct one compiles), `m2_elements` 13/13, `m2_texture` and `m1_draw` 23/23 each, the corpus 11/11; 17 programs and 30 shaders compiled, the 16 programs with an offline twin byte-identical to it. **Then the warm cache:** after a flush (which also stopped the compiler), `m2_link` again 28/28 and es2gears again matching its reference, with no compile at all: the only requests were the test's deliberately broken shader (failures are not recorded). Run 36 s.
+- **Without the compiler nothing changed:** `ogles2-m2-4` (`tests/a1200/results/ogles2-m2-4-20261011-123529`) all 5 tests pass, `m2_link` 26/26 on the missing-binary path.
+
+**Done (2026-10-11): M3 complete.**
+- **Draw-time variants:** not needed for correctness until framebuffer objects, MSAA or float textures exist (§7.8, checked against Mesa's key code); moved to those features (M4/M5).
+- **`OGLES2_CCT_DEBUG_SHADER_LOG`:** a context with it gets link info logs that describe what the program runs, one line per variant (stage, primitive class, instructions, threads, spill bytes, uniforms), also in the library's log. It works for binaries from the cache and from `PROGDIR:` alike, since the numbers come from the `.v3dp`.
+- **A1200 runs** `ogles2-m3-2-20261011-124206` (with the compiler: `m2_link` 29/29 including the debug log, everything else as before, warm cache without compiles) and `ogles2-m2-4-20261011-124258` (without: all pass).
+- **M3 exit criteria all met:** output identical to `v3dglslc`; under 1 s per program after a first compile of 1.6 s; no pre-filled cache needed; real compile and link logs. **Left for later, by decision:** the compiler's size (19 MB, loaded in under a second; trimming Mesa's rule tables would have to be mirrored in the offline compiler to keep the output identical, so it waits until size matters) and the installer (`LIBS:v3dglslc` and an `OGLES2Cache:` assign, with the release, M7).
+
+**Done (2026-10-11): M4, first part: no dropped frames, and a GPU that recovers.**
+- **The binning list grows** (`ogles2/job.c`): its 4 MB block is followed, when full, by a new block (twice the last size) linked with a `BRANCH` packet written little-endian in 8 bytes kept free at every block's end, as Mesa's `v3d_cl_ensure_space` does; the list is submitted from the first block to the end of the last; finished blocks are flushed to the GPU when left and freed when the frame has rendered. v3dcore gained the hook for it (`v3d_static_buffer.grow`, called by `v3d_buffer_claim_memory` before its overflow fallback). The state buffer already grew; the render and tile lists do not depend on the number of draws.
+- **More tile-list memory:** the binner's out-of-memory blocks (256 KB each) are allowed up to 96 per job instead of 8 (24 MB of tile lists), with a separate pool of 8 kept for reuse, and the retire list holds 128 blocks instead of 32.
+- **Waits that watch progress:** the binning and render waits count polls only while the control list executor's current address (`CT0CA`/`CT1CA`) stands still, and the render bound is never below 300,000 polls (it was scaled down to 8,192 for a 256x128 target, a few milliseconds).
+- **GPU reset** (`v3d_gpu_reset` in v3dcore, Linux's bcm2835-power sequence: AXI bridges stopped, `PM_GRAFX` reset line pulsed, `power_on_V3D`, performance counters set up again): after any binning or render job the GPU did not finish, and at device open when control list thread 0 is found running with its address standing still (left so by an earlier program).
+- **Found the hard way:** the first stress run hit the old limit of 8 out-of-memory blocks; v3dcore then gave up on the job while the binner still waited for memory, and **thread 0 stayed stopped across three Amiga reboots: rebooting the Amiga under Emu68 does not reset the Raspberry Pi or its GPU.** Every later job failed until the library learned to reset it; the new library found the stopped thread at device open, reset it, and the GPU worked again without switching the Pi off (`ogles2-m4-1-20261011-124733` and the runs after it).
+- **A1200 run `ogles2-m4-1-20261011-125816`**, remote: `m4_stress` 5/5 with one frame of 100,000, 250,000 and 400,000 draws (the last two continue the binning list in a second block; 85,000 to 90,000 draws a second issued), every column of the bitmap in its last draw's colour, the next frame clean, the memory returned; `m2_buffers` 27/27, `m2_elements` 13/13, `m2_link` 27/27, `m2_texture` and `m1_draw` 23/23 each; **no frame dropped, no timeout, no reset**, 0 bytes of GPU memory left. The corpus again 11/11 (`ogles2-m2-5-20261011-125849`).
+
+**Done (2026-10-11): M4, second part: copies from the framebuffer, ETC1.**
+- **`glCopyTexImage2D`, `glCopyTexSubImage2D`** (`texture.c`): the region is read as `glReadPixels` reads it (the open job rendered first, rows bottom-up, which is a texture's row order too), converted to the internal format by GLES 2.0 table 3.15 (LUMINANCE takes red, ALPHA alpha, RGB drops alpha), and given to `glTexImage2D`/`glTexSubImage2D`, so targets, cube faces, levels and errors are theirs. Each level now keeps its internal format: `glTexSubImage2D` refuses another format (`GL_INVALID_OPERATION`, GLES 2.0 3.7.2, not checked before), and a copy into a level converts to that level's format.
+- **`OES_compressed_ETC1_RGB8_texture`:** `glCompressedTexImage2D` decodes ETC1 into the RGBA8 storage (`ogles2/etc1.c`); the level keeps the ETC1 format, so `glTexSubImage2D` and `glCompressedTexSubImage2D` refuse it as the extension says; `GL_COMPRESSED_TEXTURE_FORMATS` lists it. **The decoder matches Mesa's on 20,169 decodes** (random blocks of both modes and both flips, every image size from 1x1 to 13x13; `make etc1-test`, also in CI), after one fix: a differential base outside 0..31, which ETC1 leaves undefined, is now computed in a byte as Mesa does.
+- **A1200 run `ogles2-m4-1-20261011-131117`:** `m2_texture` 29/29 (new: copies across a colour boundary, a LUMINANCE copy, a sub-copy, their errors; an ETC1 block decoded to the expected colours, the extension queries, ETC1's errors), the stress test and the other tests as before; 0 bytes of GPU memory left. **133 of 148 entries are implemented**; the 15 left are framebuffer objects (M5, 14) and `aglSetBitmap`.
+
+**Done (2026-10-11): M4, third part: native texture formats, BGRA8888, texture renaming** (§7.6 "As built").
+- v3dcore: `V3DTexture.cpp`, `v3d_texture_alloc_cpp` and `v3d_texture_store` (any box, Mesa's stride and padded-height convention); ogles2: the storage format per texture, packing at upload, the texture state's type and swizzle from it; each level also keeps the type it was given in.
+- `EXT_texture_format_BGRA8888` (`GL_BGRA_EXT`, unsigned bytes).
+- **Renaming** replaces the mid-frame render when a texture the open job used changes (`glTexImage2D`, `glTexSubImage2D`, `glGenerateMipmap`, the copies, deletion); the new copy is built at the next upload or, at the latest, at the next draw that samples it.
+- **A1200 runs:** `ogles2-m4-1-20261011-131948`: `m2_texture` 33/33 (new: 100x60 RGBA8 and 50x30 RGB565 non-power-of-two textures sampled in all four quadrants; a texture changed mid-frame keeps the frame's depth, its sub-image update arriving too; BGRA8888; every earlier format check now through native storage), the stress test and the other tests as before; `ogles2-m2-5-20261011-132023`: the corpus 11/11; 0 bytes of GPU memory left.
+
+**Done (2026-10-11): M4, fourth part: depth and stencil across a mid-frame flush** (§7.2).
+- A job that ends before its frame (`glReadPixels`, the copies, `glFlush`, `glFinish`, the renaming fallback) stores depth and stencil to memory of the context's (D24S8 as one `ZSTENCIL` buffer, D16 and D32F as `Z`; UIF without XOR, padded as Mesa pads a UIF level), and the next job of the frame loads them instead of clearing; `aglSwapBuffers` keeps nothing (EGL: undefined after a swap). A depth-only or stencil-only clear after such a flush is drawn as a rectangle, so the other one stays.
+- **Found on the A1200, both from Mesa's `v3dx_rcl.c`:** the early Z/S clear may only be used by a job that neither loads nor stores Z/S (with it, the stored depth was always the clear value; the stencil survived); without it, the clear packets (the dummy tile at the render list's start and the end-of-tile clear) must clear Z/S too, or the tile buffer keeps the previous tile's depth and stencil.
+- `ogles2_job_flush(ctx, frame_end)`; a new test `m4_depth` (D16 and D24S8: depth across `glReadPixels`, stencil across `glFlush`, a depth-only clear after `glFinish` keeping the stencil, the next frame starting from its own clears).
+- **A1200 runs:** `ogles2-m4-1-20261011-133100`: `m4_depth` 12/12, the stress test and every other test as before; `ogles2-m2-5-20261011-133123`: the corpus 11/11; 0 bytes of GPU memory left.
+
+**Done (2026-10-11): M4, fifth part: partial buffer updates, `OES_mapbuffer`** (§7.5).
+- `glBufferSubData` patches each GPU copy the open job does not read, converting only the touched elements (each copy now remembers its element size and draw.c's converter); `OES_mapbuffer`'s three entry points, the first extension commands in the dispatch table (`gen/api.txt` `command` lines, appended to `abi_order.txt` with `gen_ogles2.py --append`: 151 entries now).
+- **A1200 run `ogles2-m4-1-20261011-133450`:** `m2_buffers` 32/32 (new: quad 2's colours changed between frames while the others keep theirs; map, write through the pointer, unmap, draw; the mapping queries; a second map refused), every other test as before; 0 bytes of GPU memory left. `make vbcc` builds the vbcc client with the new entries. **Implemented: 133 of the 148 core entries and the 3 `OES_mapbuffer` entries.**
+
+**Done (2026-10-11): M4, sixth part: `aglSetBitmap`** (§6.4).
+- `ogles2_display_set_bitmap` (display.c) checks the new bitmap as at creation; `ogles2_device_context_resize` wraps `v3d_context_resize` and goes back to the old size if the new one cannot be allocated; the depth/stencil save memory of the old size is freed. A new test `m4_setbitmap` (hidden bitmaps: 256x128 to 160x96 and back, depth across `glReadPixels` at the new size, the frame reaching the new bitmap's corners, the old bitmap untouched, a planar bitmap refused, a same-size switch, an unswapped frame going to the old bitmap).
+- **A1200 run `ogles2-m4-1-20261011-134050`:** `m4_setbitmap` 14/14, every other test as before; 0 bytes of GPU memory left. **Every core entry point but the 14 framebuffer-object ones is implemented (134 of 148), plus `OES_mapbuffer`.**
+
+**Done (2026-10-11): M4, seventh part: the speed comparison with MiniGL** (§9 M4 exit).
+- `tests/perf`: Brian Paul's gears scene (glxgears' geometry as independent triangles, its flat faces with their face normals; one directional light, diffuse plus GL's global ambient 0.2) drawn by `gears_gles2` (ogles2: a buffer object per gear, or client arrays; one `glDrawArrays` per gear; lighting in the vertex shader, `tests/common/lit_shaders.h`) and by `gears_mgl` (PiStorm3D 29.1's minigl.library: immediate mode, vertex arrays, or display lists as glxgears uses them; fixed-function lighting on the CPU). Same 640x480 size, same target kind (a hidden BGRA32 bitmap, or a Workbench window: both libraries `ClipBlit` to it), no vsync, 5 seconds each after 5 untimed frames. `TEETH=n` multiplies the teeth: 800, 8,000 or 32,000 triangles. `make perf-mgl` builds the MiniGL side against the PiStorm3D 29.1 SDK (`MGL_SDK`); package `m4-2`.
+- **The same picture:** after the timed frames each program draws one frame at angle 0 and counts the mostly red, green and blue pixels; ogles2 and MiniGL agree within 5 pixels of about 114,000 at every size, and the window run's screenshots show the same gears.
+- **A1200 run `ogles2-m4-2-20261011-141440`** (frames per second, with the render-target cache maintenance below; screenshots during a run cost about 15% throughout):
+
+| Triangles | ogles2 VBO | ogles2 client arrays | MiniGL immediate | MiniGL vertex arrays | MiniGL display lists | VBO / MiniGL's best |
+|---|---|---|---|---|---|---|
+| 800 | 833.8 | 638.2 | 553.2 | 484.4 | 668.8 | 1.25x |
+| 8,000 | 649.0 | 184.4 | 119.2 | 89.4 | 151.4 | 4.3x |
+| 32,000 | 410.8 | 57.4 | 33.8 | 25.0 | 47.2 | 8.7x |
+| 800, window | 456.8 | | | | 401.6 | 1.14x |
+| 8,000, window | 395.0 | | | | 133.0 | 3.0x |
+
+  Before the cache maintenance (run `ogles2-m4-2-20261011-135013`) the VBO path made 984.6, 703.2 and 418.2 fps on the bitmap and 485.8 and 415.4 in the window: it costs about 0.2 ms a frame. MiniGL leaves its equivalent off by default (`MGLV3D_WINDOW_CACHE_PAIR`), so its numbers do not include it.
+
+- **Reading it:** at 800 triangles both are bound by per-frame costs (one job, its wait, the copy to the window), so the gap is small; with more vertices MiniGL's CPU transform and lighting dominate while the VBO path barely slows (985 to 418 fps for 40 times the triangles). Client arrays pay for the conversion of every vertex every draw and land just above MiniGL. A real application with many small draws (es2gears: one `glDrawArrays` per strip) pays ogles2's per-draw cost more often; that is the next thing to measure if performance work continues (M6).
+
+**Done (2026-10-11): M4, eighth part: `EXT_blend_minmax`, `OES_draw_elements_base_vertex`, the render target and the CPU cache** (Appendix B.3, §7.2).
+- `GL_MIN_EXT`/`GL_MAX_EXT` map to the hardware's MIN and MAX blend modes, with the factors forced to ONE as Mesa's state tracker does (`st_atom_blend.c`: GL ignores them, the hardware would not). `glDrawElementsBaseVertexOES`: the copied vertex range moves by the base vertex and the rebased indices stay as they are, so no packet is needed (the 152nd dispatch entry, appended). `m2_elements` 22/22 (new: base vertex 4 and -4, from client and buffer indices; MIN and MAX over grey with factors ZERO).
+- **Found on the A1200:** `m4_setbitmap` failed 3 runs in 5 with one pixel of a frame still showing the previous frame. The GPU writes the render bitmap by DMA, past the CPU's caches; a cache line the CPU had read before keeps the old bytes (PiStorm3D's `context.c` describes the same "stale 64-byte CPU cache lines of the previous frame" for its window copy). Each job now cleans the bitmap's lines (`CachePreDMA`) before the render and invalidates them (`CachePostDMA`) after, while locked, wherever the CPU reads the target: an application bitmap and the window mode's copy. A fullscreen screen is read by the display, not the CPU, so only `glReadPixels` invalidates the rows it reads (`ogles2_display_dma`, `ogles2_display_read`). After the fix: 5 runs in 5 clean.
+- **A1200 runs `ogles2-m4-1-20261011-141142` to `-141231`:** every test passes in all five. Seen in some runs, before and after the fix: a test's "destroy returns the memory" check off by about 20 KB of CPU memory (20,304 bytes twice, once 132,592) with 0 bytes of GPU memory left, in different tests each time: something else on the machine allocating during the test (the test station's server, the system monitor), not ogles2; the tests' 16 KB tolerance is tight for a busy machine.
+
+**Done (2026-10-11): M4 closed.** Its first exit criterion counted the 14 framebuffer-object entry points, M5's scope; M4 closed with them moved there (§9).
+
+**Done (2026-10-11): M5, framebuffer objects. M5 COMPLETE** (§7.7 "As built (M5)").
+- `fbo.c` (new): framebuffer and renderbuffer objects, their 14 entry points, the GLES 2.0 4.4.5 completeness rules and queries; colour images: texture levels (any level, `OES_fbo_render_mipmap`; cube faces) stored as RGBA8, RGB565, RGBA4 or RGB5_A1, and colour renderbuffers; depth and stencil: DEPTH_COMPONENT16, STENCIL_INDEX8, DEPTH24_STENCIL8 (`OES_packed_depth_stencil`), together or D16 and S8 apart. `glReadPixels` and `glCopyTex*` from an object; `EXT_discard_framebuffer`.
+- `job.c`: a job belongs to one framebuffer; an object's render list after Mesa's `v3dx_rcl.c`; tile pools of its own when larger than the default framebuffer. `draw.c`: the Y flip only for the default framebuffer (viewport, clip window, scissor, front face, `gl_FragCoord` and `gl_PointCoord` transforms as Mesa's `prog_statevars.c`). `texture.c`: levels the GPU drew into are read back (`v3d_texture_load`, new in v3dcore) before their RAM copy is used; `GL_RGB` textures sample alpha 1.
+- **153 dispatch entries, all implemented: the 148 core entry points (142 `gl*`, 6 `agl*`) and 5 extension ones.**
+- **Tests:** `m5_fbo` 44/44 (objects and queries; render to texture read back and sampled, with its orientation; an object's pass in the middle of a screen frame, the screen's depth kept; D16 depth kept between jobs; stencil in D24S8 and in D16 + S8; the four colour renderbuffer formats; level 1, a cube face, `glTexSubImage2D` and `glGenerateMipmap` after rendering, `glCopyTexImage2D` from an object; a 512x512 object with its own pools; incompleteness and errors; 40 objects made, drawn into, sampled and deleted; discard). The corpus has three programs of our own for M5 in `tests/corpus/programs` (neither of its sources uses framebuffer objects): `RTT_Cube` (render to texture, depth renderbuffer), `PostFX` (scene, horizontal blur, vertical blur and composite: three framebuffers a frame) and `Orientation` (gradient from `gl_FragCoord`, culling with both windings, point sprites from `gl_PointCoord`, a corner marker: drawn into an object and shown, and drawn onto the screen, side by side). On the PC, binding framebuffer 0 binds the capture object (`host_hooks.h`).
+- **A1200 runs:** `ogles2-m5-1-20261011-144423`: `m5_fbo` 44/44, every earlier test as before, 0 bytes of GPU memory left; `ogles2-m2-5-20261011-144235`: the corpus 14/14, the three new programs with 0.00% of their pixels different from llvmpipe's.
+
+**Next, in order (M6: ecosystem, sharing and performance, §9):**
+1. **Presentation and overlap:** let the CPU build the next frame while the GPU renders this one (PiStorm3D's deferred render wait, plan 7.1 phase 2), double buffering in fullscreen; measured with `tests/perf`.
+2. **gl4es:** port its `agl` glue to OS3 ogles2 (§9 M6; it needs the M3 compiler, which exists); gl4es glxgears as the first program.
+3. **SDL2:** the ogles2 GL-context backend and SDL's GLES2 renderer, once an SDL2_68k build is at hand; then `testgles2`.
+4. **Sharing:** `OGLES2_CCT_SHARE_WITH`, several contexts in one program.
+5. **minigl.library coexistence** (D3): with PiStorm3D's maintainers.
+6. **Extensions** (Appendix B.3) as programs need them; optional: native ETC1 sampling; the large-reply stall (`amictld`).
 
 ---
 
@@ -1201,16 +1292,17 @@ PiStorm-specific tags (for example MSAA, swap mode) go in a private value range.
 | `GL_OES_mapbuffer` (`glMapBufferOES`, `glUnmapBufferOES`, `glGetBufferPointervOES`) | M4 |
 | `GL_OES_element_index_uint` | M4 |
 | `GL_OES_get_program_binary` (`glProgramBinaryOES`, `glGetProgramBinaryOES`) | M2 (the S1 delivery mechanism) |
-| `GL_OES_packed_depth_stencil` | M5 |
+| `GL_OES_packed_depth_stencil` | M5; done |
 | `GL_EXT_texture_format_BGRA8888` | M4 |
-| `GL_EXT_blend_minmax` | M4 (native blend modes) |
+| `GL_EXT_blend_minmax` | M4 (native blend modes); done |
 | `GL_OES_texture_float` | M6 (32-bit TMU return key) |
 | `GL_EXT_texture_filter_anisotropic` | M6 |
 | `GL_EXT_texture_lod_bias`, `GL_SGIS_texture_lod` | M6 (sampler state fields exist) |
 | `GL_ARB_texture_rectangle` | M6 (Mesa `TEXRECT_SCALE` uniforms) |
-| `glDrawElementsBaseVertexOES` (`OES_draw_elements_base_vertex`) | M4 |
+| `glDrawElementsBaseVertexOES` (`OES_draw_elements_base_vertex`) | M4; done |
 | `glPolygonMode`, `glProvokingVertex`, `glGetBufferParameterivOES` (OS4 extras) | M6 (hardware supports polygon mode and provoking vertex through CFG_BITS; the query is trivial) |
-| *Not in OS4 list, planned:* `OES_texture_npot`, `OES_compressed_ETC1_RGB8_texture`, `EXT_read_format_bgra`, `EXT_discard_framebuffer`, `OES_standard_derivatives` (Mesa's compiler supports derivatives; works in S1 and S2), `OES_depth_texture` | M4–M6 |
+| *Not in OS4 list, planned:* `OES_texture_npot`, `OES_compressed_ETC1_RGB8_texture` (done, M4), `EXT_read_format_bgra`, `EXT_discard_framebuffer` (done, M5), `OES_standard_derivatives` (Mesa's compiler supports derivatives; works in S1 and S2), `OES_depth_texture` | M4–M6 |
+| *Not in OS4 list, offered since M5:* `OES_rgb8_rgba8`, `OES_fbo_render_mipmap` (Mesa offers both) | M5; done |
 
 ---
 

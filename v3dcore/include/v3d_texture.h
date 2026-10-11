@@ -91,6 +91,7 @@ typedef struct V3DTexture {
     v3d_mem texture_mem;         /* GPU memory holding the uploaded texture data */
 
     v3d_u16 width, height;
+    v3d_u8  cpp;                 /* ogles2: bytes per texel of the stored format; 0 means 4 (RGBA8) */
     v3d_u8  format;              /* backend-local format id (V3D_SRCFMT_*) */
     v3d_u8  mipmap_count;
 
@@ -234,6 +235,24 @@ typedef struct V3DTexture {
  * -- call v3d_texture_upload_rgba8 after. Returns 0 on success.
  */
 int v3d_texture_alloc(V3DDevice* device, V3DTexture* tex, v3d_u16 width, v3d_u16 height);
+
+/* ogles2: v3d_texture_alloc for a format of `cpp` bytes per texel (1, 2 or 4:
+ * R8, RG8 and the 16-bit formats, RGBA8); the mip chain follows it. */
+int v3d_texture_alloc_cpp(V3DDevice* device, V3DTexture* tex, v3d_u16 width, v3d_u16 height,
+                          v3d_u8 cpp);
+
+/* ogles2: stores a box of `level` from src (`srcStride` bytes a row, texels
+ * of tex->cpp bytes in the GPU's byte order), with Mesa's convention: the
+ * level's padded stride and padded height (v3d_resource.c), which the UIF
+ * and LINEARTILE address functions need for sizes that are not a multiple
+ * of the tiling block. Flushes the texture to the GPU. */
+void v3d_texture_store(V3DDevice* device, V3DTexture* tex, v3d_u8 level, const void* src,
+                       v3d_u32 srcStride, int x, int y, int width, int height);
+
+/* ogles2: the inverse of v3d_texture_store, for a level the GPU rendered
+ * into: invalidates the CPU cache over the level, then reads the box. */
+void v3d_texture_load(V3DDevice* device, V3DTexture* tex, v3d_u8 level, void* dst,
+                      v3d_u32 dstStride, int x, int y, int width, int height);
 
 /*
  * Promotes a level-0-only texture to a full mip chain of `want_levels`

@@ -8,7 +8,9 @@
 # come from Mesa demos (MIT), the samples from the OpenGL ES 2.0
 # Programming Guide's repository (danginsburg/opengles-book-samples), both
 # cloned into $CORPUS_SRC. They are compiled unmodified; only the window
-# and loop code is ours (esutil_corpus.c, eglut_corpus.c).
+# and loop code is ours (esutil_corpus.c, eglut_corpus.c). programs/ holds
+# three of our own in the book's style, for framebuffer objects (M5), which
+# neither source has.
 #
 # Output in $B/corpus:
 #   amiga/<name>      the m68k programs        host/<name>  the PC ones
@@ -51,6 +53,9 @@ MultiTexture    $BOOK/Chapter_10/MultiTexture/MultiTexture.c      esutil
 Stencil_Test    $BOOK/Chapter_11/Stencil_Test/Stencil_Test.c      esutil  1
 Multisample     $BOOK/Chapter_11/Multisample/Multisample.c        esutil
 ParticleSystem  $BOOK/Chapter_13/ParticleSystem/ParticleSystem.c  esutil  40
+RTT_Cube        $HERE/programs/RTT_Cube.c                         esutil
+PostFX          $HERE/programs/PostFX.c                           esutil
+Orientation     $HERE/programs/Orientation.c                      esutil
 "
 
 rm -rf "$OUT"

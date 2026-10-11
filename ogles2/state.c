@@ -331,7 +331,8 @@ void ogles2_glBlendFunc(struct OGLES2Context *ctx, GLenum sfactor, GLenum dfacto
 
 static int blend_eq_ok(GLenum e)
 {
-    return e == GL_FUNC_ADD || e == GL_FUNC_SUBTRACT || e == GL_FUNC_REVERSE_SUBTRACT;
+    return e == GL_FUNC_ADD || e == GL_FUNC_SUBTRACT || e == GL_FUNC_REVERSE_SUBTRACT ||
+           e == GL_MIN_EXT || e == GL_MAX_EXT; /* EXT_blend_minmax */
 }
 
 void ogles2_glBlendEquationSeparate(struct OGLES2Context *ctx, GLenum modeRGB, GLenum modeAlpha)
@@ -537,6 +538,12 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
     case GL_IMPLEMENTATION_COLOR_READ_TYPE:
         v->kind = K_INT; v->n = 1; v->i[0] = GL_UNSIGNED_BYTE;
         return 1;
+    case GL_NUM_COMPRESSED_TEXTURE_FORMATS: /* OES_compressed_ETC1_RGB8_texture */
+        v->kind = K_INT; v->n = 1; v->i[0] = 1;
+        return 1;
+    case GL_COMPRESSED_TEXTURE_FORMATS:
+        v->kind = K_INT; v->n = 1; v->i[0] = 0x8D64; /* GL_ETC1_RGB8_OES */
+        return 1;
     case GL_SHADER_COMPILER: /* TRUE with offline binaries too (plan 7.8) */
         v->kind = K_BOOL; v->n = 1; v->i[0] = 1;
         return 1;
@@ -547,13 +554,14 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
     case GL_GREEN_BITS:
     case GL_BLUE_BITS:
     case GL_ALPHA_BITS: /* the default framebuffer is RGBA8 (plan 7.2) */
-        v->kind = K_INT; v->n = 1; v->i[0] = ctx->v3d ? 8 : 0;
-        return 1;
     case GL_DEPTH_BITS:
-        v->kind = K_INT; v->n = 1; v->i[0] = ctx->depth_bits;
-        return 1;
     case GL_STENCIL_BITS:
-        v->kind = K_INT; v->n = 1; v->i[0] = ctx->stencil_bits;
+        v->kind = K_INT; v->n = 1;
+        if (ctx->draw_fb) /* a framebuffer object's (fbo.c) */
+            ogles2_fbo_query(ctx, pname, &v->i[0]);
+        else
+            v->i[0] = pname == GL_DEPTH_BITS ? ctx->depth_bits
+                    : pname == GL_STENCIL_BITS ? ctx->stencil_bits : ctx->v3d ? 8 : 0;
         return 1;
     case GL_CULL_FACE_MODE:
         v->kind = K_INT; v->n = 1; v->i[0] = (GLint)s->cull_face_mode;
@@ -626,7 +634,8 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
         v->kind = K_INT; v->n = 1; v->i[0] = ctx->program ? (GLint)ctx->program->name : 0;
         return 1;
     default:
-        if (ogles2_texture_query(ctx, pname, &v->i[0]) || ogles2_buffer_query(ctx, pname, &v->i[0])) {
+        if (ogles2_texture_query(ctx, pname, &v->i[0]) || ogles2_buffer_query(ctx, pname, &v->i[0]) ||
+            ogles2_fbo_query(ctx, pname, &v->i[0])) {
             v->kind = K_INT;
             v->n = 1;
             return 1;

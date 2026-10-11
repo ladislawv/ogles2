@@ -1,0 +1,25 @@
+ogles2 M2: textures
+FAIL: bitmap: 2x2 texture: bottom 9ba4a5 555555 (red green), top 000000 000000 (blue white)
+FAIL: bitmap: REPEAT: s 1.25 555555, s 1.75 555555 (ff0000, 00ff00)
+FAIL: bitmap: CLAMP_TO_EDGE: s 1.25 555555, s 1.75 555555 (00ff00, 00ff00)
+FAIL: bitmap: MIRRORED_REPEAT: s 1.25 555555, s 1.75 555555 (00ff00, ff0000)
+FAIL: bitmap: glTexSubImage2D: top right 000000 (0000ff)
+PASS: bitmap: deleting the bound texture binds 0
+FAIL: bitmap: format RGB: 555555 (0a141e)
+FAIL: bitmap: format LUMINANCE: 555555 (404040)
+FAIL: bitmap: format ALPHA (0,0,0,A): 555555 (000000)
+FAIL: bitmap: format LUMINANCE_ALPHA: 555555 (606060)
+FAIL: bitmap: format RGB 5_6_5 red: 555555 (ff0000)
+FAIL: bitmap: format RGBA 4_4_4_4 green: 555555 (00ff00)
+FAIL: bitmap: format RGBA 5_5_5_1 blue: 555555 (0000ff)
+FAIL: bitmap: unpack alignment 4 and 1: second row 000000 and 000000 (0000ff)
+FAIL: bitmap: linear filter: centre 555555 (about 808080), left edge 555555 (black)
+FAIL: bitmap: mip levels: 8x8 draw 555555 (level 3, ffffff), 64x64 draw 555555 (level 0, ff0000)
+FAIL: bitmap: incomplete texture samples (0,0,0,1): 555555 (000000)
+FAIL: bitmap: glGenerateMipmap: a 4x4 draw of a 64x64 checkerboard 555555 (about 808080)
+FAIL: bitmap: two units: 555555 (ff8000)
+FAIL: bitmap: texture replaced between draws: left 555555 (red), right 555555 (green)
+PASS: bitmap: glTexImage2D errors: 0502 0501 0500 0502 (0502 0501 0500 0502)
+PASS: bitmap: no GL error left over
+PASS: bitmap: destroy returns the memory (0 bytes difference)
+FAILED: 4 of 23 checks passed

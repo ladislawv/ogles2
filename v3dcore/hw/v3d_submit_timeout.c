@@ -39,6 +39,7 @@ v3d_wait_result v3d_wait_binning_timeout(V3DDevice* device, V3DFrame* frame, v3d
 {
     v3d_u8 currentFlushCount;
     v3d_u32 iterations = 0;
+    v3d_u32 last_ca = 0, ca;
 
     D(("v3d_wait_binning_timeout: starting wait, lastFlush=%ld\n", (LONG)lastFlush));
 
@@ -101,6 +102,19 @@ v3d_wait_result v3d_wait_binning_timeout(V3DDevice* device, V3DFrame* frame, v3d
             return v3d_wait_result_error_detected;
         }
 
+        /* ogles2: a watchdog on progress, not on time (plan 9 M4). The
+         * count restarts whenever thread 0's current address moves, so a
+         * frame of hundreds of thousands of draws is waited for; a wedged
+         * list (the address standing still) still times out as before. A
+         * fixed count timed such a frame out while the binner was still
+         * working, and the next job then met a busy GPU (A1200 run
+         * ogles2-m4-1). */
+        ca = V3D_CT0CA;
+        if (ca != last_ca)
+        {
+            last_ca = ca;
+            iterations = 0;
+        }
         if (++iterations > V3D_TIMEOUT_ITERATIONS_BINNING)
         {
             D(("v3d_wait_binning_timeout: TIMED OUT after %lu iterations, currentFlushCount stuck at %ld (lastFlush was %ld)\n",
@@ -139,6 +153,7 @@ v3d_wait_result v3d_wait_render_timeout(v3d_u8 lastFrame)
     v3d_u8 currentFrameCount;
     v3d_u32 status;
     v3d_u32 iterations = 0;
+    v3d_u32 last_ca = 0, ca;
 
     D(("v3d_wait_render_timeout: starting wait, lastFrame=%ld\n", (LONG)lastFrame));
 
@@ -159,6 +174,13 @@ v3d_wait_result v3d_wait_render_timeout(v3d_u8 lastFrame)
             return v3d_wait_result_error_detected;
         }
 
+        /* ogles2: the same progress watchdog on thread 1 (see above). */
+        ca = V3D_CT1CA;
+        if (ca != last_ca)
+        {
+            last_ca = ca;
+            iterations = 0;
+        }
         if (++iterations > g_v3d_render_timeout_iterations)
         {
             g_mglv3d_render_wait_iterations = iterations;

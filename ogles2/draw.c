@@ -254,15 +254,18 @@ static void update_state_vars(struct OGLES2Context *ctx, struct OGLES2Program *p
             v[2] = dr[1] - dr[0];
             v[3] = 1.0f;
             break;
-        case OGLES2_STATE_FB_WPOS_Y_TRANSFORM: /* flipped: (-1, height, 1, 0) */
-            v[0] = -1.0f;
-            v[1] = (GLfloat)ctx->height;
-            v[2] = 1.0f;
-            v[3] = 0.0f;
+        case OGLES2_STATE_FB_WPOS_Y_TRANSFORM:
+            /* Mesa's prog_statevars.c: flipped (-1, height, 1, 0), else
+             * (1, 0, -1, height) */
+            v[0] = ctx->fb_flip ? -1.0f : 1.0f;
+            v[1] = ctx->fb_flip ? (GLfloat)ctx->fb_h : 0.0f;
+            v[2] = ctx->fb_flip ? 1.0f : -1.0f;
+            v[3] = ctx->fb_flip ? 0.0f : (GLfloat)ctx->fb_h;
             break;
-        case OGLES2_STATE_FB_PNTC_Y_TRANSFORM: /* upper-left origin on a flipped buffer */
-            v[0] = -1.0f;
-            v[1] = 1.0f;
+        case OGLES2_STATE_FB_PNTC_Y_TRANSFORM:
+            /* upper-left sprite origin: inverted on a flipped buffer only */
+            v[0] = ctx->fb_flip ? -1.0f : 1.0f;
+            v[1] = ctx->fb_flip ? 1.0f : 0.0f;
             v[2] = 0.0f;
             v[3] = 0.0f;
             break;
@@ -350,9 +353,12 @@ static ULONG write_uniforms(struct OGLES2Context *ctx, const struct OGLES2Progra
         case OGLES2_U_CONSTANT:          w = d; break;
         case OGLES2_U_UNIFORM:           w = cbuf[d]; break;
         /* The default framebuffer is drawn upside down (plan 7.11): a
-         * negative Y scale, as Mesa's state tracker gives a window. */
+         * negative Y scale, as Mesa's state tracker gives a window; a
+         * framebuffer object is not. */
         case OGLES2_U_VIEWPORT_X_SCALE:  w = float_bits(ctx->viewport[2] * 0.5f * 256.0f); break;
-        case OGLES2_U_VIEWPORT_Y_SCALE:  w = float_bits(ctx->viewport[3] * -0.5f * 256.0f); break;
+        case OGLES2_U_VIEWPORT_Y_SCALE:
+            w = float_bits(ctx->viewport[3] * (ctx->fb_flip ? -0.5f : 0.5f) * 256.0f);
+            break;
         case OGLES2_U_VIEWPORT_Z_SCALE:  w = float_bits((dr[1] - dr[0]) * 0.5f); break;
         case OGLES2_U_VIEWPORT_Z_OFFSET: w = float_bits((dr[1] + dr[0]) * 0.5f); break;
         case OGLES2_U_LINE_WIDTH:
@@ -630,7 +636,16 @@ static UBYTE blend_factor(GLenum f)
 static UBYTE blend_mode(GLenum e)
 {
     return e == GL_FUNC_SUBTRACT ? V3D_BLEND_MODE_SUB
-         : e == GL_FUNC_REVERSE_SUBTRACT ? V3D_BLEND_MODE_RSUB : V3D_BLEND_MODE_ADD;
+         : e == GL_FUNC_REVERSE_SUBTRACT ? V3D_BLEND_MODE_RSUB
+         : e == GL_MIN_EXT ? V3D_BLEND_MODE_MIN
+         : e == GL_MAX_EXT ? V3D_BLEND_MODE_MAX : V3D_BLEND_MODE_ADD;
+}
+
+/* EXT_blend_minmax ignores the factors; Mesa's state tracker
+ * (st_atom_blend.c) sets them to ONE for MIN and MAX, as here. */
+static UBYTE blend_factor_for(GLenum f, GLenum e)
+{
+    return e == GL_MIN_EXT || e == GL_MAX_EXT ? V3D_BLEND_FACTOR_ONE : blend_factor(f);
 }
 
 /* IEEE half from a float in [0, 1] (blend constant colour). */
@@ -728,10 +743,11 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
 {
     V3DContext *v = ctx->v3d;
     const struct OGLES2State *s = &ctx->state;
-    BOOL depth_on = (s->caps & OGLES2_CAP_DEPTH_TEST) && ctx->depth_bits;
-    BOOL stencil_on = (s->caps & OGLES2_CAP_STENCIL_TEST) && ctx->stencil_bits;
+    BOOL depth_on = (s->caps & OGLES2_CAP_DEPTH_TEST) && ctx->fb_depth_bits;
+    BOOL stencil_on = (s->caps & OGLES2_CAP_STENCIL_TEST) && ctx->fb_stencil_bits;
+    BOOL flip = ctx->fb_flip;
     UBYTE effp, erfp, cp, edo, dtf, zue, eze, ezue, be, se;
-    LONG fh = (LONG)ctx->height;
+    LONG fh = (LONG)ctx->fb_h;
     LONG vx = ctx->viewport[0], vy = ctx->viewport[1], vw = ctx->viewport[2], vh = ctx->viewport[3];
     LONG l, t, r, b;
     UWORD vp_cx2, vp_cy2;
@@ -746,15 +762,17 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
         dd->prim = -1;
     }
 
-    /* CLIP_WINDOW: viewport, and scissor box if enabled, in the top-down
-     * frame (GL's y is from the bottom), clamped to the framebuffer. */
+    /* CLIP_WINDOW: viewport, and scissor box if enabled, in the hardware's
+     * top-down frame (the default framebuffer's GL y is from the bottom; a
+     * framebuffer object's row 0 is GL's), clamped to the framebuffer. */
     l = vx;
     r = vx + vw;
-    t = fh - (vy + vh);
-    b = fh - vy;
+    t = flip ? fh - (vy + vh) : vy;
+    b = flip ? fh - vy : vy + vh;
     if (s->caps & OGLES2_CAP_SCISSOR_TEST) {
         LONG sl = ctx->scissor[0], sr = sl + ctx->scissor[2];
-        LONG st = fh - (ctx->scissor[1] + ctx->scissor[3]), sb = fh - ctx->scissor[1];
+        LONG st = flip ? fh - (ctx->scissor[1] + ctx->scissor[3]) : ctx->scissor[1];
+        LONG sb = flip ? fh - ctx->scissor[1] : ctx->scissor[1] + ctx->scissor[3];
         if (sl > l) l = sl;
         if (sr < r) r = sr;
         if (st > t) t = st;
@@ -762,7 +780,7 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     }
     if (l < 0) l = 0;
     if (t < 0) t = 0;
-    if (r > (LONG)ctx->width) r = (LONG)ctx->width;
+    if (r > (LONG)ctx->fb_w) r = (LONG)ctx->fb_w;
     if (b > fh) b = fh;
     if (r < l) r = l;
     if (b < t) b = t;
@@ -773,13 +791,14 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     }
 
     /* CFG_BITS. Culling as Mesa's v3dx_emit.c; the winding flag set for
-     * counter-clockwise as PiStorm3D's (its shaders flip y the same way). */
+     * counter-clockwise as PiStorm3D's on the flipped default framebuffer
+     * (its shaders flip y the same way), for clockwise on an object. */
     effp = erfp = TRUE;
     if (s->caps & OGLES2_CAP_CULL_FACE) {
         if (s->cull_face_mode != GL_BACK) effp = FALSE;  /* FRONT or FRONT_AND_BACK */
         if (s->cull_face_mode != GL_FRONT) erfp = FALSE; /* BACK or FRONT_AND_BACK */
     }
-    cp = s->front_face == GL_CCW;
+    cp = flip ? s->front_face == GL_CCW : s->front_face == GL_CW;
     edo = (s->caps & OGLES2_CAP_POLYGON_OFFSET_FILL) ? TRUE : FALSE;
     dtf = depth_on ? (UBYTE)(s->depth_func - GL_NEVER) : V3D_COMPARE_FUNC_ALWAYS;
     zue = depth_on && s->depth_mask;
@@ -833,7 +852,8 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     /* The viewport group (CLIPPER_XY_SCALING, the Z packets, VIEWPORT_OFFSET),
      * as Mesa's v3dx_emit.c: the Z scale and offset from the depth range. */
     vp_cx2 = (UWORD)(2 * vx + vw);              /* twice the centre, from the left */
-    vp_cy2 = (UWORD)(2 * (fh - vy) - vh);       /* twice the centre, from the top */
+    vp_cy2 = (UWORD)(flip ? 2 * (fh - vy) - vh  /* twice the centre, from the top */
+                          : 2 * vy + vh);
     if (!dd->vp || dd->vp_w != vw || dd->vp_h != vh || dd->vp_cx2 != vp_cx2 || dd->vp_cy2 != vp_cy2 ||
         dd->vp_zs != zs || dd->vp_zo != zo) {
         ClipperXYScaling(v, (UWORD)vw, (UWORD)vh);
@@ -849,8 +869,10 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     /* Blending: BLEND_ENABLES, BLEND_CFG (all four render targets, as Mesa
      * and PiStorm3D), BLEND_CONSTANT_COLOR. */
     if (be) {
-        UBYTE src = blend_factor(s->blend_src_rgb), dst = blend_factor(s->blend_dst_rgb);
-        UBYTE asrc = blend_factor(s->blend_src_alpha), adst = blend_factor(s->blend_dst_alpha);
+        UBYTE src = blend_factor_for(s->blend_src_rgb, s->blend_eq_rgb);
+        UBYTE dst = blend_factor_for(s->blend_dst_rgb, s->blend_eq_rgb);
+        UBYTE asrc = blend_factor_for(s->blend_src_alpha, s->blend_eq_alpha);
+        UBYTE adst = blend_factor_for(s->blend_dst_alpha, s->blend_eq_alpha);
         UBYTE eq = blend_mode(s->blend_eq_rgb), aeq = blend_mode(s->blend_eq_alpha);
         UWORD c[4];
         for (k = 0; k < 4; k++)
@@ -1094,6 +1116,8 @@ void ogles2_glDrawArrays(struct OGLES2Context *ctx, GLenum mode, GLint first, GL
         ogles2_error(ctx, GL_INVALID_VALUE);
         return;
     }
+    if (!ogles2_fb_ready(ctx)) /* GL_INVALID_FRAMEBUFFER_OPERATION */
+        return;
     p = ctx->program;
     if (!p || !ctx->v3d || count == 0) /* no program: undefined; nothing is drawn */
         return;
@@ -1102,8 +1126,11 @@ void ogles2_glDrawArrays(struct OGLES2Context *ctx, GLenum mode, GLint first, GL
     draw_arrays(ctx, p, mode, first, count, 0);
 }
 
-void ogles2_glDrawElements(struct OGLES2Context *ctx, GLenum mode, GLsizei count, GLenum type,
-                           const void *indices)
+/* glDrawElements, and with a base vertex added to every index
+ * (OES_draw_elements_base_vertex): the copied range moves by basevertex,
+ * the rebased indices stay as they are. */
+static void draw_elements(struct OGLES2Context *ctx, GLenum mode, GLsizei count, GLenum type,
+                          const void *indices, GLint basevertex, const char *fn)
 {
     struct OGLES2Program *p;
     struct elements el;
@@ -1120,6 +1147,8 @@ void ogles2_glDrawElements(struct OGLES2Context *ctx, GLenum mode, GLsizei count
         ogles2_error(ctx, GL_INVALID_VALUE);
         return;
     }
+    if (!ogles2_fb_ready(ctx))
+        return;
     p = ctx->program;
     if (!p || !ctx->v3d || count == 0)
         return;
@@ -1129,7 +1158,7 @@ void ogles2_glDrawElements(struct OGLES2Context *ctx, GLenum mode, GLsizei count
         const void *in = ogles2_buffer_indices(ctx, (ULONG)indices,
                                                (ULONG)count * index_size(type), &bad);
         if (bad) {
-            ogles2_log("glDrawElements: the indices lie outside the element buffer; nothing drawn");
+            ogles2_log("%s: the indices lie outside the element buffer; nothing drawn", (ULONG)fn);
             return;
         }
         if (in)
@@ -1145,13 +1174,32 @@ void ogles2_glDrawElements(struct OGLES2Context *ctx, GLenum mode, GLsizei count
         if (x < lo) lo = x;
         if (x > hi) hi = x;
     }
-    if (!arrays_ok(ctx, p, hi + 1, "glDrawElements"))
+    if ((LONG)lo + basevertex < 0) {
+        ogles2_log("%s: index %ld + base vertex %ld is negative; nothing drawn", (ULONG)fn, (LONG)lo,
+                   (LONG)basevertex);
+        return;
+    }
+    lo += (ULONG)basevertex;
+    hi += (ULONG)basevertex;
+    if (!arrays_ok(ctx, p, hi + 1, fn))
         return;
     el.indices = indices;
     el.type = type;
     el.count = count;
-    el.min = lo;
+    el.min = lo - (ULONG)basevertex; /* the indices' own smallest */
     draw_arrays(ctx, p, mode, (GLint)lo, (GLsizei)(hi - lo + 1), &el);
+}
+
+void ogles2_glDrawElements(struct OGLES2Context *ctx, GLenum mode, GLsizei count, GLenum type,
+                           const void *indices)
+{
+    draw_elements(ctx, mode, count, type, indices, 0, "glDrawElements");
+}
+
+void ogles2_glDrawElementsBaseVertexOES(struct OGLES2Context *ctx, GLenum mode, GLsizei count,
+                                        GLenum type, const void *indices, GLint basevertex)
+{
+    draw_elements(ctx, mode, count, type, indices, basevertex, "glDrawElementsBaseVertexOES");
 }
 
 /* ---- clears that the tile buffer cannot do ----
@@ -1172,9 +1220,9 @@ void ogles2_draw_clear(struct OGLES2Context *ctx, GLbitfield mask)
     GLfloat pos[12], z;
     int k;
 
-    if ((mask & GL_DEPTH_BUFFER_BIT) && (!ctx->depth_bits || !s->depth_mask))
+    if ((mask & GL_DEPTH_BUFFER_BIT) && (!ctx->fb_depth_bits || !s->depth_mask))
         mask &= ~(GLbitfield)GL_DEPTH_BUFFER_BIT;
-    if ((mask & GL_STENCIL_BUFFER_BIT) && !ctx->stencil_bits)
+    if ((mask & GL_STENCIL_BUFFER_BIT) && !ctx->fb_stencil_bits)
         mask &= ~(GLbitfield)GL_STENCIL_BUFFER_BIT;
     if (!mask)
         return;
@@ -1230,8 +1278,8 @@ void ogles2_draw_clear(struct OGLES2Context *ctx, GLbitfield mask)
     s->depth_range[0] = 0.0f;
     s->depth_range[1] = 1.0f;
     ctx->viewport[0] = ctx->viewport[1] = 0;
-    ctx->viewport[2] = (GLint)ctx->width;
-    ctx->viewport[3] = (GLint)ctx->height;
+    ctx->viewport[2] = (GLint)ctx->fb_w;
+    ctx->viewport[3] = (GLint)ctx->fb_h;
 
     ogles2_job_begin(ctx);
     draw_arrays(ctx, quad, GL_TRIANGLE_STRIP, 0, 4, 0);

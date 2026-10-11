@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "../../tests/common/smooth_shaders.h"
 #include "../../tests/common/tex_shaders.h"
+#include "../../tests/common/lit_shaders.h"
 
 static int put(const char *name, const char *text)
 {
@@ -21,5 +22,6 @@ int main(void)
 {
     return put("smooth.vert", smooth_vs) | put("smooth.frag", smooth_fs) |
            put("tex1.vert", tex1_vs) | put("tex1.frag", tex1_fs) |
-           put("tex2.vert", tex1_vs) | put("tex2.frag", tex2_fs);
+           put("tex2.vert", tex1_vs) | put("tex2.frag", tex2_fs) |
+           put("lit.vert", lit_vs) | put("lit.frag", lit_fs);
 }

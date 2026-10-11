@@ -183,6 +183,13 @@ void* v3d_buffer_claim_memory(v3d_static_buffer* buffer, v3d_uintptr dataSize)
     void* data;
 
     numBytesFree = buffer->capacity - buffer->used;
+    if (numBytesFree < (int)dataSize && buffer->grow)
+    {
+        /* ogles2: continue the list in a new block (v3d_types.h). */
+        data = buffer->grow(buffer, dataSize);
+        if (data)
+            return data;
+    }
     if (numBytesFree < (int)dataSize)
     {
         D(("v3d_buffer_claim_memory: EXHAUSTED buffer=%lx capacity=%ld used=%ld requested=%ld\n",
