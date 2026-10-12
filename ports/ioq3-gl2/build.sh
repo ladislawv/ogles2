@@ -18,8 +18,8 @@ ln -sfn "$(cd "$HERE/../.." && pwd)" "$HOME/.ogles2-repo" # a path without the s
 REPO=$HOME/.ogles2-repo
 B=${B:-$HOME/ogles2-build/m68k}
 TC=${TC:-$HOME/amiga-gcc-install}
-IOQ3_SRC=${IOQ3_SRC:-"/mnt/c/- CPP/Quake3/MiniGL_Library_Quake3/ioq3"}
-IOQ3_UP_SRC=${IOQ3_UP_SRC:-"/mnt/c/- CPP/Quake3/ioq3-upstream"}
+IOQ3_WANT_UPSTREAM=1
+. "$HERE/../ioq3/sources.sh" # IOQ3_SRC, IOQ3_UP_SRC: pinned clones unless set
 GL4ES_SRC=${GL4ES_SRC:-$HOME/gl4es} # its desktop GL headers only
 GCC=$TC/bin/m68k-amigaos-gcc
 LIBM020=$TC/m68k-amigaos/clib2/lib/libm020

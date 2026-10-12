@@ -11,9 +11,13 @@ document. Read §1 (goals), §7 (runtime design), §8 (the shader pipeline), §9
 there. When something is done, decided or found, update the plan (the relevant section and
 §13) in the same change, rather than writing a separate document.
 
-M0 to M3 are complete: the library runs real GLES2 programs and compiles their shaders on
-the Amiga (`v3dglslc` as a resident compiler server the library starts on demand:
-`ogles2/compiler.c`, `v3dp/v3dglsl_port.h`). M4 (GLES2 core complete) is next; §13 lists it.
+M0 to M5 are complete, and most of M6: the library runs real GLES2 programs and compiles
+their shaders on the Amiga (`v3dglslc`, a resident compiler server the library starts on
+demand), with framebuffer objects, sharing across contexts and tasks, SDL2/SDL3 backends,
+gl4es, and Quake III both through gl4es and with ioquake3's GLES2 renderer directly
+(`ports/ioq3-gl2`, 80.7 fps at 640x480). What is left (glmark2-es2, coexistence with
+minigl.library, conformance and the release) is in §13's "Next" list and §9 (M6, M7).
+[`CLAUDE.md`](CLAUDE.md) has the short version for an AI agent.
 
 ## Setting up a build machine
 
@@ -41,7 +45,27 @@ make etc1-test        # ogles2's ETC1 decoder against Mesa's (the same)
 make test-v3dp        # compiles the test shaders to .v3dp (needs v3dglslc)
 make perf-mgl         # the MiniGL side of the speed comparison (needs MGL_SDK)
 make gl4es            # gl4es for AmigaOS 3 and gears_gl4es (ports/gl4es/README.md)
+bash ports/ioq3/build.sh       # Quake III on gl4es (after make gl4es): ~/ogles2-build/m68k/ioq3
+bash ports/ioq3-gl2/build.sh   # Quake III with renderergl2 (after ports/ioq3): .../ioq3gl2
 ```
+
+The ports fetch their sources on first build, each at a pinned commit: gl4es and SDL2/SDL3
+from GitHub (their `build.sh`), Quake III through `ports/ioq3/sources.sh` (Cowcat's AmigaOS 3
+port with the PiStorm changes, github.com/ladislawv/ioq3-amiga, into `~/ioq3-amiga`;
+upstream ioquake3 into `~/ioq3-upstream`). `IOQ3_SRC` and `IOQ3_UP_SRC` point them at trees
+of your own instead. Changes to those sources are patches in `ports/ioq3*/patches/`.
+The Quake III game data (`baseq3/pak*.pk3`, a retail copy) is only needed on the Amiga.
+
+**Access:** `ogles2` and `ioq3-amiga` are private GitHub repositories; ask the owner to add
+you as a collaborator. Git inside WSL then needs your GitHub login, which it can take from
+Git for Windows' credential manager (one line, once):
+
+```sh
+git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git-credential-manager.exe"
+```
+
+Without it a clone of a private repository fails at once (the scripts never wait for a
+password prompt): `could not clone ... needs git credentials in WSL`.
 
 Every `make` also compiles the library to assembly and runs `tools/check_fpconv.py`, which
 fails the build on a float-to-integer conversion GCC 6 has broken (see Traps).
@@ -158,6 +182,21 @@ Each of these cost real time once.
   repository through a link for that reason.
 - **Large screenshots over amictl sometimes stall** (an open issue in §13); smaller results
   come through.
+- **Ports built with their own flags miss `-fbbb=abcfhilmnprsz0`** and get pass `e`'s rounding
+  conversions (above): Quake III's renderergl2 packed colours of 1.0 as 0 (invisible
+  sprites). The Quake glimps set the FPU to round-to-zero for the game's task, which makes
+  those conversions truncate; the cleaner fix is the flag.
+- **PowerShell mangles `$`, `\` and quotes** in `wsl bash -c "..."`: write the commands to a
+  script file and run `wsl -d Ubuntu-24.04 bash <file>`.
+- **Line ends:** Windows Python (and some editors) write CRLF into files that must be LF.
+  Patches to ported sources are made against the clones the builds use (in WSL); a Windows
+  checkout of the same repository has CRLF (git's `core.autocrlf`), and a patch made there
+  does not apply. `ioq3-amiga` itself mixes CRLF and LF and is kept byte for byte.
+- **Quake III keeps settings** in its home's `baseq3/q3config.cfg` from run to run (archived
+  cvars): delete it before a comparison. A timedemo runs faster than real time, so its sound
+  is garbled whatever the driver; judge sound by playing.
+- **Two GL programs at once** (a game left running and a test started) can hang the Amiga:
+  check with `amictl.py run Status` before starting one.
 
 ## Licences
 

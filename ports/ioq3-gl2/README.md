@@ -6,12 +6,14 @@ gl4es. The plan and its status: `docs/IOQ3_GLES2_PORT_PLAN.md`.
 
 ## How it is put together
 
-- **Engine:** Cowcat's Amiga ioquake3, the MiniGL build's tree
-  (`$IOQ3_SRC`, as `ports/ioq3`). Its objects and game `.dll`s are the ones
+- **Engine:** Cowcat's AmigaOS 3 ioquake3 with the PiStorm changes
+  (`$IOQ3_SRC`, as `ports/ioq3`: by default a clone of
+  https://github.com/ladislawv/ioq3-amiga at a pinned commit,
+  `ports/ioq3/sources.sh`). Its objects and game `.dll`s are the ones
   `ports/ioq3/build.sh` makes: run that first. Only the renderer differs.
 - **Renderer:** upstream ioquake3's `code/renderergl2` and
-  `code/renderercommon` (`$IOQ3_UP_SRC`, a clone of
-  https://github.com/ioquake/ioq3) and its header-only `qcommon/json.h`,
+  `code/renderercommon` (`$IOQ3_UP_SRC`: by default a clone of
+  https://github.com/ioquake/ioq3 at commit `83a7762`, the same script) and its header-only `qcommon/json.h`,
   copied unchanged into `$B/ioq3gl2/src` beside the engine's sources and
   compiled against the engine's qcommon headers.
   - `include/ioq3_gl2_compat.h` (forced in): the few definitions upstream's
@@ -35,8 +37,8 @@ gl4es. The plan and its status: `docs/IOQ3_GLES2_PORT_PLAN.md`.
   `refexport_t` and shared types; upstream's `refimport_t` has ten more
   members. The engine's `GetRefAPI` call is adapted to upstream's
   (renamed `GL2_GetRefAPI` at compile time). Also `Q_acos`.
-- **`patches/`**: changes to the copied upstream files (they have CRLF line
-  ends; the patches keep them). `0001-lighting-maps-off`: `r_normalMapping`
+- **`patches/`**: changes to the copied upstream files (made against the
+  pinned clone, LF line ends). `0001-lighting-maps-off`: `r_normalMapping`
   and `r_specularMapping` default to 0. Quake III's data has neither map, so
   they only cost: at 1920x1080 the A1200's GPU took 43 ms a frame with them,
   10 ms without (17.7 to 44.8 fps); the menu can still turn them on.

@@ -4,8 +4,9 @@
 # `make` and `make gl4es`:
 #   bash ports/ioq3/build.sh
 # The game's source is not in this repository: it is copied from $IOQ3_SRC
-# (the MiniGL library port's tree, which has the Amiga platform code and the
-# build lists used here) into $B/ioq3/src, amiga_glimp.c is replaced
+# (Cowcat's AmigaOS 3 port with the PiStorm changes, which has the Amiga
+# platform code and the build lists used here; ports/ioq3/sources.sh clones
+# it at a pinned commit unless IOQ3_SRC names a tree) into $B/ioq3/src, amiga_glimp.c is replaced
 # (ports/ioq3/amiga_glimp.c) and the copy gets ports/ioq3/patches/*.patch;
 # <mgl/gl.h> and <mgl/mglmacros.h> resolve to ports/ioq3/include, which
 # brings gl4es's GL. ports/ioq3/README.md.
@@ -15,7 +16,7 @@ ln -sfn "$(cd "$HERE/../.." && pwd)" "$HOME/.ogles2-repo" # a path without the s
 REPO=$HOME/.ogles2-repo
 B=${B:-$HOME/ogles2-build/m68k}
 TC=${TC:-$HOME/amiga-gcc-install}
-IOQ3_SRC=${IOQ3_SRC:-"/mnt/c/- CPP/Quake3/MiniGL_Library_Quake3/ioq3"}
+. "$HERE/sources.sh" # IOQ3_SRC
 GL4ES_SRC=${GL4ES_SRC:-$HOME/gl4es}
 GCC=$TC/bin/m68k-amigaos-gcc
 AS=$TC/bin/m68k-amigaos-as
