@@ -30,7 +30,7 @@ repositories: git in WSL needs credentials (CONTRIBUTING.md, "Access").
 ## Traps that cost time (more in CONTRIBUTING.md)
 
 - PowerShell mangles `$`, `\` and quotes passed to `wsl bash -c`: write a script file and
-  run `wsl -d Ubuntu-24.04 bash <script>`.
+  run `wsl -d Ubuntu-24.04 bash <script>` (the name `wsl -l` lists; on some machines `Ubuntu`).
 - Windows Python writes CRLF; files here are LF (`.gitattributes`). Make patches to the
   ported sources against the clones the builds use (`~/ioq3-upstream`, `~/ioq3-amiga`, in
   WSL), not against a Windows checkout: git on Windows turns LF into CRLF there.

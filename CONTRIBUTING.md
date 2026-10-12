@@ -28,9 +28,11 @@ Windows drive, `/mnt/c/...`); the build output goes to `~/ogles2-build`.
 2. `bash dev/host-setup/build_tools.sh`: lha and vamos (minutes).
 3. `bash dev/host-setup/build_toolchains.sh`: GCC 6.5.0b with clib2 and GCC 16.2, pinned to
    the tested commits (`dev/host-setup/toolchain-pins.txt`); a few hours.
-4. `bash dev/host-setup/build_mesa.sh`, then the v3dglslc steps of the README's Building section,
-   for the shader compiler (needed for anything that compiles GLSL, including the corpus and
-   `make test-v3dp`).
+4. `bash dev/host-setup/build_mesa.sh`, then
+   `for p in tools/v3dglslc/patches/*.patch; do git -C ~/mesa-build/mesa apply "$p"; done`
+   (the v3dglslc builds expect them in that tree), then the v3dglslc steps of the README's
+   Building section, for the shader compiler (needed for anything that compiles GLSL,
+   including the corpus and `make test-v3dp`).
 5. `bash dev/host-setup/build_vbcc.sh` if you work on the vbcc client side.
 6. Optional: `bash dev/fetch_external.sh` puts the plan's reference sources (PiStorm3D,
    MiniGL glue, Mesa's V3D code, OS4 SDL and gl4es glue, glSnoop, Emu68) into `external/`.
@@ -63,6 +65,8 @@ Git for Windows' credential manager (one line, once):
 ```sh
 git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/bin/git-credential-manager.exe"
 ```
+
+Newer Git for Windows installs it under `ucrt64/bin` instead of `mingw64/bin`.
 
 Without it a clone of a private repository fails at once (the scripts never wait for a
 password prompt): `could not clone ... needs git credentials in WSL`.
@@ -187,7 +191,14 @@ Each of these cost real time once.
   sprites). The Quake glimps set the FPU to round-to-zero for the game's task, which makes
   those conversions truncate; the cleaner fix is the flag.
 - **PowerShell mangles `$`, `\` and quotes** in `wsl bash -c "..."`: write the commands to a
-  script file and run `wsl -d Ubuntu-24.04 bash <file>`.
+  script file and run `wsl -d Ubuntu-24.04 bash <file>` (the distribution's name as `wsl -l`
+  lists it: plain `Ubuntu` on some machines).
+- **Unstable memory looks like compiler bugs.** On a second build machine (2026-10-12) the
+  toolchain and Mesa builds failed at random: internal compiler errors and assembler crashes in
+  different files each run, a flipped bit in GCC's assembly output, a corrupt object. The cause
+  was the RAM's XMP/DOCP profile (four DIMMs); at the default speed everything built. Check:
+  compile one large file (Mesa's `nir_opt_algebraic.c`) 100 times, 16 at a time: every object
+  must be byte-identical. A toolchain built on such a machine may miscompile quietly: rebuild it.
 - **Line ends:** Windows Python (and some editors) write CRLF into files that must be LF.
   Patches to ported sources are made against the clones the builds use (in WSL); a Windows
   checkout of the same repository has CRLF (git's `core.autocrlf`), and a patch made there
