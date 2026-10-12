@@ -19,12 +19,14 @@
  *  - M6 overlap: a flush may return once the render is submitted, so the
  *    CPU builds the next job while the GPU renders (PiStorm3D's deferred
  *    wait): an object's job, and a job on a fullscreen screen of our own,
- *    which shows what the GPU writes. The job keeps the GPU lock (not the
- *    screen's bitmap lock: see may_defer) until ogles2_job_finish: at the next
- *    flush, or before the CPU reads what it writes or changes what it
- *    reads (texture.c, buffer.c, fbo.c, frame.c). Only while one context
- *    exists: the lock is polled, and a second program would wait out the
- *    timeout (plan 7.1, phase 2 needs a shared submission component).
+ *    which shows what the GPU writes. ogles2_job_finish waits for it: at the
+ *    next flush, or before the CPU reads what it writes or changes what it
+ *    reads (texture.c, buffer.c, fbo.c, frame.c). The submission lock goes
+ *    once the render is submitted (plan 7.1 phase 2 within ogles2): the
+ *    next submitter, any context of any program, takes the lock and waits
+ *    for that render on the GPU first (take_gpu), so programs take turns
+ *    and none holds the lock across its CPU work. minigl.library does not
+ *    take part (D3).
  *  - A job renders into the default framebuffer or into a framebuffer
  *    object (M5, plan 7.7; fbo.c): ctx->job_fb. Drawing into another
  *    framebuffer renders the open job first (jobs v1). An object's job loads
@@ -46,6 +48,8 @@
 #define GPU_LOCK_TIMEOUT_MS 5000
 
 extern v3d_u32 g_v3d_cl_generation; /* v3d_frame.c: bumped whenever a CL slot is reset */
+
+static void supertiles(V3DContext *v, ULONG w, ULONG h, ULONG sw, ULONG sh);
 
 /* ---- the binning list grows (plan section 9, M4) ----
  * Its block is fixed (V3D_INITIAL_CL_BUFFER_SIZE, 4 MB), and a frame with
@@ -216,7 +220,13 @@ void ogles2_job_begin(struct OGLES2Context *ctx)
     DoCommand(v, v3d_OP_START_TILE_BINNING);
 
     v->frame_active = TRUE;
-    ctx->job_serial++;
+    /* Unique across contexts: a shared object's "last used by job N" names
+     * one job of one member (share.c). */
+    ObtainSemaphore(&OGLES2LibBase->lock);
+    if (!++OGLES2LibBase->serial)
+        ++OGLES2LibBase->serial; /* 0: never used */
+    ctx->job_serial = OGLES2LibBase->serial;
+    ReleaseSemaphore(&OGLES2LibBase->lock);
     v->ez_state = V3D_EZ_UNDECIDED;
     v->first_ez_state = V3D_EZ_UNDECIDED;
     v->pending_clear_color = FALSE;
@@ -259,7 +269,7 @@ static void build_render(struct OGLES2Context *ctx, struct zs_save *store_zs)
     v3d_u8 s = v->build_slot;
     UWORD width = v->width, height = v->height;
     ULONG tilesX = v->frame.tilesX, tilesY = v->frame.tilesY;
-    ULONG start, end, sw = 1, sh = 1, fw, fh, sx, sy;
+    ULONG start, end, sw = 1, sh = 1, fw, fh;
     UBYTE clear_color = v->pending_clear_color;
     UBYTE ez = v->first_ez_state;
     UBYTE ez_off = (ez == V3D_EZ_DISABLED) || (width & 1) || (height & 1); /* GFXH-1918 */
@@ -383,10 +393,26 @@ static void build_render(struct OGLES2Context *ctx, struct zs_save *store_zs)
     DoCommand(v, v3d_OP_FLUSH_VCD_CACHE);
 
     StartAddressOfGenericTileList(v, start, end);
-    for (sy = 0; sy <= (ULONG)(height - 1) / (64 * sh); sy++)
-        for (sx = 0; sx <= (ULONG)(width - 1) / (64 * sw); sx++)
-            Supertile_Coordinates(v, sx, sy);
+    supertiles(v, width, height, sw, sh);
     DoCommand(v, v3d_OP_END_OF_RENDERING);
+}
+
+/* SUPERTILE_COORDINATES for every supertile of a w x h job, sw x sh tiles
+ * each, row by row: three bytes each (opcode, column, row), written in one
+ * claim (up to 255 packets; v3dcore's writer took one claim and clear loop
+ * a packet). */
+static void supertiles(V3DContext *v, ULONG w, ULONG h, ULONG sw, ULONG sh)
+{
+    ULONG nx = (w - 1) / (64 * sw) + 1, ny = (h - 1) / (64 * sh) + 1, sx, sy;
+    UBYTE *b = v3d_buffer_claim_memory(v->current_buf, 3 * nx * ny);
+    if (!b)
+        return; /* the list overflowed: the flush drops the job (any_overflow) */
+    for (sy = 0; sy < ny; sy++)
+        for (sx = 0; sx < nx; sx++, b += 3) {
+            b[0] = v3d_OP_SUPERTILE_COORDINATES;
+            b[1] = (UBYTE)sx;
+            b[2] = (UBYTE)sy;
+        }
 }
 
 /* TILE_RENDERING_MODE_CFG (Clear Colors Part3), render target 0: only the
@@ -415,7 +441,7 @@ static void build_render_fbo(struct OGLES2Context *ctx, const struct OGLES2Targe
     v3d_u8 s = v->build_slot;
     UWORD width = tg->w, height = tg->h;
     ULONG tilesX = (width + 63) / 64, tilesY = (height + 63) / 64;
-    ULONG start, end, sw = 1, sh = 1, fw, fh, sx, sy, argb, abgr;
+    ULONG start, end, sw = 1, sh = 1, fw, fh, argb, abgr;
     UBYTE clear_color = v->pending_clear_color, clear_zs = v->pending_clear_depth;
     UBYTE ez = v->first_ez_state;
     UBYTE ez_off = (ez == V3D_EZ_DISABLED) || (width & 1) || (height & 1); /* GFXH-1918 */
@@ -521,23 +547,20 @@ static void build_render_fbo(struct OGLES2Context *ctx, const struct OGLES2Targe
     DoCommand(v, v3d_OP_FLUSH_VCD_CACHE);
 
     StartAddressOfGenericTileList(v, start, end);
-    for (sy = 0; sy <= (ULONG)(height - 1) / (64 * sh); sy++)
-        for (sx = 0; sx <= (ULONG)(width - 1) / (64 * sw); sx++)
-            Supertile_Coordinates(v, sx, sy);
+    supertiles(v, width, height, sw, sh);
     DoCommand(v, v3d_OP_END_OF_RENDERING);
 }
 
-/* The colour image after the GPU's write (the CPU reads it back later:
- * texture.c's sync, glReadPixels): invalidated. It was cleaned before the
- * render with everything else (clean_all). Depth and stencil images are
- * never read by the CPU. */
+/* The colour image after the GPU's write: nothing here. The CPU reads it
+ * only through v3dcore's v3d_texture_load (texture.c's sync, glReadPixels,
+ * glCopyTex*), which invalidates the level first; it was cleaned before
+ * the render with everything else (clean_all). An exec cache call costs
+ * about 41 us (M6): one less per framebuffer-object job. Depth and stencil
+ * images are never read by the CPU. */
 static void target_dma(const struct OGLES2Target *tg, BOOL after)
 {
-    ULONG len;
-    if (!tg->has_color || !after)
-        return;
-    len = tg->color.bytes;
-    CachePostDMA((APTR)tg->color.addr, &len, 0);
+    (void)tg;
+    (void)after;
 }
 
 /* Before the GPU reads anything the CPU wrote since the last flush (the
@@ -555,12 +578,19 @@ static void clean_all(void)
 /* After a render: a GPU that did not finish reset, the CPU cache over what
  * it wrote, the locks released, the retire list, the colour image marked. */
 static void after_render(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, const struct OGLES2Target *tg,
-                         v3d_wait_result wr)
+                         v3d_wait_result wr, BOOL holds_lock)
 {
     V3DContext *v = ctx->v3d;
     ULONG t0;
-    if (wr != v3d_wait_result_success)
-        ogles2_device_reset("a render job it did not finish");
+    if (wr != v3d_wait_result_success) {
+        /* The reset needs the submission lock; a render left running gave
+         * it up when it was submitted. */
+        if (holds_lock || v3d_gpu_lock(ogles2_device_gpu_lock(), GPU_LOCK_TIMEOUT_MS)) {
+            ogles2_device_reset("a render job it did not finish");
+            if (!holds_lock)
+                v3d_gpu_unlock(ogles2_device_gpu_lock());
+        }
+    }
     t0 = ogles2_clock_us();
     if (fb) {
         target_dma(tg, TRUE);
@@ -569,7 +599,8 @@ static void after_render(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb
         ogles2_display_unlock(&ctx->display);
     }
     ctx->sum_post += (double)(ULONG)(ogles2_clock_us() - t0);
-    v3d_gpu_unlock(ogles2_device_gpu_lock());
+    if (holds_lock)
+        v3d_gpu_unlock(ogles2_device_gpu_lock());
     if (wr == v3d_wait_result_success) {
         v3d_frame_retire(ogles2_device(), &v->frame);
         if (fb)
@@ -581,34 +612,80 @@ static void after_render(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb
     }
 }
 
+/* The render this context left running: waited for (unless another
+ * submitter already saw it finish: take_gpu), then what follows a render. */
 void ogles2_job_finish(struct OGLES2Context *ctx)
 {
-    v3d_wait_result wr;
+    v3d_wait_result wr = v3d_wait_result_success;
+    BOOL done;
     ULONG t0;
     if (!ctx->pend)
         return;
     ctx->pend = FALSE;
-    t0 = ogles2_clock_us();
-    wr = v3d_wait_render_timeout(ctx->pend_frame);
-    ctx->sum_render += (double)(ULONG)(ogles2_clock_us() - t0);
-    after_render(ctx, ctx->pend_fb, &ctx->pend_tg, wr);
-}
-
-BOOL ogles2_job_uses(struct OGLES2Context *ctx, ULONG serial)
-{
-    return (ctx->v3d && ctx->v3d->frame_active && serial == ctx->job_serial) ||
-           (ctx->pend && serial == ctx->pend_serial);
+    ObtainSemaphore(&OGLES2LibBase->lock);
+    done = ctx->pend_done;
+    ctx->pend_done = FALSE;
+    if (OGLES2LibBase->pend_ctx == ctx)
+        OGLES2LibBase->pend_ctx = 0;
+    ReleaseSemaphore(&OGLES2LibBase->lock);
+    if (!done) {
+        /* Nothing was submitted after it (take_gpu would have marked it
+         * done), so the count is one past ours at most: no wrap-around
+         * case the wait cannot tell. */
+        t0 = ogles2_clock_us();
+        wr = v3d_wait_render_timeout(ctx->pend_frame);
+        ctx->sum_render += (double)(ULONG)(ogles2_clock_us() - t0);
+    }
+    after_render(ctx, ctx->pend_fb, &ctx->pend_tg, wr, FALSE);
 }
 
 /* A flush may leave its render running (see the top): a framebuffer
  * object's job, or one on a screen of our own. Never one whose bitmap lock
  * someone else may need: an application's bitmap can be drawn into by
- * another task, and the window mode's copy needs the finished frame. */
+ * another task, and the window mode's copy needs the finished frame. With
+ * any number of contexts and programs (M6, plan 7.1 phase 2 within ogles2):
+ * the submission lock is given up once the render is submitted, and the
+ * next submitter waits for that render on the GPU (take_gpu). */
 static BOOL may_defer(struct OGLES2Context *ctx, BOOL object)
 {
-    if (OGLES2LibBase->contexts != 1)
-        return FALSE;
     return object || ctx->display.own_screen;
+}
+
+/* Before a submission, with the submission lock held: a render some
+ * context left running finishes on the GPU first (one job on the GPU at a
+ * time: the waits read the GPU's frame counts). This task's own other
+ * context: waited for whole (job_finish). Another task's: only on the
+ * GPU, and marked done, so its owner does not wait again (two renders past
+ * its count could look like none at the count's wrap-around); the owner
+ * does the rest at its next flush. Nobody holds the lock while it builds
+ * its next frame, so programs take turns at the GPU and none waits for
+ * another's CPU work (programs whose tasks wait for each other included). */
+static void take_gpu(struct OGLES2Context *ctx)
+{
+    struct OGLES2Context *p;
+    struct Task *t;
+    UBYTE frame;
+    v3d_wait_result wr;
+    ObtainSemaphore(&OGLES2LibBase->lock);
+    p = OGLES2LibBase->pend_ctx;
+    t = OGLES2LibBase->pend_task;
+    frame = OGLES2LibBase->pend_frame;
+    ReleaseSemaphore(&OGLES2LibBase->lock);
+    if (!p || p == ctx)
+        return;
+    if (t == FindTask(0)) {
+        ogles2_job_finish(p);
+        return;
+    }
+    wr = v3d_wait_render_timeout(frame);
+    if (wr != v3d_wait_result_success)
+        ogles2_device_reset("another program's render it did not finish");
+    ObtainSemaphore(&OGLES2LibBase->lock);
+    if (OGLES2LibBase->pend_ctx == p) { /* still not finished by its owner */
+        p->pend_done = TRUE;
+        OGLES2LibBase->pend_ctx = 0;
+    }
+    ReleaseSemaphore(&OGLES2LibBase->lock);
 }
 
 static BOOL any_overflow(V3DContext *v)
@@ -635,6 +712,7 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
 
     struct zs_save *store_zs = 0;
     ULONG t0, t1, t2, t3;
+    BOOL defer;
 
     ogles2_job_finish(ctx); /* the previous render, if it still runs */
     s = v->build_slot;
@@ -665,10 +743,12 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
             ts = tg.ts_addr;
         }
     }
+    defer = may_defer(ctx, fb != 0);
     if (!v3d_gpu_lock(gpu, GPU_LOCK_TIMEOUT_MS)) {
         drop = "the GPU stayed busy (another program holds the submission lock)";
         goto out;
     }
+    take_gpu(ctx); /* with the lock: a render left running finishes first */
     if (!fb && !ogles2_display_lock(&ctx->display)) {
         v3d_gpu_unlock(gpu);
         drop = "the render bitmap could not be locked";
@@ -725,7 +805,7 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
                                      (v3d_address)((ULONG)v->render_buf[s].start +
                                                    v->render_buf[s].used));
         v3d_frame_render_submitted(&v->frame);
-        if (may_defer(ctx, fb != 0)) {
+        if (defer) {
             /* The render runs on; ogles2_job_finish waits for it. The
              * screen's bitmap is unlocked now: it is on display, so it does
              * not move, and the lock held across the program's next frame
@@ -737,6 +817,16 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
             ctx->pend_frame = frame_no;
             ctx->pend_serial = ctx->job_serial;
             ctx->pend_fb = fb;
+            ctx->pend_done = FALSE;
+            ObtainSemaphore(&OGLES2LibBase->lock);
+            OGLES2LibBase->pend_ctx = ctx;
+            OGLES2LibBase->pend_task = FindTask(0);
+            OGLES2LibBase->pend_frame = frame_no;
+            ReleaseSemaphore(&OGLES2LibBase->lock);
+            /* The lock goes now, not at the program's next flush: the next
+             * submitter, of any program, waits for this render on the GPU
+             * (take_gpu). */
+            v3d_gpu_unlock(gpu);
             if (fb)
                 ctx->pend_tg = tg;
             ctx->frames++;
@@ -757,7 +847,7 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
     }
 waited:
     if (wb == v3d_wait_result_success) {
-        after_render(ctx, fb, &tg, wr);
+        after_render(ctx, fb, &tg, wr, TRUE);
     } else {
         /* A job the GPU did not finish leaves it busy or stopped: reset it
          * before anyone submits again (plan 9 M4). */

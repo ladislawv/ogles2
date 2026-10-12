@@ -1,6 +1,9 @@
-comit# Quake III on ogles2.library directly: porting ioquake3's GLES2 renderer
+# Quake III on ogles2.library directly: porting ioquake3's GLES2 renderer
 
-Status: plan, 2026-10-11. Nothing built yet. Parent plan: `DEVELOPMENT_PLAN.md` §13 (M6).
+Status (2026-10-12): phases 0-3 done, phase 4's first measurement done. `ports/ioq3-gl2`
+builds `quake3-gl2`; package `tests/a1200/m6-5` runs it (timedemo, `Play-Quake` with Paula
+sound). Timedemo `four`, 640x480: **75.8 fps** silent, 55.8 with sound (MiniGL 60.8, gl4es
+43.2). Parent plan: `DEVELOPMENT_PLAN.md` §13 (M6); the results there.
 
 ## 1. Goal
 

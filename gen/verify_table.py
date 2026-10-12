@@ -111,7 +111,8 @@ def main():
         target = h["relocs"][slot]
         value = struct.unpack_from(">I", h["data"], slot)[0]
         got = names.get((target, value), "?")
-        if got != "_ogles2_" + entry:
+        # the function itself, or its share-group wrapper (ogles2/share.c)
+        if got not in ("_ogles2_" + entry, "_ogles2_lk_" + entry):
             errors.append("slot %d: %s, expected _ogles2_%s" % (i, got, entry))
     if errors:
         print("FAIL: %d problem(s)" % len(errors))
@@ -119,7 +120,7 @@ def main():
             print("  " + e)
         sys.exit(1)
     print("PASS: linked table: ABI %d, %d bytes, all %d slots point to the matching ogles2_* "
-          "function" % (abi, size, len(order)))
+          "function or its ogles2_lk_* wrapper" % (abi, size, len(order)))
 
 
 if __name__ == "__main__":

@@ -81,10 +81,12 @@ extern qboolean mouse_avail;
 extern qboolean mhandler;
 qboolean windowmode; // IN_Frame check
 
-/* MiniGL's mouse pointer calls (amiga_input.c): an empty pointer hides it. */
+/* MiniGL's mouse pointer calls, as amiga_input.c uses them: mglSetPointer
+ * when the game takes the mouse (an empty pointer hides it), mglClearPointer
+ * when it gives it back (the console, shutdown): the normal pointer. */
 static UWORD *empty_pointer;
 
-void mglClearPointer(void)
+void mglSetPointer(void)
 {
 	if (!win)
 		return;
@@ -94,7 +96,7 @@ void mglClearPointer(void)
 		SetPointer(win, empty_pointer, 1, 1, 0, 0);
 }
 
-void mglSetPointer(void)
+void mglClearPointer(void)
 {
 	if (win)
 		ClearPointer(win);
@@ -310,10 +312,27 @@ static void GLW_InitExtensions( void )
 	ri.Printf( PRINT_ALL, "...using GL_EXT_compiled_vertex_array\n" );
 }
 
+/* GCC 6.5 (bebbo's) converts a float to a short, an unsigned short or an
+ * unsigned int with a bare fmove, without the fintrz C's truncation needs,
+ * so the FPU's rounding mode decides: round-to-nearest packed renderergl2's
+ * colour 1.0 as 65536 (0 in 16 bits: invisible score plums, sprites) and
+ * normals of 1.0 as 32768 (overflow). In round-to-zero mode those moves
+ * truncate (A1200 test, Emu68 1.1); arithmetic then rounds toward zero in
+ * its last bit. Set for the game's task before the renderer and the game
+ * modules run (each task has its own FPU state). */
+static void fpu_round_to_zero(void)
+{
+	unsigned long fpcr;
+	__asm__ volatile("fmove.l fpcr,%0" : "=d"(fpcr));
+	fpcr = (fpcr & ~0x30UL) | 0x10UL; /* mode bits 5-4: 01 round to zero */
+	__asm__ volatile("fmove.l %0,fpcr" : : "d"(fpcr));
+}
+
 void GLimp_Init(void)
 {
 	char buf[1024];
 
+	fpu_round_to_zero();
 	ri.Printf(PRINT_ALL, "===== quake3-68k on gl4es and ogles2.library =====\n");
 	ri.Printf(PRINT_ALL, "Initializing OpenGL subsystem\n");
 

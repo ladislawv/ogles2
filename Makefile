@@ -39,9 +39,9 @@ GEN_STAMP := $(B)/gen/.stamp
 LIB_SRC   := ogles2/library.c ogles2/log.c ogles2/context.c ogles2/device.c ogles2/runtime.c \
              ogles2/state.c ogles2/display.c ogles2/job.c ogles2/frame.c ogles2/program.c \
              ogles2/draw.c ogles2/v3dp.c ogles2/blake3.c ogles2/texture.c \
-             ogles2/buffer.c ogles2/compiler.c ogles2/etc1.c ogles2/fbo.c
+             ogles2/buffer.c ogles2/compiler.c ogles2/etc1.c ogles2/fbo.c ogles2/share.c
 # Library files that use v3dcore directly
-V3D_USERS := device job draw v3dp texture buffer fbo
+V3D_USERS := device job draw v3dp texture buffer fbo share
 GEN_LIB   := $(B)/gen/ogles2/dispatch_table.c $(B)/gen/ogles2/stubs.c
 CLIENT_SRC := client/ogles2_open.c client/agl.c
 GEN_CLIENT := $(B)/gen/client/agl_gen.c $(B)/gen/client/procaddr.c
@@ -54,7 +54,7 @@ CLIENT_OBJ := $(patsubst %.c,$(B)/obj/%.o,$(CLIENT_SRC)) $(B)/obj/client/lvo.o \
 .PHONY: all gen clean vbcc
 all: $(B)/fpcheck.ok $(B)/libv3dcore.a $(B)/ogles2.library $(B)/libogles2.a $(B)/tests/abi_layout $(B)/tests/smoke \
      $(B)/tests/abi_probe $(B)/tests/m1_clear $(B)/tests/m1_probe $(B)/tests/m1_draw $(B)/tests/m1_hwprobe $(B)/tests/m1_soak $(B)/tests/m2_link $(B)/tests/m2_texture $(B)/tests/m2_elements $(B)/tests/m2_buffers $(B)/tests/m4_stress $(B)/tests/m4_depth $(B)/tests/m4_setbitmap $(B)/tests/gears_gles2 $(B)/tests/cachetime $(B)/tests/emuspeed $(B)/tests/m5_fbo \
-     $(B)/cmd/OGLES2Log $(B)/amictl/amictld
+     $(B)/tests/rtt_churn $(B)/tests/m6_share $(B)/tests/m6_tasks $(B)/cmd/OGLES2Log $(B)/amictl/amictld
 
 # ---- generated code (plan section 6.6). Re-run when the inputs or the set of
 # implemented ogles2_* functions change.
@@ -166,6 +166,12 @@ $(B)/tests/emuspeed: tests/perf/emuspeed.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $< -o $@
 $(B)/tests/m5_fbo: tests/m5_fbo/m5_fbo.c $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m6_share: tests/m6_share/m6_share.c $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m6_tasks: tests/m6_share/m6_tasks.c $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
 $(B)/tests/m4_setbitmap: tests/m4_setbitmap/m4_setbitmap.c $(B)/libogles2.a

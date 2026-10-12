@@ -1,0 +1,73 @@
+ogles2 (ports/gl4es): a draw of the program's own locked arrays goes to
+ogles2's glDrawRangeElements with the locked range.
+
+Between glLockArraysEXT and glUnlockArraysEXT (Quake III locks every batch)
+the indices lie in the locked range [first, first+count). ogles2 scanned
+every draw's indices for their range, about 25 ns an index on a 68k under
+Emu68 (3.5 us a Quake III draw); glDrawRangeElements (GLES 3.0's, ogles2
+1.1, looked up once) takes the range instead. Only for gl4es_glDrawElements'
+direct path (not its render lists, not an element buffer); without the entry
+point it is glDrawElements as before.
+
+diff --git a/src/gl/drawing.c b/src/gl/drawing.c
+index 498ecc5a..9ef6c7c0 100644
+--- a/src/gl/drawing.c
++++ b/src/gl/drawing.c
+@@ -657,7 +657,18 @@ void APIENTRY_GL4ES gl4es_glDrawElements(GLenum mode, GLsizei count, GLenum type
+         free_renderlist(list);
+         return;
+     } else {
++        /* ogles2 (ports/gl4es): the program's own arrays, locked
++         * (glLockArraysEXT, Quake III): its indices lie in the locked range,
++         * which fpe_glDrawElements passes to ogles2's glDrawRangeElements. */
++        extern int gl4es_ogles2_range;
++        extern GLuint gl4es_ogles2_range_start, gl4es_ogles2_range_end;
++        if(glstate->vao->locked==1 && glstate->vao->first>=0 && glstate->vao->count>0 && !glstate->vao->elements) {
++            gl4es_ogles2_range = 1;
++            gl4es_ogles2_range_start = glstate->vao->first;
++            gl4es_ogles2_range_end = glstate->vao->first + glstate->vao->count - 1;
++        }
+         glDrawElementsCommon(mode, 0, count, 0, sindices, iindices, 1);
++        gl4es_ogles2_range = 0;
+         if(need_free) {
+             free(sindices);
+             wantBufferIndex(old_index);
+diff --git a/src/gl/fpe.c b/src/gl/fpe.c
+index 72066a30..9a481f7f 100644
+--- a/src/gl/fpe.c
++++ b/src/gl/fpe.c
+@@ -851,6 +851,14 @@ void APIENTRY_GL4ES fpe_glDrawArrays(GLenum mode, GLint first, GLsizei count) {
+     free_scratch(&scratch);
+ }
+ 
++/* ogles2 (ports/gl4es): set by gl4es_glDrawElements (drawing.c) around a
++ * draw of the program's own locked arrays: the indices lie in [start, end],
++ * so ogles2 need not scan them (glDrawRangeElements, ogles2 1.1; about 3.5 us
++ * a Quake III draw on a 68k under Emu68). */
++int gl4es_ogles2_range;
++GLuint gl4es_ogles2_range_start, gl4es_ogles2_range_end;
++typedef void (APIENTRY_GLES *ogles2_drawrange_ptr)(GLenum, GLuint, GLuint, GLsizei, GLenum, const void *);
++
+ void APIENTRY_GL4ES fpe_glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices) {
+     DBG(printf("fpe_glDrawElements(%s, %d, %s, %p), program=%d, instanceID=%u\n", PrintEnum(mode), count, PrintEnum(type), indices, glstate->glsl->program, glstate->instanceID);)
+     scratch_t scratch = {0};
+@@ -864,7 +872,18 @@ void APIENTRY_GL4ES fpe_glDrawElements(GLenum mode, GLsizei count, GLenum type,
+         DBG(printf("Using VBO %d for indices\n", glstate->vao->elements->real_buffer);)
+     }
+     realize_bufferIndex();
+-    gles_glDrawElements(mode, count, type, indices);
++    {
++        static ogles2_drawrange_ptr range_draw;
++        static int range_looked;
++        if(gl4es_ogles2_range && !use_vbo && !range_looked) {
++            range_looked = 1;
++            range_draw = (ogles2_drawrange_ptr)proc_address(gles, "glDrawRangeElements");
++        }
++        if(gl4es_ogles2_range && !use_vbo && range_draw)
++            range_draw(mode, gl4es_ogles2_range_start, gl4es_ogles2_range_end, count, type, indices);
++        else
++            gles_glDrawElements(mode, count, type, indices);
++    }
+     if(use_vbo)
+         wantBufferIndex(0);
+     free_scratch(&scratch);

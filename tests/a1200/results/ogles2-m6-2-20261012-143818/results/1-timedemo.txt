@@ -1,0 +1,60 @@
+LIBGL: Initialising gl4es
+LIBGL: v1.1.7 built on Oct 12 2026 14:37:22
+LIBGL: Using GLES 2.0 backend
+LIBGL: Targeting OpenGL 2.1
+LIBGL: Not trying to batch small subsequent glDrawXXXX
+LIBGL: Trying to use VBO
+LIBGL: Force texture for Attachment color0 on FBO
+LIBGL: Hack to trigger a SwapBuffers when a Full Framebuffer Blit on default FBO is done
+LIBGL: Current folder is:Stuff:amictld/work/ogles2-m6-2/bin
+LIBGL: Not using PSA (prgbin_n=0, notexarray=0)
+LIBGL: Hardware test on current Context...
+LIBGL: Hardware Limited NPOT detected and used
+LIBGL: Extension GL_EXT_blend_minmax  detected and used
+LIBGL: FBO are in core, and so used
+LIBGL: PointSprite are in core, and so used
+LIBGL: CubeMap are in core, and so used
+LIBGL: BlendColor is in core, and so used
+LIBGL: Blend Subtract is in core, and so used
+LIBGL: Blend Function and Equation Separation is in core, and so used
+LIBGL: Texture Mirrored Repeat is in core, and so used
+LIBGL: Extension GL_OES_mapbuffer  detected
+LIBGL: Extension GL_OES_element_index_uint  detected and used
+LIBGL: Extension GL_OES_packed_depth_stencil  detected and used
+LIBGL: Extension GL_OES_rgb8_rgba8  detected and used
+LIBGL: Extension GL_EXT_texture_format_BGRA8888  detected and used
+LIBGL: high precision float in fragment shader available and used
+LIBGL: Max vertex attrib: 16
+LIBGL: Max texture size: 4096
+LIBGL: Max Varying Vector: 16
+LIBGL: Texture Units: 16/16 (hardware: 16), Max lights: 8, Max planes: 6
+LIBGL: Max Color Attachments: 1 / Draw buffers: 1
+LIBGL: Hardware vendor is ogles2.library
+LIBGL: GLSL 300 es supported and used
+glue profile: 1294 frames, per frame 914 calls into ogles2.library taking 4680 us
+glue profile: glDrawRangeElements                  131 calls     3173 us a frame
+glue profile: glDeleteTextures                       0 calls      348 us a frame
+glue profile: glTexImage2D                           1 calls      336 us a frame
+glue profile: glDisable                            311 calls      156 us a frame
+glue profile: glUniformMatrix4fv                    42 calls      150 us a frame
+glue profile: glClear                                4 calls      137 us a frame
+glue profile: glBindTexture                        129 calls       91 us a frame
+glue profile: glFinish                               0 calls       55 us a frame
+glue profile: glUseProgram                          49 calls       43 us a frame
+glue profile: glEnable                              56 calls       42 us a frame
+glue profile: glBlendFunc                           17 calls       21 us a frame
+glue profile: glLinkProgram                          0 calls       21 us a frame
+glue profile: glVertexAttribPointer                 32 calls       20 us a frame
+glue profile: glCompileShader                        0 calls       14 us a frame
+glue profile: glDepthMask                           37 calls       12 us a frame
+glue profile: glActiveTexture                       45 calls       12 us a frame
+glue profile: glEnableVertexAttribArray             11 calls        6 us a frame
+glue profile: glDisableVertexAttribArray            11 calls        6 us a frame
+glue profile: glViewport                             5 calls        5 us a frame
+glue profile: glDepthFunc                           12 calls        5 us a frame
+glue profile: glGenTextures                          0 calls        4 us a frame
+glue profile: glScissor                              5 calls        4 us a frame
+glue profile: glDepthRangef                          1 calls        3 us a frame
+glue profile: glPolygonOffset                        3 calls        1 us a frame
+glue profile: glTexParameteri                        0 calls        1 us a frame
+LIBGL: Shutting down

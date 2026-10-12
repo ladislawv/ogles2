@@ -325,6 +325,85 @@ static void test_base_vertex(void)
     glDeleteProgram(p);
 }
 
+/* GLES 3.0's glDrawRangeElements (ogles2 1.1, through aglGetProcAddress):
+ * the indices are not scanned for their range; the result is
+ * glDrawElements'. */
+static void test_range(void)
+{
+    static const UWORD hi[6] = {4, 5, 6, 6, 5, 7};
+    static const ULONG both[12] = {0, 1, 2, 2, 1, 3, 4, 5, 6, 6, 5, 7};
+    static const UBYTE lo8[6] = {0, 1, 2, 2, 1, 3};
+    unsigned long a, b;
+    char msg[160];
+    GLuint p = link(smooth_vs, smooth_fs), eb;
+    GLint lp, lc;
+    if (!p)
+        return;
+    check(aglGetProcAddress("glDrawRangeElements") != 0, "aglGetProcAddress(\"glDrawRangeElements\") is found");
+    two_quads();
+    glUseProgram(p);
+    glUniformMatrix4fv(glGetUniformLocation(p, "u_mvp"), 1, GL_FALSE, identity);
+    lp = glGetAttribLocation(p, "a_position");
+    lc = glGetAttribLocation(p, "a_color");
+    glVertexAttribPointer(lp, 3, GL_FLOAT, GL_FALSE, 0, q_pos);
+    glEnableVertexAttribArray(lp);
+    glVertexAttribPointer(lc, 4, GL_FLOAT, GL_FALSE, 0, q_col);
+    glEnableVertexAttribArray(lc);
+    glClearColor(0, 0, 0, 1);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawRangeElements(GL_TRIANGLES, 4, 7, 6, GL_UNSIGNED_SHORT, hi);
+    aglSwapBuffers();
+    a = ndc(-0.5f, 0.0f);
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "16-bit indices 4-7, range 4-7: left %06lx empty, right %06lx green", a, b);
+    check(a == 0 && b == 0x00FF00, msg);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawRangeElements(GL_TRIANGLES, 0, 7, 12, GL_UNSIGNED_INT, both);
+    aglSwapBuffers();
+    a = ndc(-0.5f, 0.0f);
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "32-bit indices 0-7, range 0-7: left %06lx red, right %06lx green", a, b);
+    check(a == 0xFF0000 && b == 0x00FF00, msg);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawRangeElements(GL_TRIANGLES, 0, 3, 6, GL_UNSIGNED_BYTE, lo8);
+    aglSwapBuffers();
+    a = ndc(-0.5f, 0.0f);
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "8-bit indices 0-3, range 0-3: left %06lx red, right %06lx empty", a, b);
+    check(a == 0xFF0000 && b == 0, msg);
+
+    /* A range wider than the indices draws the same. */
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawRangeElements(GL_TRIANGLES, 2, 7, 6, GL_UNSIGNED_SHORT, hi);
+    aglSwapBuffers();
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "indices 4-7, range 2-7: right %06lx green", b);
+    check(b == 0x00FF00, msg);
+
+    /* From an element buffer, at an offset. */
+    glGenBuffers(1, &eb);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eb);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(both), both, GL_STATIC_DRAW);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawRangeElements(GL_TRIANGLES, 4, 7, 6, GL_UNSIGNED_INT, (void *)(6 * sizeof(ULONG)));
+    aglSwapBuffers();
+    a = ndc(-0.5f, 0.0f);
+    b = ndc(0.5f, 0.0f);
+    sprintf(msg, "element buffer at an offset, range 4-7: left %06lx empty, right %06lx green", a, b);
+    check(a == 0 && b == 0x00FF00, msg);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &eb);
+
+    glDrawRangeElements(GL_TRIANGLES, 7, 4, 6, GL_UNSIGNED_SHORT, hi);
+    check(glGetError() == GL_INVALID_VALUE, "end before start: GL_INVALID_VALUE");
+    glDisableVertexAttribArray(lc);
+    glUseProgram(0);
+    glDeleteProgram(p);
+}
+
 static void test_minmax(void)
 {
     const char *ext = (const char *)glGetString(GL_EXTENSIONS);
@@ -408,6 +487,7 @@ int main(int argc, char **argv)
     test_elements();
     test_skin();
     test_base_vertex();
+    test_range();
     test_minmax();
     check(glGetError() == GL_NO_ERROR, "no GL error left over");
     aglDestroyContext(ctx);

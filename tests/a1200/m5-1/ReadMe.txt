@@ -5,8 +5,8 @@ What this is
 ------------
 Framebuffer objects: drawing into textures and renderbuffers instead of
 the screen, then using the result (render to texture). Then the earlier
-tests again as regression checks. All on hidden bitmaps: nothing to
-watch, about half a minute.
+tests again as regression checks, and objects shared between contexts
+(M6). All on hidden bitmaps: nothing to watch, about half a minute.
 
 Normally it runs remotely (amictl); it works by hand too. Please do not
 run a MiniGL program at the same time.
@@ -16,7 +16,7 @@ How to run by hand
 1. Open a Shell and type:
        CD <where you copied it>/ogles2-m5-1
        Execute Run-M1
-2. Six steps, about half a minute.
+2. Seven steps, about half a minute.
 3. Send me the whole results directory.
 
 If the machine hangs or crashes
@@ -39,6 +39,8 @@ bin/m2_elements      glDrawElements, indexed uniform arrays
 bin/m2_link          linking and uniforms
 bin/m2_texture       textures
 bin/m1_draw          the triangle test
+bin/m6_share         objects shared between contexts
+bin/m6_tasks         a share group used from two tasks
 bin/*.v3dp           the test programs' binaries
 shaders/             the test programs' GLSL
 bin/OGLES2Log        writes the library's log file on request

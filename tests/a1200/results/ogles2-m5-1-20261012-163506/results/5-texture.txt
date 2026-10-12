@@ -1,0 +1,35 @@
+ogles2 M2: textures
+PASS: bitmap: 2x2 texture: bottom ff0000 00ff00 (red green), top 0000ff ffffff (blue white)
+PASS: bitmap: REPEAT: s 1.25 ff0000, s 1.75 00ff00 (ff0000, 00ff00)
+PASS: bitmap: CLAMP_TO_EDGE: s 1.25 00ff00, s 1.75 00ff00 (00ff00, 00ff00)
+PASS: bitmap: MIRRORED_REPEAT: s 1.25 00ff00, s 1.75 ff0000 (00ff00, ff0000)
+PASS: bitmap: glTexSubImage2D: top right 0000ff (0000ff)
+PASS: bitmap: deleting the bound texture binds 0
+PASS: bitmap: format RGB: 0a141e (0a141e)
+PASS: bitmap: format LUMINANCE: 404040 (404040)
+PASS: bitmap: format ALPHA (0,0,0,A): 000000 (000000)
+PASS: bitmap: format LUMINANCE_ALPHA: 606060 (606060)
+PASS: bitmap: format RGB 5_6_5 red: ff0000 (ff0000)
+PASS: bitmap: format RGBA 4_4_4_4 green: 00ff00 (00ff00)
+PASS: bitmap: format RGBA 5_5_5_1 blue: 0000ff (0000ff)
+PASS: bitmap: unpack alignment 4 and 1: second row 0000ff and 0000ff (0000ff)
+PASS: bitmap: linear filter: centre 808080 (about 808080), left edge 000000 (black)
+PASS: bitmap: mip levels: 8x8 draw ffffff (level 3, ffffff), 64x64 draw ff0000 (level 0, ff0000)
+PASS: bitmap: incomplete texture samples (0,0,0,1): 000000 (000000)
+PASS: bitmap: glGenerateMipmap: a 4x4 draw of a 64x64 checkerboard 808080 (about 808080)
+PASS: bitmap: two units: ff8000 (ff8000)
+PASS: bitmap: texture replaced between draws: left ff0000 (red), right 00ff00 (green)
+PASS: bitmap: texture changed mid-frame keeps the frame's depth: ff0000 (ff0000); after glTexSubImage2D ff0000 (ff0000)
+PASS: bitmap: glCopyTexImage2D: ff0000 red, 00ff00 green; as LUMINANCE ffffff (ffffff)
+PASS: bitmap: glCopyTexSubImage2D: 0000ff blue kept, 00ff00 green copied
+PASS: bitmap: copy errors: border 0501 (0501), outside the texture 0501 (0501)
+PASS: bitmap: ETC1: in GL_EXTENSIONS and GL_COMPRESSED_TEXTURE_FORMATS
+PASS: bitmap: ETC1 block: left ff0202 (ff0202), right 02ff02 (02ff02)
+PASS: bitmap: ETC1 errors: wrong size 0501 (0501), TexSubImage 0502 (0502), CompressedTexSubImage 0502 (0502)
+PASS: bitmap: 100x60 RGBA8 texture: ff0000 00ff00 0000ff ffffff (ff0000 00ff00 0000ff ffffff)
+PASS: bitmap: 50x30 RGB565 texture: ff0000 00ff00 0000ff ffffff (ff0000 00ff00 0000ff ffffff)
+PASS: bitmap: BGRA8888 texture: f08010 (f08010), in GL_EXTENSIONS
+PASS: bitmap: glTexImage2D errors: 0502 0501 0500 0502 (0502 0501 0500 0502)
+PASS: bitmap: no GL error left over
+PASS: bitmap: destroy returns the memory (0 bytes difference)
+ALL PASSED: 33 of 33 checks passed

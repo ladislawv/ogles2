@@ -12,7 +12,9 @@
  * touches in each copy the open job does not use; a copy the open job uses
  * is retired with the job instead (renaming, plan 7.3), so nothing waits.
  * glBufferData and glUnmapBufferOES (OES_mapbuffer: the mapping is the
- * shadow itself) start every copy afresh.
+ * shadow itself) start every copy afresh. A buffer given as GL_DYNAMIC_DRAW
+ * or GL_STREAM_DRAW has no copies: each draw converts the vertices it reads
+ * from the shadow, as a client array's (ogles2_buffer_stream).
  * Element buffers are read from the shadow: their indices are copied per
  * draw, as client indices are.
  */
@@ -38,7 +40,7 @@ struct gpu_copy
 {
     v3d_mem mem;
     ULONG serial;            /* the data serial it was made from; 0: empty */
-    ULONG offset;
+    ULONG offset;            /* of element 0: the arrays' offset modulo their stride */
     GLint size;
     GLenum type;
     GLsizei stride;
@@ -65,27 +67,24 @@ struct OGLES2Buffer
 
 struct OGLES2BufState
 {
-    struct OGLES2Buffer **names;
-    GLuint nnames;
+    struct OGLES2Share *sh;               /* the buffers: sh->buf, sh->nbuf (share.c) */
     struct OGLES2Buffer *array, *element; /* GL_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER */
 };
 
 static struct OGLES2BufState *bs_get(struct OGLES2Context *ctx)
 {
-    if (!ctx->buf)
-        ctx->buf = AllocVec(sizeof(struct OGLES2BufState), MEMF_ANY | MEMF_CLEAR);
+    if (!ctx->buf && (ctx->buf = AllocVec(sizeof(struct OGLES2BufState), MEMF_ANY | MEMF_CLEAR)))
+        ctx->buf->sh = ctx->share;
     return ctx->buf;
 }
 
-/* Frees a GPU copy now, or after the open job if it reads it. */
+/* Frees a GPU copy now, or after the job that reads it: an open one, or one
+ * still running, of any member of the share group. */
 static void drop_copy(struct OGLES2Context *ctx, struct gpu_copy *c)
 {
     if (!c->mem.hostptr)
         return;
-    if (c->used_job && ogles2_job_uses(ctx, c->used_job)) /* the open job, or the running one */
-        v3d_frame_defer_free(&ctx->v3d->frame, &c->mem); /* empties c->mem */
-    else
-        v3d_mem_free(ogles2_device(), &c->mem);
+    ogles2_share_defer_free(ctx, c->used_job, &c->mem);
     memset(c, 0, sizeof(*c));
 }
 
@@ -104,17 +103,24 @@ static void free_buffer(struct OGLES2Context *ctx, struct OGLES2Buffer *b)
     FreeVec(b);
 }
 
+/* aglDestroyContext (its jobs finished): the bindings; the buffers with the
+ * share group's last member. */
 void ogles2_buffers_free(struct OGLES2Context *ctx)
 {
     struct OGLES2BufState *bs = ctx->buf;
+    struct OGLES2Share *sh = ctx->share;
     GLuint i;
+    if (sh && sh->members == 1) {
+        for (i = 1; i < sh->nbuf; i++)
+            if (sh->buf[i])
+                free_buffer(ctx, sh->buf[i]);
+        if (sh->buf)
+            FreeVec(sh->buf);
+        sh->buf = 0;
+        sh->nbuf = 0;
+    }
     if (!bs)
         return;
-    for (i = 1; i < bs->nnames; i++)
-        if (bs->names[i])
-            free_buffer(ctx, bs->names[i]);
-    if (bs->names)
-        FreeVec(bs->names);
     FreeVec(bs);
     ctx->buf = 0;
 }
@@ -125,19 +131,19 @@ static BOOL table_room(struct OGLES2BufState *bs, GLuint name)
 {
     GLuint nn, j;
     struct OGLES2Buffer **tab;
-    if (name < bs->nnames)
+    if (name < bs->sh->nbuf)
         return TRUE;
-    nn = bs->nnames ? bs->nnames : 32;
+    nn = bs->sh->nbuf ? bs->sh->nbuf : 32;
     while (nn <= name)
         nn *= 2;
     if (!(tab = AllocVec(nn * sizeof(*tab), MEMF_ANY | MEMF_CLEAR)))
         return FALSE;
-    for (j = 0; j < bs->nnames; j++)
-        tab[j] = bs->names[j];
-    if (bs->names)
-        FreeVec(bs->names);
-    bs->names = tab;
-    bs->nnames = nn;
+    for (j = 0; j < bs->sh->nbuf; j++)
+        tab[j] = bs->sh->buf[j];
+    if (bs->sh->buf)
+        FreeVec(bs->sh->buf);
+    bs->sh->buf = tab;
+    bs->sh->nbuf = nn;
     return TRUE;
 }
 
@@ -148,13 +154,13 @@ static struct OGLES2Buffer *create(struct OGLES2BufState *bs, GLuint name)
         return 0;
     b->name = name;
     b->usage = GL_STATIC_DRAW;
-    bs->names[name] = b;
+    bs->sh->buf[name] = b;
     return b;
 }
 
 static struct OGLES2Buffer *by_name(struct OGLES2BufState *bs, GLuint name)
 {
-    return name && name < bs->nnames ? bs->names[name] : 0;
+    return name && name < bs->sh->nbuf ? bs->sh->buf[name] : 0;
 }
 
 void ogles2_glGenBuffers(struct OGLES2Context *ctx, GLsizei n, GLuint *buffers)
@@ -173,7 +179,7 @@ void ogles2_glGenBuffers(struct OGLES2Context *ctx, GLsizei n, GLuint *buffers)
         return;
     }
     for (k = 0; k < n; k++) {
-        while (i < bs->nnames && bs->names[i])
+        while (i < bs->sh->nbuf && bs->sh->buf[i])
             i++;
         if (!create(bs, i)) {
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
@@ -189,6 +195,7 @@ void ogles2_glDeleteBuffers(struct OGLES2Context *ctx, GLsizei n, const GLuint *
     if (ogles2_context_valid(ctx))
         ogles2_trace(ctx, "glDeleteBuffers", n, n > 0 && buffers ? buffers[0] : 0);
     struct OGLES2BufState *bs;
+    struct OGLES2Context *m;
     GLsizei k;
     int a;
     if (!ogles2_context_valid(ctx))
@@ -204,17 +211,21 @@ void ogles2_glDeleteBuffers(struct OGLES2Context *ctx, GLsizei n, const GLuint *
         if (!b)
             continue;
         /* GLES 2.0 2.9: a deleted buffer is unbound wherever it is bound
-         * in the context, attribute arrays included. */
-        if (bs->array == b)
-            bs->array = 0;
-        if (bs->element == b)
-            bs->element = 0;
-        for (a = 0; a < OGLES2_MAX_VERTEX_ATTRIBS; a++)
-            if (ctx->array[a].buffer == b) {
-                ctx->array[a].buffer = 0;
-                ctx->array[a].pointer = 0;
-            }
-        bs->names[b->name] = 0;
+         * in the context, attribute arrays included; here in every member
+         * of the share group (GL would keep it while bound elsewhere). */
+        for (m = ctx->share->first; m; m = m->share_next) {
+            struct OGLES2BufState *mbs = m->buf;
+            if (mbs && mbs->array == b)
+                mbs->array = 0;
+            if (mbs && mbs->element == b)
+                mbs->element = 0;
+            for (a = 0; a < OGLES2_MAX_VERTEX_ATTRIBS; a++)
+                if (m->array[a].buffer == b) {
+                    m->array[a].buffer = 0;
+                    m->array[a].pointer = 0;
+                }
+        }
+        bs->sh->buf[b->name] = 0;
         free_buffer(ctx, b);
     }
 }
@@ -286,6 +297,18 @@ static void buffer_data(struct OGLES2Context *ctx, GLenum target, GLsizeiptr siz
     }
     if (!(b = bound(ctx, bs, target))) {
         ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    /* The same size again (a program orphaning a buffer it streams through,
+     * ioquake3's renderergl2 at every draw): the shadow is kept. Only the CPU
+     * reads it (the GPU reads copies, and draws copy what they read), so
+     * nothing waits; GL leaves the contents undefined without data. */
+    if (size && b->data && (ULONG)size == b->size && !b->mapped) {
+        if (data)
+            memcpy(b->data, data, (ULONG)size);
+        drop_copies(ctx, b);
+        b->usage = usage;
+        b->serial++;
         return;
     }
     if (size && !(shadow = AllocVec((ULONG)size, MEMF_ANY | MEMF_CLEAR))) {
@@ -521,6 +544,16 @@ const void *ogles2_buffer_indices(struct OGLES2Context *ctx, ULONG offset, ULONG
     return bs->element->data + offset;
 }
 
+/* A buffer the application changes as it draws (GL_DYNAMIC_DRAW or
+ * GL_STREAM_DRAW): its shadow, which a draw converts the vertices it reads
+ * from into the job's state buffer, as from a client array. NULL for a
+ * GL_STATIC_DRAW buffer: draws read its kept GPU copies (ogles2_buffer_copy),
+ * which would be made again, whole, after every change. */
+const UBYTE *ogles2_buffer_stream(const struct OGLES2Buffer *b)
+{
+    return b->usage != GL_STATIC_DRAW ? b->data : 0;
+}
+
 /* A GPU copy of buffer `b` read as an attribute array of `size` components
  * of `type` at `offset` with `stride` (0: packed): converted with
  * `convert` (draw.c's, as for client arrays) into tightly packed elements.
@@ -534,15 +567,23 @@ ULONG ogles2_buffer_copy(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULON
 {
     struct gpu_copy *c, *victim = 0;
     ULONG src_stride = stride ? (ULONG)stride : elem_bytes, n;
+    /* A copy holds every element of the buffer at the same place within a
+     * vertex (offset modulo stride), from the first: arrays that differ only
+     * by whole vertices share it (ioquake3's renderergl2 keeps all of a
+     * model's animation frames in one buffer and moves the offset a frame
+     * at a time). The array's vertex 0 is element `skip` of the copy. */
+    ULONG phase = offset % src_stride, skip = offset / src_stride;
     int k;
     for (k = 0; k < OGLES2_BUFFER_COPIES; k++) {
         c = &b->copy[k];
-        if (c->serial == b->serial && c->mem.hostptr && c->offset == offset && c->size == size &&
+        if (c->serial == b->serial && c->mem.hostptr && c->offset == phase && c->size == size &&
             c->type == type && c->stride == stride && c->normalized == normalized) {
+            if (skip >= c->vertices)
+                return 0;
             c->used_job = ctx->job_serial;
             *dst_stride = c->dst_stride;
-            *vertices = c->vertices;
-            return (ULONG)c->mem.hostptr;
+            *vertices = c->vertices - skip;
+            return (ULONG)c->mem.hostptr + skip * c->dst_stride;
         }
         if (!c->mem.hostptr && !victim)
             victim = c;
@@ -553,7 +594,7 @@ ULONG ogles2_buffer_copy(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULON
     }
     if (!b->data || offset + elem_bytes > b->size)
         return 0;
-    n = (b->size - offset - elem_bytes) / src_stride + 1;
+    n = (b->size - phase - elem_bytes) / src_stride + 1;
     c = victim;
     c->dst_stride = (elem_bytes + 3) & ~3UL;
     if (v3d_mem_alloc(ogles2_device(), &c->mem, c->dst_stride * n) < 0) {
@@ -562,11 +603,11 @@ ULONG ogles2_buffer_copy(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULON
     }
     /* The job that reads it is flushed after a clean of the whole data
      * cache (job.c, clean_all): no cache call here. */
-    convert((UBYTE *)c->mem.hostptr, c->dst_stride, b->data + offset, src_stride, n, size, type);
+    convert((UBYTE *)c->mem.hostptr, c->dst_stride, b->data + phase, src_stride, n, size, type);
     c->serial = b->serial;
     c->elem_bytes = elem_bytes;
     c->convert = convert;
-    c->offset = offset;
+    c->offset = phase;
     c->size = size;
     c->type = type;
     c->stride = stride;
@@ -574,6 +615,6 @@ ULONG ogles2_buffer_copy(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULON
     c->vertices = n;
     c->used_job = ctx->job_serial;
     *dst_stride = c->dst_stride;
-    *vertices = n;
-    return (ULONG)c->mem.hostptr;
+    *vertices = n - skip;
+    return (ULONG)c->mem.hostptr + skip * c->dst_stride;
 }

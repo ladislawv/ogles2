@@ -1,0 +1,88 @@
+; Run-M1 - ogles2 M6 run 5: Quake III Arena with ioquake3's GLES2 renderer
+; on ogles2.library directly (no gl4es). See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   With the game elsewhere:       Execute Run-M1 Q3DATA=<the directory with baseq3>
+;   The whole demo (1260 frames):  Execute Run-M1 FRAMES=0
+;   With sound (AHI):              Execute Run-M1 SOUND=1
+; Nothing is installed and nothing is written to the game's directory: the
+; game's own files (config, logs, screenshots) go to home/ here. Output goes
+; to results/.
+.key Q3DATA/K,FRAMES/K,SOUND/K
+.def FRAMES 400
+.def SOUND 0
+.def Q3DATA "Stuff:Quake3-68k-beta10/Quake3-68k-beta10"
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m6-5 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+If NOT EXISTS "{Q3DATA}/baseq3/pak0.pk3"
+  Echo "No Quake III data at {Q3DATA}/baseq3: run Execute Run-M1 Q3DATA=<directory>"
+  Quit 20
+EndIf
+
+Assign M6R5: ""
+If NOT EXISTS M6R5:results
+  MakeDir M6R5:results
+EndIf
+If NOT EXISTS M6R5:cache
+  MakeDir M6R5:cache
+EndIf
+Echo "ogles2 M6 run 5" >>M6R5:results/00-progress.txt
+Date >>M6R5:results/00-progress.txt
+Assign LIBS: M6R5:libs ADD
+Assign OGLES2Cache: M6R5:cache
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M6R5:results/ogles2.log
+Delete M6R5:home/baseq3/screenshots ALL QUIET >NIL:
+; The modules load from the current directory.
+CD M6R5:bin
+
+Echo "Quake III's demo 'four' as a timedemo, full screen 640x480, with"
+Echo "  ioquake3's GLES2 renderer. The first start compiles about 100 shaders:"
+Echo "  the screen may stay black for a few minutes. Then the demo plays as"
+Echo "  fast as it can and the game quits."
+; Probes T and P (ogles2_internal.h): the deletes and the context's end
+; step by step, and the timing every 256 frames.
+SetEnv OGLES2/Probe TP
+; Silent by default, as the earlier timedemo figures (MiniGL's too).
+Set Q3SND "+set s_initsound 0"
+If {SOUND} EQ 1 VAL
+  Set Q3SND "+set s_initsound 1"
+  Echo "  With sound."
+EndIf
+If {FRAMES} EQ 0 VAL
+  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 $Q3SND +set logfile 2 +set nextdemo quit +timedemo 1 +demo four >M6R5:results/1-timedemo.txt
+Else
+  ; The game takes a screenshot after {FRAMES} frames ("wait N" holds the
+  ; rest of the command line that many frames; loading takes about 230 of
+  ; them) and quits.
+  Echo "  It stops after {FRAMES} frames."
+  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 $Q3SND +set logfile 2 +set nextdemo quit +timedemo 1 +demo four +wait {FRAMES} +screenshot +wait 5 +quit >M6R5:results/1-timedemo.txt
+EndIf
+UnSetEnv OGLES2/Probe
+UnSet Q3SND
+Echo "timedemo done" >>M6R5:results/00-progress.txt
+
+CD M6R5:
+UnSetEnv OGLES2/LogFile
+Assign OGLES2Cache:
+Assign LIBS: M6R5:libs REMOVE
+If NOT EXISTS M6R5:results/notes.txt
+  Copy M6R5:notes-template.txt M6R5:results/notes.txt
+EndIf
+Copy M6R5:home/baseq3/qconsole.log M6R5:results/qconsole.log QUIET
+If EXISTS M6R5:home/baseq3/screenshots
+  Copy M6R5:home/baseq3/screenshots/#? M6R5:results QUIET
+EndIf
+List M6R5:cache >M6R5:results/98-cache.txt
+List M6R5:results >M6R5:results/99-files.txt
+Echo "finished" >>M6R5:results/00-progress.txt
+Date >>M6R5:results/00-progress.txt
+Assign M6R5:
+Echo ""
+Echo "Done. Results are in results/."

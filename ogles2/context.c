@@ -18,11 +18,6 @@ void ogles2_error(struct OGLES2Context *ctx, GLenum error)
         ctx->error = error;
 }
 
-BOOL ogles2_context_valid(struct OGLES2Context *ctx)
-{
-    return ctx && ctx->magic == OGLES2_CONTEXT_MAGIC;
-}
-
 /* Tags this library acts on; the rest are logged once per context. */
 static BOOL known_tag(Tag t)
 {
@@ -41,6 +36,7 @@ static BOOL known_tag(Tag t)
     case OGLES2_CCT_PISTORM_HEIGHT:
     case OGLES2_CCT_PISTORM_GET_WINDOW:
     case OGLES2_CCT_DEBUG_SHADER_LOG:
+    case OGLES2_CCT_SHARE_WITH:
         return TRUE;
     default:
         return FALSE;
@@ -55,8 +51,14 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
     ULONG depth = GetTagData(OGLES2_CCT_DEPTH, 0, tags);
     ULONG stencil = GetTagData(OGLES2_CCT_STENCIL, 0, tags);
     BOOL debug_shader_log = GetTagData(OGLES2_CCT_DEBUG_SHADER_LOG, FALSE, tags) ? TRUE : FALSE;
+    struct OGLES2Context *with = (struct OGLES2Context *)GetTagData(OGLES2_CCT_SHARE_WITH, 0, tags);
     ULONG why = OGLES2_CCE_OK;
 
+    if (with && !ogles2_context_valid(with)) {
+        ogles2_log("aglCreateContext2: OGLES2_CCT_SHARE_WITH 0x%08lx is not a context", (ULONG)with);
+        why = OGLES2_CCE_BAD_TAGS;
+        goto fail;
+    }
     /* Opened even for a state-only context, so GL_RENDERER is real when a
      * GPU exists. */
     if (!ogles2_device_open() && !state_only) {
@@ -72,6 +74,11 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
     ctx->debug_shader_log = debug_shader_log;
     ctx->error = GL_NO_ERROR;
     ogles2_state_init(ctx);
+    /* The objects: with's group, or one of its own (share.c). */
+    if (!ogles2_share_join(ctx, with)) {
+        why = OGLES2_CCE_NOMEM;
+        goto fail_ctx;
+    }
 
     while ((t = NextTagItem(&state)))
         if (!known_tag(t->ti_Tag))
@@ -164,11 +171,15 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
             ctx->display.input_window ? ctx->display.input_window : ctx->display.window;
     ogles2_log("aglCreateContext2: context 0x%08lx, %ldx%ld%s", (ULONG)ctx, ctx->width, ctx->height,
                (ULONG)(state_only ? ", state only" : ""));
+    if (with)
+        ogles2_log("aglCreateContext2: context 0x%08lx shares objects with 0x%08lx (%ld in the group)",
+                   (ULONG)ctx, (ULONG)with, ctx->share->members);
     if (errcode)
         *errcode = OGLES2_CCE_OK;
     return ctx;
 
 fail_ctx:
+    ogles2_share_leave(ctx); /* nothing made yet: a group of its own is freed */
     ctx->magic = 0;
     FreeVec(ctx);
 fail:
@@ -180,8 +191,13 @@ fail:
 
 void ogles2_aglDestroyContext(struct OGLES2Context *ctx)
 {
+    struct SignalSemaphore *group;
     if (!ogles2_context_valid(ctx))
         return;
+    /* A member of a shared group goes under the group's semaphore, as every
+     * call into a member (share.c). */
+    if ((group = ctx->share_lock))
+        ObtainSemaphore(group);
     ogles2_log("aglDestroyContext: context 0x%08lx: freeing", (ULONG)ctx);
     ogles2_job_discard(ctx);
     ogles2_trace(ctx, "aglDestroyContext: the job finished", -1, 0);
@@ -195,9 +211,17 @@ void ogles2_aglDestroyContext(struct OGLES2Context *ctx)
     ogles2_trace(ctx, "aglDestroyContext: framebuffers and textures freed", -1, 0);
     ogles2_buffers_free(ctx);
     ogles2_trace(ctx, "aglDestroyContext: buffers freed", -1, 0);
+    /* The modules freed the shared objects if it was the group's last
+     * member (share.c), else only what is the context's own. A group with
+     * other members stays, its semaphore with it. */
+    ogles2_share_leave(ctx);
+    if (group)
+        ReleaseSemaphore(group);
     if (ctx->v3d) {
         ObtainSemaphore(&OGLES2LibBase->lock);
         OGLES2LibBase->contexts--;
+        if (OGLES2LibBase->pend_ctx == ctx) /* ogles2_job_discard waited for it */
+            OGLES2LibBase->pend_ctx = 0;
         ReleaseSemaphore(&OGLES2LibBase->lock);
     }
     ogles2_device_context_free(ctx->v3d);
@@ -243,8 +267,7 @@ void ogles2_aglDestroyContext(struct OGLES2Context *ctx)
 
 void ogles2_aglMakeCurrent(struct OGLES2Context *ctx)
 {
-    /* The current context lives in the client (plan section 6.2); the
-     * library learns of it here to bind the display state (M1). */
+    /* The current context lives in the client (plan section 6.2). */
     (void)ctx;
 }
 
@@ -268,7 +291,7 @@ const GLubyte *ogles2_glGetString(struct OGLES2Context *ctx, GLenum name)
     case GL_RENDERER:
         return (const GLubyte *)ogles2_device_renderer();
     case GL_VERSION: /* must begin "OpenGL ES 2.0" (plan section 7.10) */
-        return (const GLubyte *)"OpenGL ES 2.0 ogles2.library 1.0";
+        return (const GLubyte *)"OpenGL ES 2.0 ogles2.library 1.1";
     case GL_SHADING_LANGUAGE_VERSION: /* must begin "OpenGL ES GLSL ES 1.00" */
         return (const GLubyte *)"OpenGL ES GLSL ES 1.00";
     case GL_EXTENSIONS:

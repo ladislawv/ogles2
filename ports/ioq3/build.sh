@@ -5,9 +5,10 @@
 #   bash ports/ioq3/build.sh
 # The game's source is not in this repository: it is copied from $IOQ3_SRC
 # (the MiniGL library port's tree, which has the Amiga platform code and the
-# build lists used here) into $B/ioq3/src, and only amiga_glimp.c is replaced
-# (ports/ioq3/amiga_glimp.c); <mgl/gl.h> and <mgl/mglmacros.h> resolve to
-# ports/ioq3/include, which brings gl4es's GL. ports/ioq3/README.md.
+# build lists used here) into $B/ioq3/src, amiga_glimp.c is replaced
+# (ports/ioq3/amiga_glimp.c) and the copy gets ports/ioq3/patches/*.patch;
+# <mgl/gl.h> and <mgl/mglmacros.h> resolve to ports/ioq3/include, which
+# brings gl4es's GL. ports/ioq3/README.md.
 set -eu
 HERE=$(cd "$(dirname "$0")" && pwd)
 ln -sfn "$(cd "$HERE/../.." && pwd)" "$HOME/.ogles2-repo" # a path without the space of "- CPP"
@@ -32,6 +33,11 @@ mkdir -p "$ROOT"
 rsync -a --delete "$IOQ3_SRC/code/" "$ROOT/code/"
 rsync -a --delete "$IOQ3_SRC/ui/" "$ROOT/ui/" # menudef.h (code/ui/ui_shared.h)
 cp "$HERE/amiga_glimp.c" "$ROOT/code/amiga/amiga_glimp.c"
+# Fixes to the copy (the source tree is left as it is). 0001: a multitexture
+# stage drew with the colour array set last (often a dynamic light's).
+for p in "$HERE"/patches/*.patch; do
+    (cd "$ROOT" && git apply "$p") || { echo "ioq3: $p does not apply"; exit 1; }
+done
 rm -rf "$OUT"
 mkdir -p "$OUT" "$CGOUT" "$QAOUT" "$UIOUT"
 

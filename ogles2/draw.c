@@ -433,13 +433,14 @@ static ULONG vertex_uniforms(struct OGLES2Context *ctx, struct OGLES2Program *p,
                              const struct OGLES2Variant *var, const struct tex_states *tst)
 {
     ULONG addr;
-    if (p->us_var[k] == var && p->us_gen[k] == g_v3d_cl_generation &&
+    if (p->us_var[k] == var && p->us_gen[k] == g_v3d_cl_generation && p->us_ctx[k] == ctx &&
         p->us_cbuf_ver[k] == p->cbuf_ver[0] && p->us_state_ver[k] == ctx->ustate_ver)
         return p->us_addr[k];
     addr = write_uniforms(ctx, p, var, tst);
     if (addr && var->no_textures && var->uidx) {
         p->us_var[k] = var;
         p->us_gen[k] = g_v3d_cl_generation;
+        p->us_ctx[k] = ctx;
         p->us_cbuf_ver[k] = p->cbuf_ver[0];
         p->us_state_ver[k] = ctx->ustate_ver;
         p->us_addr[k] = addr;
@@ -605,6 +606,7 @@ static BOOL copy_array(struct OGLES2Context *ctx, const struct OGLES2Array *a, G
     int es = type_size(a->type), n = a->size;
     ULONG src_stride = a->stride ? (ULONG)a->stride : (ULONG)(n * es);
     ULONG dst_stride = ((ULONG)(n * es) + 3) & ~3UL;
+    const UBYTE *src = (const UBYTE *)a->pointer;
     UBYTE *dst;
 
     out->vsize = n == 4 ? v3d_VEC_4 : (UBYTE)n;
@@ -615,7 +617,11 @@ static BOOL copy_array(struct OGLES2Context *ctx, const struct OGLES2Array *a, G
     out->vtype = a->type == GL_FIXED ? v3d_ATTRIBUTE_FIXED
                : a->type == GL_FLOAT ? v3d_ATTRIBUTE_FLOAT
                : es == 2 ? v3d_ATTRIBUTE_SHORT : v3d_ATTRIBUTE_BYTE;
-    if (a->buffer) {
+    /* A buffer the program changes as it draws: the vertices this draw reads,
+     * from its shadow (the draw checked the range against the buffer). */
+    if (a->buffer && (src = ogles2_buffer_stream(a->buffer)) != 0)
+        src += (ULONG)a->pointer;
+    else if (a->buffer) {
         ULONG vertices, base = ogles2_buffer_copy(ctx, a->buffer, (ULONG)a->pointer, n, a->type,
                                                   out->normalized, a->stride, (ULONG)(n * es),
                                                   &out->stride, &vertices, convert_elems);
@@ -635,8 +641,7 @@ static BOOL copy_array(struct OGLES2Context *ctx, const struct OGLES2Array *a, G
     out->address = (ULONG)dst;
     out->stride = dst_stride;
     ctx->n_vbytes += dst_stride * (ULONG)count;
-    convert_elems(dst, dst_stride, (const UBYTE *)a->pointer + (ULONG)first * src_stride, src_stride,
-                  (ULONG)count, n, a->type);
+    convert_elems(dst, dst_stride, src + (ULONG)first * src_stride, src_stride, (ULONG)count, n, a->type);
     if (probe_addr) {
         ULONG len = dst_stride * (ULONG)count;
         CachePreDMA((APTR)out->address, &len, 0);
@@ -1496,9 +1501,11 @@ void ogles2_glDrawArrays(struct OGLES2Context *ctx, GLenum mode, GLint first, GL
 
 /* glDrawElements, and with a base vertex added to every index
  * (OES_draw_elements_base_vertex): the copied range moves by basevertex,
- * the rebased indices stay as they are. */
+ * the rebased indices stay as they are. With `range` (glDrawRangeElements)
+ * the program has said which indices it uses, range[0] to range[1]: they
+ * are not scanned. */
 static void draw_elements(struct OGLES2Context *ctx, GLenum mode, GLsizei count, GLenum type,
-                          const void *indices, GLint basevertex, const char *fn)
+                          const void *indices, GLint basevertex, const ULONG *range, const char *fn)
 {
     struct OGLES2Program *p;
     struct elements el;
@@ -1539,7 +1546,17 @@ static void draw_elements(struct OGLES2Context *ctx, GLenum mode, GLsizei count,
      * branches (Emu68 runs a loop with two of them a pass at a third of the
      * speed): d's sign bit, spread by the arithmetic shift, picks it. Indices
      * past 2^31 would not fit the vertex arrays anyway. */
-    if (type == GL_UNSIGNED_INT) {
+    if (range) {
+        /* About 25 ns an index saved (Quake III through gl4es: 3.5 us a
+         * draw). An index outside the range is undefined (GLES 3.0 2.9.5):
+         * the GPU reads other vertices. */
+        if (range[1] > 0x7FFFFFFFUL) {
+            ogles2_log("%s: an end of 2^31 or more; nothing drawn", (ULONG)fn);
+            return;
+        }
+        lo = range[0];
+        hi = range[1];
+    } else if (type == GL_UNSIGNED_INT) {
         const ULONG *in = indices;
         LONG l = 0x7FFFFFFF, h = 0, d;
         ULONG any = 0;
@@ -1603,13 +1620,31 @@ static void draw_elements(struct OGLES2Context *ctx, GLenum mode, GLsizei count,
 void ogles2_glDrawElements(struct OGLES2Context *ctx, GLenum mode, GLsizei count, GLenum type,
                            const void *indices)
 {
-    draw_elements(ctx, mode, count, type, indices, 0, "glDrawElements");
+    draw_elements(ctx, mode, count, type, indices, 0, 0, "glDrawElements");
 }
 
 void ogles2_glDrawElementsBaseVertexOES(struct OGLES2Context *ctx, GLenum mode, GLsizei count,
                                         GLenum type, const void *indices, GLint basevertex)
 {
-    draw_elements(ctx, mode, count, type, indices, basevertex, "glDrawElementsBaseVertexOES");
+    draw_elements(ctx, mode, count, type, indices, basevertex, 0, "glDrawElementsBaseVertexOES");
+}
+
+/* GLES 3.0's glDrawRangeElements, offered to GLES2 programs through
+ * aglGetProcAddress (ports/gl4es passes a locked array range): the indices
+ * lie in [start, end], so ogles2 does not scan them for their range. */
+void ogles2_glDrawRangeElements(struct OGLES2Context *ctx, GLenum mode, GLuint start, GLuint end,
+                                GLsizei count, GLenum type, const void *indices)
+{
+    ULONG range[2];
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (end < start) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    range[0] = start;
+    range[1] = end;
+    draw_elements(ctx, mode, count, type, indices, 0, range, "glDrawRangeElements");
 }
 
 /* ---- clears that the tile buffer cannot do ----

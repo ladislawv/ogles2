@@ -1,0 +1,46 @@
+Built-in render drivers:
+  Renderer opengles2:
+    Flags: 0x0000000E (Accelerated | PresentVSync | TargetTexturesSupported)
+    Texture formats (4): RGBA8888, BGRA8888, 0x16661804, 0x16261804
+  Renderer software:
+    Flags: 0x0000000D (Software | PresentVSync | TargetTexturesSupported)
+    Texture formats (8): ARGB8888, ABGR8888, RGBA8888, BGRA8888, RGB888, BGR888, RGB565, RGB555
+SW_CreateRenderer: entry renderer=0x8fb9704 window=0x8f2c9dc
+SW_CreateRenderer: getting window surface
+SW_CreateRenderer: surface=0x8f2cc6c sizeof(SDL_Surface)=60
+SW_CreateRenderer: calling SW_CreateRendererForSurface
+SW_CreateRendererForSurface: data=0x8fb968c sizeof(SW_RenderData)=8
+SW_CreateRenderer: ForSurface returned 0
+SDL_CreateRenderer: driver returned 0
+SDL_CreateRenderer: calculating vsync interval
+SDL_CreateRenderer: verifying draw queue
+SDL_CreateRenderer: draw queue OK
+SDL_CreateRenderer: sizeof(SDL_Renderer)=596 renderer=0x8fb9704
+SDL_CreateRenderer: creating target_mutex
+SDL_CreateRenderer: setting scale (float)
+SDL_CreateRenderer: setting rect_index_order
+SDL_CreateRenderer: GetOutputSize fptr=0x9cfea82 driverdata=0x8fb968c
+SDL_CreateRenderer: calling GetOutputSize...
+SDL_CreateRenderer: output=640x480, getting window size
+SDL_CreateRenderer: window=640x480 output=640x480
+SDL_CreateRenderer: dpi_scale done
+SDL_CreateRenderer: setting relative_scaling
+SDL_CreateRenderer: setting line_method
+SDL_CreateRenderer: setting viewport
+SDL_CreateRenderer: adding event watch
+SDL_CreateRenderer: SUCCESS renderer=0x8fb9704
+Current renderer:
+  Renderer software:
+    Flags: 0x0000000D (Software | PresentVSync | TargetTexturesSupported)
+    Texture formats (8): ARGB8888, ABGR8888, RGBA8888, BGRA8888, RGB888, BGR888, RGB565, RGB555
+RP0: flush=0 present=36 total=36
+RP1: flush=0 present=34 total=34
+RP2: flush=0 present=30 total=30
+RP3: flush=0 present=29 total=29
+RP4: flush=0 present=29 total=29
+RP5: flush=0 present=26 total=26
+RP6: flush=0 present=35 total=35
+RP7: flush=0 present=31 total=31
+RP8: flush=0 present=30 total=30
+RP9: flush=0 present=29 total=29
+27.24 frames per second

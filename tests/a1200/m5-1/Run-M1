@@ -28,7 +28,7 @@ Avail FLUSH >NIL:
 SetEnv OGLES2/LogFile M5R1:results/ogles2.log
 
 If NOT {FROM} GT 1 VAL
-  Echo "Step 1 of 6: framebuffer objects, then a big frame (nothing to see)"
+  Echo "Step 1 of 7: framebuffer objects, then a big frame (nothing to see)"
   M5R1:bin/m5_fbo >M5R1:results/1-fbo.txt
   M5R1:bin/m4_stress 100000 >M5R1:results/1-stress-100k.txt
   M5R1:bin/m4_depth >M5R1:results/1-depth.txt
@@ -37,33 +37,40 @@ If NOT {FROM} GT 1 VAL
 EndIf
 
 If NOT {FROM} GT 2 VAL
-  Echo "Step 2 of 6: buffer objects (nothing to see)"
+  Echo "Step 2 of 7: buffer objects (nothing to see)"
   M5R1:bin/m2_buffers >M5R1:results/2-buffers.txt
   Echo "step 2 done" >>M5R1:results/00-progress.txt
 EndIf
 
 If NOT {FROM} GT 3 VAL
-  Echo "Step 3 of 6: glDrawElements and an indexed uniform array (nothing to see)"
+  Echo "Step 3 of 7: glDrawElements and an indexed uniform array (nothing to see)"
   M5R1:bin/m2_elements >M5R1:results/3-elements.txt
   Echo "step 3 done" >>M5R1:results/00-progress.txt
 EndIf
 
 If NOT {FROM} GT 4 VAL
-  Echo "Step 4 of 6: linking and uniforms (nothing to see)"
+  Echo "Step 4 of 7: linking and uniforms (nothing to see)"
   M5R1:bin/m2_link >M5R1:results/4-link.txt
   Echo "step 4 done" >>M5R1:results/00-progress.txt
 EndIf
 
 If NOT {FROM} GT 5 VAL
-  Echo "Step 5 of 6: textures on a hidden bitmap (nothing to see)"
+  Echo "Step 5 of 7: textures on a hidden bitmap (nothing to see)"
   M5R1:bin/m2_texture BITMAP QUICK >M5R1:results/5-texture.txt
   Echo "step 5 done" >>M5R1:results/00-progress.txt
 EndIf
 
 If NOT {FROM} GT 6 VAL
-  Echo "Step 6 of 6: the triangle test on a hidden bitmap (nothing to see)"
+  Echo "Step 6 of 7: the triangle test on a hidden bitmap (nothing to see)"
   M5R1:bin/m1_draw BITMAP QUICK >M5R1:results/6-draw.txt
   Echo "step 6 done" >>M5R1:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 7 VAL
+  Echo "Step 7 of 7: objects shared between contexts, several contexts (nothing to see)"
+  M5R1:bin/m6_share >M5R1:results/7-share.txt
+  M5R1:bin/m6_tasks >M5R1:results/7-tasks.txt
+  Echo "step 7 done" >>M5R1:results/00-progress.txt
 EndIf
 
 UnSetEnv OGLES2/LogFile

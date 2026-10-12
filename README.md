@@ -30,8 +30,11 @@ state and next steps).
   ones to `T:ogles2_missing_shaders.txt`. `glCompileShader` reports GLSL errors with the
   compiler's messages; `OGLES2_CCT_DEBUG_SHADER_LOG` makes link logs describe each compiled
   variant (instructions, threads, spills).
-- Not yet: multisampling, several contexts sharing objects. This is development software, not a
-  release.
+- Contexts can share textures, buffers, shaders and programs, and renderbuffers
+  (`OGLES2_CCT_SHARE_WITH`), also from several tasks: a group's calls run under
+  its semaphore. The current context of `<proto/ogles2.h>`'s calls is per
+  program, so a second task calls through `OGLES2Dispatch` with its context.
+- Not yet: multisampling. This is development software, not a release.
 
 ## Requirements
 

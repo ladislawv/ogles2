@@ -1,0 +1,11 @@
+ogles2 M6: contexts used from two tasks
+PASS: contexts A, B sharing with A (the child's), C (the child's own)
+PASS: A: the program links (its .v3dp next to the test)
+PASS: the child task starts
+FAIL: A drew 2000 frames while the child wrote 17 colours: 481 frames not one of them
+FAIL: A rendered 60 objects alongside the child: 15 wrong
+FAIL: the child: 30 colours written, 240 textures made and deleted, 8 of its 30 renders wrong, 0 GL errors
+PASS: A then shows the child's last colour: 953fc0 (953fc0)
+PASS: A: no GL error left over
+PASS: destroy returns the memory (0 bytes difference)
+FAILED: 6 of 9 checks passed

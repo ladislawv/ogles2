@@ -11,9 +11,11 @@
 #include <utility/tagitem.h>
 #include "ogles2_api.h" /* generated: dispatch struct and every ogles2_* prototype */
 
+/* 1.1: glDrawRangeElements appended to the dispatch table. glGetString's
+ * GL_VERSION (context.c) names the same revision. */
 #define OGLES2_LIB_VERSION  1
-#define OGLES2_LIB_REVISION 0
-#define OGLES2_LIB_DATE     "10.10.2026"
+#define OGLES2_LIB_REVISION 1
+#define OGLES2_LIB_DATE     "12.10.2026"
 
 struct OGLES2Library
 {
@@ -21,7 +23,40 @@ struct OGLES2Library
     BPTR segList;
     struct SignalSemaphore lock; /* library-wide state: context list, log */
     struct SignalSemaphore compiler_lock; /* starting the shader compiler (compiler.c) */
-    ULONG contexts;                       /* with a GPU, in every program (job.c: overlap only with one) */
+    ULONG contexts;                       /* with a GPU, in every program */
+    /* Under `lock`: */
+    ULONG serial;                         /* the last job serial handed out (job.c): unique across contexts */
+    struct OGLES2Context *pend_ctx;       /* a context whose render may still run (job.c), */
+    struct Task *pend_task;               /* the task that submitted it, */
+    UBYTE pend_frame;                     /* and its v3d_submit_render count */
+};
+
+/* Objects shared between contexts (OGLES2_CCT_SHARE_WITH; GLES 2.0 appendix
+ * C, plan 13 M6): the name tables of textures, buffers, shaders and programs
+ * (with the images their programs run) and renderbuffers. Every context is
+ * in a group (alone without the tag). Framebuffers, the default textures
+ * (name 0) and every binding stay per context. A deleted object is detached
+ * from every member (GL would keep it while another context has it bound).
+ * The members may be used from several tasks: every call into a member of
+ * a group of two or more runs under the group's semaphore (share.c). */
+struct OGLES2Texture;
+struct OGLES2Buffer;
+struct OGLES2Renderbuffer;
+struct OGLES2Image;
+struct OGLES2Share
+{
+    ULONG members;                    /* contexts in the group */
+    struct OGLES2Context *first;      /* the members, through share_next */
+    struct OGLES2Texture **tex;       /* texture.c: by name */
+    GLuint ntex;
+    struct OGLES2Buffer **buf;        /* buffer.c */
+    GLuint nbuf;
+    void **objects;                   /* program.c: shaders and programs, by name (0 never used) */
+    GLuint nobjects;
+    struct OGLES2Image *images;       /* program.c: the program cache, by hash (plan 7.8) */
+    struct OGLES2Renderbuffer **rbs;  /* fbo.c */
+    GLuint nrbs;
+    struct SignalSemaphore lock;      /* every call into a member, while there are two or more */
 };
 
 /* A GL context. Opaque to clients (struct OGLES2Context in the headers). */
@@ -260,10 +295,12 @@ struct OGLES2Program
     UWORD samplers[16];
     /* draw.c: the coordinate and vertex shaders' last uniform streams,
      * reused while the vertex constant buffer and the state they read are
-     * the same (cbuf_ver[0], the context's ustate_ver). */
+     * the same (cbuf_ver[0], the context's ustate_ver), in the same
+     * context's job (a shared program draws in several). */
     ULONG cbuf_ver[2];                /* bumped by every change to cbuf[k] */
     const struct OGLES2Variant *us_var[2];
     ULONG us_gen[2], us_cbuf_ver[2], us_state_ver[2], us_addr[2];
+    struct OGLES2Context *us_ctx[2];
     UBYTE nslots;                     /* vertex input slots (0xff: not mapped yet) */
     UBYTE slot_attrib[16];            /* the generic attribute of each (0xff: none) */
 };
@@ -329,6 +366,10 @@ struct OGLES2Target
 struct OGLES2Context
 {
     ULONG magic;
+    /* At offset 4: the dispatch table's wrappers test it in assembly
+     * (gen/gen_ogles2.py, share.c): the group's semaphore while it has two
+     * members or more, else 0. */
+    struct SignalSemaphore *share_lock;
     GLenum error;        /* first error since the last glGetError (sticky) */
     ULONG width, height; /* default framebuffer size; 0 without a display */
     struct OGLES2State state;
@@ -369,14 +410,14 @@ struct OGLES2Context
     ULONG probe;                    /* OGLES2_PROBE_*, from ENV:OGLES2/Probe (context.c) */
     ULONG probe_addr;               /* OGLES2_PROBE_ADDR's buffer (4 KB, the test's) */
     struct OGLES2Array array[OGLES2_MAX_VERTEX_ATTRIBS];
-    void **objects;                 /* shaders and programs, indexed by name */
-    GLuint nobjects;                /* slots in objects (name 0 is never used) */
+    struct OGLES2Share *share;      /* the objects (alone in the group without OGLES2_CCT_SHARE_WITH) */
+    struct OGLES2Context *share_next; /* the group's next member */
     struct OGLES2Program *program;  /* glUseProgram */
     struct OGLES2Draw *draw;        /* draw.c's per-context state, NULL until the first draw */
     struct OGLES2TexState *tex;     /* texture.c's, NULL until first used */
     UBYTE unpack_alignment, pack_alignment; /* glPixelStorei */
-    ULONG job_serial;               /* counts jobs; textures note the last that drew with them */
-    struct OGLES2Image *images;     /* program cache: every image loaded, by hash (plan 7.8) */
+    ULONG job_serial;               /* the open job's, unique across contexts (job.c); objects note the
+                                     * last job that used them */
     struct OGLES2BufState *buf;     /* buffer.c's, NULL until first used */
     BOOL debug_shader_log;          /* OGLES2_CCT_DEBUG_SHADER_LOG: link logs describe the variants */
     ULONG chained_blocks;           /* binning-list blocks added (job.c); the first is logged */
@@ -392,10 +433,12 @@ struct OGLES2Context
     UWORD fb_w, fb_h;
     BOOL fb_flip;                   /* the default framebuffer: drawn upside down (plan 7.11) */
     UBYTE fb_depth_bits, fb_stencil_bits, fb_depth_format;
-    /* M6 overlap (job.c): a render submitted and not waited for yet; it
-     * holds the GPU lock (and the bitmap lock, on the screen) until
-     * ogles2_job_finish. */
+    /* M6 overlap (job.c): a render submitted and not waited for yet. The
+     * submission lock went at the submission; the next submitter waits for
+     * the render on the GPU (take_gpu) and, from another task, marks it
+     * done; ogles2_job_finish does the rest. */
     BOOL pend;
+    BOOL pend_done;                 /* another task saw it finish (under OGLES2Library.lock) */
     UBYTE pend_frame;               /* v3d_submit_render's count */
     ULONG pend_serial;              /* its job_serial */
     struct OGLES2Framebuffer *pend_fb; /* NULL: the default framebuffer */
@@ -519,6 +562,7 @@ struct OGLES2Buffer *ogles2_buffer_array(struct OGLES2Context *ctx);
 GLuint ogles2_buffer_name(const struct OGLES2Buffer *b);
 ULONG ogles2_buffer_size(const struct OGLES2Buffer *b);
 const void *ogles2_buffer_indices(struct OGLES2Context *ctx, ULONG offset, ULONG bytes, BOOL *bad);
+const UBYTE *ogles2_buffer_stream(const struct OGLES2Buffer *b);
 ULONG ogles2_buffer_copy(struct OGLES2Context *ctx, struct OGLES2Buffer *b, ULONG offset, GLint size,
                          GLenum type, GLboolean normalized, GLsizei stride, ULONG elem_bytes,
                          ULONG *dst_stride, ULONG *vertices,
@@ -538,8 +582,28 @@ void ogles2_job_discard(struct OGLES2Context *ctx);
 /* The submitted render waited for (M6 overlap): before the CPU reads what it
  * writes or changes what it reads. */
 void ogles2_job_finish(struct OGLES2Context *ctx);
-/* The open job or the submitted one uses what was last used by job `serial`. */
-BOOL ogles2_job_uses(struct OGLES2Context *ctx, ULONG serial);
+/* A job not rendered yet (open, or submitted and running) of any context in
+ * ctx's share group is job `serial`: that context, else NULL. Serials are
+ * unique across contexts. */
+struct OGLES2Context *ogles2_job_user(struct OGLES2Context *ctx, ULONG serial);
+#define ogles2_job_uses(ctx, serial) (ogles2_job_user((ctx), (serial)) != 0)
+
+/* ---- share groups (share.c) ---- */
+/* ctx joins `with`'s group, or a new one of its own (with NULL). FALSE: no memory. */
+BOOL ogles2_share_join(struct OGLES2Context *ctx, struct OGLES2Context *with);
+/* ctx leaves its group; TRUE if it was the last member (the shared objects go). */
+BOOL ogles2_share_leave(struct OGLES2Context *ctx);
+/* The semaphore a call into ctx takes (the dispatch table's wrappers): its
+ * group's while it has other members, else none. An invalid ctx: none (the
+ * entry itself refuses it). */
+static inline struct SignalSemaphore *ogles2_share_lock_of(struct OGLES2Context *ctx)
+{
+    return ctx && ctx->magic == OGLES2_CONTEXT_MAGIC ? ctx->share_lock : 0;
+}
+/* The deferred free of a GPU block a job not rendered yet may read: on the
+ * retire list of the member whose job last used it (serial), else freed now. */
+struct v3d_mem;
+void ogles2_share_defer_free(struct OGLES2Context *ctx, ULONG serial, struct v3d_mem *m);
 
 extern struct ExecBase *SysBase;
 extern struct DosLibrary *DOSBase;
@@ -548,8 +612,12 @@ extern struct OGLES2Library *OGLES2LibBase;
 
 /* Sets the sticky error if none is pending (GLES2 section 2.5). */
 void ogles2_error(struct OGLES2Context *ctx, GLenum error);
-/* A context pointer the library handed out and that is still alive. */
-BOOL ogles2_context_valid(struct OGLES2Context *ctx);
+/* A context pointer the library handed out and that is still alive. Inline:
+ * every entry tests it, and a call costs more than the test under Emu68. */
+static inline BOOL ogles2_context_valid(struct OGLES2Context *ctx)
+{
+    return ctx && ctx->magic == OGLES2_CONTEXT_MAGIC;
+}
 
 /* ---- device (device.c) ----
  * Initialises the V3D on first use (powers it on, reads its identity);

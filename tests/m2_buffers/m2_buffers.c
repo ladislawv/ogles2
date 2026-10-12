@@ -333,9 +333,10 @@ static void test_mixed(void)
     }
 }
 
-/* glBufferSubData between frames: the copy is patched where the bytes
- * changed (plan 7.5); the other quads keep theirs. */
-static void test_partial(void)
+/* glBufferSubData between frames: a GL_STATIC_DRAW buffer's copy is patched
+ * where the bytes changed (plan 7.5), the other quads keep theirs; a
+ * GL_DYNAMIC_DRAW buffer's draws read its data as they are drawn. */
+static void test_partial(GLenum usage)
 {
     struct vtx v[16];
     unsigned long p[4];
@@ -348,7 +349,7 @@ static void test_partial(void)
     quad(v + 12, 3, 1, 1, 1);
     glGenBuffers(1, &b);
     glBindBuffer(GL_ARRAY_BUFFER, b);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, usage);
     interleaved();
     glClear(GL_COLOR_BUFFER_BIT);
     for (i = 0; i < 4; i++)
@@ -367,8 +368,8 @@ static void test_partial(void)
     aglSwapBuffers();
     for (i = 0; i < 4; i++)
         p[i] = at(i);
-    sprintf(msg, "glBufferSubData of quad 2 between frames: %06lx %06lx %06lx %06lx (ff0000 00ff00 ff00ff ffffff)",
-            p[0], p[1], p[2], p[3]);
+    sprintf(msg, "%s, glBufferSubData of quad 2 between frames: %06lx %06lx %06lx %06lx (ff0000 00ff00 ff00ff ffffff)",
+            usage == GL_STATIC_DRAW ? "static" : "dynamic", p[0], p[1], p[2], p[3]);
     check(p[0] == 0xFF0000 && p[1] == 0x00FF00 && p[2] == 0xFF00FF && p[3] == 0xFFFFFF, msg);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &b);
@@ -415,6 +416,41 @@ static void test_map(void)
     c = at(0);
     sprintf(msg, "drawn after the mapping: %06lx (0000ff), mapped now %ld", c, (long)mapped);
     check(c == 0x0000FF && mapped == GL_FALSE, msg);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &b);
+}
+
+/* One GL_STATIC_DRAW buffer, two "frames" of a quad four vertices apart,
+ * drawn through arrays whose offsets differ by those four vertices (as
+ * ioquake3's renderergl2 animates a model): each draw reads its own frame,
+ * and draws alternate between the frames. */
+static void test_frames(void)
+{
+    struct vtx v[8];
+    unsigned long c0, c1;
+    char msg[160];
+    GLuint b;
+    int f, good = 0;
+    quad(v, 0, 1, 0, 0);
+    quad(v + 4, 1, 0, 1, 0);
+    glGenBuffers(1, &b);
+    glBindBuffer(GL_ARRAY_BUFFER, b);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(lp);
+    glEnableVertexAttribArray(lc);
+    for (f = 0; f < 6; f++) {
+        GLintptr o = (f & 1) ? 4 * sizeof(struct vtx) : 0;
+        glVertexAttribPointer(lp, 3, GL_FLOAT, GL_FALSE, sizeof(struct vtx), (const void *)o);
+        glVertexAttribPointer(lc, 4, GL_FLOAT, GL_FALSE, sizeof(struct vtx), (const void *)(o + 12));
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        aglSwapBuffers();
+        c0 = at(0);
+        c1 = at(1);
+        good += (f & 1) ? (c0 == 0 && c1 == 0x00FF00) : (c0 == 0xFF0000 && c1 == 0);
+    }
+    sprintf(msg, "a static buffer's two frames by offset, 6 draws alternating: %d right", good);
+    check(good == 6, msg);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &b);
 }
@@ -477,8 +513,10 @@ int main(void)
         test_rename();
         test_elements();
         test_mixed();
-        test_partial();
+        test_partial(GL_STATIC_DRAW);
+        test_partial(GL_DYNAMIC_DRAW);
         test_map();
+        test_frames();
         test_reuse();
         glUseProgram(0);
         glDeleteProgram(prog);

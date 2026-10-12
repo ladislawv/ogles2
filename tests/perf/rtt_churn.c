@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <proto/ogles2.h>
+#pragma GCC diagnostic ignored "-Wunused-function" /* perf_target.h's gears helpers */
 #include "perf_target.h"
 
 #define CLO (*(volatile ULONG *)(0xF2000000 + 0x3004))

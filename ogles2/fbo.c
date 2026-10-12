@@ -74,18 +74,17 @@ struct OGLES2Framebuffer
 
 struct OGLES2FboState
 {
-    struct OGLES2Framebuffer **fbs;
+    struct OGLES2Framebuffer **fbs;  /* the context's own (GLES 2.0: not shared) */
     GLuint nfbs;
-    struct OGLES2Renderbuffer **rbs;
-    GLuint nrbs;
+    struct OGLES2Share *sh;          /* the renderbuffers: sh->rbs, sh->nrbs (share.c) */
     struct OGLES2Renderbuffer *rb_bound;
     BOOL warned_incomplete;
 };
 
 static struct OGLES2FboState *fs_get(struct OGLES2Context *ctx)
 {
-    if (!ctx->fbo)
-        ctx->fbo = AllocVec(sizeof(struct OGLES2FboState), MEMF_ANY | MEMF_CLEAR);
+    if (!ctx->fbo && (ctx->fbo = AllocVec(sizeof(struct OGLES2FboState), MEMF_ANY | MEMF_CLEAR)))
+        ctx->fbo->sh = ctx->share;
     return ctx->fbo;
 }
 
@@ -117,7 +116,7 @@ static struct OGLES2Framebuffer *fb_by_name(struct OGLES2FboState *fs, GLuint na
 
 static struct OGLES2Renderbuffer *rb_by_name(struct OGLES2FboState *fs, GLuint name)
 {
-    return name && name < fs->nrbs ? fs->rbs[name] : 0;
+    return name && name < fs->sh->nrbs ? fs->sh->rbs[name] : 0;
 }
 
 /* ---- renderbuffer storage ---- */
@@ -274,16 +273,16 @@ void ogles2_glGenRenderbuffers(struct OGLES2Context *ctx, GLsizei n, GLuint *ren
     }
     for (k = 0; k < n; k++) {
         struct OGLES2Renderbuffer *rb;
-        while (i < fs->nrbs && fs->rbs[i])
+        while (i < fs->sh->nrbs && fs->sh->rbs[i])
             i++;
-        if (!table_room((void ***)&fs->rbs, &fs->nrbs, i) ||
+        if (!table_room((void ***)&fs->sh->rbs, &fs->sh->nrbs, i) ||
             !(rb = AllocVec(sizeof(*rb), MEMF_ANY | MEMF_CLEAR))) {
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
             return;
         }
         rb->name = i;
         rb->format = GL_RGBA4;
-        fs->rbs[i] = rb;
+        fs->sh->rbs[i] = rb;
         if (renderbuffers)
             renderbuffers[k] = i;
     }
@@ -347,14 +346,14 @@ void ogles2_glBindRenderbuffer(struct OGLES2Context *ctx, GLenum target, GLuint 
         return;
     }
     if (renderbuffer && !(rb = rb_by_name(fs, renderbuffer))) {
-        if (!table_room((void ***)&fs->rbs, &fs->nrbs, renderbuffer) ||
+        if (!table_room((void ***)&fs->sh->rbs, &fs->sh->nrbs, renderbuffer) ||
             !(rb = AllocVec(sizeof(*rb), MEMF_ANY | MEMF_CLEAR))) {
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
             return;
         }
         rb->name = renderbuffer;
         rb->format = GL_RGBA4;
-        fs->rbs[renderbuffer] = rb;
+        fs->sh->rbs[renderbuffer] = rb;
     }
     if (rb)
         rb->bound_once = TRUE;
@@ -392,6 +391,7 @@ void ogles2_glDeleteFramebuffers(struct OGLES2Context *ctx, GLsizei n, const GLu
 void ogles2_glDeleteRenderbuffers(struct OGLES2Context *ctx, GLsizei n, const GLuint *renderbuffers)
 {
     struct OGLES2FboState *fs;
+    struct OGLES2Context *m;
     GLsizei k;
     GLuint i;
     int a;
@@ -401,25 +401,34 @@ void ogles2_glDeleteRenderbuffers(struct OGLES2Context *ctx, GLsizei n, const GL
         ogles2_error(ctx, GL_INVALID_VALUE);
         return;
     }
-    if (!(fs = ctx->fbo) || !renderbuffers)
+    if (!(fs = fs_get(ctx)) || !renderbuffers)
         return;
     for (k = 0; k < n; k++) {
         struct OGLES2Renderbuffer *rb = rb_by_name(fs, renderbuffers[k]);
         if (!rb)
             continue;
-        before_rb_change(ctx, rb);
-        if (fs->rb_bound == rb)
-            fs->rb_bound = 0;
-        for (i = 1; i < fs->nfbs; i++)
-            if (fs->fbs[i])
-                for (a = 0; a < 3; a++)
-                    if (fs->fbs[i]->att[a].type == GL_RENDERBUFFER && fs->fbs[i]->att[a].rb == rb)
-                        memset(&fs->fbs[i]->att[a], 0, sizeof(fs->fbs[i]->att[a]));
-        fs->rbs[rb->name] = 0;
+        /* Every member of the share group lets go of it: its jobs that use
+         * it rendered first, its binding and attachments cleared (GL would
+         * keep it while attached elsewhere). */
+        for (m = ctx->share->first; m; m = m->share_next) {
+            struct OGLES2FboState *mfs = m->fbo;
+            before_rb_change(m, rb);
+            if (!mfs)
+                continue;
+            if (mfs->rb_bound == rb)
+                mfs->rb_bound = 0;
+            for (i = 1; i < mfs->nfbs; i++)
+                if (mfs->fbs[i])
+                    for (a = 0; a < 3; a++)
+                        if (mfs->fbs[i]->att[a].type == GL_RENDERBUFFER && mfs->fbs[i]->att[a].rb == rb)
+                            memset(&mfs->fbs[i]->att[a], 0, sizeof(mfs->fbs[i]->att[a]));
+        }
+        fs->sh->rbs[rb->name] = 0;
         rb_free_storage(ctx, rb);
         FreeVec(rb);
     }
-    ogles2_fb_update(ctx);
+    for (m = ctx->share->first; m; m = m->share_next)
+        ogles2_fb_update(m);
 }
 
 GLboolean ogles2_glIsFramebuffer(struct OGLES2Context *ctx, GLuint framebuffer)
@@ -461,7 +470,11 @@ void ogles2_glRenderbufferStorage(struct OGLES2Context *ctx, GLenum target, GLen
         ogles2_error(ctx, GL_INVALID_OPERATION);
         return;
     }
-    before_rb_change(ctx, rb);
+    {
+        struct OGLES2Context *m; /* any member's job that uses it, first */
+        for (m = ctx->share->first; m; m = m->share_next)
+            before_rb_change(m, rb);
+    }
     rb_free_storage(ctx, rb);
     rb->format = internalformat;
     rb->w = (UWORD)width;
@@ -1001,25 +1014,31 @@ BOOL ogles2_fbo_query(struct OGLES2Context *ctx, GLenum pname, GLint *v)
     }
 }
 
-/* aglDestroyContext: every object, after the last job. */
+/* aglDestroyContext, after the last job: the framebuffers; the
+ * renderbuffers with the share group's last member. */
 void ogles2_fbo_free(struct OGLES2Context *ctx)
 {
     struct OGLES2FboState *fs = ctx->fbo;
+    struct OGLES2Share *sh = ctx->share;
     GLuint i;
+    if (sh && sh->members == 1) {
+        for (i = 1; i < sh->nrbs; i++)
+            if (sh->rbs[i]) {
+                rb_free_storage(ctx, sh->rbs[i]);
+                FreeVec(sh->rbs[i]);
+            }
+        if (sh->rbs)
+            FreeVec(sh->rbs);
+        sh->rbs = 0;
+        sh->nrbs = 0;
+    }
     if (!fs)
         return;
     for (i = 1; i < fs->nfbs; i++)
         if (fs->fbs[i])
             fb_free(fs->fbs[i]);
-    for (i = 1; i < fs->nrbs; i++)
-        if (fs->rbs[i]) {
-            rb_free_storage(ctx, fs->rbs[i]);
-            FreeVec(fs->rbs[i]);
-        }
     if (fs->fbs)
         FreeVec(fs->fbs);
-    if (fs->rbs)
-        FreeVec(fs->rbs);
     FreeVec(fs);
     ctx->fbo = 0;
     ctx->draw_fb = ctx->job_fb = 0;

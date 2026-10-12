@@ -1,0 +1,27 @@
+ogles2 M6: shared objects, several contexts
+PASS: context A
+PASS: OGLES2_CCT_SHARE_WITH something else: no context, error 3 (3)
+PASS: context B, sharing with A
+PASS: context C, alone
+PASS: A: the programs link (their .v3dp next to the test)
+PASS: B: A's texture, buffer and programs are B's names too
+PASS: B: a new texture name (2) is not A's (1)
+PASS: C: none of A's names
+PASS: A: a name B freed again is handed out, not one in use
+PASS: B draws A's texture with A's program and buffer: ff0000 (ff0000)
+PASS: B changes a texture A's open job reads: A ff0000 (ff0000, before), B 00ff00 (00ff00)
+PASS: A: framebuffer on texture rt
+PASS: B samples what A rendered into rt: 000040 (000040)
+PASS: 20 rounds of A rendering, B sampling: 0 wrong
+PASS: B: the texture deleted
+PASS: A: its binding of the texture B deleted is 0 (0), the name gone
+PASS: A draws with texture 0: 000000 (000000)
+PASS: A deletes a program current in B: it lives on
+PASS: B draws with it: 0000ff (0000ff)
+PASS: B lets go of it: gone
+PASS: A destroyed: B keeps the buffer, textures and program
+PASS: B draws with A's program and buffer after A is gone: ffff00 (ffff00)
+PASS: B: no GL error left over
+PASS: C: no GL error left over
+PASS: destroy returns the memory (96 bytes difference)
+ALL PASSED: 25 of 25 checks passed

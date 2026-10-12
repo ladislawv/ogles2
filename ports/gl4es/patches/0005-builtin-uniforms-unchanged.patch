@@ -1,0 +1,169 @@
+ogles2 (ports/gl4es): a program's built-in matrix uniforms are not sent
+again while the matrices are unchanged; no uniform calls for absent units.
+
+realize_glenv sent every built-in matrix uniform at every draw: the MVP
+product, a hash lookup and a 64-byte compare per matrix, and the loop over
+all texture units' matrices, about 5 us a draw on a 68k under Emu68
+(Quake III: 0.7 ms a frame). matrix.c now bumps a generation whenever a
+matrix's value changes (not for a glLoadIdentity of an identity matrix or a
+glLoadMatrixf of the same values: Quake III resets its texture matrices
+around every stage), and a program skips the block while the generation,
+the glstate and the normal rescaling are those it last sent them with
+(cleared at link). The texture-environment and sampler loops call
+GoUniform* only for uniforms the program has (16 units, three calls each).
+
+diff --git a/src/gl/fpe.c b/src/gl/fpe.c
+index 9a481f7f..76b0ccab 100644
+--- a/src/gl/fpe.c
++++ b/src/gl/fpe.c
+@@ -1098,6 +1098,8 @@ int fpe_gettexture(int TMU) {
+     return target;
+ }
+ 
++extern unsigned int gl4es_ogles2_matgen; // ogles2 (ports/gl4es): matrix.c
++
+ void realize_glenv(int ispoint, int first, int count, GLenum type, const void* indices, scratch_t* scratch) {
+     // the handling of GL_BGRA size of GL_DOUBLE using 1 scratch in not ideal, and a waste when dealing with Buffers
+     // TODO: have the scratch buffer part of the VBO, and tag it dirty when buffer is changed (or always dirty for VBO 0)
+@@ -1220,8 +1222,16 @@ void realize_glenv(int ispoint, int first, int count, GLenum type, const void* i
+         }
+     }
+     // setup fixed pipeline builtin matrix uniform if needed
+-    if(glprogram->has_builtin_matrix)
++    // ogles2 (ports/gl4es): not while the matrices (matrix.c's generation), the
++    // glstate and the normal rescaling are those this program's were sent with
++    // (about 5 us a draw on a 68k under Emu68)
++    if(glprogram->has_builtin_matrix
++       && (glprogram->ogles2_matgen != gl4es_ogles2_matgen || glprogram->ogles2_matstate != (void*)glstate
++           || glprogram->ogles2_rescale != (glstate->fpe_state ? (int)glstate->fpe_state->rescaling : 0)))
+     {
++        glprogram->ogles2_matgen = gl4es_ogles2_matgen;
++        glprogram->ogles2_matstate = (void*)glstate;
++        glprogram->ogles2_rescale = glstate->fpe_state ? (int)glstate->fpe_state->rescaling : 0;
+         if(glprogram->builtin_matrix[MAT_MVP]!=-1 || glprogram->builtin_matrix[MAT_MVP_I]!=-1
+             || glprogram->builtin_matrix[MAT_MVP_T]!=-1 || glprogram->builtin_matrix[MAT_MVP_IT]!=-1)
+         {
+@@ -1415,10 +1425,14 @@ void realize_glenv(int ispoint, int first, int count, GLenum type, const void* i
+     if(glprogram->has_builtin_texenv)
+     {
+         for (int i=0; i<hardext.maxtex; i++) {
+-            GoUniformfv(glprogram, glprogram->builtin_texenvcolor[i], 4, 1, glstate->texenv[i].env.color);
++            // ogles2 (ports/gl4es): no call for a uniform the program lacks
++            if(glprogram->builtin_texenvcolor[i]!=-1)
++                GoUniformfv(glprogram, glprogram->builtin_texenvcolor[i], 4, 1, glstate->texenv[i].env.color);
+             // specific FPE
+-            GoUniformfv(glprogram, glprogram->builtin_texenvrgbscale[i], 1, 1, &glstate->texenv[i].env.rgb_scale);
+-            GoUniformfv(glprogram, glprogram->builtin_texenvalphascale[i], 1, 1, &glstate->texenv[i].env.alpha_scale);
++            if(glprogram->builtin_texenvrgbscale[i]!=-1)
++                GoUniformfv(glprogram, glprogram->builtin_texenvrgbscale[i], 1, 1, &glstate->texenv[i].env.rgb_scale);
++            if(glprogram->builtin_texenvalphascale[i]!=-1)
++                GoUniformfv(glprogram, glprogram->builtin_texenvalphascale[i], 1, 1, &glstate->texenv[i].env.alpha_scale);
+         }
+     }
+     // texgen
+@@ -1444,7 +1458,8 @@ void realize_glenv(int ispoint, int first, int count, GLenum type, const void* i
+     if(glprogram->has_builtin_texsampler)
+     {
+         for (int i=0; i<hardext.maxtex; i++)
+-            GoUniformiv(glprogram, glprogram->builtin_texsampler[i], 1, 1, &i); // very basic stuff here, but sampler needs to be a uniform...
++            if(glprogram->builtin_texsampler[i]!=-1) // ogles2 (ports/gl4es): no call for an absent one
++                GoUniformiv(glprogram, glprogram->builtin_texsampler[i], 1, 1, &i); // very basic stuff here, but sampler needs to be a uniform...
+     }
+     if(glprogram->has_builtin_texadjust)
+     {
+diff --git a/src/gl/matrix.c b/src/gl/matrix.c
+index e9990d61..73c11ec5 100644
+--- a/src/gl/matrix.c
++++ b/src/gl/matrix.c
+@@ -24,6 +24,28 @@ void alloc_matrix(matrixstack_t **matrixstack, int depth) {
+ 
+ #define TOP(A) (glstate->A->stack+(glstate->A->top*16))
+ 
++/* ogles2 (ports/gl4es): bumped whenever a matrix's value changes; not by a
++ * glLoadIdentity of an identity matrix or a glLoadMatrixf of the same
++ * values (Quake III resets its texture matrices around every stage).
++ * realize_glenv (fpe.c) skips a program's built-in matrix uniforms while
++ * it is the generation they were last sent at. */
++unsigned int gl4es_ogles2_matgen = 1;
++
++static int ogles2_current_identity(void) {
++	switch(glstate->matrix_mode) {
++		case GL_MODELVIEW:
++			return glstate->modelview_matrix->identity;
++		case GL_PROJECTION:
++			return glstate->projection_matrix->identity;
++		case GL_TEXTURE:
++			return glstate->texture_matrix[glstate->texture.active]->identity;
++		default:
++			if(glstate->matrix_mode>=GL_MATRIX0_ARB && glstate->matrix_mode<GL_MATRIX0_ARB+MAX_ARB_MATRIX)
++				return glstate->arb_matrix[glstate->matrix_mode-GL_MATRIX0_ARB]->identity;
++			return 0;
++	}
++}
++
+ static GLfloat* update_current_mat() {
+ 	switch(glstate->matrix_mode) {
+ 		case GL_MODELVIEW:
+@@ -184,7 +206,7 @@ DBG(printf("glPopMatrix(), list=%p\n", glstate->list.active);)
+ 	noerrorShim();
+ 	switch(matrix_mode) {
+ 		#define P(A) if(glstate->A->top) { \
+-			--glstate->A->top; \
++			--glstate->A->top; ++gl4es_ogles2_matgen; \
+ 			glstate->A->identity = is_identity(update_current_mat()); \
+ 			if (send_to_hardware()) {LOAD_GLES(glLoadMatrixf); gles_glLoadMatrixf(update_current_mat()); } \
+ 		} else errorShim(GL_STACK_UNDERFLOW)
+@@ -227,6 +249,8 @@ DBG(printf("glLoadMatrix(%f, %f, %f, %f, %f, %f, %f...), list=%p\n", m[0], m[1],
+ 			return;
+ 		}
+ 	}
++	if(memcmp(update_current_mat(), m, 16*sizeof(GLfloat)))
++		++gl4es_ogles2_matgen;
+ 	memcpy(update_current_mat(), m, 16*sizeof(GLfloat));
+ 	const int id = update_current_identity(0);
+ 	if(glstate->matrix_mode==GL_MODELVIEW)
+@@ -261,6 +285,7 @@ DBG(printf("glMultMatrix(%f, %f, %f, %f, %f, %f, %f...), list=%p\n", m[0], m[1],
+ 	}
+ 	GLfloat *current_mat = update_current_mat();
+ 	matrix_mul(current_mat, m, current_mat);
++	++gl4es_ogles2_matgen;
+ 	const int id = update_current_identity(0);
+ 	if(glstate->matrix_mode==GL_MODELVIEW)
+ 		glstate->normal_matrix_dirty = glstate->inv_mv_matrix_dirty = 1;
+@@ -288,6 +313,8 @@ DBG(printf("glLoadIdentity(), list=%p\n", glstate->list.active);)
+ 			return;
+ 		}
+ 	}
++	if(!ogles2_current_identity())
++		++gl4es_ogles2_matgen;
+ 	set_identity(update_current_mat());
+ 	update_current_identity(1);
+ 	if(glstate->matrix_mode==GL_MODELVIEW)
+diff --git a/src/gl/program.c b/src/gl/program.c
+index 2eaeb02b..85f82a6b 100644
+--- a/src/gl/program.c
++++ b/src/gl/program.c
+@@ -496,6 +496,7 @@ GLboolean APIENTRY_GL4ES gl4es_glIsProgram(GLuint program) {
+ 
+ static void clear_program(program_t *glprogram)
+ {
++    glprogram->ogles2_matgen = 0; // ogles2 (ports/gl4es): its uniforms start again
+     // clear all Attrib location cache
+     if(glprogram->attribloc) {
+         attribloc_t *m;
+diff --git a/src/gl/program.h b/src/gl/program.h
+index a788da4b..b375570b 100644
+--- a/src/gl/program.h
++++ b/src/gl/program.h
+@@ -276,6 +276,11 @@ typedef struct {
+     GLint                           samplersCube[MAX_TEX];
+     // that will be an fpe_cache_t*
+     void*                           fpe_cache;
++    // ogles2 (ports/gl4es): its built-in matrices were last sent at this matrix.c
++    // generation, glstate and normal rescaling (fpe.c's realize_glenv); 0: never
++    unsigned int    ogles2_matgen;
++    void*           ogles2_matstate;
++    int             ogles2_rescale;
+ } program_t;
+ 
+ KHASH_MAP_DECLARE_INT(programlist, program_t *);

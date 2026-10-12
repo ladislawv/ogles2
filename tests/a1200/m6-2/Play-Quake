@@ -1,7 +1,8 @@
 ; Play-Quake - Quake III Arena on gl4es and ogles2, to play (not timed).
 ;   CD to the ogles2-m6-2 directory, then:   Execute Play-Quake
 ;   With the game elsewhere:   Execute Play-Quake Q3DATA=<the directory with baseq3>
-; Full screen 640x480, the frame rate shown at the top right, no sound.
+; Full screen 640x480, the frame rate shown at the top right, sound through
+; AHI (16 bit; the engine falls back to Paula if AHI does not start).
 ; The game's own files (config, logs) go to home/ here; nothing is written
 ; to the game's directory. Quit from the game's menu (Escape, Exit).
 .key Q3DATA/K
@@ -28,7 +29,7 @@ Assign LIBS: M6R2:libs ADD
 Assign OGLES2Cache: M6R2:cache
 ; The modules load from the current directory.
 CD M6R2:bin
-M6R2:bin/quake3-gl4es +set fs_basepath "{Q3DATA}" +set fs_homepath M6R2:home +set r_fullscreen 1 +set r_mode 3 +set s_initsound 0 +set r_primitives 0 +set cg_drawFPS 1
+M6R2:bin/quake3-gl4es +set fs_basepath "{Q3DATA}" +set fs_homepath M6R2:home +set r_fullscreen 1 +set r_mode 3 +set r_primitives 0 +set cg_drawFPS 1
 CD M6R2:
 Assign OGLES2Cache:
 Assign LIBS: M6R2:libs REMOVE

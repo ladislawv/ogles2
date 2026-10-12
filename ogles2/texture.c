@@ -62,20 +62,28 @@ struct OGLES2Texture
     ULONG used_serial;              /* the job that last drew with it */
     BOOL warned_incomplete;         /* sampled while incomplete: logged once */
     /* The state records last made for a draw (ogles2_texture_state), reused
-     * by the job's later draws while what they hold is the same. */
+     * while what they hold is the same: by every later job when they are in
+     * the texture's own block (rec), else by the job's later draws (in its
+     * state buffer: a job still used the block when they changed). */
     ULONG st_gen;                   /* the control list they are in (g_v3d_cl_generation) */
     APTR st_mem;                    /* the GPU copy they point at */
     GLenum st_min, st_mag, st_ws, st_wt;
     ULONG st_tex, st_smp;
+    struct OGLES2Context *st_ctx;   /* whose job's state buffer they are in (not st_own) */
+    BOOL st_own;                    /* they are in rec */
+    v3d_mem rec;                    /* 64 bytes: texture state at 0, sampler state at 32; goes
+                                     * with the GPU copy (freed, or deferred when renamed) */
 };
+
+/* Both records fit their halves of rec. */
+typedef char ogles2_rec_fits[sizeof(v3d_texture_shader_state) <= 32 && sizeof(v3d_sampler_state) <= 32 ? 1 : -1];
 
 /* ---- the context's texture state ---- */
 
 struct OGLES2TexState
 {
-    struct OGLES2Texture **names;   /* by name */
-    GLuint nnames;
-    struct OGLES2Texture default2d, defaultcube; /* name 0 */
+    struct OGLES2Share *sh;         /* the named textures: sh->tex, sh->ntex (share.c) */
+    struct OGLES2Texture default2d, defaultcube; /* name 0: the context's own */
     struct OGLES2Texture *unit2d[OGLES2_MAX_TEXTURE_UNITS], *unitcube[OGLES2_MAX_TEXTURE_UNITS];
     struct OGLES2Texture fallback;  /* 1x1 (0,0,0,1): what an incomplete texture samples */
     UBYTE active;
@@ -102,6 +110,7 @@ static struct OGLES2TexState *ts_get(struct OGLES2Context *ctx)
         return ts;
     if (!(ts = AllocVec(sizeof(*ts), MEMF_ANY | MEMF_CLEAR)))
         return 0;
+    ts->sh = ctx->share;
     init_object(&ts->default2d, 0, GL_TEXTURE_2D);
     init_object(&ts->defaultcube, 0, GL_TEXTURE_CUBE_MAP);
     for (i = 0; i < OGLES2_MAX_TEXTURE_UNITS; i++) {
@@ -112,6 +121,8 @@ static struct OGLES2TexState *ts_get(struct OGLES2Context *ctx)
     return ts;
 }
 
+/* No job uses the GPU copy any more (before_change renamed it or rendered
+ * the job): the copy and the records' block. */
 static void free_gpu(struct OGLES2Texture *t)
 {
     if (t->gpu) {
@@ -120,6 +131,9 @@ static void free_gpu(struct OGLES2Texture *t)
         FreeVec(t->gpu);
         t->gpu = 0;
     }
+    if (t->rec.hostptr)
+        v3d_mem_free(ogles2_device(), &t->rec);
+    t->st_own = FALSE;
 }
 
 static void free_levels(struct OGLES2Texture *t)
@@ -137,19 +151,26 @@ static void free_levels(struct OGLES2Texture *t)
     free_gpu(t);
 }
 
+/* aglDestroyContext (its jobs finished): the context's own textures; the
+ * named ones with the share group's last member. */
 void ogles2_textures_free(struct OGLES2Context *ctx)
 {
     struct OGLES2TexState *ts = ctx->tex;
+    struct OGLES2Share *sh = ctx->share;
     GLuint i;
+    if (sh && sh->members == 1) {
+        for (i = 1; i < sh->ntex; i++)
+            if (sh->tex[i]) {
+                free_levels(sh->tex[i]);
+                FreeVec(sh->tex[i]);
+            }
+        if (sh->tex)
+            FreeVec(sh->tex);
+        sh->tex = 0;
+        sh->ntex = 0;
+    }
     if (!ts)
         return;
-    for (i = 1; i < ts->nnames; i++)
-        if (ts->names[i]) {
-            free_levels(ts->names[i]);
-            FreeVec(ts->names[i]);
-        }
-    if (ts->names)
-        FreeVec(ts->names);
     free_levels(&ts->default2d);
     free_levels(&ts->defaultcube);
     free_levels(&ts->fallback);
@@ -167,20 +188,33 @@ void ogles2_textures_free(struct OGLES2Context *ctx)
 static void before_change(struct OGLES2Context *ctx, struct OGLES2TexState *ts,
                           struct OGLES2Texture *t)
 {
-    V3DContext *v = ctx->v3d;
-    /* The open job draws into it (a framebuffer object's colour image):
-     * render that job first. Then the RAM copies are made current. */
-    ogles2_fbo_texture_changing(ctx, t);
+    struct OGLES2Context *m, *user;
+    V3DContext *v;
+    /* Its records are made again at the next draw: a new level can change
+     * the level count without a new GPU copy. */
+    t->st_own = FALSE;
+    t->st_gen = 0;
+    /* An open job draws into it (a framebuffer object's colour image), any
+     * member's of the share group: rendered first. Then the RAM copies are
+     * made current. */
+    for (m = ctx->share->first; m; m = m->share_next)
+        ogles2_fbo_texture_changing(m, t);
     sync(t);
-    /* A job not rendered yet uses it: the open one, or the one submitted
-     * and still running (M6 overlap). */
-    if (!v || !t->used_serial || !ogles2_job_uses(ctx, t->used_serial))
+    /* A job not rendered yet uses it: an open one, or one submitted and
+     * still running (M6 overlap), of any member: the old copy goes with
+     * that job (share.c: serials are unique across contexts). */
+    if (!t->used_serial || !(user = ogles2_job_user(ctx, t->used_serial)) || !(v = user->v3d))
         return;
     if (t->gpu && v->frame.retire_count < V3D_RETIRE_MAX - 8) {
         if (t->gpu->texture_mem.hostptr)
             v3d_frame_defer_free(&v->frame, &t->gpu->texture_mem);
         FreeVec(t->gpu);
         t->gpu = 0;
+        if (t->rec.hostptr) { /* the job's draws read their records there too */
+            v3d_frame_defer_free(&v->frame, &t->rec);
+            memset(&t->rec, 0, sizeof(t->rec));
+        }
+        t->st_own = FALSE;
         t->used_serial = 0;
         ctx->n_renames++;
         if (!ts->warned_flush) {
@@ -192,8 +226,8 @@ static void before_change(struct OGLES2Context *ctx, struct OGLES2TexState *ts,
     }
     ogles2_log("texture %ld changed after a draw used it: the frame is rendered first "
                "(too many renamed blocks in this frame)", (ULONG)t->name);
-    ogles2_job_flush(ctx, FALSE);
-    ogles2_job_finish(ctx);
+    ogles2_job_flush(user, FALSE);
+    ogles2_job_finish(user);
 }
 
 /* ---- names and binding ---- */
@@ -203,19 +237,19 @@ static BOOL table_room(struct OGLES2TexState *ts, GLuint name)
 {
     GLuint nn, j;
     struct OGLES2Texture **tab;
-    if (name < ts->nnames)
+    if (name < ts->sh->ntex)
         return TRUE;
-    nn = ts->nnames ? ts->nnames : 32;
+    nn = ts->sh->ntex ? ts->sh->ntex : 32;
     while (nn <= name)
         nn *= 2;
     if (!(tab = AllocVec(nn * sizeof(*tab), MEMF_ANY | MEMF_CLEAR)))
         return FALSE;
-    for (j = 0; j < ts->nnames; j++)
-        tab[j] = ts->names[j];
-    if (ts->names)
-        FreeVec(ts->names);
-    ts->names = tab;
-    ts->nnames = nn;
+    for (j = 0; j < ts->sh->ntex; j++)
+        tab[j] = ts->sh->tex[j];
+    if (ts->sh->tex)
+        FreeVec(ts->sh->tex);
+    ts->sh->tex = tab;
+    ts->sh->ntex = nn;
     return TRUE;
 }
 
@@ -226,7 +260,7 @@ static struct OGLES2Texture *create(struct OGLES2TexState *ts, GLuint name)
     if (!table_room(ts, name) || !(t = AllocVec(sizeof(*t), MEMF_ANY | MEMF_CLEAR)))
         return 0;
     init_object(t, name, 0);
-    ts->names[name] = t;
+    ts->sh->tex[name] = t;
     return t;
 }
 
@@ -246,7 +280,7 @@ void ogles2_glGenTextures(struct OGLES2Context *ctx, GLsizei n, GLuint *textures
         return;
     }
     for (k = 0; k < n; k++) {
-        while (i < ts->nnames && ts->names[i])
+        while (i < ts->sh->ntex && ts->sh->tex[i])
             i++;
         if (!create(ts, i)) {
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
@@ -259,12 +293,13 @@ void ogles2_glGenTextures(struct OGLES2Context *ctx, GLsizei n, GLuint *textures
 
 static struct OGLES2Texture *by_name(struct OGLES2TexState *ts, GLuint name)
 {
-    return name && name < ts->nnames ? ts->names[name] : 0;
+    return name && name < ts->sh->ntex ? ts->sh->tex[name] : 0;
 }
 
 void ogles2_glDeleteTextures(struct OGLES2Context *ctx, GLsizei n, const GLuint *textures)
 {
     struct OGLES2TexState *ts;
+    struct OGLES2Context *m;
     GLsizei k;
     int u;
     if (!ogles2_context_valid(ctx))
@@ -281,18 +316,25 @@ void ogles2_glDeleteTextures(struct OGLES2Context *ctx, GLsizei n, const GLuint 
         if (!t)
             continue;
         /* First the jobs drawing into it: a finished render marks what it
-         * drew as to be read back. */
-        ogles2_fbo_texture_deleted(ctx, t);
+         * drew as to be read back. Every member of the share group lets go
+         * of it (GL would keep it while bound elsewhere). */
+        for (m = ctx->share->first; m; m = m->share_next)
+            ogles2_fbo_texture_deleted(m, t);
         for (u = 0; u < 6; u++)
             t->f[u].rendered = 0; /* going: nothing to read back (SDL's render targets: 38 ms) */
         before_change(ctx, ts, t); /* its memory goes: a queued draw must not read it */
-        for (u = 0; u < OGLES2_MAX_TEXTURE_UNITS; u++) { /* deleting unbinds (GLES 2.0 3.7.13) */
-            if (ts->unit2d[u] == t)
-                ts->unit2d[u] = &ts->default2d;
-            if (ts->unitcube[u] == t)
-                ts->unitcube[u] = &ts->defaultcube;
+        for (m = ctx->share->first; m; m = m->share_next) {
+            struct OGLES2TexState *mts = m->tex;
+            if (!mts)
+                continue;
+            for (u = 0; u < OGLES2_MAX_TEXTURE_UNITS; u++) { /* deleting unbinds (GLES 2.0 3.7.13) */
+                if (mts->unit2d[u] == t)
+                    mts->unit2d[u] = &mts->default2d;
+                if (mts->unitcube[u] == t)
+                    mts->unitcube[u] = &mts->defaultcube;
+            }
         }
-        ts->names[t->name] = 0;
+        ts->sh->tex[t->name] = 0;
         free_levels(t);
         FreeVec(t);
     }
@@ -1454,15 +1496,18 @@ BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, BOOL cube, ULONG 
     UBYTE *swivel24, temp;
     UWORD *swivel16;
     int levels = 1;
-    BOOL mip;
+    BOOL mip, own;
 
     if (!ts)
         return FALSE;
     t = cube ? ts->unitcube[unit] : ts->unit2d[unit];
-    /* The same records as the job's last draw with it: a texture a draw of
-     * this job used gets a new GPU copy (another address) when its images
-     * change (before_change); its parameters are compared here. */
-    if (t->gpu && t->st_gen == g_v3d_cl_generation && t->st_mem == t->gpu->texture_mem.hostptr &&
+    /* The same records as the last draw with it: a texture a draw of a job
+     * not yet rendered used gets a new GPU copy (another address) when its
+     * images change (before_change); its parameters are compared here.
+     * Records in the texture's own block hold across jobs (Quake III: most
+     * of a frame's textures are drawn once a frame, 2.5 us a record). */
+    if (t->gpu && (t->st_own || (t->st_gen == g_v3d_cl_generation && t->st_ctx == ctx)) &&
+        t->st_mem == t->gpu->texture_mem.hostptr &&
         t->st_min == t->min_filter && t->st_mag == t->mag_filter && t->st_ws == t->wrap_s &&
         t->st_wt == t->wrap_t) {
         t->used_serial = ctx->job_serial;
@@ -1488,11 +1533,19 @@ BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, BOOL cube, ULONG 
             return FALSE;
         levels = 1;
     }
+    /* Into the texture's own block, unless a job not yet rendered may read
+     * the records it holds (the last job that drew with the texture): then
+     * into this job's state buffer, as before. */
+    own = !t->used_serial || !ogles2_job_uses(ctx, t->used_serial);
+    if (own && !t->rec.hostptr && v3d_mem_alloc(ogles2_device(), &t->rec, 64) < 0)
+        own = FALSE;
     t->used_serial = ctx->job_serial;
     g = t->gpu;
     mip = mipmapped(t->min_filter) && levels > 1;
 
-    if (!(tsr = claim32(v, sizeof(*tsr))))
+    if (own)
+        tsr = (v3d_texture_shader_state *)t->rec.hostptr;
+    else if (!(tsr = claim32(v, sizeof(*tsr))))
         return FALSE;
     memset(tsr, 0, sizeof(*tsr));
     tiled = (char *)V3D_ALIGN_UP((v3d_uintptr)g->texture_mem.hostptr, 256);
@@ -1527,7 +1580,9 @@ BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, BOOL cube, ULONG 
     swivel[4] = LE32(swivel[4]);
     *tex_state = (ULONG)tsr;
 
-    if (!(ss = claim32(v, sizeof(*ss))))
+    if (own)
+        ss = (v3d_sampler_state *)((UBYTE *)t->rec.hostptr + 32);
+    else if (!(ss = claim32(v, sizeof(*ss))))
         return FALSE;
     memset(ss, 0, sizeof(*ss));
     ss->mag_filter_nearest = t->mag_filter == GL_NEAREST;
@@ -1552,6 +1607,8 @@ BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, BOOL cube, ULONG 
     swivel16[3] = LE16(swivel16[3]);
     *sampler_state = (ULONG)ss;
     t->st_gen = g_v3d_cl_generation;
+    t->st_ctx = ctx;
+    t->st_own = own;
     t->st_mem = g->texture_mem.hostptr;
     t->st_min = t->min_filter;
     t->st_mag = t->mag_filter;

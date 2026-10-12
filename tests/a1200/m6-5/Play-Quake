@@ -1,0 +1,36 @@
+; Play-Quake - Quake III Arena with the GLES2 renderer on ogles2 (no gl4es), to play (not timed).
+;   CD to the ogles2-m6-5 directory, then:   Execute Play-Quake
+;   With the game elsewhere:   Execute Play-Quake Q3DATA=<the directory with baseq3>
+; Full screen 640x480, the frame rate shown at the top right, sound through
+; AHI (16 bit; the engine falls back to Paula if AHI does not start).
+; The game's own files (config, logs) go to home/ here; nothing is written
+; to the game's directory. Quit from the game's menu (Escape, Exit).
+.key Q3DATA/K
+.def Q3DATA "Stuff:Quake3-68k-beta10/Quake3-68k-beta10"
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m6-5 directory first,"
+  Echo "then run:  Execute Play-Quake"
+  Quit 20
+EndIf
+If NOT EXISTS "{Q3DATA}/baseq3/pak0.pk3"
+  Echo "No Quake III data at {Q3DATA}/baseq3: run Execute Play-Quake Q3DATA=<directory>"
+  Quit 20
+EndIf
+
+Assign M6R5: ""
+If NOT EXISTS M6R5:cache
+  MakeDir M6R5:cache
+EndIf
+Assign LIBS: M6R5:libs ADD
+Assign OGLES2Cache: M6R5:cache
+; The modules load from the current directory.
+CD M6R5:bin
+M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 +set cg_drawFPS 1
+CD M6R5:
+Assign OGLES2Cache:
+Assign LIBS: M6R5:libs REMOVE
+Assign M6R5:

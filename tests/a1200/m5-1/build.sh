@@ -13,6 +13,6 @@ make -C "$REPO" -j8 B="$B" EXTRA_CFLAGS=-DOGLES2_LOG_SYNC > /dev/null
 make -C "$REPO" B="$B" test-v3dp > /dev/null
 mkdir -p "$PKG/libs" "$PKG/bin" "$PKG/shaders"
 cp "$B/ogles2.library" "$PKG/libs/"
-cp "$B/tests/m1_draw" "$B/tests/m2_texture" "$B/tests/m2_link" "$B/tests/m2_elements" "$B/tests/m2_buffers" "$B/tests/m4_stress" "$B/tests/m4_depth" "$B/tests/m4_setbitmap" "$B/tests/m5_fbo" "$B/cmd/OGLES2Log" "$PKG/bin/"
+cp "$B/tests/m1_draw" "$B/tests/m2_texture" "$B/tests/m2_link" "$B/tests/m2_elements" "$B/tests/m2_buffers" "$B/tests/m4_stress" "$B/tests/m4_depth" "$B/tests/m4_setbitmap" "$B/tests/m5_fbo" "$B/tests/m6_share" "$B/tests/m6_tasks" "$B/cmd/OGLES2Log" "$PKG/bin/"
 cp "$B"/v3dp/*.v3dp "$PKG/bin/"
 cp "$B"/v3dp/src/*.vert "$B"/v3dp/src/*.frag "$PKG/shaders/"

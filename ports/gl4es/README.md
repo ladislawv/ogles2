@@ -33,6 +33,17 @@ and `gl4es_agl.h` (`ports/gl4es/include`), and links `-lgl4es -logles2 -lm881`, 
     its last four programs and takes the program on a match, without `fpe_ReleventState`
     (bitfield clears for all 16 texture units, every draw). `agl_os3.c` clears the memo when
     a context is destroyed.
+  - `0004-locked-range-draw`: a draw of the program's own arrays between `glLockArraysEXT` and
+    `glUnlockArraysEXT` (Quake III locks every batch) goes to ogles2's `glDrawRangeElements`
+    (ogles2 1.1) with the locked range, so ogles2 does not scan the indices for it (about
+    3.5 us a Quake III draw). Without that entry point it is `glDrawElements` as before.
+  - `0005-builtin-uniforms-unchanged`: a program's built-in matrix uniforms are not sent again
+    while the matrices are those it last sent: `matrix.c` bumps a generation when a matrix's
+    value changes (not for a `glLoadIdentity` of an identity or a `glLoadMatrixf` of the same
+    values; Quake III resets its texture matrices around every stage), and the program
+    remembers the generation, the glstate and the normal rescaling (cleared at link). The
+    texture-environment and sampler loops skip uniforms the program does not have (16 units,
+    three calls each). About 5 us a draw.
 - **`os3_string.c`**: a `memcmp` comparing long words, linked before clib2's (a byte at a
   time, 2.4 us for 256 bytes on Emu68); gl4es compares its state structs with it every draw.
 - **`os3_build.h`**, force-included: gl4es exports every GL name as a GCC `alias` of its

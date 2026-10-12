@@ -247,18 +247,65 @@ def gen_api_h(table):
     return "".join(L)
 
 
+# Entries that only read or write the calling context's own state fields
+# (ctx->state, the viewport and scissor, the pixel store, the active texture
+# unit, the error): nothing another member of a share group touches (a
+# member's call changes other members' bindings, objects and jobs, never
+# these), so they need no group semaphore and skip the wrapper (Quake III
+# makes about 450 of them a frame: glDisable alone 310).
+NO_GROUP_LOCK = {
+    "glEnable", "glDisable", "glIsEnabled", "glBlendFunc", "glBlendFuncSeparate", "glBlendEquation",
+    "glBlendEquationSeparate", "glBlendColor", "glDepthFunc", "glDepthMask", "glDepthRangef",
+    "glCullFace", "glFrontFace", "glColorMask", "glClearColor", "glClearDepthf", "glClearStencil",
+    "glStencilFunc", "glStencilFuncSeparate", "glStencilMask", "glStencilMaskSeparate", "glStencilOp",
+    "glStencilOpSeparate", "glLineWidth", "glPolygonOffset", "glSampleCoverage", "glHint", "glScissor",
+    "glViewport", "glPixelStorei", "glGetError", "glActiveTexture",
+}
+
+
+def wrapped(e):
+    return e.ctx == "ctx" and e.name not in NO_GROUP_LOCK
+
+
 def gen_table_c(table):
-    L = [HEADER, '#include "ogles2_api.h"\n\n',
+    L = [HEADER, '#include <proto/exec.h>\n#include "ogles2_internal.h"\n\n',
          "_Static_assert(sizeof(struct OGLES2Dispatch) == 16 + 4 * %d, \"table size\");\n\n"
          % len(table),
-         "const struct OGLES2Dispatch ogles2_dispatch_table = {\n",
-         "    .abiVersion = OGLES2_DISPATCH_ABI_VERSION,\n",
-         "    .structSize = sizeof(struct OGLES2Dispatch),\n",
-         "    .backendFlags = OGLES2_BACKEND_PISTORM_V3D42,\n",
-         "    .reserved = 0,\n"]
+         "/* Every entry that takes the context runs under its share group's\n"
+         " * semaphore while the group has two members or more (ogles2/share.c).\n"
+         " * Both calls are tail calls: alone, the wrapper tests and jumps. */\n"]
+    L.append("_Static_assert(__builtin_offsetof(struct OGLES2Context, share_lock) == 4, \"share_lock at 4\");\n"
+             "_Static_assert(OGLES2_CONTEXT_MAGIC == 0x474c4532UL, \"the wrappers' magic\");\n\n")
+    for e in table:
+        if isinstance(e, str) or not wrapped(e):
+            continue
+        void = e.ret.strip() == "void"
+        args = e.call_args("ctx")
+        # the locked call, out of line
+        L.append("%s ogles2_sl_%s(%s);\n" % (e.ret, e.name, e.lib_params()))
+        L.append("__attribute__((noinline)) %s ogles2_sl_%s(%s)\n{\n" % (e.ret, e.name, e.lib_params()))
+        L.append("    struct SignalSemaphore *l = ctx->share_lock;\n")
+        if not void:
+            L.append("    %s r;\n" % e.ret)
+        L.append("    ObtainSemaphore(l);\n    %sogles2_%s(%s);\n    ReleaseSemaphore(l);\n%s}\n\n"
+                 % ("" if void else "r = ", e.name, args, "" if void else "    return r;\n"))
+        # the wrapper: the context (the first argument, above the return
+        # address), its magic and share_lock tested, then a jump either way
+        # with the arguments as they are on the stack
+        L.append("%s ogles2_lk_%s(%s);\n" % (e.ret, e.name, e.lib_params()))
+        L.append('__asm__("\\t.text\\n\\t.even\\n\\t.globl _ogles2_lk_%s\\n_ogles2_lk_%s:\\n"\n'
+                 '        "\\tmove.l 4(%%sp),%%d0\\n\\tjeq 1f\\n\\tmove.l %%d0,%%a0\\n"\n'
+                 '        "\\tcmp.l #0x474c4532,(%%a0)\\n\\tjne 1f\\n\\ttst.l 4(%%a0)\\n\\tjne 2f\\n"\n'
+                 '        "1:\\tjmp _ogles2_%s\\n2:\\tjmp _ogles2_sl_%s\\n");\n\n'
+                 % (e.name, e.name, e.name, e.name))
+    L += ["const struct OGLES2Dispatch ogles2_dispatch_table = {\n",
+          "    .abiVersion = OGLES2_DISPATCH_ABI_VERSION,\n",
+          "    .structSize = sizeof(struct OGLES2Dispatch),\n",
+          "    .backendFlags = OGLES2_BACKEND_PISTORM_V3D42,\n",
+          "    .reserved = 0,\n"]
     for e in table:
         if not isinstance(e, str):
-            L.append("    .%s = ogles2_%s,\n" % (e.field, e.name))
+            L.append("    .%s = %s_%s,\n" % (e.field, "ogles2_lk" if wrapped(e) else "ogles2", e.name))
     L.append("};\n")
     return "".join(L)
 

@@ -1,0 +1,21 @@
+--- a/code/renderer/tr_shade.c
++++ b/code/renderer/tr_shade.c
+@@ -1292,6 +1292,18 @@
+ 		 * scope) the single-texture sub-path below still needs. */
+ 		if ( pStage->bundle[1].image[0] != 0 )
+ 		{
++			/* ogles2 (ports/ioq3): the stage's colours, as the other
++			 * branch sets them before DrawMultitextured. Without them the
++			 * draw read the colour array set last, often the previous
++			 * surface's dynamic light pass (ProjectDlightTexture's
++			 * colorArray): the surface came out tinted by that light, or
++			 * black, for a frame (a flicker near rockets and plasma). */
++			if ( !setArraysOnce )
++			{
++				qglEnableClientState( GL_COLOR_ARRAY );
++				qglColorPointer( 4, GL_UNSIGNED_BYTE, 0, input->svars.colors );
++			}
++
+ 			DrawMultitextured( input, stage );
+ 		}
+ 

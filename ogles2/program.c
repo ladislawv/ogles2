@@ -124,45 +124,45 @@ static GLsizei copy_out(char *dst, GLsizei size, const char *src)
 void *ogles2_object(struct OGLES2Context *ctx, GLuint name, UBYTE kind)
 {
     UBYTE *o;
-    if (name == 0 || name >= ctx->nobjects)
+    if (name == 0 || name >= ctx->share->nobjects)
         return 0;
-    o = ctx->objects[name];
+    o = ctx->share->objects[name];
     return (o && *o == kind) ? o : 0;
 }
 
 static BOOL name_exists(struct OGLES2Context *ctx, GLuint name)
 {
-    return name && name < ctx->nobjects && ctx->objects[name];
+    return name && name < ctx->share->nobjects && ctx->share->objects[name];
 }
 
 static GLuint new_name(struct OGLES2Context *ctx, void *obj)
 {
     GLuint i;
-    for (i = 1; i < ctx->nobjects; i++)
-        if (!ctx->objects[i]) {
-            ctx->objects[i] = obj;
+    for (i = 1; i < ctx->share->nobjects; i++)
+        if (!ctx->share->objects[i]) {
+            ctx->share->objects[i] = obj;
             return i;
         }
     {
-        GLuint n = ctx->nobjects ? ctx->nobjects * 2 : 16;
+        GLuint n = ctx->share->nobjects ? ctx->share->nobjects * 2 : 16;
         void **t = AllocVec(n * sizeof(void *), MEMF_ANY | MEMF_CLEAR);
         if (!t)
             return 0;
-        for (i = 0; i < ctx->nobjects; i++)
-            t[i] = ctx->objects[i];
-        if (ctx->objects)
-            FreeVec(ctx->objects);
-        i = ctx->nobjects ? ctx->nobjects : 1;
-        ctx->objects = t;
-        ctx->nobjects = n;
-        ctx->objects[i] = obj;
+        for (i = 0; i < ctx->share->nobjects; i++)
+            t[i] = ctx->share->objects[i];
+        if (ctx->share->objects)
+            FreeVec(ctx->share->objects);
+        i = ctx->share->nobjects ? ctx->share->nobjects : 1;
+        ctx->share->objects = t;
+        ctx->share->nobjects = n;
+        ctx->share->objects[i] = obj;
         return i;
     }
 }
 
 static void free_shader(struct OGLES2Context *ctx, struct OGLES2Shader *s)
 {
-    ctx->objects[s->name] = 0;
+    ctx->share->objects[s->name] = 0;
     if (s->source)
         FreeVec(s->source);
     if (s->info_log)
@@ -230,7 +230,7 @@ static void set_log(struct OGLES2Program *p, const char *a, const char *b)
 
 static void free_program(struct OGLES2Context *ctx, struct OGLES2Program *p)
 {
-    ctx->objects[p->name] = 0;
+    ctx->share->objects[p->name] = 0;
     release_shader(ctx, p->vs);
     release_shader(ctx, p->fs);
     unlink_program(ctx, p);
@@ -239,24 +239,42 @@ static void free_program(struct OGLES2Context *ctx, struct OGLES2Program *p)
     FreeVec(p);
 }
 
+/* Is p the current program of a member of ctx's share group? */
+static BOOL in_use(struct OGLES2Context *ctx, struct OGLES2Program *p)
+{
+    struct OGLES2Context *m;
+    for (m = ctx->share->first; m; m = m->share_next)
+        if (m->program == p)
+            return TRUE;
+    return FALSE;
+}
+
+/* aglDestroyContext (its jobs finished): its current program let go of; the
+ * shaders, programs and program cache with the share group's last member. */
 void ogles2_objects_free(struct OGLES2Context *ctx)
 {
+    struct OGLES2Program *old = ctx->program;
     GLuint i;
     UBYTE *o;
     ctx->program = 0;
-    for (i = 1; i < ctx->nobjects; i++) /* programs first: they hold shaders */
-        if ((o = ctx->objects[i]) && *o == OGLES2_OBJ_PROGRAM)
+    if (ctx->share->members > 1) {
+        if (old && old->delete_pending && !in_use(ctx, old))
+            free_program(ctx, old);
+        return;
+    }
+    for (i = 1; i < ctx->share->nobjects; i++) /* programs first: they hold shaders */
+        if ((o = ctx->share->objects[i]) && *o == OGLES2_OBJ_PROGRAM)
             free_program(ctx, (struct OGLES2Program *)o);
-    for (i = 1; i < ctx->nobjects; i++)
-        if ((o = ctx->objects[i]))
+    for (i = 1; i < ctx->share->nobjects; i++)
+        if ((o = ctx->share->objects[i]))
             free_shader(ctx, (struct OGLES2Shader *)o);
-    if (ctx->objects)
-        FreeVec(ctx->objects);
-    ctx->objects = 0;
-    ctx->nobjects = 0;
-    while (ctx->images) {
-        struct OGLES2Image *im = ctx->images;
-        ctx->images = im->next;
+    if (ctx->share->objects)
+        FreeVec(ctx->share->objects);
+    ctx->share->objects = 0;
+    ctx->share->nobjects = 0;
+    while (ctx->share->images) {
+        struct OGLES2Image *im = ctx->share->images;
+        ctx->share->images = im->next;
         ogles2_image_free(im, ctx);
     }
 }
@@ -487,7 +505,7 @@ void ogles2_glDeleteProgram(struct OGLES2Context *ctx, GLuint program)
     if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
         return;
     p->delete_pending = TRUE;
-    if (ctx->program != p) /* the current program goes when it stops being current */
+    if (!in_use(ctx, p)) /* a current program goes when it stops being current, in every member */
         free_program(ctx, p);
 }
 
@@ -961,13 +979,13 @@ void ogles2_glLinkProgram(struct OGLES2Context *ctx, GLuint program)
         return;
     }
     program_hash(p, hash, hex);
-    for (im = ctx->images; im && memcmp(im->hash, hash, 32); im = im->next)
+    for (im = ctx->share->images; im && memcmp(im->hash, hash, 32); im = im->next)
         ;
     if (!im) {
         if (!(im = load_image(p, hash, hex)))
             return;
-        im->next = ctx->images;
-        ctx->images = im;
+        im->next = ctx->share->images;
+        ctx->share->images = im;
         /* A binary proves both shaders compile: record them, so the next
          * glCompileShader of either needs no compiler. */
         if (ogles2_compiler_installed()) {
@@ -1052,7 +1070,7 @@ void ogles2_glUseProgram(struct OGLES2Context *ctx, GLuint program)
     }
     old = ctx->program;
     ctx->program = p;
-    if (old && old != p && old->delete_pending)
+    if (old && old != p && old->delete_pending && !in_use(ctx, old))
         free_program(ctx, old);
 }
 
