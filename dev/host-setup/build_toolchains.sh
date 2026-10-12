@@ -100,6 +100,15 @@ build() {
         local rc2=$?
         log "$name make clib2 rc=$rc2 $(date)"
         [ $rc -eq 0 ] && rc=$rc2
+        # amiga-gcc's SDKs the GCC 6 code needs: CyberGraphX (cybergraphx/, proto/ and
+        # inline/cybergraphics.h: the library's display code, the tests, the ports, amictld)
+        # and AHI (devices/ahi.h: the SDL2 and SDL3 ports' audio).
+        for s in cgx ahi; do
+            make sdk=$s PREFIX="$prefix" >"$LOG/$name-sdk-$s.log" 2>&1
+            rc2=$?
+            log "$name make sdk=$s rc=$rc2 $(date)"
+            [ $rc -eq 0 ] && rc=$rc2
+        done
     fi
 
     "$prefix/bin/m68k-amigaos-gcc" --version 2>&1 | head -1 | tee -a "$LOG/summary.log"

@@ -194,10 +194,12 @@ Each of these cost real time once.
   lists it: plain `Ubuntu` on some machines).
 - **Unstable memory looks like compiler bugs.** On a second build machine (2026-10-12) the
   toolchain and Mesa builds failed at random: internal compiler errors and assembler crashes in
-  different files each run, a flipped bit in GCC's assembly output, a corrupt object. The cause
-  was the RAM's XMP/DOCP profile (four DIMMs); at the default speed everything built. Check:
-  compile one large file (Mesa's `nir_opt_algebraic.c`) 100 times, 16 at a time: every object
-  must be byte-identical. A toolchain built on such a machine may miscompile quietly: rebuild it.
+  different files each run, a flipped bit in GCC's assembly output, a corrupt object. With the
+  RAM's XMP/DOCP profile off (four DIMMs) the errors became rare but did not stop: a failure that
+  does not repeat when the same step is run again is the machine, not the code. Check: compile
+  one large file (Mesa's `nir_opt_algebraic.c`) 100 times, 16 at a time: every object must be
+  byte-identical. A toolchain built on such a machine may miscompile quietly: `compare_v3dp.sh`
+  and `scan_asm.sh` check it end to end.
 - **Line ends:** Windows Python (and some editors) write CRLF into files that must be LF.
   Patches to ported sources are made against the clones the builds use (in WSL); a Windows
   checkout of the same repository has CRLF (git's `core.autocrlf`), and a patch made there
