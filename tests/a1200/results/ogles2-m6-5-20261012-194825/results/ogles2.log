@@ -1,0 +1,1296 @@
+     1 ogles2.library 1.1 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x08F2D9D8
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 aglCreateContext2: probes "TP" (ENV:OGLES2/Probe)
+    13 display: fullscreen, 640x480, BGRA
+    14 device: context pools for 640x480, D32F, 18852224 bytes of GPU memory in use
+    15 aglCreateContext2: context 0x08F2CC6C, 640x480
+    16 compiler: started (0 s)
+    17 compiler: shader compiled in 1260 ms
+    18 compiler: shader compiled in 40 ms
+    19 compiler: program compiled in 400 ms, OGLES2Cache:f92b836516dd5020a36ec9a7.v3dp
+    20 glLinkProgram: OGLES2Cache:f92b836516dd5020a36ec9a7.v3dp (5 variants, 1880 bytes of code)
+    21 compiler: shader compiled in 20 ms
+    22 compiler: shader compiled in 40 ms
+    23 compiler: program compiled in 440 ms, OGLES2Cache:4e087c60d0b40b00ef1a8738.v3dp
+    24 glLinkProgram: OGLES2Cache:4e087c60d0b40b00ef1a8738.v3dp (5 variants, 2776 bytes of code)
+    25 compiler: shader compiled in 20 ms
+    26 compiler: shader compiled in 40 ms
+    27 compiler: program compiled in 520 ms, OGLES2Cache:b6fcca831eb67e865bf2f187.v3dp
+    28 glLinkProgram: OGLES2Cache:b6fcca831eb67e865bf2f187.v3dp (5 variants, 2960 bytes of code)
+    29 compiler: shader compiled in 60 ms
+    30 compiler: shader compiled in 40 ms
+    31 compiler: program compiled in 720 ms, OGLES2Cache:6782795dc9377a0392fc4dd9.v3dp
+    32 glLinkProgram: OGLES2Cache:6782795dc9377a0392fc4dd9.v3dp (5 variants, 3880 bytes of code)
+    33 compiler: shader compiled in 20 ms
+    34 compiler: shader compiled in 40 ms
+    35 compiler: program compiled in 280 ms, OGLES2Cache:d274e8dc02b0f793ff15f63b.v3dp
+    36 glLinkProgram: OGLES2Cache:d274e8dc02b0f793ff15f63b.v3dp (5 variants, 1984 bytes of code)
+    37 compiler: shader compiled in 20 ms
+    38 compiler: shader compiled in 40 ms
+    39 compiler: program compiled in 480 ms, OGLES2Cache:6cf9b4f85a886fa0f07e11f3.v3dp
+    40 glLinkProgram: OGLES2Cache:6cf9b4f85a886fa0f07e11f3.v3dp (5 variants, 3032 bytes of code)
+    41 compiler: shader compiled in 20 ms
+    42 compiler: shader compiled in 20 ms
+    43 compiler: program compiled in 540 ms, OGLES2Cache:0d657a9d76fe8543d5f3b2d9.v3dp
+    44 glLinkProgram: OGLES2Cache:0d657a9d76fe8543d5f3b2d9.v3dp (5 variants, 3144 bytes of code)
+    45 compiler: shader compiled in 60 ms
+    46 compiler: shader compiled in 20 ms
+    47 compiler: program compiled in 740 ms, OGLES2Cache:a89aa3f57eec23044a322cfe.v3dp
+    48 glLinkProgram: OGLES2Cache:a89aa3f57eec23044a322cfe.v3dp (5 variants, 4128 bytes of code)
+    49 compiler: shader compiled in 20 ms
+    50 compiler: shader compiled in 20 ms
+    51 compiler: program compiled in 300 ms, OGLES2Cache:8f5f716d561e3bd4f5b51c82.v3dp
+    52 glLinkProgram: OGLES2Cache:8f5f716d561e3bd4f5b51c82.v3dp (5 variants, 2104 bytes of code)
+    53 compiler: shader compiled in 20 ms
+    54 compiler: shader compiled in 20 ms
+    55 compiler: program compiled in 520 ms, OGLES2Cache:5c09c593a100404ba23fd436.v3dp
+    56 glLinkProgram: OGLES2Cache:5c09c593a100404ba23fd436.v3dp (5 variants, 2992 bytes of code)
+    57 compiler: shader compiled in 40 ms
+    58 compiler: shader compiled in 40 ms
+    59 compiler: program compiled in 600 ms, OGLES2Cache:d99353bb7a0bf84c7b4790f6.v3dp
+    60 glLinkProgram: OGLES2Cache:d99353bb7a0bf84c7b4790f6.v3dp (5 variants, 3208 bytes of code)
+    61 compiler: shader compiled in 40 ms
+    62 compiler: shader compiled in 40 ms
+    63 compiler: program compiled in 800 ms, OGLES2Cache:56f5984093155d748499e123.v3dp
+    64 glLinkProgram: OGLES2Cache:56f5984093155d748499e123.v3dp (5 variants, 4112 bytes of code)
+    65 compiler: shader compiled in 40 ms
+    66 compiler: shader compiled in 40 ms
+    67 compiler: program compiled in 360 ms, OGLES2Cache:d3e2bc79e8d95368e2d3d49b.v3dp
+    68 glLinkProgram: OGLES2Cache:d3e2bc79e8d95368e2d3d49b.v3dp (5 variants, 2232 bytes of code)
+    69 compiler: shader compiled in 40 ms
+    70 compiler: shader compiled in 40 ms
+    71 compiler: program compiled in 560 ms, OGLES2Cache:c7467f67de53c58371db5000.v3dp
+    72 glLinkProgram: OGLES2Cache:c7467f67de53c58371db5000.v3dp (5 variants, 3256 bytes of code)
+    73 compiler: shader compiled in 20 ms
+    74 compiler: shader compiled in 40 ms
+    75 compiler: program compiled in 660 ms, OGLES2Cache:076d8a828d5963d84c0e4740.v3dp
+    76 glLinkProgram: OGLES2Cache:076d8a828d5963d84c0e4740.v3dp (5 variants, 3392 bytes of code)
+    77 compiler: shader compiled in 60 ms
+    78 compiler: shader compiled in 40 ms
+    79 compiler: program compiled in 920 ms, OGLES2Cache:9e7dc43b13336c8d2f788250.v3dp
+    80 glLinkProgram: OGLES2Cache:9e7dc43b13336c8d2f788250.v3dp (5 variants, 4376 bytes of code)
+    81 compiler: shader compiled in 20 ms
+    82 compiler: shader compiled in 40 ms
+    83 compiler: program compiled in 400 ms, OGLES2Cache:b9e0873e199f677517d8979b.v3dp
+    84 glLinkProgram: OGLES2Cache:b9e0873e199f677517d8979b.v3dp (5 variants, 2368 bytes of code)
+    85 compiler: shader compiled in 40 ms
+    86 compiler: shader compiled in 40 ms
+    87 compiler: program compiled in 600 ms, OGLES2Cache:405d74ff44b1f58cb6814363.v3dp
+    88 glLinkProgram: OGLES2Cache:405d74ff44b1f58cb6814363.v3dp (5 variants, 3256 bytes of code)
+    89 compiler: shader compiled in 60 ms
+    90 compiler: shader compiled in 40 ms
+    91 compiler: program compiled in 680 ms, OGLES2Cache:284da60f36607acce92b1b98.v3dp
+    92 glLinkProgram: OGLES2Cache:284da60f36607acce92b1b98.v3dp (5 variants, 3536 bytes of code)
+    93 compiler: shader compiled in 60 ms
+    94 compiler: shader compiled in 40 ms
+    95 compiler: program compiled in 920 ms, OGLES2Cache:f98164327dc98dd947a472a2.v3dp
+    96 glLinkProgram: OGLES2Cache:f98164327dc98dd947a472a2.v3dp (5 variants, 4416 bytes of code)
+    97 compiler: shader compiled in 40 ms
+    98 compiler: shader compiled in 40 ms
+    99 compiler: program compiled in 440 ms, OGLES2Cache:5f8ba05c787f530c14c9895b.v3dp
+   100 glLinkProgram: OGLES2Cache:5f8ba05c787f530c14c9895b.v3dp (5 variants, 2552 bytes of code)
+   101 compiler: shader compiled in 20 ms
+   102 compiler: shader compiled in 40 ms
+   103 compiler: program compiled in 640 ms, OGLES2Cache:dd822ee036abc56d5cc5ef35.v3dp
+   104 glLinkProgram: OGLES2Cache:dd822ee036abc56d5cc5ef35.v3dp (5 variants, 3480 bytes of code)
+   105 compiler: shader compiled in 40 ms
+   106 compiler: shader compiled in 40 ms
+   107 compiler: program compiled in 760 ms, OGLES2Cache:f10ac7680be5efc84e06684b.v3dp
+   108 glLinkProgram: OGLES2Cache:f10ac7680be5efc84e06684b.v3dp (5 variants, 3720 bytes of code)
+   109 compiler: shader compiled in 60 ms
+   110 compiler: shader compiled in 40 ms
+   111 compiler: program compiled in 980 ms, OGLES2Cache:d0ae8af13b9fa80d670b2567.v3dp
+   112 glLinkProgram: OGLES2Cache:d0ae8af13b9fa80d670b2567.v3dp (5 variants, 4680 bytes of code)
+   113 compiler: shader compiled in 20 ms
+   114 compiler: shader compiled in 20 ms
+   115 compiler: program compiled in 460 ms, OGLES2Cache:6394afa8bfbdc3d59ab32c51.v3dp
+   116 glLinkProgram: OGLES2Cache:6394afa8bfbdc3d59ab32c51.v3dp (5 variants, 2648 bytes of code)
+   117 compiler: shader compiled in 20 ms
+   118 compiler: shader compiled in 20 ms
+   119 compiler: program compiled in 660 ms, OGLES2Cache:d24f6554699221b1bd9cd03e.v3dp
+   120 glLinkProgram: OGLES2Cache:d24f6554699221b1bd9cd03e.v3dp (5 variants, 3536 bytes of code)
+   121 compiler: shader compiled in 20 ms
+   122 compiler: shader compiled in 20 ms
+   123 compiler: program compiled in 800 ms, OGLES2Cache:c8d3cc56ace332b9c3cad805.v3dp
+   124 glLinkProgram: OGLES2Cache:c8d3cc56ace332b9c3cad805.v3dp (5 variants, 3816 bytes of code)
+   125 compiler: shader compiled in 40 ms
+   126 compiler: shader compiled in 40 ms
+   127 compiler: program compiled in 1040 ms, OGLES2Cache:3ee0890bcc3c539ac2248a52.v3dp
+   128 glLinkProgram: OGLES2Cache:3ee0890bcc3c539ac2248a52.v3dp (5 variants, 4696 bytes of code)
+   129 compiler: shader compiled in 40 ms
+   130 compiler: shader compiled in 40 ms
+   131 compiler: program compiled in 520 ms, OGLES2Cache:7a5c1006859802077929aa97.v3dp
+   132 glLinkProgram: OGLES2Cache:7a5c1006859802077929aa97.v3dp (5 variants, 2832 bytes of code)
+   133 compiler: shader compiled in 40 ms
+   134 compiler: shader compiled in 40 ms
+   135 compiler: program compiled in 720 ms, OGLES2Cache:53aa1677a1453b72e8bf6f2c.v3dp
+   136 glLinkProgram: OGLES2Cache:53aa1677a1453b72e8bf6f2c.v3dp (5 variants, 3760 bytes of code)
+   137 compiler: shader compiled in 60 ms
+   138 compiler: shader compiled in 40 ms
+   139 compiler: program compiled in 840 ms, OGLES2Cache:7ab57ce5fd43607a8bc21c94.v3dp
+   140 glLinkProgram: OGLES2Cache:7ab57ce5fd43607a8bc21c94.v3dp (5 variants, 4000 bytes of code)
+   141 compiler: shader compiled in 60 ms
+   142 compiler: shader compiled in 40 ms
+   143 compiler: program compiled in 1080 ms, OGLES2Cache:c7eb66fa929e22d2cf34000e.v3dp
+   144 glLinkProgram: OGLES2Cache:c7eb66fa929e22d2cf34000e.v3dp (5 variants, 4960 bytes of code)
+   145 compiler: shader compiled in 40 ms
+   146 compiler: shader compiled in 40 ms
+   147 compiler: program compiled in 640 ms, OGLES2Cache:0b9fd2a897f90717686e93dd.v3dp
+   148 glLinkProgram: OGLES2Cache:0b9fd2a897f90717686e93dd.v3dp (5 variants, 3696 bytes of code)
+   149 compiler: shader compiled in 40 ms
+   150 compiler: shader compiled in 40 ms
+   151 compiler: program compiled in 1200 ms, OGLES2Cache:cd75ba2faa72d20edf630b98.v3dp
+   152 glLinkProgram: OGLES2Cache:cd75ba2faa72d20edf630b98.v3dp (5 variants, 5312 bytes of code)
+   153 compiler: shader compiled in 40 ms
+   154 compiler: shader compiled in 40 ms
+   155 compiler: program compiled in 1160 ms, OGLES2Cache:711dd2345e7de6ab320e0ff2.v3dp
+   156 glLinkProgram: OGLES2Cache:711dd2345e7de6ab320e0ff2.v3dp (5 variants, 5064 bytes of code)
+   157 compiler: shader compiled in 40 ms
+   158 compiler: shader compiled in 40 ms
+   159 compiler: program compiled in 1600 ms, OGLES2Cache:1607185529d30cb456ecab18.v3dp
+   160 glLinkProgram: OGLES2Cache:1607185529d30cb456ecab18.v3dp (5 variants, 6376 bytes of code)
+   161 compiler: shader compiled in 20 ms
+   162 compiler: shader compiled in 40 ms
+   163 compiler: program compiled in 780 ms, OGLES2Cache:1026e11e70f1a0de142d433b.v3dp
+   164 glLinkProgram: OGLES2Cache:1026e11e70f1a0de142d433b.v3dp (5 variants, 4136 bytes of code)
+   165 compiler: shader compiled in 40 ms
+   166 compiler: shader compiled in 20 ms
+   167 compiler: program compiled in 1260 ms, OGLES2Cache:fd64c23c9e2b6932c9fff917.v3dp
+   168 glLinkProgram: OGLES2Cache:fd64c23c9e2b6932c9fff917.v3dp (5 variants, 5544 bytes of code)
+   169 compiler: shader compiled in 40 ms
+   170 compiler: shader compiled in 40 ms
+   171 compiler: program compiled in 1320 ms, OGLES2Cache:3739d4011713d63352bb7916.v3dp
+   172 glLinkProgram: OGLES2Cache:3739d4011713d63352bb7916.v3dp (5 variants, 5312 bytes of code)
+   173 compiler: shader compiled in 40 ms
+   174 compiler: shader compiled in 40 ms
+   175 compiler: program compiled in 1720 ms, OGLES2Cache:e3f5273a62be94938332acbb.v3dp
+   176 glLinkProgram: OGLES2Cache:e3f5273a62be94938332acbb.v3dp (5 variants, 6632 bytes of code)
+   177 compiler: shader compiled in 40 ms
+   178 compiler: shader compiled in 40 ms
+   179 compiler: program compiled in 1000 ms, OGLES2Cache:94eb55e57f4b43fef286c7e5.v3dp
+   180 glLinkProgram: OGLES2Cache:94eb55e57f4b43fef286c7e5.v3dp (5 variants, 4536 bytes of code)
+   181 compiler: shader compiled in 40 ms
+   182 compiler: shader compiled in 40 ms
+   183 compiler: program compiled in 1400 ms, OGLES2Cache:9b0879d3ab063352c3eb269b.v3dp
+   184 glLinkProgram: OGLES2Cache:9b0879d3ab063352c3eb269b.v3dp (5 variants, 5760 bytes of code)
+   185 compiler: shader compiled in 40 ms
+   186 compiler: shader compiled in 40 ms
+   187 compiler: program compiled in 1440 ms, OGLES2Cache:d869aff4274fb8ae9681e9c7.v3dp
+   188 glLinkProgram: OGLES2Cache:d869aff4274fb8ae9681e9c7.v3dp (5 variants, 5640 bytes of code)
+   189 compiler: shader compiled in 40 ms
+   190 compiler: shader compiled in 40 ms
+   191 compiler: program compiled in 1840 ms, OGLES2Cache:8dbb79be1fb6bc3d3f91c388.v3dp
+   192 glLinkProgram: OGLES2Cache:8dbb79be1fb6bc3d3f91c388.v3dp (5 variants, 6960 bytes of code)
+   193 compiler: shader compiled in 20 ms
+   194 compiler: shader compiled in 40 ms
+   195 compiler: program compiled in 1080 ms, OGLES2Cache:46744bd3d5bd2ad80eb5985a.v3dp
+   196 glLinkProgram: OGLES2Cache:46744bd3d5bd2ad80eb5985a.v3dp (5 variants, 4816 bytes of code)
+   197 compiler: shader compiled in 20 ms
+   198 compiler: shader compiled in 20 ms
+   199 compiler: program compiled in 1500 ms, OGLES2Cache:4430d6bb900a9084afdcdd8d.v3dp
+   200 glLinkProgram: OGLES2Cache:4430d6bb900a9084afdcdd8d.v3dp (5 variants, 6040 bytes of code)
+   201 compiler: shader compiled in 20 ms
+   202 compiler: shader compiled in 20 ms
+   203 compiler: program compiled in 1560 ms, OGLES2Cache:d266d15f1e8db1fe9867442f.v3dp
+   204 glLinkProgram: OGLES2Cache:d266d15f1e8db1fe9867442f.v3dp (5 variants, 5920 bytes of code)
+   205 compiler: shader compiled in 80 ms
+   206 compiler: shader compiled in 40 ms
+   207 compiler: program compiled in 1960 ms, OGLES2Cache:a9e4fa1afaca1a7e62904d20.v3dp
+   208 glLinkProgram: OGLES2Cache:a9e4fa1afaca1a7e62904d20.v3dp (5 variants, 7240 bytes of code)
+   209 compiler: shader compiled in 40 ms
+   210 compiler: shader compiled in 40 ms
+   211 compiler: program compiled in 200 ms, OGLES2Cache:11e90e0f784bd8ac4beaf0e1.v3dp
+   212 glLinkProgram: OGLES2Cache:11e90e0f784bd8ac4beaf0e1.v3dp (5 variants, 1024 bytes of code)
+   213 compiler: shader compiled in 40 ms
+   214 compiler: shader compiled in 40 ms
+   215 compiler: program compiled in 240 ms, OGLES2Cache:1828c9c8378ca614cc4f8fdc.v3dp
+   216 glLinkProgram: OGLES2Cache:1828c9c8378ca614cc4f8fdc.v3dp (5 variants, 1048 bytes of code)
+   217 compiler: shader compiled in 20 ms
+   218 compiler: shader compiled in 40 ms
+   219 compiler: program compiled in 480 ms, OGLES2Cache:bcca846872a955ed1372bc8c.v3dp
+   220 glLinkProgram: OGLES2Cache:bcca846872a955ed1372bc8c.v3dp (5 variants, 2120 bytes of code)
+   221 compiler: shader compiled in 20 ms
+   222 compiler: shader compiled in 40 ms
+   223 compiler: program compiled in 280 ms, OGLES2Cache:1765ce85604cdfb7ddd1458e.v3dp
+   224 glLinkProgram: OGLES2Cache:1765ce85604cdfb7ddd1458e.v3dp (5 variants, 1176 bytes of code)
+   225 compiler: shader compiled in 20 ms
+   226 compiler: shader compiled in 40 ms
+   227 compiler: program compiled in 500 ms, OGLES2Cache:46bdc9880e36c684ebd3bad3.v3dp
+   228 glLinkProgram: OGLES2Cache:46bdc9880e36c684ebd3bad3.v3dp (5 variants, 2360 bytes of code)
+   229 compiler: shader compiled in 20 ms
+   230 compiler: shader compiled in 40 ms
+   231 compiler: program compiled in 660 ms, OGLES2Cache:4cc42166c164f9649325df42.v3dp
+   232 glLinkProgram: OGLES2Cache:4cc42166c164f9649325df42.v3dp (5 variants, 3080 bytes of code)
+   233 compiler: shader compiled in 40 ms
+   234 compiler: shader compiled in 40 ms
+   235 compiler: program compiled in 1200 ms, OGLES2Cache:e66b7f245f3d646c0b5eae8c.v3dp
+   236 glLinkProgram: OGLES2Cache:e66b7f245f3d646c0b5eae8c.v3dp (5 variants, 4432 bytes of code)
+   237 compiler: shader compiled in 40 ms
+   238 compiler: shader compiled in 40 ms
+   239 compiler: program compiled in 280 ms, OGLES2Cache:82dc36064617db678abcc2ef.v3dp
+   240 glLinkProgram: OGLES2Cache:82dc36064617db678abcc2ef.v3dp (5 variants, 1920 bytes of code)
+   241 compiler: shader compiled in 20 ms
+   242 compiler: shader compiled in 40 ms
+   243 compiler: program compiled in 520 ms, OGLES2Cache:a26802a6c57d55d7948681cc.v3dp
+   244 glLinkProgram: OGLES2Cache:a26802a6c57d55d7948681cc.v3dp (5 variants, 2936 bytes of code)
+   245 compiler: shader compiled in 20 ms
+   246 compiler: shader compiled in 40 ms
+   247 compiler: program compiled in 280 ms, OGLES2Cache:e04717c43b6e39c476995b12.v3dp
+   248 glLinkProgram: OGLES2Cache:e04717c43b6e39c476995b12.v3dp (5 variants, 1824 bytes of code)
+   249 compiler: shader compiled in 20 ms
+   250 compiler: shader compiled in 40 ms
+   251 compiler: program compiled in 680 ms, OGLES2Cache:93380a306ed200f218187685.v3dp
+   252 glLinkProgram: OGLES2Cache:93380a306ed200f218187685.v3dp (5 variants, 6024 bytes of code)
+   253 compiler: shader compiled in 20 ms
+   254 compiler: shader compiled in 40 ms
+   255 compiler: program compiled in 580 ms, OGLES2Cache:c44a8b2b5126e0c1b6a46ec0.v3dp
+   256 glLinkProgram: OGLES2Cache:c44a8b2b5126e0c1b6a46ec0.v3dp (5 variants, 5344 bytes of code)
+   257 compiler: shader compiled in 40 ms
+   258 compiler: shader compiled in 20 ms
+   259 compiler: program compiled in 580 ms, OGLES2Cache:79965389f0ac2e3eba9487ae.v3dp
+   260 glLinkProgram: OGLES2Cache:79965389f0ac2e3eba9487ae.v3dp (5 variants, 5312 bytes of code)
+   261 compiler: shader compiled in 20 ms
+   262 compiler: shader compiled in 20 ms
+   263 compiler: program compiled in 280 ms, OGLES2Cache:fef00570a6d86b16757a47e5.v3dp
+   264 glLinkProgram: OGLES2Cache:fef00570a6d86b16757a47e5.v3dp (5 variants, 1928 bytes of code)
+   265 compiler: shader compiled in 20 ms
+   266 compiler: shader compiled in 20 ms
+   267 compiler: program compiled in 800 ms, OGLES2Cache:37b00595e444411bc560ddbb.v3dp
+   268 glLinkProgram: OGLES2Cache:37b00595e444411bc560ddbb.v3dp (5 variants, 6792 bytes of code)
+   269 compiler: shader compiled in 20 ms
+   270 compiler: shader compiled in 20 ms
+   271 compiler: program compiled in 720 ms, OGLES2Cache:91ec291753aa45c16f079c9d.v3dp
+   272 glLinkProgram: OGLES2Cache:91ec291753aa45c16f079c9d.v3dp (5 variants, 5856 bytes of code)
+   273 compiler: shader compiled in 40 ms
+   274 compiler: shader compiled in 40 ms
+   275 compiler: program compiled in 720 ms, OGLES2Cache:ad3a07f859a291d007ef279d.v3dp
+   276 glLinkProgram: OGLES2Cache:ad3a07f859a291d007ef279d.v3dp (5 variants, 6088 bytes of code)
+   277 compiler: shader compiled in 60 ms
+   278 compiler: shader compiled in 40 ms
+   279 compiler: program compiled in 560 ms, OGLES2Cache:d53b1256bf9a17599b5c44a5.v3dp
+   280 glLinkProgram: OGLES2Cache:d53b1256bf9a17599b5c44a5.v3dp (5 variants, 2944 bytes of code)
+   281 compiler: shader compiled in 60 ms
+   282 compiler: shader compiled in 40 ms
+   283 compiler: program compiled in 960 ms, OGLES2Cache:898912381df2dc54deb128d6.v3dp
+   284 glLinkProgram: OGLES2Cache:898912381df2dc54deb128d6.v3dp (5 variants, 7232 bytes of code)
+   285 compiler: shader compiled in 60 ms
+   286 compiler: shader compiled in 40 ms
+   287 compiler: program compiled in 920 ms, OGLES2Cache:a85d5fe418096fc7180b9dd8.v3dp
+   288 glLinkProgram: OGLES2Cache:a85d5fe418096fc7180b9dd8.v3dp (5 variants, 6576 bytes of code)
+   289 compiler: shader compiled in 60 ms
+   290 compiler: shader compiled in 40 ms
+   291 compiler: program compiled in 880 ms, OGLES2Cache:2007235be186f20d83683b15.v3dp
+   292 glLinkProgram: OGLES2Cache:2007235be186f20d83683b15.v3dp (5 variants, 6528 bytes of code)
+   293 compiler: shader compiled in 60 ms
+   294 compiler: shader compiled in 40 ms
+   295 compiler: program compiled in 600 ms, OGLES2Cache:9cbe9cee24db7603d8a46145.v3dp
+   296 glLinkProgram: OGLES2Cache:9cbe9cee24db7603d8a46145.v3dp (5 variants, 3104 bytes of code)
+   297 compiler: shader compiled in 60 ms
+   298 compiler: shader compiled in 40 ms
+   299 compiler: program compiled in 1160 ms, OGLES2Cache:423587693659fbff46be782b.v3dp
+   300 glLinkProgram: OGLES2Cache:423587693659fbff46be782b.v3dp (5 variants, 7888 bytes of code)
+   301 compiler: shader compiled in 60 ms
+   302 compiler: shader compiled in 40 ms
+   303 compiler: program compiled in 1080 ms, OGLES2Cache:d97eb39a994439f426ff37e2.v3dp
+   304 glLinkProgram: OGLES2Cache:d97eb39a994439f426ff37e2.v3dp (5 variants, 7104 bytes of code)
+   305 compiler: shader compiled in 40 ms
+   306 compiler: shader compiled in 40 ms
+   307 compiler: program compiled in 1060 ms, OGLES2Cache:32bbe7943d5dc450c3715215.v3dp
+   308 glLinkProgram: OGLES2Cache:32bbe7943d5dc450c3715215.v3dp (5 variants, 7192 bytes of code)
+   309 compiler: shader compiled in 40 ms
+   310 compiler: shader compiled in 20 ms
+   311 compiler: program compiled in 820 ms, OGLES2Cache:48492f748f103d010cf6ea11.v3dp
+   312 glLinkProgram: OGLES2Cache:48492f748f103d010cf6ea11.v3dp (5 variants, 7608 bytes of code)
+   313 compiler: shader compiled in 20 ms
+   314 compiler: shader compiled in 20 ms
+   315 compiler: program compiled in 740 ms, OGLES2Cache:9933f03a9738c1cf361bffd6.v3dp
+   316 glLinkProgram: OGLES2Cache:9933f03a9738c1cf361bffd6.v3dp (5 variants, 7064 bytes of code)
+   317 compiler: shader compiled in 20 ms
+   318 compiler: shader compiled in 20 ms
+   319 compiler: program compiled in 740 ms, OGLES2Cache:b75f5ac8ee3ade67ebc4a9f8.v3dp
+   320 glLinkProgram: OGLES2Cache:b75f5ac8ee3ade67ebc4a9f8.v3dp (5 variants, 6984 bytes of code)
+   321 compiler: shader compiled in 20 ms
+   322 compiler: shader compiled in 20 ms
+   323 compiler: program compiled in 960 ms, OGLES2Cache:272dbb1c704a0ea7852af129.v3dp
+   324 glLinkProgram: OGLES2Cache:272dbb1c704a0ea7852af129.v3dp (5 variants, 8392 bytes of code)
+   325 compiler: shader compiled in 20 ms
+   326 compiler: shader compiled in 40 ms
+   327 compiler: program compiled in 880 ms, OGLES2Cache:cc0b203557699a298f177bdf.v3dp
+   328 glLinkProgram: OGLES2Cache:cc0b203557699a298f177bdf.v3dp (5 variants, 7584 bytes of code)
+   329 compiler: shader compiled in 20 ms
+   330 compiler: shader compiled in 40 ms
+   331 compiler: program compiled in 880 ms, OGLES2Cache:0c2311593b64cacc4e3607be.v3dp
+   332 glLinkProgram: OGLES2Cache:0c2311593b64cacc4e3607be.v3dp (5 variants, 7752 bytes of code)
+   333 compiler: shader compiled in 60 ms
+   334 compiler: shader compiled in 40 ms
+   335 compiler: program compiled in 1160 ms, OGLES2Cache:178561c401bc0175f875c6fa.v3dp
+   336 glLinkProgram: OGLES2Cache:178561c401bc0175f875c6fa.v3dp (5 variants, 8832 bytes of code)
+   337 compiler: shader compiled in 40 ms
+   338 compiler: shader compiled in 40 ms
+   339 compiler: program compiled in 1080 ms, OGLES2Cache:0696897048a2115d5965900c.v3dp
+   340 glLinkProgram: OGLES2Cache:0696897048a2115d5965900c.v3dp (5 variants, 8288 bytes of code)
+   341 compiler: shader compiled in 40 ms
+   342 compiler: shader compiled in 40 ms
+   343 compiler: program compiled in 1040 ms, OGLES2Cache:4bcb0755d9ae0f0c5af47ec4.v3dp
+   344 glLinkProgram: OGLES2Cache:4bcb0755d9ae0f0c5af47ec4.v3dp (5 variants, 8192 bytes of code)
+   345 compiler: shader compiled in 60 ms
+   346 compiler: shader compiled in 40 ms
+   347 compiler: program compiled in 1320 ms, OGLES2Cache:67563a1a204aacda1a200917.v3dp
+   348 glLinkProgram: OGLES2Cache:67563a1a204aacda1a200917.v3dp (5 variants, 9496 bytes of code)
+   349 compiler: shader compiled in 40 ms
+   350 compiler: shader compiled in 40 ms
+   351 compiler: program compiled in 1240 ms, OGLES2Cache:21967c90e467cf9cbb97e41e.v3dp
+   352 glLinkProgram: OGLES2Cache:21967c90e467cf9cbb97e41e.v3dp (5 variants, 8824 bytes of code)
+   353 compiler: shader compiled in 40 ms
+   354 compiler: shader compiled in 40 ms
+   355 compiler: program compiled in 1220 ms, OGLES2Cache:29bf01b526a8d242c88b2684.v3dp
+   356 glLinkProgram: OGLES2Cache:29bf01b526a8d242c88b2684.v3dp (5 variants, 8856 bytes of code)
+   357 compiler: shader compiled in 40 ms
+   358 compiler: shader compiled in 20 ms
+   359 compiler: program compiled in 660 ms, OGLES2Cache:6aa0e719b527d75a0f17e32c.v3dp
+   360 glLinkProgram: OGLES2Cache:6aa0e719b527d75a0f17e32c.v3dp (5 variants, 3688 bytes of code)
+   361 compiler: shader compiled in 20 ms
+   362 compiler: shader compiled in 20 ms
+   363 compiler: program compiled in 1260 ms, OGLES2Cache:b838e9abf8e9b0cc64c614bd.v3dp
+   364 glLinkProgram: OGLES2Cache:b838e9abf8e9b0cc64c614bd.v3dp (5 variants, 8712 bytes of code)
+   365 compiler: shader compiled in 40 ms
+   366 compiler: shader compiled in 40 ms
+   367 compiler: program compiled in 1240 ms, OGLES2Cache:44a9c031a3a599a7a442e32e.v3dp
+   368 glLinkProgram: OGLES2Cache:44a9c031a3a599a7a442e32e.v3dp (5 variants, 7968 bytes of code)
+   369 compiler: shader compiled in 40 ms
+   370 compiler: shader compiled in 40 ms
+   371 compiler: program compiled in 1200 ms, OGLES2Cache:4ca448633ba2287e50dd691c.v3dp
+   372 glLinkProgram: OGLES2Cache:4ca448633ba2287e50dd691c.v3dp (5 variants, 7976 bytes of code)
+   373 compiler: shader compiled in 40 ms
+   374 compiler: shader compiled in 40 ms
+   375 compiler: program compiled in 1200 ms, OGLES2Cache:9fc85320030c5e4337ff4c3a.v3dp
+   376 glLinkProgram: OGLES2Cache:9fc85320030c5e4337ff4c3a.v3dp (5 variants, 5024 bytes of code)
+   377 compiler: shader compiled in 40 ms
+   378 compiler: shader compiled in 40 ms
+   379 compiler: program compiled in 1760 ms, OGLES2Cache:bcd394854e3dbc917767f749.v3dp
+   380 glLinkProgram: OGLES2Cache:bcd394854e3dbc917767f749.v3dp (5 variants, 9952 bytes of code)
+   381 compiler: shader compiled in 40 ms
+   382 compiler: shader compiled in 40 ms
+   383 compiler: program compiled in 1680 ms, OGLES2Cache:f0091a72b2022e400f4373f1.v3dp
+   384 glLinkProgram: OGLES2Cache:f0091a72b2022e400f4373f1.v3dp (5 variants, 9160 bytes of code)
+   385 compiler: shader compiled in 80 ms
+   386 compiler: shader compiled in 40 ms
+   387 compiler: program compiled in 1660 ms, OGLES2Cache:bd66c2e4c8e3bbf5a82f5f14.v3dp
+   388 glLinkProgram: OGLES2Cache:bd66c2e4c8e3bbf5a82f5f14.v3dp (5 variants, 9248 bytes of code)
+   389 compiler: shader compiled in 20 ms
+   390 compiler: shader compiled in 40 ms
+   391 compiler: program compiled in 1460 ms, OGLES2Cache:209954755c21d6a6ee2311cb.v3dp
+   392 glLinkProgram: OGLES2Cache:209954755c21d6a6ee2311cb.v3dp (5 variants, 10320 bytes of code)
+   393 compiler: shader compiled in 20 ms
+   394 compiler: shader compiled in 20 ms
+   395 compiler: program compiled in 1380 ms, OGLES2Cache:d8788521b8015e8d8a3e6ba5.v3dp
+   396 glLinkProgram: OGLES2Cache:d8788521b8015e8d8a3e6ba5.v3dp (5 variants, 9688 bytes of code)
+   397 compiler: shader compiled in 20 ms
+   398 compiler: shader compiled in 20 ms
+   399 compiler: program compiled in 1400 ms, OGLES2Cache:f532cf3eac73873a05f932b9.v3dp
+   400 glLinkProgram: OGLES2Cache:f532cf3eac73873a05f932b9.v3dp (5 variants, 9640 bytes of code)
+   401 compiler: shader compiled in 40 ms
+   402 compiler: shader compiled in 40 ms
+   403 compiler: program compiled in 1960 ms, OGLES2Cache:4eb01ad7e3ec7d1e9d29cb10.v3dp
+   404 glLinkProgram: OGLES2Cache:4eb01ad7e3ec7d1e9d29cb10.v3dp (5 variants, 11560 bytes of code)
+   405 compiler: shader compiled in 40 ms
+   406 compiler: shader compiled in 40 ms
+   407 compiler: program compiled in 1880 ms, OGLES2Cache:c6a17bf677ad2528f67e6958.v3dp
+   408 glLinkProgram: OGLES2Cache:c6a17bf677ad2528f67e6958.v3dp (5 variants, 10856 bytes of code)
+   409 compiler: shader compiled in 40 ms
+   410 compiler: shader compiled in 40 ms
+   411 compiler: program compiled in 1840 ms, OGLES2Cache:350a43e9a3b14518970af444.v3dp
+   412 glLinkProgram: OGLES2Cache:350a43e9a3b14518970af444.v3dp (5 variants, 10912 bytes of code)
+   413 compiler: shader compiled in 40 ms
+   414 compiler: shader compiled in 40 ms
+   415 compiler: program compiled in 400 ms, OGLES2Cache:4b28cc8a1487521894505292.v3dp
+   416 glLinkProgram: OGLES2Cache:4b28cc8a1487521894505292.v3dp (5 variants, 1880 bytes of code)
+   417 compiler: shader compiled in 20 ms
+   418 compiler: shader compiled in 40 ms
+   419 compiler: program compiled in 440 ms, OGLES2Cache:5ae1975a8c7e1e28707da1e3.v3dp
+   420 glLinkProgram: OGLES2Cache:5ae1975a8c7e1e28707da1e3.v3dp (5 variants, 2120 bytes of code)
+   421 compiler: shader compiled in 20 ms
+   422 compiler: shader compiled in 40 ms
+   423 compiler: program compiled in 1120 ms, OGLES2Cache:fbc67d2b829f1afadcf5b9d4.v3dp
+   424 glLinkProgram: OGLES2Cache:fbc67d2b829f1afadcf5b9d4.v3dp (5 variants, 4200 bytes of code)
+   425 compiler: shader compiled in 20 ms
+   426 compiler: shader compiled in 40 ms
+   427 compiler: program compiled in 320 ms, OGLES2Cache:074e50569985202b3155407a.v3dp
+   428 glLinkProgram: OGLES2Cache:074e50569985202b3155407a.v3dp (5 variants, 2632 bytes of code)
+   429 compiler: shader compiled in 20 ms
+   430 compiler: shader compiled in 20 ms
+   431 compiler: program compiled in 400 ms, OGLES2Cache:ada6dbaf6d83533d364a036f.v3dp
+   432 glLinkProgram: OGLES2Cache:ada6dbaf6d83533d364a036f.v3dp (5 variants, 3160 bytes of code)
+   433 compiler: shader compiled in 20 ms
+   434 compiler: program compiled in 420 ms, OGLES2Cache:07603a35111e1de70626df17.v3dp
+   435 glLinkProgram: OGLES2Cache:07603a35111e1de70626df17.v3dp (5 variants, 3496 bytes of code)
+   436 compiler: shader compiled in 40 ms
+   437 compiler: shader compiled in 20 ms
+   438 compiler: program compiled in 300 ms, OGLES2Cache:48fe1c228c6228fc25d61174.v3dp
+   439 glLinkProgram: OGLES2Cache:48fe1c228c6228fc25d61174.v3dp (5 variants, 2496 bytes of code)
+   440 compiler: shader compiled in 20 ms
+   441 compiler: shader compiled in 20 ms
+   442 compiler: program compiled in 180 ms, OGLES2Cache:a3e83cac72a3f73fe589897d.v3dp
+   443 glLinkProgram: OGLES2Cache:a3e83cac72a3f73fe589897d.v3dp (5 variants, 1216 bytes of code)
+   444 compiler: shader compiled in 20 ms
+   445 compiler: program compiled in 380 ms, OGLES2Cache:72b1ed7b3278197a6f89269f.v3dp
+   446 glLinkProgram: OGLES2Cache:72b1ed7b3278197a6f89269f.v3dp (5 variants, 2920 bytes of code)
+   447 compiler: shader compiled in 20 ms
+   448 compiler: shader compiled in 20 ms
+   449 compiler: program compiled in 180 ms, OGLES2Cache:8e39ad8aaedd8d52a8a61656.v3dp
+   450 glLinkProgram: OGLES2Cache:8e39ad8aaedd8d52a8a61656.v3dp (5 variants, 1032 bytes of code)
+   451 trace: glDeleteTextures #1: 1 names from 1
+   452 trace: glDeleteTextures #2: 1 names from 2
+   453 trace: glDeleteTextures #3: 1 names from 3
+   454 trace: glDeleteTextures #4: 1 names from 4
+   455 trace: glDeleteTextures #5: 1 names from 5
+   456 trace: glDeleteTextures #6: 1 names from 6
+   457 trace: glDeleteTextures #7: 1 names from 7
+   458 trace: glDeleteTextures #8: 1 names from 8
+   459 trace: glDeleteTextures #9: 1 names from 9
+   460 trace: glDeleteTextures #10: 1 names from 10
+   461 trace: glDeleteTextures #11: 1 names from 11
+   462 trace: glDeleteTextures #12: 1 names from 12
+   463 trace: glDeleteTextures #13: 1 names from 13
+   464 trace: glDeleteTextures #14: 1 names from 14
+   465 trace: glDeleteTextures #15: 1 names from 15
+   466 trace: glDeleteTextures #16: 1 names from 16
+   467 trace: glDeleteTextures #17: 1 names from 17
+   468 trace: glDeleteTextures #18: 1 names from 18
+   469 trace: glDeleteTextures #19: 1 names from 19
+   470 trace: glDeleteTextures #20: 1 names from 20
+   471 trace: glDeleteTextures #21: 1 names from 21
+   472 trace: glDeleteTextures #22: 1 names from 22
+   473 trace: glDeleteTextures #23: 1 names from 23
+   474 trace: glDeleteTextures #24: 1 names from 24
+   475 trace: glDeleteTextures #25: 1 names from 25
+   476 trace: glDeleteTextures #26: 1 names from 26
+   477 trace: glDeleteTextures #27: 1 names from 27
+   478 trace: glDeleteTextures #28: 1 names from 28
+   479 trace: glDeleteTextures #29: 1 names from 29
+   480 trace: glDeleteTextures #30: 1 names from 30
+   481 trace: glDeleteTextures #31: 1 names from 31
+   482 trace: glDeleteTextures #32: 1 names from 32
+   483 trace: glDeleteTextures #33: 1 names from 33
+   484 trace: glDeleteTextures #34: 1 names from 34
+   485 trace: glDeleteTextures #35: 1 names from 35
+   486 trace: glDeleteTextures #36: 1 names from 36
+   487 trace: glDeleteTextures #37: 1 names from 37
+   488 trace: glDeleteTextures #38: 1 names from 38
+   489 trace: glDeleteTextures #39: 1 names from 39
+   490 trace: glDeleteTextures #40: 1 names from 40
+   491 trace: glDeleteTextures #41: 1 names from 41
+   492 trace: glDeleteTextures #42: 1 names from 42
+   493 trace: glDeleteTextures #43: 1 names from 43
+   494 trace: glDeleteTextures #44: 1 names from 44
+   495 trace: glDeleteTextures #45: 1 names from 45
+   496 trace: glDeleteTextures #46: 1 names from 46
+   497 trace: glDeleteTextures #47: 1 names from 47
+   498 trace: glDeleteTextures #48: 1 names from 48
+   499 trace: glDeleteTextures #49: 1 names from 49
+   500 trace: glDeleteTextures #50: 1 names from 50
+   501 trace: glDeleteTextures #51: 1 names from 51
+   502 trace: glDeleteTextures #52: 1 names from 52
+   503 trace: glDeleteTextures #53: 1 names from 53
+   504 trace: glDeleteBuffers #54: 1 names from 1
+   505 trace: glDeleteBuffers #55: 1 names from 2
+   506 trace: glDeleteBuffers #56: 1 names from 3
+   507 trace: glDeleteBuffers #57: 1 names from 4
+   508 job: depth and stencil kept across a mid-frame flush (logged once)
+   509 trace: glDeleteTextures #58: 1 names from 1
+   510 trace: glDeleteTextures #59: 1 names from 2
+   511 texture 2 changed after a draw used it in the same frame: renamed (logged once)
+   512 trace: glDeleteTextures #60: 1 names from 3
+   513 trace: glDeleteTextures #61: 1 names from 4
+   514 trace: glDeleteTextures #62: 1 names from 5
+   515 trace: glDeleteTextures #63: 1 names from 6
+   516 trace: glDeleteTextures #64: 1 names from 7
+   517 trace: glDeleteTextures #65: 1 names from 8
+   518 trace: glDeleteTextures #66: 1 names from 9
+   519 trace: glDeleteTextures #67: 1 names from 10
+   520 trace: glDeleteTextures #68: 1 names from 11
+   521 trace: glDeleteTextures #69: 1 names from 12
+   522 trace: glDeleteTextures #70: 1 names from 13
+   523 trace: glDeleteTextures #71: 1 names from 14
+   524 trace: glDeleteTextures #72: 1 names from 15
+   525 trace: glDeleteTextures #73: 1 names from 16
+   526 trace: glDeleteTextures #74: 1 names from 17
+   527 trace: glDeleteTextures #75: 1 names from 18
+   528 trace: glDeleteTextures #76: 1 names from 19
+   529 trace: glDeleteTextures #77: 1 names from 20
+   530 trace: glDeleteTextures #78: 1 names from 21
+   531 trace: glDeleteTextures #79: 1 names from 22
+   532 trace: glDeleteTextures #80: 1 names from 23
+   533 trace: glDeleteTextures #81: 1 names from 24
+   534 trace: glDeleteTextures #82: 1 names from 25
+   535 trace: glDeleteTextures #83: 1 names from 26
+   536 trace: glDeleteTextures #84: 1 names from 27
+   537 trace: glDeleteTextures #85: 1 names from 28
+   538 trace: glDeleteTextures #86: 1 names from 29
+   539 trace: glDeleteTextures #87: 1 names from 30
+   540 trace: glDeleteTextures #88: 1 names from 31
+   541 trace: glDeleteTextures #89: 1 names from 32
+   542 trace: glDeleteTextures #90: 1 names from 33
+   543 trace: glDeleteTextures #91: 1 names from 34
+   544 trace: glDeleteTextures #92: 1 names from 35
+   545 trace: glDeleteTextures #93: 1 names from 36
+   546 trace: glDeleteTextures #94: 1 names from 37
+   547 trace: glDeleteTextures #95: 1 names from 38
+   548 trace: glDeleteTextures #96: 1 names from 39
+   549 trace: glDeleteTextures #97: 1 names from 40
+   550 trace: glDeleteTextures #98: 1 names from 41
+   551 trace: glDeleteTextures #99: 1 names from 42
+   552 trace: glDeleteTextures #100: 1 names from 43
+   553 trace: glDeleteTextures #101: 1 names from 44
+   554 trace: glDeleteTextures #102: 1 names from 45
+   555 trace: glDeleteTextures #103: 1 names from 46
+   556 trace: glDeleteTextures #104: 1 names from 47
+   557 trace: glDeleteTextures #105: 1 names from 48
+   558 trace: glDeleteTextures #106: 1 names from 49
+   559 trace: glDeleteTextures #107: 1 names from 50
+   560 trace: glDeleteTextures #108: 1 names from 51
+   561 trace: glDeleteTextures #109: 1 names from 52
+   562 trace: glDeleteTextures #110: 1 names from 53
+   563 trace: glDeleteTextures #111: 1 names from 54
+   564 trace: glDeleteTextures #112: 1 names from 55
+   565 trace: glDeleteTextures #113: 1 names from 56
+   566 trace: glDeleteTextures #114: 1 names from 57
+   567 trace: glDeleteTextures #115: 1 names from 58
+   568 trace: glDeleteTextures #116: 1 names from 59
+   569 trace: glDeleteTextures #117: 1 names from 60
+   570 trace: glDeleteTextures #118: 1 names from 61
+   571 trace: glDeleteTextures #119: 1 names from 62
+   572 trace: glDeleteTextures #120: 1 names from 63
+   573 trace: glDeleteTextures #121: 1 names from 64
+   574 trace: glDeleteTextures #122: 1 names from 65
+   575 trace: glDeleteTextures #123: 1 names from 66
+   576 trace: glDeleteTextures #124: 1 names from 67
+   577 trace: glDeleteTextures #125: 1 names from 68
+   578 trace: glDeleteTextures #126: 1 names from 69
+   579 trace: glDeleteTextures #127: 1 names from 70
+   580 trace: glDeleteTextures #128: 1 names from 71
+   581 trace: glDeleteTextures #129: 1 names from 72
+   582 trace: glDeleteTextures #130: 1 names from 73
+   583 trace: glDeleteTextures #131: 1 names from 74
+   584 trace: glDeleteTextures #132: 1 names from 75
+   585 trace: glDeleteTextures #133: 1 names from 76
+   586 trace: glDeleteTextures #134: 1 names from 77
+   587 trace: glDeleteTextures #135: 1 names from 78
+   588 trace: glDeleteTextures #136: 1 names from 79
+   589 trace: glDeleteTextures #137: 1 names from 80
+   590 trace: glDeleteTextures #138: 1 names from 81
+   591 trace: glDeleteTextures #139: 1 names from 82
+   592 trace: glDeleteTextures #140: 1 names from 83
+   593 trace: glDeleteTextures #141: 1 names from 84
+   594 trace: glDeleteTextures #142: 1 names from 85
+   595 trace: glDeleteTextures #143: 1 names from 86
+   596 trace: glDeleteTextures #144: 1 names from 87
+   597 trace: glDeleteTextures #145: 1 names from 88
+   598 trace: glDeleteTextures #146: 1 names from 89
+   599 trace: glDeleteTextures #147: 1 names from 90
+   600 trace: glDeleteTextures #148: 1 names from 91
+   601 trace: glDeleteTextures #149: 1 names from 92
+   602 trace: glDeleteTextures #150: 1 names from 93
+   603 trace: glDeleteTextures #151: 1 names from 94
+   604 trace: glDeleteTextures #152: 1 names from 95
+   605 trace: glDeleteTextures #153: 1 names from 96
+   606 trace: glDeleteTextures #154: 1 names from 97
+   607 trace: glDeleteTextures #155: 1 names from 98
+   608 trace: glDeleteTextures #156: 1 names from 99
+   609 trace: glDeleteTextures #157: 1 names from 100
+   610 trace: glDeleteTextures #158: 1 names from 101
+   611 trace: glDeleteTextures #159: 1 names from 102
+   612 trace: glDeleteTextures #160: 1 names from 103
+   613 trace: glDeleteTextures #161: 1 names from 104
+   614 trace: glDeleteTextures #162: 1 names from 105
+   615 trace: glDeleteTextures #163: 1 names from 106
+   616 trace: glDeleteTextures #164: 1 names from 107
+   617 trace: glDeleteTextures #165: 1 names from 108
+   618 trace: glDeleteTextures #166: 1 names from 109
+   619 trace: glDeleteTextures #167: 1 names from 110
+   620 trace: glDeleteTextures #168: 1 names from 111
+   621 trace: glDeleteTextures #169: 1 names from 112
+   622 trace: glDeleteTextures #170: 1 names from 113
+   623 trace: glDeleteTextures #171: 1 names from 114
+   624 trace: glDeleteTextures #172: 1 names from 115
+   625 trace: glDeleteTextures #173: 1 names from 116
+   626 trace: glDeleteTextures #174: 1 names from 117
+   627 trace: glDeleteTextures #175: 1 names from 118
+   628 trace: glDeleteTextures #176: 1 names from 119
+   629 trace: glDeleteTextures #177: 1 names from 120
+   630 trace: glDeleteTextures #178: 1 names from 121
+   631 trace: glDeleteTextures #179: 1 names from 122
+   632 trace: glDeleteTextures #180: 1 names from 123
+   633 trace: glDeleteTextures #181: 1 names from 124
+   634 trace: glDeleteTextures #182: 1 names from 125
+   635 trace: glDeleteTextures #183: 1 names from 126
+   636 trace: glDeleteTextures #184: 1 names from 127
+   637 trace: glDeleteTextures #185: 1 names from 128
+   638 trace: glDeleteTextures #186: 1 names from 129
+   639 trace: glDeleteTextures #187: 1 names from 130
+   640 trace: glDeleteTextures #188: 1 names from 131
+   641 trace: glDeleteTextures #189: 1 names from 132
+   642 trace: glDeleteTextures #190: 1 names from 133
+   643 trace: glDeleteTextures #191: 1 names from 134
+   644 trace: glDeleteTextures #192: 1 names from 135
+   645 trace: glDeleteTextures #193: 1 names from 136
+   646 trace: glDeleteTextures #194: 1 names from 137
+   647 trace: glDeleteTextures #195: 1 names from 138
+   648 trace: glDeleteTextures #196: 1 names from 139
+   649 trace: glDeleteTextures #197: 1 names from 140
+   650 trace: glDeleteTextures #198: 1 names from 141
+   651 trace: glDeleteTextures #199: 1 names from 142
+   652 trace: glDeleteTextures #200: 1 names from 143
+   653 trace: glDeleteTextures #201: 1 names from 144
+   654 trace: glDeleteTextures #202: 1 names from 145
+   655 trace: glDeleteTextures #203: 1 names from 146
+   656 trace: glDeleteTextures #204: 1 names from 147
+   657 trace: glDeleteTextures #205: 1 names from 148
+   658 trace: glDeleteTextures #206: 1 names from 149
+   659 trace: glDeleteTextures #207: 1 names from 150
+   660 trace: glDeleteTextures #208: 1 names from 151
+   661 trace: glDeleteTextures #209: 1 names from 152
+   662 trace: glDeleteTextures #210: 1 names from 153
+   663 trace: glDeleteTextures #211: 1 names from 154
+   664 trace: glDeleteTextures #212: 1 names from 155
+   665 trace: glDeleteTextures #213: 1 names from 156
+   666 trace: glDeleteTextures #214: 1 names from 157
+   667 trace: glDeleteTextures #215: 1 names from 158
+   668 trace: glDeleteTextures #216: 1 names from 159
+   669 trace: glDeleteTextures #217: 1 names from 160
+   670 trace: glDeleteTextures #218: 1 names from 161
+   671 trace: glDeleteTextures #219: 1 names from 162
+   672 trace: glDeleteTextures #220: 1 names from 163
+   673 trace: glDeleteTextures #221: 1 names from 164
+   674 trace: glDeleteTextures #222: 1 names from 165
+   675 trace: glDeleteTextures #223: 1 names from 166
+   676 trace: glDeleteTextures #224: 1 names from 167
+   677 trace: glDeleteTextures #225: 1 names from 168
+   678 trace: glDeleteTextures #226: 1 names from 169
+   679 trace: glDeleteTextures #227: 1 names from 170
+   680 trace: glDeleteTextures #228: 1 names from 171
+   681 trace: glDeleteTextures #229: 1 names from 172
+   682 trace: glDeleteTextures #230: 1 names from 173
+   683 trace: glDeleteTextures #231: 1 names from 174
+   684 trace: glDeleteTextures #232: 1 names from 175
+   685 trace: glDeleteTextures #233: 1 names from 176
+   686 trace: glDeleteTextures #234: 1 names from 177
+   687 trace: glDeleteTextures #235: 1 names from 178
+   688 trace: glDeleteTextures #236: 1 names from 179
+   689 trace: glDeleteTextures #237: 1 names from 180
+   690 trace: glDeleteTextures #238: 1 names from 181
+   691 trace: glDeleteTextures #239: 1 names from 182
+   692 trace: glDeleteTextures #240: 1 names from 183
+   693 trace: glDeleteTextures #241: 1 names from 184
+   694 trace: glDeleteTextures #242: 1 names from 185
+   695 trace: glDeleteTextures #243: 1 names from 186
+   696 trace: glDeleteTextures #244: 1 names from 187
+   697 trace: glDeleteTextures #245: 1 names from 188
+   698 trace: glDeleteTextures #246: 1 names from 189
+   699 trace: glDeleteTextures #247: 1 names from 190
+   700 trace: glDeleteTextures #248: 1 names from 191
+   701 trace: glDeleteTextures #249: 1 names from 192
+   702 trace: glDeleteTextures #250: 1 names from 193
+   703 trace: glDeleteTextures #251: 1 names from 194
+   704 trace: glDeleteTextures #252: 1 names from 195
+   705 trace: glDeleteTextures #253: 1 names from 196
+   706 trace: glDeleteTextures #254: 1 names from 197
+   707 trace: glDeleteTextures #255: 1 names from 198
+   708 trace: glDeleteTextures #256: 1 names from 199
+   709 trace: glDeleteTextures #257: 1 names from 200
+   710 trace: glDeleteTextures #258: 1 names from 201
+   711 trace: glDeleteTextures #259: 1 names from 202
+   712 trace: glDeleteTextures #260: 1 names from 203
+   713 trace: glDeleteTextures #261: 1 names from 204
+   714 trace: glDeleteTextures #262: 1 names from 205
+   715 trace: glDeleteTextures #263: 1 names from 206
+   716 trace: glDeleteTextures #264: 1 names from 207
+   717 trace: glDeleteTextures #265: 1 names from 208
+   718 trace: glDeleteTextures #266: 1 names from 209
+   719 trace: glDeleteTextures #267: 1 names from 210
+   720 trace: glDeleteTextures #268: 1 names from 211
+   721 trace: glDeleteTextures #269: 1 names from 212
+   722 trace: glDeleteTextures #270: 1 names from 213
+   723 trace: glDeleteTextures #271: 1 names from 214
+   724 trace: glDeleteTextures #272: 1 names from 215
+   725 trace: glDeleteTextures #273: 1 names from 216
+   726 trace: glDeleteTextures #274: 1 names from 217
+   727 trace: glDeleteTextures #275: 1 names from 218
+   728 trace: glDeleteTextures #276: 1 names from 219
+   729 trace: glDeleteTextures #277: 1 names from 220
+   730 trace: glDeleteTextures #278: 1 names from 221
+   731 trace: glDeleteTextures #279: 1 names from 222
+   732 trace: glDeleteTextures #280: 1 names from 223
+   733 trace: glDeleteTextures #281: 1 names from 224
+   734 trace: glDeleteTextures #282: 1 names from 225
+   735 trace: glDeleteTextures #283: 1 names from 226
+   736 trace: glDeleteTextures #284: 1 names from 227
+   737 trace: glDeleteTextures #285: 1 names from 228
+   738 trace: glDeleteTextures #286: 1 names from 229
+   739 trace: glDeleteTextures #287: 1 names from 230
+   740 trace: glDeleteTextures #288: 1 names from 231
+   741 trace: glDeleteTextures #289: 1 names from 232
+   742 trace: glDeleteTextures #290: 1 names from 233
+   743 trace: glDeleteTextures #291: 1 names from 234
+   744 trace: glDeleteTextures #292: 1 names from 235
+   745 trace: glDeleteTextures #293: 1 names from 236
+   746 trace: glDeleteTextures #294: 1 names from 237
+   747 trace: glDeleteTextures #295: 1 names from 238
+   748 trace: glDeleteTextures #296: 1 names from 239
+   749 trace: glDeleteTextures #297: 1 names from 240
+   750 trace: glDeleteTextures #298: 1 names from 241
+   751 trace: glDeleteTextures #299: 1 names from 242
+   752 trace: glDeleteTextures #300: 1 names from 243
+   753 trace: glDeleteTextures #301: 1 names from 244
+   754 trace: glDeleteTextures #302: 1 names from 245
+   755 trace: glDeleteTextures #303: 1 names from 246
+   756 trace: glDeleteTextures #304: 1 names from 247
+   757 trace: glDeleteTextures #305: 1 names from 248
+   758 trace: glDeleteTextures #306: 1 names from 249
+   759 trace: glDeleteTextures #307: 1 names from 250
+   760 trace: glDeleteTextures #308: 1 names from 251
+   761 trace: glDeleteTextures #309: 1 names from 252
+   762 trace: glDeleteTextures #310: 1 names from 253
+   763 trace: glDeleteTextures #311: 1 names from 254
+   764 trace: glDeleteTextures #312: 1 names from 255
+   765 trace: glDeleteTextures #313: 1 names from 256
+   766 trace: glDeleteTextures #314: 1 names from 257
+   767 trace: glDeleteTextures #315: 1 names from 258
+   768 trace: glDeleteTextures #316: 1 names from 259
+   769 trace: glDeleteTextures #317: 1 names from 260
+   770 trace: glDeleteTextures #318: 1 names from 261
+   771 trace: glDeleteTextures #319: 1 names from 262
+   772 trace: glDeleteTextures #320: 1 names from 263
+   773 trace: glDeleteTextures #321: 1 names from 264
+   774 trace: glDeleteTextures #322: 1 names from 265
+   775 trace: glDeleteTextures #323: 1 names from 266
+   776 trace: glDeleteTextures #324: 1 names from 267
+   777 trace: glDeleteTextures #325: 1 names from 268
+   778 trace: glDeleteTextures #326: 1 names from 269
+   779 trace: glDeleteTextures #327: 1 names from 270
+   780 trace: glDeleteTextures #328: 1 names from 271
+   781 trace: glDeleteTextures #329: 1 names from 272
+   782 trace: glDeleteTextures #330: 1 names from 273
+   783 trace: glDeleteTextures #331: 1 names from 274
+   784 trace: glDeleteTextures #332: 1 names from 275
+   785 trace: glDeleteTextures #333: 1 names from 276
+   786 trace: glDeleteTextures #334: 1 names from 277
+   787 trace: glDeleteTextures #335: 1 names from 278
+   788 trace: glDeleteTextures #336: 1 names from 279
+   789 trace: glDeleteTextures #337: 1 names from 280
+   790 trace: glDeleteTextures #338: 1 names from 281
+   791 trace: glDeleteTextures #339: 1 names from 282
+   792 trace: glDeleteTextures #340: 1 names from 283
+   793 trace: glDeleteTextures #341: 1 names from 284
+   794 trace: glDeleteTextures #342: 1 names from 285
+   795 trace: glDeleteTextures #343: 1 names from 286
+   796 trace: glDeleteTextures #344: 1 names from 287
+   797 trace: glDeleteTextures #345: 1 names from 288
+   798 trace: glDeleteTextures #346: 1 names from 289
+   799 trace: glDeleteTextures #347: 1 names from 290
+   800 trace: glDeleteTextures #348: 1 names from 291
+   801 trace: glDeleteTextures #349: 1 names from 292
+   802 trace: glDeleteTextures #350: 1 names from 293
+   803 trace: glDeleteTextures #351: 1 names from 294
+   804 trace: glDeleteTextures #352: 1 names from 295
+   805 trace: glDeleteTextures #353: 1 names from 296
+   806 trace: glDeleteTextures #354: 1 names from 297
+   807 trace: glDeleteTextures #355: 1 names from 298
+   808 trace: glDeleteTextures #356: 1 names from 299
+   809 trace: glDeleteTextures #357: 1 names from 300
+   810 trace: glDeleteTextures #358: 1 names from 301
+   811 trace: glDeleteTextures #359: 1 names from 302
+   812 trace: glDeleteTextures #360: 1 names from 303
+   813 trace: glDeleteTextures #361: 1 names from 304
+   814 trace: glDeleteTextures #362: 1 names from 305
+   815 trace: glDeleteTextures #363: 1 names from 306
+   816 trace: glDeleteTextures #364: 1 names from 307
+   817 trace: glDeleteTextures #365: 1 names from 308
+   818 trace: glDeleteTextures #366: 1 names from 309
+   819 trace: glDeleteTextures #367: 1 names from 310
+   820 trace: glDeleteTextures #368: 1 names from 311
+   821 trace: glDeleteTextures #369: 1 names from 312
+   822 trace: glDeleteTextures #370: 1 names from 313
+   823 trace: glDeleteTextures #371: 1 names from 314
+   824 trace: glDeleteTextures #372: 1 names from 315
+   825 trace: glDeleteTextures #373: 1 names from 316
+   826 trace: glDeleteTextures #374: 1 names from 317
+   827 trace: glDeleteTextures #375: 1 names from 318
+   828 trace: glDeleteTextures #376: 1 names from 319
+   829 trace: glDeleteTextures #377: 1 names from 320
+   830 trace: glDeleteTextures #378: 1 names from 321
+   831 trace: glDeleteTextures #379: 1 names from 322
+   832 trace: glDeleteTextures #380: 1 names from 323
+   833 trace: glDeleteTextures #381: 1 names from 324
+   834 trace: glDeleteTextures #382: 1 names from 325
+   835 trace: glDeleteTextures #383: 1 names from 326
+   836 trace: glDeleteTextures #384: 1 names from 327
+   837 trace: glDeleteTextures #385: 1 names from 328
+   838 trace: glDeleteTextures #386: 1 names from 329
+   839 trace: glDeleteTextures #387: 1 names from 330
+   840 trace: glDeleteTextures #388: 1 names from 331
+   841 trace: glDeleteTextures #389: 1 names from 332
+   842 trace: glDeleteTextures #390: 1 names from 333
+   843 trace: glDeleteTextures #391: 1 names from 334
+   844 trace: glDeleteTextures #392: 1 names from 335
+   845 trace: glDeleteTextures #393: 1 names from 336
+   846 trace: glDeleteTextures #394: 1 names from 337
+   847 trace: glDeleteTextures #395: 1 names from 338
+   848 trace: glDeleteTextures #396: 1 names from 339
+   849 trace: glDeleteTextures #397: 1 names from 340
+   850 trace: glDeleteTextures #398: 1 names from 341
+   851 trace: glDeleteTextures #399: 1 names from 342
+   852 trace: glDeleteTextures #400: 1 names from 343
+   853 trace: glDeleteTextures #401: 1 names from 344
+   854 trace: glDeleteTextures #402: 1 names from 345
+   855 trace: glDeleteTextures #403: 1 names from 346
+   856 trace: glDeleteTextures #404: 1 names from 347
+   857 trace: glDeleteTextures #405: 1 names from 348
+   858 trace: glDeleteTextures #406: 1 names from 349
+   859 trace: glDeleteTextures #407: 1 names from 350
+   860 trace: glDeleteTextures #408: 1 names from 351
+   861 trace: glDeleteTextures #409: 1 names from 352
+   862 trace: glDeleteTextures #410: 1 names from 353
+   863 trace: glDeleteTextures #411: 1 names from 354
+   864 trace: glDeleteTextures #412: 1 names from 355
+   865 trace: glDeleteTextures #413: 1 names from 356
+   866 trace: glDeleteTextures #414: 1 names from 357
+   867 trace: glDeleteTextures #415: 1 names from 358
+   868 trace: glDeleteTextures #416: 1 names from 359
+   869 trace: glDeleteTextures #417: 1 names from 360
+   870 trace: glDeleteTextures #418: 1 names from 361
+   871 trace: glDeleteTextures #419: 1 names from 362
+   872 trace: glDeleteTextures #420: 1 names from 363
+   873 trace: glDeleteBuffers #421: 1 names from 1
+   874 trace: glDeleteBuffers #422: 1 names from 2
+   875 trace: glDeleteBuffers #423: 1 names from 3
+   876 trace: glDeleteBuffers #424: 1 names from 4
+   877 trace: glDeleteBuffers #425: 1 names from 5
+   878 trace: glDeleteBuffers #426: 1 names from 6
+   879 trace: glDeleteBuffers #427: 1 names from 7
+   880 trace: glDeleteBuffers #428: 1 names from 8
+   881 trace: glDeleteBuffers #429: 1 names from 9
+   882 trace: glDeleteBuffers #430: 1 names from 10
+   883 trace: glDeleteBuffers #431: 1 names from 11
+   884 trace: glDeleteBuffers #432: 1 names from 12
+   885 trace: glDeleteBuffers #433: 1 names from 13
+   886 trace: glDeleteBuffers #434: 1 names from 14
+   887 trace: glDeleteBuffers #435: 1 names from 15
+   888 trace: glDeleteBuffers #436: 1 names from 16
+   889 trace: glDeleteBuffers #437: 1 names from 17
+   890 trace: glDeleteBuffers #438: 1 names from 18
+   891 trace: glDeleteBuffers #439: 1 names from 19
+   892 trace: glDeleteBuffers #440: 1 names from 20
+   893 trace: glDeleteBuffers #441: 1 names from 21
+   894 trace: glDeleteBuffers #442: 1 names from 22
+   895 trace: glDeleteBuffers #443: 1 names from 23
+   896 trace: glDeleteBuffers #444: 1 names from 24
+   897 trace: glDeleteBuffers #445: 1 names from 25
+   898 trace: glDeleteBuffers #446: 1 names from 26
+   899 trace: glDeleteBuffers #447: 1 names from 27
+   900 trace: glDeleteBuffers #448: 1 names from 28
+   901 trace: glDeleteBuffers #449: 1 names from 29
+   902 trace: glDeleteBuffers #450: 1 names from 30
+   903 trace: glDeleteBuffers #451: 1 names from 31
+   904 trace: glDeleteBuffers #452: 1 names from 32
+   905 trace: glDeleteBuffers #453: 1 names from 33
+   906 trace: glDeleteBuffers #454: 1 names from 34
+   907 trace: glDeleteBuffers #455: 1 names from 35
+   908 trace: glDeleteBuffers #456: 1 names from 36
+   909 trace: glDeleteBuffers #457: 1 names from 37
+   910 trace: glDeleteBuffers #458: 1 names from 38
+   911 trace: glDeleteBuffers #459: 1 names from 39
+   912 trace: glDeleteBuffers #460: 1 names from 40
+   913 trace: glDeleteBuffers #461: 1 names from 41
+   914 trace: glDeleteBuffers #462: 1 names from 42
+   915 trace: glDeleteBuffers #463: 1 names from 43
+   916 trace: glDeleteBuffers #464: 1 names from 44
+   917 trace: glDeleteBuffers #465: 1 names from 45
+   918 trace: glDeleteBuffers #466: 1 names from 46
+   919 trace: glDeleteBuffers #467: 1 names from 47
+   920 trace: glDeleteBuffers #468: 1 names from 48
+   921 trace: glDeleteBuffers #469: 1 names from 49
+   922 trace: glDeleteBuffers #470: 1 names from 50
+   923 trace: glDeleteBuffers #471: 1 names from 51
+   924 trace: glDeleteBuffers #472: 1 names from 52
+   925 trace: glDeleteBuffers #473: 1 names from 53
+   926 trace: glDeleteBuffers #474: 1 names from 54
+   927 trace: glDeleteBuffers #475: 1 names from 55
+   928 trace: glDeleteBuffers #476: 1 names from 56
+   929 trace: glDeleteBuffers #477: 1 names from 57
+   930 trace: glDeleteBuffers #478: 1 names from 58
+   931 trace: glDeleteBuffers #479: 1 names from 59
+   932 trace: glDeleteBuffers #480: 1 names from 60
+   933 trace: glDeleteBuffers #481: 1 names from 61
+   934 trace: glDeleteBuffers #482: 1 names from 62
+   935 trace: glDeleteBuffers #483: 1 names from 63
+   936 trace: glDeleteBuffers #484: 1 names from 64
+   937 trace: glDeleteBuffers #485: 1 names from 65
+   938 trace: glDeleteBuffers #486: 1 names from 66
+   939 trace: glDeleteBuffers #487: 1 names from 67
+   940 trace: glDeleteBuffers #488: 1 names from 68
+   941 trace: glDeleteBuffers #489: 1 names from 69
+   942 trace: glDeleteBuffers #490: 1 names from 70
+   943 trace: glDeleteBuffers #491: 1 names from 71
+   944 trace: glDeleteBuffers #492: 1 names from 72
+   945 trace: glDeleteBuffers #493: 1 names from 73
+   946 trace: glDeleteBuffers #494: 1 names from 74
+   947 trace: glDeleteBuffers #495: 1 names from 75
+   948 trace: glDeleteBuffers #496: 1 names from 76
+   949 trace: glDeleteBuffers #497: 1 names from 77
+   950 trace: glDeleteBuffers #498: 1 names from 78
+   951 trace: glDeleteBuffers #499: 1 names from 79
+   952 trace: glDeleteBuffers #500: 1 names from 80
+   953 trace: glDeleteBuffers #501: 1 names from 81
+   954 trace: glDeleteBuffers #502: 1 names from 82
+   955 trace: glDeleteBuffers #503: 1 names from 83
+   956 trace: glDeleteBuffers #504: 1 names from 84
+   957 trace: glDeleteBuffers #505: 1 names from 85
+   958 trace: glDeleteBuffers #506: 1 names from 86
+   959 trace: glDeleteBuffers #507: 1 names from 87
+   960 trace: glDeleteBuffers #508: 1 names from 88
+   961 trace: glDeleteBuffers #509: 1 names from 89
+   962 trace: glDeleteBuffers #510: 1 names from 90
+   963 trace: glDeleteBuffers #511: 1 names from 91
+   964 trace: glDeleteBuffers #512: 1 names from 92
+   965 trace: glDeleteBuffers #513: 1 names from 93
+   966 trace: glDeleteBuffers #514: 1 names from 94
+   967 trace: glDeleteBuffers #515: 1 names from 95
+   968 trace: glDeleteBuffers #516: 1 names from 96
+   969 trace: glDeleteBuffers #517: 1 names from 97
+   970 trace: glDeleteBuffers #518: 1 names from 98
+   971 trace: glDeleteBuffers #519: 1 names from 99
+   972 trace: glDeleteBuffers #520: 1 names from 100
+   973 trace: glDeleteBuffers #521: 1 names from 101
+   974 trace: glDeleteBuffers #522: 1 names from 102
+   975 trace: glDeleteBuffers #523: 1 names from 103
+   976 trace: glDeleteBuffers #524: 1 names from 104
+   977 trace: glDeleteBuffers #525: 1 names from 105
+   978 trace: glDeleteBuffers #526: 1 names from 106
+   979 trace: glDeleteBuffers #527: 1 names from 107
+   980 trace: glDeleteBuffers #528: 1 names from 108
+   981 trace: glDeleteBuffers #529: 1 names from 109
+   982 trace: glDeleteBuffers #530: 1 names from 110
+   983 trace: glDeleteBuffers #531: 1 names from 111
+   984 trace: glDeleteBuffers #532: 1 names from 112
+   985 trace: glDeleteBuffers #533: 1 names from 113
+   986 trace: glDeleteBuffers #534: 1 names from 114
+   987 trace: glDeleteBuffers #535: 1 names from 115
+   988 trace: glDeleteBuffers #536: 1 names from 116
+   989 trace: glDeleteBuffers #537: 1 names from 117
+   990 trace: glDeleteBuffers #538: 1 names from 118
+   991 trace: glDeleteBuffers #539: 1 names from 119
+   992 trace: glDeleteBuffers #540: 1 names from 120
+   993 trace: glDeleteBuffers #541: 1 names from 121
+   994 trace: glDeleteBuffers #542: 1 names from 122
+   995 trace: glDeleteBuffers #543: 1 names from 123
+   996 trace: glDeleteBuffers #544: 1 names from 124
+   997 trace: glDeleteBuffers #545: 1 names from 125
+   998 trace: glDeleteBuffers #546: 1 names from 126
+   999 trace: glDeleteBuffers #547: 1 names from 127
+  1000 trace: glDeleteBuffers #548: 1 names from 128
+  1001 trace: glDeleteBuffers #549: 1 names from 129
+  1002 trace: glDeleteBuffers #550: 1 names from 130
+  1003 trace: glDeleteBuffers #551: 1 names from 131
+  1004 trace: glDeleteBuffers #552: 1 names from 132
+  1005 trace: glDeleteBuffers #553: 1 names from 133
+  1006 trace: glDeleteBuffers #554: 1 names from 134
+  1007 trace: glDeleteBuffers #555: 1 names from 135
+  1008 trace: glDeleteBuffers #556: 1 names from 136
+  1009 trace: glDeleteBuffers #557: 1 names from 137
+  1010 trace: glDeleteBuffers #558: 1 names from 138
+  1011 trace: glDeleteBuffers #559: 1 names from 139
+  1012 trace: glDeleteBuffers #560: 1 names from 140
+  1013 trace: glDeleteBuffers #561: 1 names from 141
+  1014 trace: glDeleteBuffers #562: 1 names from 142
+  1015 trace: glDeleteBuffers #563: 1 names from 143
+  1016 trace: glDeleteBuffers #564: 1 names from 144
+  1017 trace: glDeleteBuffers #565: 1 names from 145
+  1018 trace: glDeleteBuffers #566: 1 names from 146
+  1019 trace: glDeleteBuffers #567: 1 names from 147
+  1020 trace: glDeleteBuffers #568: 1 names from 148
+  1021 trace: glDeleteBuffers #569: 1 names from 149
+  1022 trace: glDeleteBuffers #570: 1 names from 150
+  1023 trace: glDeleteBuffers #571: 1 names from 151
+  1024 trace: glDeleteBuffers #572: 1 names from 152
+  1025 trace: glDeleteBuffers #573: 1 names from 153
+  1026 trace: glDeleteBuffers #574: 1 names from 154
+  1027 trace: glDeleteBuffers #575: 1 names from 155
+  1028 trace: glDeleteBuffers #576: 1 names from 156
+  1029 trace: glDeleteBuffers #577: 1 names from 157
+  1030 trace: glDeleteBuffers #578: 1 names from 158
+  1031 trace: glDeleteBuffers #579: 1 names from 159
+  1032 trace: glDeleteBuffers #580: 1 names from 160
+  1033 trace: glDeleteBuffers #581: 1 names from 161
+  1034 trace: glDeleteBuffers #582: 1 names from 162
+  1035 trace: glDeleteBuffers #583: 1 names from 163
+  1036 trace: glDeleteBuffers #584: 1 names from 164
+  1037 trace: glDeleteBuffers #585: 1 names from 165
+  1038 trace: glDeleteBuffers #586: 1 names from 166
+  1039 trace: glDeleteBuffers #587: 1 names from 167
+  1040 trace: glDeleteBuffers #588: 1 names from 168
+  1041 trace: glDeleteBuffers #589: 1 names from 169
+  1042 trace: glDeleteBuffers #590: 1 names from 170
+  1043 trace: glDeleteBuffers #591: 1 names from 171
+  1044 trace: glDeleteBuffers #592: 1 names from 172
+  1045 trace: glDeleteBuffers #593: 1 names from 173
+  1046 trace: glDeleteBuffers #594: 1 names from 174
+  1047 trace: glDeleteBuffers #595: 1 names from 175
+  1048 trace: glDeleteBuffers #596: 1 names from 176
+  1049 trace: glDeleteBuffers #597: 1 names from 177
+  1050 trace: glDeleteBuffers #598: 1 names from 178
+  1051 trace: glDeleteBuffers #599: 1 names from 179
+  1052 trace: glDeleteBuffers #600: 1 names from 180
+  1053 trace: glDeleteBuffers #601: 1 names from 181
+  1054 trace: glDeleteBuffers #602: 1 names from 182
+  1055 trace: glDeleteBuffers #603: 1 names from 183
+  1056 trace: glDeleteBuffers #604: 1 names from 184
+  1057 trace: glDeleteBuffers #605: 1 names from 185
+  1058 trace: glDeleteBuffers #606: 1 names from 186
+  1059 trace: glDeleteBuffers #607: 1 names from 187
+  1060 trace: glDeleteBuffers #608: 1 names from 188
+  1061 trace: glDeleteBuffers #609: 1 names from 189
+  1062 trace: glDeleteBuffers #610: 1 names from 190
+  1063 trace: glDeleteBuffers #611: 1 names from 191
+  1064 trace: glDeleteBuffers #612: 1 names from 192
+  1065 trace: glDeleteBuffers #613: 1 names from 193
+  1066 trace: glDeleteBuffers #614: 1 names from 194
+  1067 trace: glDeleteBuffers #615: 1 names from 195
+  1068 trace: glDeleteBuffers #616: 1 names from 196
+  1069 trace: glDeleteBuffers #617: 1 names from 197
+  1070 trace: glDeleteBuffers #618: 1 names from 198
+  1071 trace: glDeleteBuffers #619: 1 names from 199
+  1072 trace: glDeleteBuffers #620: 1 names from 200
+  1073 trace: glDeleteBuffers #621: 1 names from 201
+  1074 trace: glDeleteBuffers #622: 1 names from 202
+  1075 trace: glDeleteBuffers #623: 1 names from 203
+  1076 trace: glDeleteBuffers #624: 1 names from 204
+  1077 trace: glDeleteBuffers #625: 1 names from 205
+  1078 trace: glDeleteBuffers #626: 1 names from 206
+  1079 trace: glDeleteBuffers #627: 1 names from 207
+  1080 trace: glDeleteBuffers #628: 1 names from 208
+  1081 trace: glDeleteBuffers #629: 1 names from 209
+  1082 trace: glDeleteBuffers #630: 1 names from 210
+  1083 trace: glDeleteBuffers #631: 1 names from 211
+  1084 trace: glDeleteBuffers #632: 1 names from 212
+  1085 trace: glDeleteBuffers #633: 1 names from 213
+  1086 trace: glDeleteBuffers #634: 1 names from 214
+  1087 trace: glDeleteBuffers #635: 1 names from 215
+  1088 trace: glDeleteBuffers #636: 1 names from 216
+  1089 trace: glDeleteBuffers #637: 1 names from 217
+  1090 trace: glDeleteBuffers #638: 1 names from 218
+  1091 trace: glDeleteBuffers #639: 1 names from 219
+  1092 trace: glDeleteBuffers #640: 1 names from 220
+  1093 trace: glDeleteBuffers #641: 1 names from 221
+  1094 trace: glDeleteBuffers #642: 1 names from 222
+  1095 trace: glDeleteBuffers #643: 1 names from 223
+  1096 trace: glDeleteBuffers #644: 1 names from 224
+  1097 trace: glDeleteBuffers #645: 1 names from 225
+  1098 trace: glDeleteBuffers #646: 1 names from 226
+  1099 trace: glDeleteBuffers #647: 1 names from 227
+  1100 trace: glDeleteBuffers #648: 1 names from 228
+  1101 trace: glDeleteBuffers #649: 1 names from 229
+  1102 trace: glDeleteBuffers #650: 1 names from 230
+  1103 trace: glDeleteBuffers #651: 1 names from 231
+  1104 trace: glDeleteBuffers #652: 1 names from 232
+  1105 trace: glDeleteBuffers #653: 1 names from 233
+  1106 trace: glDeleteBuffers #654: 1 names from 234
+  1107 trace: glDeleteBuffers #655: 1 names from 235
+  1108 trace: glDeleteBuffers #656: 1 names from 236
+  1109 trace: glDeleteBuffers #657: 1 names from 237
+  1110 trace: glDeleteBuffers #658: 1 names from 238
+  1111 trace: glDeleteBuffers #659: 1 names from 239
+  1112 trace: glDeleteBuffers #660: 1 names from 240
+  1113 trace: glDeleteBuffers #661: 1 names from 241
+  1114 trace: glDeleteBuffers #662: 1 names from 242
+  1115 trace: glDeleteBuffers #663: 1 names from 243
+  1116 trace: glDeleteBuffers #664: 1 names from 244
+  1117 trace: glDeleteBuffers #665: 1 names from 245
+  1118 trace: glDeleteBuffers #666: 1 names from 246
+  1119 trace: glDeleteBuffers #667: 1 names from 247
+  1120 trace: glDeleteBuffers #668: 1 names from 248
+  1121 trace: glDeleteBuffers #669: 1 names from 249
+  1122 trace: glDeleteBuffers #670: 1 names from 250
+  1123 trace: glDeleteBuffers #671: 1 names from 251
+  1124 trace: glDeleteBuffers #672: 1 names from 252
+  1125 trace: glDeleteBuffers #673: 1 names from 253
+  1126 trace: glDeleteBuffers #674: 1 names from 254
+  1127 trace: glDeleteBuffers #675: 1 names from 255
+  1128 trace: glDeleteBuffers #676: 1 names from 256
+  1129 trace: glDeleteBuffers #677: 1 names from 257
+  1130 trace: glDeleteBuffers #678: 1 names from 258
+  1131 trace: glDeleteBuffers #679: 1 names from 259
+  1132 trace: glDeleteBuffers #680: 1 names from 260
+  1133 trace: glDeleteBuffers #681: 1 names from 261
+  1134 trace: glDeleteBuffers #682: 1 names from 262
+  1135 trace: glDeleteBuffers #683: 1 names from 263
+  1136 trace: glDeleteBuffers #684: 1 names from 264
+  1137 trace: glDeleteBuffers #685: 1 names from 265
+  1138 trace: glDeleteBuffers #686: 1 names from 266
+  1139 trace: glDeleteBuffers #687: 1 names from 267
+  1140 trace: glDeleteBuffers #688: 1 names from 268
+  1141 trace: glDeleteBuffers #689: 1 names from 269
+  1142 trace: glDeleteBuffers #690: 1 names from 270
+  1143 trace: glDeleteBuffers #691: 1 names from 271
+  1144 trace: glDeleteBuffers #692: 1 names from 272
+  1145 trace: glDeleteBuffers #693: 1 names from 273
+  1146 trace: glDeleteBuffers #694: 1 names from 274
+  1147 trace: glDeleteBuffers #695: 1 names from 275
+  1148 trace: glDeleteBuffers #696: 1 names from 276
+  1149 trace: glDeleteBuffers #697: 1 names from 277
+  1150 trace: glDeleteBuffers #698: 1 names from 278
+  1151 trace: glDeleteBuffers #699: 1 names from 279
+  1152 trace: glDeleteBuffers #700: 1 names from 280
+  1153 trace: glDeleteBuffers #701: 1 names from 281
+  1154 trace: glDeleteBuffers #702: 1 names from 282
+  1155 trace: glDeleteBuffers #703: 1 names from 283
+  1156 trace: glDeleteBuffers #704: 1 names from 284
+  1157 trace: glDeleteBuffers #705: 1 names from 285
+  1158 trace: glDeleteBuffers #706: 1 names from 286
+  1159 trace: glDeleteBuffers #707: 1 names from 287
+  1160 trace: glDeleteBuffers #708: 1 names from 288
+  1161 trace: glDeleteBuffers #709: 1 names from 289
+  1162 trace: glDeleteBuffers #710: 1 names from 290
+  1163 trace: glDeleteBuffers #711: 1 names from 291
+  1164 trace: glDeleteBuffers #712: 1 names from 292
+  1165 trace: glDeleteBuffers #713: 1 names from 293
+  1166 trace: glDeleteBuffers #714: 1 names from 294
+  1167 trace: glDeleteBuffers #715: 1 names from 295
+  1168 trace: glDeleteBuffers #716: 1 names from 296
+  1169 trace: glDeleteBuffers #717: 1 names from 297
+  1170 trace: glDeleteBuffers #718: 1 names from 298
+  1171 trace: glDeleteBuffers #719: 1 names from 299
+  1172 trace: glDeleteBuffers #720: 1 names from 300
+  1173 trace: glDeleteBuffers #721: 1 names from 301
+  1174 trace: glDeleteBuffers #722: 1 names from 302
+  1175 trace: glDeleteBuffers #723: 1 names from 303
+  1176 trace: glDeleteBuffers #724: 1 names from 304
+  1177 trace: glDeleteBuffers #725: 1 names from 305
+  1178 trace: glDeleteBuffers #726: 1 names from 306
+  1179 trace: glDeleteBuffers #727: 1 names from 307
+  1180 trace: glDeleteBuffers #728: 1 names from 308
+  1181 trace: glDeleteBuffers #729: 1 names from 309
+  1182 trace: glDeleteBuffers #730: 1 names from 310
+  1183 trace: glDeleteBuffers #731: 1 names from 311
+  1184 trace: glDeleteBuffers #732: 1 names from 312
+  1185 trace: glDeleteBuffers #733: 1 names from 313
+  1186 trace: glDeleteBuffers #734: 1 names from 314
+  1187 trace: glDeleteBuffers #735: 1 names from 315
+  1188 trace: glDeleteBuffers #736: 1 names from 316
+  1189 trace: glDeleteBuffers #737: 1 names from 317
+  1190 trace: glDeleteBuffers #738: 1 names from 318
+  1191 trace: glDeleteBuffers #739: 1 names from 319
+  1192 trace: glDeleteBuffers #740: 1 names from 320
+  1193 trace: glDeleteBuffers #741: 1 names from 321
+  1194 trace: glDeleteBuffers #742: 1 names from 322
+  1195 trace: glDeleteBuffers #743: 1 names from 323
+  1196 trace: glDeleteBuffers #744: 1 names from 324
+  1197 trace: glDeleteBuffers #745: 1 names from 325
+  1198 trace: glDeleteBuffers #746: 1 names from 326
+  1199 trace: glDeleteBuffers #747: 1 names from 327
+  1200 trace: glDeleteBuffers #748: 1 names from 328
+  1201 trace: glDeleteBuffers #749: 1 names from 329
+  1202 trace: glDeleteBuffers #750: 1 names from 330
+  1203 trace: glDeleteBuffers #751: 1 names from 331
+  1204 trace: glDeleteBuffers #752: 1 names from 332
+  1205 trace: glDeleteBuffers #753: 1 names from 333
+  1206 trace: glDeleteBuffers #754: 1 names from 334
+  1207 trace: glDeleteBuffers #755: 1 names from 335
+  1208 trace: glDeleteBuffers #756: 1 names from 336
+  1209 trace: glDeleteBuffers #757: 1 names from 337
+  1210 trace: glDeleteBuffers #758: 1 names from 338
+  1211 trace: glDeleteBuffers #759: 1 names from 339
+  1212 trace: glDeleteBuffers #760: 1 names from 340
+  1213 trace: glDeleteBuffers #761: 1 names from 341
+  1214 trace: glDeleteBuffers #762: 1 names from 342
+  1215 trace: glDeleteBuffers #763: 1 names from 343
+  1216 trace: glDeleteBuffers #764: 1 names from 344
+  1217 trace: glDeleteBuffers #765: 1 names from 345
+  1218 trace: glDeleteBuffers #766: 1 names from 346
+  1219 trace: glDeleteBuffers #767: 1 names from 347
+  1220 trace: glDeleteBuffers #768: 1 names from 348
+  1221 trace: glDeleteBuffers #769: 1 names from 349
+  1222 trace: glDeleteBuffers #770: 1 names from 350
+  1223 trace: glDeleteBuffers #771: 1 names from 351
+  1224 trace: glDeleteBuffers #772: 1 names from 352
+  1225 trace: glDeleteBuffers #773: 1 names from 353
+  1226 trace: glDeleteBuffers #774: 1 names from 354
+  1227 trace: glDeleteBuffers #775: 1 names from 355
+  1228 trace: glDeleteBuffers #776: 1 names from 356
+  1229 trace: glDeleteBuffers #777: 1 names from 357
+  1230 trace: glDeleteBuffers #778: 1 names from 358
+  1231 trace: glDeleteBuffers #779: 1 names from 359
+  1232 trace: glDeleteBuffers #780: 1 names from 360
+  1233 trace: glDeleteBuffers #781: 1 names from 361
+  1234 trace: glDeleteBuffers #782: 1 names from 362
+  1235 trace: glDeleteBuffers #783: 1 names from 363
+  1236 trace: glDeleteBuffers #784: 1 names from 364
+  1237 trace: glDeleteBuffers #785: 1 names from 365
+  1238 trace: glDeleteBuffers #786: 1 names from 366
+  1239 trace: glDeleteBuffers #787: 1 names from 367
+  1240 trace: glDeleteBuffers #788: 1 names from 368
+  1241 trace: glDeleteBuffers #789: 1 names from 369
+  1242 trace: glDeleteBuffers #790: 1 names from 370
+  1243 trace: glDeleteBuffers #791: 1 names from 371
+  1244 trace: glDeleteBuffers #792: 1 names from 372
+  1245 trace: glDeleteBuffers #793: 1 names from 373
+  1246 trace: glDeleteBuffers #794: 1 names from 374
+  1247 trace: glDeleteBuffers #795: 1 names from 375
+  1248 trace: glDeleteBuffers #796: 1 names from 376
+  1249 trace: glDeleteBuffers #797: 1 names from 377
+  1250 trace: glDeleteBuffers #798: 1 names from 378
+  1251 trace: glDeleteBuffers #799: 1 names from 379
+  1252 trace: glDeleteBuffers #800: 1 names from 380
+  1253 trace: glDeleteBuffers #801: 1 names from 381
+  1254 trace: glDeleteBuffers #802: 1 names from 382
+  1255 trace: glDeleteBuffers #803: 1 names from 383
+  1256 trace: glDeleteBuffers #804: 1 names from 384
+  1257 trace: glDeleteBuffers #805: 1 names from 385
+  1258 trace: glDeleteBuffers #806: 1 names from 386
+  1259 trace: glDeleteBuffers #807: 1 names from 387
+  1260 trace: glDeleteBuffers #808: 1 names from 388
+  1261 trace: glDeleteBuffers #809: 1 names from 389
+  1262 trace: glDeleteBuffers #810: 1 names from 390
+  1263 trace: glDeleteBuffers #811: 1 names from 391
+  1264 trace: glDeleteBuffers #812: 1 names from 392
+  1265 trace: glDeleteBuffers #813: 1 names from 393
+  1266 trace: glDeleteBuffers #814: 1 names from 394
+  1267 trace: glDeleteBuffers #815: 1 names from 395
+  1268 trace: glDeleteBuffers #816: 1 names from 396
+  1269 trace: glDeleteBuffers #817: 1 names from 397
+  1270 trace: glDeleteBuffers #818: 1 names from 398
+  1271 trace: glDeleteBuffers #819: 1 names from 399
+  1272 trace: glDeleteBuffers #820: 1 names from 400
+  1273 trace: glDeleteBuffers #821: 1 names from 401
+  1274 trace: glDeleteBuffers #822: 1 names from 402
+  1275 trace: glDeleteBuffers #823: 1 names from 403
+  1276 trace: glDeleteBuffers #824: 1 names from 404
+  1277 trace: glDeleteBuffers #825: 1 names from 405
+  1278 trace: glDeleteBuffers #826: 1 names from 406
+  1279 trace: glDeleteBuffers #827: 1 names from 407
+  1280 trace: glDeleteBuffers #828: 1 names from 408
+  1281 trace: glDeleteBuffers #829: 1 names from 409
+  1282 trace: glDeleteBuffers #830: 1 names from 410
+  1283 aglDestroyContext: context 0x08F2CC6C: freeing
+  1284 trace: aglDestroyContext: the job finished
+  1285 trace: aglDestroyContext: draw and job state freed
+  1286 trace: aglDestroyContext: programs and shaders freed
+  1287 trace: aglDestroyContext: framebuffers and textures freed
+  1288 trace: aglDestroyContext: buffers freed
+  1289 device: context freed, 18288 bytes of GPU memory still in use
+  1290 aglDestroyContext: context 0x08F2CC6C (188 frames, 0 dropped, 0 binning blocks added)
+  1291 timing: 188 jobs, each on average: 631083 us of CPU work before its flush, 65 us waiting for binning, 561 us for the render
+  1292 timing: and in each flush 87 us building the render list, 83 us for the CPU cache before the GPU, 3 us after
+  1293 timing: 186 swaps, 105351 us from one to the next on average, 2 us of it presenting
+  1294 timing: per frame 67 draws, 2625 us in them; in all 184 ms in glBuffer(Sub)Data, 691 ms in glTex(Sub)Image2D
+  1295 timing: per frame in draws: 371 us checks, 41 shaders, 174 textures, 372 uniforms, 1150 vertex data, 122 record, 129 indices, 267 binning list
+  1296 timing: per draw 78 uniform stream words, 878 bytes of vertex data, 152 indices

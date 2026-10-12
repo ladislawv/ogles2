@@ -1,0 +1,16 @@
+--- a/code/renderergl2/tr_init.c
++++ b/code/renderergl2/tr_init.c
+@@ -1300,8 +1300,11 @@
+ 	r_depthPrepass = ri.Cvar_Get( "r_depthPrepass", "1", CVAR_ARCHIVE );
+ 	r_ssao = ri.Cvar_Get( "r_ssao", "0", CVAR_LATCH | CVAR_ARCHIVE );
+ 
+-	r_normalMapping = ri.Cvar_Get( "r_normalMapping", "1", CVAR_ARCHIVE | CVAR_LATCH );
+-	r_specularMapping = ri.Cvar_Get( "r_specularMapping", "1", CVAR_ARCHIVE | CVAR_LATCH );
++	/* ogles2 (ports/ioq3-gl2): off by default. Quake III's data has no normal
++	 * or specular maps, so these only cost: the per-pixel lighting shaders took
++	 * the GPU 43 ms a frame at 1920x1080 on the A1200's V3D, 10 ms without. */
++	r_normalMapping = ri.Cvar_Get( "r_normalMapping", "0", CVAR_ARCHIVE | CVAR_LATCH );
++	r_specularMapping = ri.Cvar_Get( "r_specularMapping", "0", CVAR_ARCHIVE | CVAR_LATCH );
+ 	r_deluxeMapping = ri.Cvar_Get( "r_deluxeMapping", "1", CVAR_ARCHIVE | CVAR_LATCH );
+ 	r_parallaxMapping = ri.Cvar_Get( "r_parallaxMapping", "0", CVAR_ARCHIVE | CVAR_LATCH );
+ 	r_parallaxMapOffset = ri.Cvar_Get( "r_parallaxMapOffset", "0", CVAR_ARCHIVE | CVAR_LATCH );

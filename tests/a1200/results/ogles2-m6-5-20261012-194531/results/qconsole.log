@@ -1,0 +1,1416 @@
+logfile opened on Mon Oct 12 18:45:36 2026
+
+----- Client Initialization -----
+----- Initializing Renderer ----
+-------------------------------
+QKEY found.
+----- Client Initialization Complete -----
+----- R_Init -----
+===== quake3-68k, renderergl2 on ogles2.library =====
+...setting mode 3: 640 480 fullscreen
+...ogles2 context 640x480
+... Sys_EventPort at 0x8f2c348
+...GL_EXT_occlusion_query_boolean not found
+...GL_NV_read_depth not found
+...GL_NV_read_stencil not found
+...GL_EXT_shadow_samplers not found
+...GL_OES_standard_derivatives not found
+...using GL_OES_element_index_uint
+...using GLSL version OpenGL ES GLSL ES 1.00
+------- GLSL_InitGPUShaders -------
+Using GPU vertex animation
+loaded 109 GLSL shaders (48 gen 42 light 19 etc) in  2.41 seconds
+------- R_InitVaos -------
+Initializing Shaders
+
+GL_VENDOR: ogles2.library
+GL_RENDERER: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+GL_VERSION: OpenGL ES 2.0 ogles2.library 1.1
+GL_EXTENSIONS: GL_OES_element_index_uint GL_OES_compressed_ETC1_RGB8_texture GL_EXT_texture_format_BGRA8888 GL_OES_mapbuffer GL_EXT_blend_minmax GL_OES_draw_elements_base_vertex GL_OES_rgb8_rgba8 GL_OES_packed_depth_stencil GL_OES_fbo_render_mipmap GL_EXT_discard_framebuffer
+GL_MAX_TEXTURE_SIZE: 4096
+GL_MAX_TEXTURE_IMAGE_UNITS: 16
+
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:60
+GAMMA: software w/ 1 overbright bits
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 0
+texture bits: 32
+compiled vertex arrays: disabled
+texenv add: enabled
+compressed textures: disabled
+----- finished R_Init -----
+------ Initializing Sound ------
+Sound disabled.
+--------------------------------
+Try loading dll file M6R5:home/baseq3/ui68k.dll
+Sys_LoadDll(M6R5:home/baseq3/ui68k.dll)... 
+35 arenas parsed
+32 bots parsed
+--- Common Initialization Complete ---
+Hostname: localhost
+IP: 127.0.0.1
+Opening IP socket: 0.0.0.0:27960
+Demo file: demos/four.dm_68
+We are looking in the current search path:
+M6R5:home/baseq3
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak8.pk3 (9 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak7.pk3 (4 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak6.pk3 (64 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak5.pk3 (7 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak4.pk3 (272 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak3.pk3 (4 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak2.pk3 (148 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak1.pk3 (26 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak0.pk3 (3539 files)
+
+handle 1: qconsole.log
+handle 2: demos/four.dm_68
+----------------------
+8146 files in pk3 files
+RE_Shutdown( 0 )
+------- R_ShutdownVaos -------
+------- GLSL_ShutdownGPUShaders -------
+Hunk_Clear: reset the hunk ok
+----- R_Init -----
+------- GLSL_InitGPUShaders -------
+Using GPU vertex animation
+loaded 109 GLSL shaders (48 gen 42 light 19 etc) in  1.44 seconds
+------- R_InitVaos -------
+Initializing Shaders
+
+GL_VENDOR: ogles2.library
+GL_RENDERER: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+GL_VERSION: OpenGL ES 2.0 ogles2.library 1.1
+GL_EXTENSIONS: GL_OES_element_index_uint GL_OES_compressed_ETC1_RGB8_texture GL_EXT_texture_format_BGRA8888 GL_OES_mapbuffer GL_EXT_blend_minmax GL_OES_draw_elements_base_vertex GL_OES_rgb8_rgba8 GL_OES_packed_depth_stencil GL_OES_fbo_render_mipmap GL_EXT_discard_framebuffer
+GL_MAX_TEXTURE_SIZE: 4096
+GL_MAX_TEXTURE_IMAGE_UNITS: 16
+
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:60
+GAMMA: software w/ 1 overbright bits
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 0
+texture bits: 32
+compiled vertex arrays: disabled
+texenv add: enabled
+compressed textures: disabled
+----- finished R_Init -----
+Try loading dll file M6R5:home/baseq3/ui68k.dll
+Sys_LoadDll(M6R5:home/baseq3/ui68k.dll)... 
+35 arenas parsed
+32 bots parsed
+Try loading dll file M6R5:home/baseq3/cgame68k.dll
+Sys_LoadDll(M6R5:home/baseq3/cgame68k.dll)... 
+stitched 0 LoD cracks
+...loaded 3728 faces, 358 meshes, 180 trisurfs, 52 flares
+Failed to load model file models/players/characters/james/lower.md3
+CL_InitCGame: 18.33 seconds
+10 msec to draw all images
+frame:0 all:  5 sv:  0 ev:26745 cl:  1 gm:  0 rf:  0 bk:  4
+frame:1 all: 88 sv:  0 ev:  0 cl: 12 gm:  0 rf:  3 bk: 73
+frame:2 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:3 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:4 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:5 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:6 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+frame:7 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  8
+frame:8 all: 24 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 21
+frame:9 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:10 all: 44 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 39
+frame:11 all:  9 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  7
+frame:12 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:13 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:14 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:15 all:  9 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  7
+frame:16 all:  9 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  7
+frame:17 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:18 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:19 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:20 all:  8 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  6
+frame:21 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:22 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:23 all:  7 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  4
+frame:24 all:  6 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  4
+frame:25 all:  6 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  4
+frame:26 all:  6 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  4
+frame:27 all:  6 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  3
+frame:28 all:  6 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  4
+frame:29 all:  6 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  4
+frame:30 all:  6 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  3
+frame:31 all:  6 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  4
+frame:32 all:  7 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  4
+frame:33 all:  6 sv:  0 ev:  0 cl:  2 gm:  0 rf:  0 bk:  4
+frame:34 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:35 all:  6 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  4
+frame:36 all:  7 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  5
+frame:37 all:  7 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  5
+frame:38 all:  6 sv:  0 ev:  1 cl:  0 gm:  0 rf:  2 bk:  4
+frame:39 all:  8 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  5
+frame:40 all:  6 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  4
+frame:41 all:  7 sv:  0 ev:  0 cl:  2 gm:  0 rf:  0 bk:  5
+frame:42 all:  7 sv:  1 ev:  0 cl:  1 gm:  0 rf:  1 bk:  4
+frame:43 all:  8 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  4
+frame:44 all: 29 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 26
+frame:45 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:46 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:47 all: 10 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  7
+frame:48 all:  7 sv:  0 ev:  1 cl:  2 gm:  0 rf:  0 bk:  5
+frame:49 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  0 bk:  6
+frame:50 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:51 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:52 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:53 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  6
+frame:54 all:  8 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  6
+frame:55 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:56 all:  8 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  5
+frame:57 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:58 all:  8 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  5
+frame:59 all: 12 sv:  0 ev:  1 cl:  4 gm:  0 rf:  1 bk:  7
+frame:60 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:61 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:62 all:  9 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  6
+frame:63 all:  8 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  5
+frame:64 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  7
+frame:65 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:66 all:  9 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  7
+frame:67 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:68 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:69 all:  8 sv:  0 ev:  1 cl:  2 gm:  0 rf:  0 bk:  6
+frame:70 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:71 all:  9 sv:  0 ev:  0 cl:  4 gm:  0 rf:  0 bk:  5
+frame:72 all:  8 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  6
+frame:73 all:  8 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  5
+frame:74 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:75 all:  8 sv:  0 ev:  1 cl:  3 gm:  0 rf:  0 bk:  5
+frame:76 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:77 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:78 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:79 all:  7 sv:  0 ev:  1 cl:  2 gm:  0 rf:  0 bk:  5
+frame:80 all: 10 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  5
+frame:81 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  4
+frame:82 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:83 all:  7 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  4
+frame:84 all:  8 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  5
+marty^7 almost dodged Thanatar^7's rocket
+frame:85 all:  8 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  4
+frame:86 all:  8 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  5
+frame:87 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:88 all:  8 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  5
+frame:89 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:90 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  6
+frame:91 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:92 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  5
+frame:93 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:94 all:  9 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  6
+frame:95 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:96 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  7
+frame:97 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:98 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:99 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:100 all: 13 sv:  0 ev:  0 cl:  5 gm:  0 rf:  1 bk:  7
+frame:101 all:  8 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  6
+frame:102 all: 11 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  8
+frame:103 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:104 all:  9 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  6
+frame:105 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:106 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:107 all:  8 sv:  1 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:108 all:  8 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  5
+frame:109 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:110 all:  8 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  5
+frame:111 all:  8 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  5
+frame:112 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:113 all:  7 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  5
+frame:114 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  5
+frame:115 all:  9 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  6
+frame:116 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:117 all:  8 sv:  1 ev:  0 cl:  2 gm:  0 rf:  0 bk:  5
+frame:118 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:119 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  5
+frame:120 all: 12 sv:  0 ev:  0 cl:  5 gm:  0 rf:  1 bk:  6
+frame:121 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  6
+frame:122 all: 11 sv:  0 ev:  1 cl:  3 gm:  0 rf:  0 bk:  8
+frame:123 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:124 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:125 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  6
+frame:126 all:  9 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  6
+frame:127 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:128 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:129 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:130 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:131 all:  8 sv:  0 ev:  1 cl:  3 gm:  0 rf:  0 bk:  5
+frame:132 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  5
+frame:133 all:  8 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  5
+frame:134 all:  8 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  5
+frame:135 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:136 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  5
+frame:137 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:138 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  5
+frame:139 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+^2F^7red^2o^7 was gunned down by THEINDIGO^7
+frame:140 all: 17 sv:  0 ev:  0 cl:  6 gm:  0 rf:  2 bk:  9
+frame:141 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:142 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:143 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  8
+frame:144 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:145 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:146 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:147 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:148 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:149 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:150 all: 13 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  8
+frame:151 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:152 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:153 all: 11 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  7
+frame:154 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:155 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:156 all: 12 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  8
+frame:157 all: 12 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:158 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  7
+frame:159 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:160 all: 10 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk:  6
+frame:161 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:162 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  6
+frame:163 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:164 all: 10 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  7
+frame:165 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:166 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:167 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:168 all: 16 sv:  0 ev:  0 cl:  7 gm:  0 rf:  2 bk:  7
+frame:169 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:170 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:171 all:  9 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  6
+frame:172 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:173 all:  9 sv:  0 ev:  1 cl:  3 gm:  0 rf:  0 bk:  6
+frame:174 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:175 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+Willits^7 ate Asuka^7's rocket
+frame:176 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  7
+frame:177 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:178 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  3 bk:  6
+frame:179 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:180 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:181 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:182 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  6
+frame:183 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:184 all: 10 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  7
+frame:185 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  6
+frame:186 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:187 all: 10 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk:  6
+frame:188 all:  9 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  6
+frame:189 all: 10 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  6
+frame:190 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:191 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:192 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:193 all: 16 sv:  0 ev:  0 cl:  6 gm:  0 rf:  1 bk:  9
+frame:194 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:195 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:196 all: 18 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 15
+frame:197 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:198 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  8
+frame:199 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+Thanatar^7 was machinegunned by Duffy^7
+frame:200 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:201 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:202 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:203 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:204 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:205 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  7
+frame:206 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk:  8
+frame:207 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:208 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:209 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:210 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  9
+frame:211 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:212 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:213 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:214 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:215 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:216 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:217 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:218 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:219 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:220 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:221 all: 19 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 15
+frame:222 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:223 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:224 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:225 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:226 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:227 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  9
+frame:228 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:229 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:230 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:231 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk: 12
+frame:232 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:233 all: 13 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  8
+frame:234 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:235 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  8
+frame:236 all: 12 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  7
+frame:237 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  4 bk:  9
+frame:238 all: 11 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:239 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:240 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+Asuka^7 almost dodged ^2F^7red^2o^7's rocket
+frame:241 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 10
+frame:242 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+frame:243 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+frame:244 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 11
+frame:245 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 11
+frame:246 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:247 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:248 all: 13 sv:  1 ev:  0 cl:  2 gm:  0 rf:  1 bk:  9
+frame:249 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:250 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:251 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+frame:252 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:253 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:254 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:255 all: 17 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 13
+frame:256 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 12
+frame:257 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 13
+frame:258 all: 19 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 13
+frame:259 all: 17 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 13
+frame:260 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:261 all: 19 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 14
+frame:262 all: 18 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 14
+frame:263 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:264 all: 16 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 11
+frame:265 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:266 all: 19 sv:  0 ev:  0 cl:  5 gm:  0 rf:  2 bk: 12
+frame:267 all: 21 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 17
+frame:268 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 12
+frame:269 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 13
+frame:270 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 12
+frame:271 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 13
+frame:272 all: 22 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 18
+frame:273 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 13
+frame:274 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:275 all: 16 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk: 12
+frame:276 all: 13 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  8
+frame:277 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:278 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:279 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:280 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:281 all: 11 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  7
+frame:282 all: 12 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  7
+frame:283 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:284 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+Duffy^7 melted himself.
+frame:285 all: 11 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:286 all: 13 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk:  7
+frame:287 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  8
+frame:288 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:289 all: 12 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  7
+frame:290 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:291 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:292 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  8
+frame:293 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:294 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:295 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+frame:296 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:297 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:298 all: 11 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:299 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:300 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:301 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  6
+Trillian^7 was machinegunned by Asuka^7
+frame:302 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:303 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:304 all: 11 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk:  7
+frame:305 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:306 all: 11 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:307 all: 11 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:308 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  8
+frame:309 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:310 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:311 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:312 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  8
+frame:313 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  8
+frame:314 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  4 bk:  7
+frame:315 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:316 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk:  5
+Thanatar^7 was melted by Willits^7's plasmagun
+frame:317 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  5
+frame:318 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  6
+frame:319 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:320 all: 19 sv:  0 ev:  0 cl:  8 gm:  0 rf:  2 bk:  9
+frame:321 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:322 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:323 all: 18 sv:  0 ev:  0 cl:  2 gm:  0 rf:  4 bk: 12
+frame:324 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:325 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+marty^7 was gunned down by THEINDIGO^7
+frame:326 all: 23 sv:  0 ev:  0 cl:  6 gm:  0 rf:  3 bk: 14
+frame:327 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 11
+frame:328 all: 17 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 12
+frame:329 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 11
+frame:330 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:331 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:332 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 13
+frame:333 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:334 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 13
+frame:335 all: 17 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 13
+frame:336 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:337 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 10
+frame:338 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:339 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+THEINDIGO^7 almost dodged ^2F^7red^2o^7's rocket
+frame:340 all: 16 sv:  1 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:341 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:342 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:343 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 10
+frame:344 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:345 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:346 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:347 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:348 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 14
+frame:349 all: 11 sv:  0 ev:  1 cl:  4 gm:  0 rf:  1 bk:  6
+frame:350 all: 21 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 18
+frame:351 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:352 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:353 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:354 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:355 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:356 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk:  9
+frame:357 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 10
+Willits^7 was melted by Asuka^7's plasmagun
+frame:358 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:359 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 11
+frame:360 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:361 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:362 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 13
+frame:363 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:364 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:365 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:366 all: 16 sv:  1 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:367 all: 12 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  9
+frame:368 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:369 all: 13 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 10
+frame:370 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:371 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:372 all: 15 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 10
+frame:373 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:374 all: 13 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  8
+frame:375 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:376 all: 13 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  8
+frame:377 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:378 all: 12 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  7
+frame:379 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:380 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:381 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:382 all: 12 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  7
+frame:383 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:384 all: 11 sv:  0 ev:  1 cl:  4 gm:  0 rf:  0 bk:  7
+frame:385 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:386 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:387 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:388 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:389 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:390 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:391 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:392 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:393 all: 11 sv:  1 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:394 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  0 bk:  7
+frame:395 all: 10 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  6
+frame:396 all: 10 sv:  0 ev:  1 cl:  3 gm:  0 rf:  0 bk:  6
+frame:397 all: 11 sv:  0 ev:  0 cl:  5 gm:  0 rf:  0 bk:  6
+frame:398 all:  9 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  6
+frame:399 all: 10 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  6
+frame:400 all: 11 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  7
+frame:401 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  5
+Duffy^7 ate ^2F^7red^2o^7's rocket
+frame:402 all: 12 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  7
+frame:403 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:404 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:405 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:406 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:407 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:408 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:409 all: 10 sv:  0 ev:  1 cl:  3 gm:  0 rf:  0 bk:  7
+frame:410 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:411 all: 12 sv:  0 ev:  0 cl:  5 gm:  0 rf:  1 bk:  6
+frame:412 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:413 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:414 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:415 all: 17 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 13
+frame:416 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:417 all: 16 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 12
+frame:418 all: 18 sv:  1 ev:  0 cl:  1 gm:  0 rf:  3 bk: 13
+frame:419 all: 20 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 15
+frame:420 all: 20 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 15
+frame:421 all: 20 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 15
+frame:422 all: 19 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 14
+frame:423 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:424 all: 16 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 12
+frame:425 all: 19 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 15
+frame:426 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:427 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:428 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:429 all: 16 sv:  1 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:430 all: 16 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 12
+frame:431 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:432 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:433 all: 16 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 13
+frame:434 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk: 10
+frame:435 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 11
+frame:436 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:437 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:438 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:439 all: 16 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 13
+frame:440 all: 23 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 19
+frame:441 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:442 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:443 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 11
+frame:444 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:445 all: 15 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk: 11
+frame:446 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:447 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 11
+frame:448 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:449 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:450 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:451 all: 10 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  7
+frame:452 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:453 all:  9 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  6
+frame:454 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:455 all: 11 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  7
+frame:456 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:457 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:458 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:459 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:460 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:461 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:462 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:463 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:464 all: 15 sv:  0 ev:  1 cl:  8 gm:  0 rf:  2 bk:  5
+frame:465 all:  8 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  5
+frame:466 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:467 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:468 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:469 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:470 all:  8 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  6
+frame:471 all:  7 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  5
+frame:472 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:473 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  5
+frame:474 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:475 all:  8 sv:  0 ev:  1 cl:  2 gm:  0 rf:  0 bk:  6
+frame:476 all:  7 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  4
+frame:477 all: 19 sv:  0 ev:  1 cl:  3 gm:  0 rf:  0 bk: 16
+frame:478 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:479 all:  7 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  4
+frame:480 all:  6 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  4
+Trillian^7 was melted by Asuka^7's plasmagun
+frame:481 all:  7 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  4
+frame:482 all:  7 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  4
+frame:483 all:  8 sv:  1 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:484 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:485 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:486 all: 30 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 26
+frame:487 all: 22 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 19
+frame:488 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 11
+frame:489 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:490 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:491 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+Asuka^7 was machinegunned by Willits^7
+frame:492 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:493 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:494 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:495 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:496 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:497 all: 15 sv:  1 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:498 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:499 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:500 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:501 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:502 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:503 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:504 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 11
+frame:505 all: 13 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 10
+frame:506 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:507 all: 13 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  9
+frame:508 all: 14 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+frame:509 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:510 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:511 all: 13 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 10
+frame:512 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:513 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+Thanatar^7 was machinegunned by THEINDIGO^7
+frame:514 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  7
+frame:515 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  7
+frame:516 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+Willits^7 was machinegunned by Duffy^7
+frame:517 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:518 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:519 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:520 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:521 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  6
+frame:522 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  9
+frame:523 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:524 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:525 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:526 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:527 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:528 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:529 all: 13 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk:  7
+frame:530 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:531 all: 11 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  7
+frame:532 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:533 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:534 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  8
+frame:535 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:536 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:537 all:  9 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  6
+frame:538 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:539 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:540 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:541 all: 10 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  7
+frame:542 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:543 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  7
+frame:544 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:545 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:546 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:547 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:548 all: 13 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 10
+frame:549 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:550 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:551 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:552 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:553 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:554 all: 16 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 11
+frame:555 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:556 all: 18 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 14
+frame:557 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:558 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 12
+frame:559 all: 16 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 11
+frame:560 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 13
+frame:561 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:562 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:563 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 13
+frame:564 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 12
+frame:565 all: 17 sv:  0 ev:  1 cl:  4 gm:  0 rf:  1 bk: 12
+frame:566 all: 21 sv:  0 ev:  0 cl:  7 gm:  0 rf:  1 bk: 13
+frame:567 all: 18 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 12
+frame:568 all: 20 sv:  0 ev:  1 cl:  6 gm:  0 rf:  2 bk: 12
+frame:569 all: 18 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 13
+frame:570 all: 19 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 13
+frame:571 all: 20 sv:  0 ev:  0 cl:  4 gm:  0 rf:  3 bk: 13
+frame:572 all: 28 sv:  0 ev:  0 cl:  5 gm:  0 rf:  1 bk: 22
+frame:573 all: 19 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 14
+frame:574 all: 19 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 13
+frame:575 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:576 all: 14 sv:  0 ev:  2 cl:  4 gm:  0 rf:  1 bk:  9
+frame:577 all: 25 sv:  0 ev:  1 cl:  2 gm:  0 rf:  3 bk: 20
+frame:578 all: 14 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  9
+frame:579 all: 15 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 10
+frame:580 all: 15 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 10
+frame:581 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 10
+frame:582 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:583 all: 14 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk:  9
+frame:584 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 10
+frame:585 all: 14 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  9
+frame:586 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  8
+frame:587 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:588 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 10
+frame:589 all: 14 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  9
+frame:590 all: 14 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk:  8
+frame:591 all: 14 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk:  9
+frame:592 all: 15 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 10
+frame:593 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:594 all: 14 sv:  0 ev:  2 cl:  3 gm:  0 rf:  1 bk: 10
+frame:595 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:596 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:597 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:598 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 10
+frame:599 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:600 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:601 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:602 all: 15 sv:  0 ev:  1 cl:  4 gm:  0 rf:  1 bk:  9
+frame:603 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:604 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:605 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:606 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:607 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:608 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 12
+frame:609 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:610 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:611 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 10
+frame:612 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:613 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:614 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 12
+frame:615 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 11
+frame:616 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:617 all: 21 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 17
+frame:618 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 11
+frame:619 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+Duffy^7 was machinegunned by Trillian^7
+frame:620 all: 21 sv:  0 ev:  0 cl:  9 gm:  0 rf:  1 bk: 11
+Trillian^7 was melted by marty^7's plasmagun
+frame:621 all: 14 sv:  0 ev:  0 cl:  5 gm:  0 rf:  1 bk:  8
+frame:622 all: 14 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  9
+frame:623 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:624 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:625 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:626 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:627 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:628 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:629 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+frame:630 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk: 10
+frame:631 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:632 all: 13 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk:  9
+frame:633 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:634 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:635 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:636 all: 13 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  8
+frame:637 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:638 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:639 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk:  9
+frame:640 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:641 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:642 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  4 bk:  9
+frame:643 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:644 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 11
+frame:645 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:646 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 10
+frame:647 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:648 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+frame:649 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:650 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:651 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 12
+frame:652 all: 13 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk:  9
+frame:653 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 10
+frame:654 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:655 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:656 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:657 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:658 all: 14 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  9
+frame:659 all: 14 sv:  1 ev:  0 cl:  1 gm:  0 rf:  3 bk:  9
+frame:660 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 10
+frame:661 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:662 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:663 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:664 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:665 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:666 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 11
+frame:667 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:668 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk:  9
+frame:669 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:670 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:671 all: 16 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 12
+frame:672 all: 16 sv:  0 ev:  0 cl:  1 gm:  0 rf:  4 bk: 11
+frame:673 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:674 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 11
+frame:675 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:676 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:677 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk:  8
+frame:678 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:679 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:680 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:681 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:682 all: 12 sv:  1 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:683 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:684 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:685 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:686 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 11
+frame:687 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:688 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk:  9
+frame:689 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+THEINDIGO^7 almost dodged marty^7's rocket
+frame:690 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:691 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:692 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 10
+frame:693 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+frame:694 all: 13 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 10
+frame:695 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+frame:696 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:697 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:698 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:699 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:700 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk:  9
+frame:701 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:702 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:703 all: 13 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk:  9
+frame:704 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  9
+frame:705 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:706 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:707 all: 11 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:708 all: 12 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:709 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:710 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:711 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+frame:712 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:713 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:714 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:715 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:716 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:717 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 10
+frame:718 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  8
+frame:719 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 10
+frame:720 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+frame:721 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  9
+frame:722 all: 16 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 13
+frame:723 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:724 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:725 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:726 all:  9 sv:  0 ev:  1 cl:  2 gm:  0 rf:  0 bk:  7
+frame:727 all: 11 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:728 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:729 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:730 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  0 bk:  8
+frame:731 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:732 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:733 all: 28 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 23
+frame:734 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:735 all: 12 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  8
+frame:736 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  9
+frame:737 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:738 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:739 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:740 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:741 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:742 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:743 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:744 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 10
+frame:745 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:746 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+frame:747 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:748 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 11
+frame:749 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 11
+frame:750 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:751 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:752 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:753 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:754 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  3 bk:  8
+frame:755 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+Trillian^7 was machinegunned by THEINDIGO^7
+frame:756 all: 14 sv:  1 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:757 all: 11 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  7
+frame:758 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+Willits^7 almost dodged marty^7's rocket
+frame:759 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:760 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:761 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  7
+frame:762 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:763 all: 12 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk:  7
+frame:764 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:765 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:766 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:767 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:768 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:769 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:770 all: 14 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk:  8
+frame:771 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:772 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:773 all: 13 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  9
+frame:774 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:775 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:776 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:777 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:778 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:779 all:  9 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  6
+frame:780 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:781 all: 19 sv:  0 ev:  0 cl:  6 gm:  0 rf:  2 bk: 11
+frame:782 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:783 all: 28 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 24
+frame:784 all: 16 sv:  1 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:785 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:786 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:787 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:788 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 10
+frame:789 all: 21 sv:  0 ev:  1 cl:  9 gm:  0 rf:  2 bk: 10
+frame:790 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:791 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:792 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 11
+Thanatar^7 melted himself.
+frame:793 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:794 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:795 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:796 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:797 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:798 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:799 all: 17 sv:  1 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:800 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:801 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+frame:802 all: 24 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 19
+frame:803 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:804 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:805 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:806 all: 13 sv:  1 ev:  0 cl:  3 gm:  0 rf:  2 bk:  7
+frame:807 all: 11 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  8
+frame:808 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:809 all: 13 sv:  0 ev:  1 cl:  5 gm:  0 rf:  1 bk:  7
+frame:810 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk:  7
+frame:811 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:812 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:813 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:814 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:815 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  7
+frame:816 all: 13 sv:  0 ev:  0 cl:  5 gm:  0 rf:  1 bk:  7
+frame:817 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:818 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:819 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:820 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  6
+frame:821 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:822 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:823 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:824 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:825 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:826 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:827 all: 13 sv:  1 ev:  0 cl:  3 gm:  0 rf:  2 bk:  7
+frame:828 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:829 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:830 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  8
+frame:831 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:832 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:833 all: 16 sv:  0 ev:  1 cl:  4 gm:  0 rf:  2 bk: 10
+frame:834 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:835 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:836 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:837 all: 14 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 10
+frame:838 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:839 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:840 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:841 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  8
+frame:842 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+Duffy^7 was melted by Willits^7's plasmagun
+frame:843 all: 13 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  8
+frame:844 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:845 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:846 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  0 bk:  7
+frame:847 all: 11 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  7
+frame:848 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:849 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  6
+frame:850 all: 12 sv:  0 ev:  1 cl:  3 gm:  0 rf:  0 bk:  8
+frame:851 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:852 all: 12 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  7
+frame:853 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:854 all: 12 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  8
+frame:855 all: 12 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  7
+frame:856 all: 12 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  8
+frame:857 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:858 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:859 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:860 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+Willits^7 ate ^2F^7red^2o^7's rocket
+frame:861 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:862 all: 12 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  7
+frame:863 all: 12 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  8
+frame:864 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk:  7
+frame:865 all: 15 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk: 11
+frame:866 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:867 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:868 all: 14 sv:  0 ev:  0 cl:  6 gm:  0 rf:  1 bk:  7
+frame:869 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:870 all: 12 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  9
+frame:871 all: 12 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  8
+frame:872 all: 14 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk:  9
+frame:873 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:874 all: 14 sv:  1 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:875 all: 14 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk:  8
+frame:876 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:877 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:878 all: 12 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk:  7
+frame:879 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:880 all: 11 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  8
+frame:881 all: 13 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  9
+frame:882 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:883 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:884 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:885 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:886 all: 13 sv:  1 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:887 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:888 all: 17 sv:  1 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:889 all: 17 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 12
+frame:890 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:891 all: 17 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 12
+frame:892 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 12
+frame:893 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 12
+^2F^7red^2o^7 was melted by THEINDIGO^7's plasmagun
+frame:894 all: 21 sv:  1 ev:  0 cl:  4 gm:  0 rf:  2 bk: 14
+frame:895 all: 18 sv:  1 ev:  0 cl:  1 gm:  0 rf:  3 bk: 13
+frame:896 all: 18 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 14
+frame:897 all: 18 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 14
+frame:898 all: 24 sv:  0 ev:  0 cl:  9 gm:  0 rf:  2 bk: 13
+frame:899 all: 19 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 15
+frame:900 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:901 all: 18 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 14
+frame:902 all: 17 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 13
+frame:903 all: 16 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 12
+frame:904 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:905 all: 17 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 12
+frame:906 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:907 all: 18 sv:  1 ev:  0 cl:  2 gm:  0 rf:  2 bk: 13
+frame:908 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 13
+frame:909 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:910 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:911 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 11
+frame:912 all: 16 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 12
+frame:913 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:914 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 11
+frame:915 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk: 10
+frame:916 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 10
+frame:917 all: 16 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 13
+frame:918 all: 16 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 11
+frame:919 all: 18 sv:  0 ev:  0 cl:  5 gm:  0 rf:  2 bk: 11
+frame:920 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:921 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:922 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+Thanatar^7 ate Asuka^7's rocket
+Asuka^7 blew itself up.
+frame:923 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:924 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 13
+frame:925 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:926 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 13
+frame:927 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:928 all: 16 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 12
+frame:929 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:930 all: 16 sv:  0 ev:  1 cl:  2 gm:  0 rf:  4 bk: 10
+frame:931 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:932 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:933 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  8
+frame:934 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+marty^7 blew himself up.
+frame:935 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:936 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:937 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  9
+frame:938 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:939 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:940 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:941 all: 12 sv:  0 ev:  1 cl:  1 gm:  0 rf:  4 bk:  7
+frame:942 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:943 all:  8 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  6
+frame:944 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:945 all:  8 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  4
+frame:946 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  5
+frame:947 all:  9 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  6
+frame:948 all:  8 sv:  1 ev:  0 cl:  2 gm:  0 rf:  1 bk:  4
+frame:949 all:  7 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  5
+frame:950 all:  7 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  5
+frame:951 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  4
+frame:952 all:  8 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  6
+frame:953 all:  7 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  4
+frame:954 all:  8 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  6
+frame:955 all:  7 sv:  0 ev:  1 cl:  0 gm:  0 rf:  2 bk:  5
+frame:956 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:957 all:  8 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  5
+frame:958 all:  8 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  5
+frame:959 all:  9 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  7
+frame:960 all:  7 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  4
+frame:961 all:  6 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  4
+frame:962 all:  7 sv:  0 ev:  2 cl:  0 gm:  0 rf:  2 bk:  4
+frame:963 all:  6 sv:  0 ev:  0 cl:  1 gm:  0 rf:  1 bk:  4
+frame:964 all:  7 sv:  0 ev:  1 cl:  2 gm:  0 rf:  0 bk:  5
+frame:965 all:  6 sv:  0 ev:  1 cl:  2 gm:  0 rf:  0 bk:  4
+frame:966 all:  7 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  4
+frame:967 all:  7 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  4
+frame:968 all:  6 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  4
+frame:969 all:  7 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  5
+frame:970 all:  9 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  6
+frame:971 all: 10 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  7
+frame:972 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:973 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:974 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:975 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  9
+frame:976 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:977 all: 12 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:978 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:979 all: 12 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:980 all: 11 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:981 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:982 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:983 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:984 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:985 all:  9 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  6
+frame:986 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  6
+frame:987 all:  9 sv:  0 ev:  1 cl:  1 gm:  0 rf:  1 bk:  7
+frame:988 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:989 all: 22 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 19
+frame:990 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:991 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:992 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  9
+frame:993 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:994 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:995 all:  9 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  6
+frame:996 all: 12 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  9
+frame:997 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:998 all: 11 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:999 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:1000 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:1001 all: 12 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk:  8
+frame:1002 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:1003 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:1004 all: 10 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  7
+frame:1005 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:1006 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:1007 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+Trillian^7 was machinegunned by marty^7
+frame:1008 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:1009 all: 10 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:1010 all: 12 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk:  8
+frame:1011 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1012 all: 11 sv:  1 ev:  0 cl:  2 gm:  0 rf:  1 bk:  7
+frame:1013 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+frame:1014 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  8
+frame:1015 all: 13 sv:  1 ev:  0 cl:  1 gm:  0 rf:  2 bk:  9
+frame:1016 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk:  8
+Thanatar^7 was melted by THEINDIGO^7's plasmagun
+frame:1017 all: 12 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  9
+frame:1018 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1019 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:1020 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 13
+frame:1021 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:1022 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 11
+frame:1023 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:1024 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 12
+frame:1025 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:1026 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:1027 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:1028 all: 18 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 12
+frame:1029 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 12
+frame:1030 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:1031 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:1032 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:1033 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:1034 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:1035 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 11
+frame:1036 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 11
+Duffy^7 ate Willits^7's rocket
+frame:1037 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 12
+frame:1038 all: 19 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 14
+frame:1039 all: 18 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 13
+frame:1040 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:1041 all: 17 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 13
+frame:1042 all: 16 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 12
+frame:1043 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:1044 all: 18 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 13
+frame:1045 all: 18 sv:  0 ev:  1 cl:  2 gm:  0 rf:  3 bk: 13
+frame:1046 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 13
+frame:1047 all: 18 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 13
+frame:1048 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 11
+frame:1049 all: 16 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 11
+frame:1050 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:1051 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:1052 all: 15 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 10
+frame:1053 all: 16 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 12
+frame:1054 all: 14 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  9
+frame:1055 all: 15 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 10
+frame:1056 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:1057 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:1058 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:1059 all: 13 sv:  0 ev:  1 cl:  4 gm:  0 rf:  1 bk:  8
+frame:1060 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1061 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:1062 all: 13 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  8
+frame:1063 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1064 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:1065 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:1066 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:1067 all:  9 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  5
+frame:1068 all: 11 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  7
+frame:1069 all: 11 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  7
+frame:1070 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:1071 all: 20 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 15
+frame:1072 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:1073 all: 18 sv:  0 ev:  1 cl:  2 gm:  0 rf:  3 bk: 13
+frame:1074 all: 20 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 14
+frame:1075 all: 20 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 14
+frame:1076 all: 22 sv:  0 ev:  1 cl:  4 gm:  0 rf:  2 bk: 15
+frame:1077 all: 21 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 15
+frame:1078 all: 20 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 15
+frame:1079 all: 22 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 16
+frame:1080 all: 21 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 15
+frame:1081 all: 22 sv:  0 ev:  0 cl:  3 gm:  0 rf:  4 bk: 15
+frame:1082 all: 31 sv:  0 ev:  1 cl:  9 gm:  0 rf:  3 bk: 18
+frame:1083 all: 23 sv:  0 ev:  1 cl:  1 gm:  0 rf:  4 bk: 18
+frame:1084 all: 24 sv:  0 ev:  0 cl:  3 gm:  0 rf:  4 bk: 17
+frame:1085 all: 25 sv:  0 ev:  0 cl:  3 gm:  0 rf:  4 bk: 18
+frame:1086 all: 25 sv:  0 ev:  0 cl:  4 gm:  0 rf:  3 bk: 18
+frame:1087 all: 21 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 15
+frame:1088 all: 20 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 15
+frame:1089 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 12
+frame:1090 all: 19 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 14
+frame:1091 all: 19 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 14
+frame:1092 all: 21 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 16
+frame:1093 all: 21 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 15
+frame:1094 all: 22 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 16
+frame:1095 all: 21 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 16
+frame:1096 all: 21 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 15
+Asuka^7 ate Willits^7's rocket
+frame:1097 all: 20 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 14
+frame:1098 all: 20 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 14
+frame:1099 all: 19 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 14
+frame:1100 all: 23 sv:  0 ev:  0 cl:  2 gm:  0 rf:  4 bk: 17
+frame:1101 all: 20 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 14
+frame:1102 all: 22 sv:  0 ev:  0 cl:  3 gm:  0 rf:  4 bk: 15
+frame:1103 all: 20 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 15
+frame:1104 all: 22 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 17
+frame:1105 all: 20 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 15
+Willits^7 almost dodged marty^7's rocket
+frame:1106 all: 24 sv:  0 ev:  0 cl:  4 gm:  0 rf:  3 bk: 17
+frame:1107 all: 20 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 15
+frame:1108 all: 23 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 17
+frame:1109 all: 22 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 16
+frame:1110 all: 23 sv:  0 ev:  0 cl:  5 gm:  0 rf:  3 bk: 15
+frame:1111 all: 20 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 14
+frame:1112 all: 20 sv:  0 ev:  1 cl:  2 gm:  0 rf:  3 bk: 15
+frame:1113 all: 20 sv:  1 ev:  0 cl:  4 gm:  0 rf:  2 bk: 13
+frame:1114 all: 22 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 16
+frame:1115 all: 23 sv:  0 ev:  1 cl:  3 gm:  0 rf:  3 bk: 16
+frame:1116 all: 23 sv:  0 ev:  0 cl:  4 gm:  0 rf:  3 bk: 16
+frame:1117 all: 25 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 19
+frame:1118 all: 24 sv:  0 ev:  0 cl:  4 gm:  0 rf:  3 bk: 17
+frame:1119 all: 19 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 14
+frame:1120 all: 21 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 16
+frame:1121 all: 19 sv:  0 ev:  1 cl:  3 gm:  0 rf:  3 bk: 13
+frame:1122 all: 20 sv:  0 ev:  1 cl:  2 gm:  0 rf:  4 bk: 14
+frame:1123 all: 19 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 13
+frame:1124 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 12
+frame:1125 all: 20 sv:  0 ev:  1 cl:  2 gm:  0 rf:  3 bk: 15
+frame:1126 all: 19 sv:  0 ev:  1 cl:  4 gm:  0 rf:  2 bk: 13
+frame:1127 all: 20 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk: 14
+frame:1128 all: 19 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 13
+frame:1129 all: 20 sv:  0 ev:  0 cl:  2 gm:  0 rf:  4 bk: 14
+frame:1130 all: 21 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 15
+frame:1131 all: 19 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 14
+frame:1132 all: 20 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 14
+frame:1133 all: 20 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 14
+frame:1134 all: 18 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 13
+frame:1135 all: 22 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk: 16
+frame:1136 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:1137 all: 23 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 18
+frame:1138 all: 11 sv:  0 ev:  1 cl:  4 gm:  0 rf:  1 bk:  6
+frame:1139 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:1140 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  3 bk:  7
+frame:1141 all: 15 sv:  0 ev:  0 cl:  6 gm:  0 rf:  1 bk:  8
+frame:1142 all: 13 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  8
+frame:1143 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:1144 all: 14 sv:  0 ev:  0 cl:  5 gm:  0 rf:  1 bk:  8
+frame:1145 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 11
+frame:1146 all: 14 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  9
+frame:1147 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 10
+Trillian^7 almost dodged marty^7's rocket
+frame:1148 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 10
+frame:1149 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 11
+frame:1150 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:1151 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:1152 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk:  8
+frame:1153 all: 13 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  9
+frame:1154 all: 11 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  7
+frame:1155 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk:  9
+frame:1156 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:1157 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  8
+frame:1158 all: 12 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  7
+frame:1159 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1160 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:1161 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:1162 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:1163 all: 15 sv:  0 ev:  1 cl:  2 gm:  0 rf:  3 bk: 10
+frame:1164 all: 14 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:1165 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:1166 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:1167 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:1168 all: 17 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk: 12
+frame:1169 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:1170 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:1171 all: 16 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 12
+frame:1172 all: 15 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 10
+frame:1173 all: 16 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 11
+frame:1174 all: 15 sv:  0 ev:  0 cl:  4 gm:  0 rf:  2 bk:  9
+frame:1175 all: 16 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 12
+frame:1176 all: 18 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 13
+frame:1177 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:1178 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1179 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 11
+frame:1180 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+THEINDIGO^7 hit the fraglimit.
+marty^7 was melted by THEINDIGO^7's plasmagun
+frame:1181 all: 15 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 10
+frame:1182 all: 14 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  9
+frame:1183 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1184 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+frame:1185 all: 13 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  9
+frame:1186 all: 13 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk: 10
+frame:1187 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:1188 all: 11 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  7
+frame:1189 all: 12 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  8
+frame:1190 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:1191 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:1192 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1193 all: 12 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  8
+frame:1194 all: 12 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  7
+frame:1195 all: 13 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  9
+frame:1196 all:  9 sv:  0 ev:  1 cl:  1 gm:  0 rf:  2 bk:  6
+frame:1197 all: 11 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  7
+frame:1198 all: 10 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  6
+frame:1199 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:1200 all: 11 sv:  0 ev:  0 cl:  4 gm:  0 rf:  1 bk:  6
+frame:1201 all: 18 sv:  0 ev:  1 cl:  4 gm:  0 rf:  2 bk: 12
+frame:1202 all: 18 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 13
+frame:1203 all: 17 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk: 12
+frame:1204 all: 17 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 13
+frame:1205 all: 16 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk: 11
+frame:1206 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:1207 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:1208 all: 16 sv:  0 ev:  1 cl:  3 gm:  0 rf:  2 bk: 11
+frame:1209 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:1210 all: 17 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 13
+frame:1211 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 12
+frame:1212 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1213 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk: 10
+frame:1214 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:1215 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:1216 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1217 all: 15 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk: 11
+frame:1218 all: 15 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 11
+frame:1219 all: 15 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 11
+frame:1220 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1221 all: 16 sv:  0 ev:  0 cl:  2 gm:  0 rf:  3 bk: 11
+frame:1222 all: 15 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 11
+frame:1223 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:1224 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1225 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:1226 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 11
+frame:1227 all: 15 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 11
+frame:1228 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1229 all: 14 sv:  0 ev:  1 cl:  1 gm:  0 rf:  3 bk: 10
+frame:1230 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1231 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  1 bk: 10
+frame:1232 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1233 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1234 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk: 10
+frame:1235 all: 13 sv:  0 ev:  1 cl:  3 gm:  0 rf:  1 bk:  9
+frame:1236 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 11
+frame:1237 all: 13 sv:  0 ev:  1 cl:  0 gm:  0 rf:  3 bk: 10
+frame:1238 all: 13 sv:  0 ev:  1 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1239 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1240 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1241 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1242 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:1243 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1244 all: 14 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 11
+frame:1245 all: 21 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 17
+frame:1246 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1247 all: 16 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 12
+frame:1248 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk: 10
+frame:1249 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1250 all: 14 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk: 10
+frame:1251 all: 14 sv:  0 ev:  0 cl:  3 gm:  0 rf:  2 bk:  9
+frame:1252 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  1 bk: 10
+frame:1253 all: 13 sv:  0 ev:  1 cl:  0 gm:  0 rf:  3 bk:  9
+frame:1254 all: 14 sv:  0 ev:  1 cl:  0 gm:  0 rf:  3 bk: 10
+frame:1255 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+frame:1256 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  3 bk:  9
+frame:1257 all: 13 sv:  0 ev:  0 cl:  1 gm:  0 rf:  2 bk: 10
+frame:1258 all: 13 sv:  0 ev:  0 cl:  2 gm:  0 rf:  2 bk:  9
+frame:1259 all: 13 sv:  0 ev:  0 cl:  3 gm:  0 rf:  1 bk:  9
+1260 frames 17.2 seconds 73.2 fps 6.0/13.7/89.0/4.4 ms
+----- Client Shutdown (Client quit) -----
+RE_Shutdown( 1 )
+------- R_ShutdownVaos -------
+------- GLSL_ShutdownGPUShaders -------
+GLimp_Shutdown: input
+GLimp_Shutdown: the context
+GLimp_Shutdown: done
+Hunk_Clear: reset the hunk ok
+-----------------------

@@ -1,9 +1,10 @@
 # Quake III on ogles2.library directly: porting ioquake3's GLES2 renderer
 
-Status (2026-10-12): phases 0-3 done, phase 4's first measurement done. `ports/ioq3-gl2`
-builds `quake3-gl2`; package `tests/a1200/m6-5` runs it (timedemo, `Play-Quake` with Paula
-sound). Timedemo `four`, 640x480: **75.8 fps** silent, 55.8 with sound (MiniGL 60.8, gl4es
-43.2). Parent plan: `DEVELOPMENT_PLAN.md` §13 (M6); the results there.
+Status (2026-10-12): done (phases 0-5). `ports/ioq3-gl2` builds `quake3-gl2`; package
+`tests/a1200/m6-5` runs it (timedemo; `Play-Quake` with sound; shaders shipped compiled for
+640x480 and 1920x1080). Timedemo `four`: **80.7 fps** at 640x480 (MiniGL 60.8, gl4es 43.2),
+44.8 at 1920x1080. It is the Quake III test now. Parent plan: `DEVELOPMENT_PLAN.md` §13 (M6);
+the results there.
 
 ## 1. Goal
 

@@ -13,7 +13,10 @@ and timed (the Pi's 1 MHz system timer), and gl4es_glue_profile() prints the
 functions that took longest: how a program's time splits between itself and
 gl4es on one side and ogles2.library on the other (M6, Quake III).
 
-    gen_glue.py OGLES2_DISPATCH_H OUT_C
+    gen_glue.py OGLES2_DISPATCH_H OUT_C [PROFILE_ENV]
+
+PROFILE_ENV names the environment variable instead (ports/ioq3-gl2 uses the
+same glue with its own).
 """
 import re
 import sys
@@ -21,6 +24,7 @@ import sys
 
 def main():
     header, out = sys.argv[1], sys.argv[2]
+    env = sys.argv[3] if len(sys.argv) > 3 else "GL4ES_GLUE_PROFILE"
     text = open(header, encoding="utf-8").read()
     member = re.compile(r"^\s*(?P<ret>[^;(]+?)\s*\(\*GL(?P<name>\w+)\)\((?P<params>[^)]*)\);", re.M)
     funcs = []
@@ -48,7 +52,7 @@ def main():
         "BOOL OGLES2Open(void);",
         "void OGLES2Close(void);",
         "",
-        "/* GL4ES_GLUE_PROFILE: calls and microseconds per function. */",
+        "/* %s: calls and microseconds per function. */" % env,
         "#define GLUE_N %d" % len(funcs),
         "static int glue_prof;",
         "static ULONG glue_calls[GLUE_N], glue_us[GLUE_N];",
@@ -125,7 +129,7 @@ def main():
         "void os4OpenLib(void **lib)",
         "{",
         "    *lib = OGLES2Open() ? (void *)OGLES2Dispatch : NULL;",
-        "    glue_prof = getenv(\"GL4ES_GLUE_PROFILE\") != NULL;",
+        "    glue_prof = getenv(\"%s\") != NULL;" % env,
         "}",
         "",
         "void os4CloseLib(void)",

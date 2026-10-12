@@ -123,6 +123,53 @@ static ULONG find_mode(int w, int h)
 	return best;
 }
 
+/* r_availableModes for the video menu (q3_ui's GraphicsOptions_GetResolutions,
+ * as sdl_glimp.c's GLimp_DetectAvailableModes): every size of a 32-bit RTG
+ * mode the GPU can store into, smallest first, "WxH WxH ...". A size not in
+ * the menu's built-in list is set through r_mode -1 and r_customwidth/height,
+ * which find_mode opens. */
+static void GLimp_DetectAvailableModes(void)
+{
+	enum { MAX_SIZES = 31 }; /* q3_ui keeps 32 entries, the last a NULL */
+	ULONG w[MAX_SIZES], h[MAX_SIZES], id = INVALID_ID;
+	char buf[MAX_STRING_CHARS] = "";
+	int n = 0, i, j;
+
+	while ((id = NextDisplayInfo(id)) != (ULONG)INVALID_ID)
+	{
+		ULONG f, mw, mh;
+		if (!IsCyberModeID(id))
+			continue;
+		f = GetCyberIDAttr(CYBRIDATTR_PIXFMT, id);
+		if (f != PIXFMT_BGRA32 && f != PIXFMT_RGBA32)
+			continue;
+		mw = GetCyberIDAttr(CYBRIDATTR_WIDTH, id);
+		mh = GetCyberIDAttr(CYBRIDATTR_HEIGHT, id);
+		if (mw < 640 || mh < 480) /* the many small modes would crowd out the large ones */
+			continue;
+		for (i = 0; i < n && (w[i] != mw || h[i] != mh); i++)
+			;
+		if (i < n || n == MAX_SIZES)
+			continue;
+		/* insertion by area, then width */
+		for (i = n; i > 0 && (w[i - 1] * h[i - 1] > mw * mh || (w[i - 1] * h[i - 1] == mw * mh && w[i - 1] > mw)); i--)
+		{
+			w[i] = w[i - 1];
+			h[i] = h[i - 1];
+		}
+		w[i] = mw;
+		h[i] = mh;
+		n++;
+	}
+	for (j = 0; j < n; j++)
+		Q_strcat(buf, sizeof(buf), va("%s%lux%lu", j ? " " : "", (unsigned long)w[j], (unsigned long)h[j]));
+	if (*buf)
+	{
+		ri.Printf(PRINT_ALL, "Available modes: '%s'\n", buf);
+		ri.Cvar_Set("r_availableModes", buf);
+	}
+}
+
 static qboolean GLW_StartDriverAndSetMode( int mode, int colorbits, qboolean fullscreen )
 {
 	ULONG err = 0, w = 0, h = 0;
@@ -359,6 +406,9 @@ void GLimp_Init(void)
 
 	qglClearColor(0,0,0,1);
 	qglClear(GL_COLOR_BUFFER_BIT);
+
+	GLimp_DetectAvailableModes();
+	ri.Cvar_Get("r_availableModes", "", CVAR_ROM);
 
 	IN_Init(); // was in amiga_main/sys_init ---
 

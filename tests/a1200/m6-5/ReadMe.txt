@@ -9,9 +9,10 @@ game engine and its modules are the same as in run 2 (Cowcat's Amiga
 port); only the renderer differs. It plays the demo "four" as a timedemo,
 full screen 640x480, then quits.
 
-The first start compiles about 100 shader programs on the Amiga: the screen
-may stay black for a few minutes. They are kept in cache/, so later starts
-are quick.
+Its shader programs come compiled in cache/ for 640x480 and 1920x1080 (the
+renderer's default settings). Another screen mode, chosen in the game's
+System menu, compiles its own once (about 90 s, the screen stays black),
+and they are kept in cache/ too.
 
 It needs the Quake III data where it is installed on the test machine
 (Stuff:Quake3-68k-beta10/Quake3-68k-beta10); nothing is written there.
@@ -46,4 +47,5 @@ libs/v3dglslc        the shader compiler
 bin/quake3-gl2       Quake III with the GLES2 renderer (ports/ioq3-gl2)
 bin/*.dll            the game modules (also in home/baseq3)
 bin/OGLES2Log        writes the library's log file on request
+cache/               the compiled shaders for 640x480 and 1920x1080
 notes-template.txt   copied to results/notes.txt at the end

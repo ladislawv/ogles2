@@ -4,12 +4,16 @@
 ;   With the game elsewhere:       Execute Run-M1 Q3DATA=<the directory with baseq3>
 ;   The whole demo (1260 frames):  Execute Run-M1 FRAMES=0
 ;   With sound (AHI):              Execute Run-M1 SOUND=1
+;   GL calls timed per function:   Execute Run-M1 PROFILE=1 (results/1-timedemo.txt)
+;   Quake's own split per frame:   Execute Run-M1 SPEEDS=1 (results/qconsole.log)
 ; Nothing is installed and nothing is written to the game's directory: the
 ; game's own files (config, logs, screenshots) go to home/ here. Output goes
 ; to results/.
-.key Q3DATA/K,FRAMES/K,SOUND/K
+.key Q3DATA/K,FRAMES/K,SOUND/K,PROFILE/K,SPEEDS/K
 .def FRAMES 400
 .def SOUND 0
+.def PROFILE 0
+.def SPEEDS 0
 .def Q3DATA "Stuff:Quake3-68k-beta10/Quake3-68k-beta10"
 .bra {
 .ket }
@@ -43,9 +47,8 @@ Delete M6R5:home/baseq3/screenshots ALL QUIET >NIL:
 CD M6R5:bin
 
 Echo "Quake III's demo 'four' as a timedemo, full screen 640x480, with"
-Echo "  ioquake3's GLES2 renderer. The first start compiles about 100 shaders:"
-Echo "  the screen may stay black for a few minutes. Then the demo plays as"
-Echo "  fast as it can and the game quits."
+Echo "  ioquake3's GLES2 renderer (its shaders come compiled in cache/). The"
+Echo "  demo plays as fast as it can and the game quits."
 ; Probes T and P (ogles2_internal.h): the deletes and the context's end
 ; step by step, and the timing every 256 frames.
 SetEnv OGLES2/Probe TP
@@ -55,17 +58,29 @@ If {SOUND} EQ 1 VAL
   Set Q3SND "+set s_initsound 1"
   Echo "  With sound."
 EndIf
+; ports/ioq3-gl2's GL glue: every call counted and timed (costs a little).
+If {PROFILE} EQ 1 VAL
+  SetEnv QUAKE3_GL_PROFILE 1
+EndIf
+; com_speeds: a line a frame (all, server, events, client, game, renderer
+; front and back end, ms), logged without a flush per line.
+Set Q3LOG "+set logfile 2"
+If {SPEEDS} EQ 1 VAL
+  Set Q3LOG "+set logfile 1 +set com_speeds 1"
+EndIf
 If {FRAMES} EQ 0 VAL
-  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 $Q3SND +set logfile 2 +set nextdemo quit +timedemo 1 +demo four >M6R5:results/1-timedemo.txt
+  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 $Q3SND $Q3LOG +set nextdemo quit +timedemo 1 +demo four >M6R5:results/1-timedemo.txt
 Else
   ; The game takes a screenshot after {FRAMES} frames ("wait N" holds the
   ; rest of the command line that many frames; loading takes about 230 of
   ; them) and quits.
   Echo "  It stops after {FRAMES} frames."
-  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 $Q3SND +set logfile 2 +set nextdemo quit +timedemo 1 +demo four +wait {FRAMES} +screenshot +wait 5 +quit >M6R5:results/1-timedemo.txt
+  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 $Q3SND $Q3LOG +set nextdemo quit +timedemo 1 +demo four +wait {FRAMES} +screenshot +wait 5 +quit >M6R5:results/1-timedemo.txt
 EndIf
 UnSetEnv OGLES2/Probe
 UnSet Q3SND
+UnSet Q3LOG
+UnSetEnv QUAKE3_GL_PROFILE
 Echo "timedemo done" >>M6R5:results/00-progress.txt
 
 CD M6R5:

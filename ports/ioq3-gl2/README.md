@@ -25,21 +25,33 @@ gl4es. The plan and its status: `docs/IOQ3_GLES2_PORT_PLAN.md`.
 - **`amiga_glimp_gl2.c`** (in place of `sdl_glimp.c`): the ogles2 context
   (its own screen in a BGRA32/RGBA32 mode with `r_fullscreen 1`, a window
   with 0; depth 24, stencil 8), the OpenGL ES 2.0 function set by name from
-  libogles2.a (`aglGetProcAddress`), and what the engine's Amiga code takes
-  from a glimp (the window, its message port, the mouse pointer calls).
+  the glue `ports/gl4es/gen_glue.py` generates over ogles2.library's dispatch
+  table (with `QUAKE3_GL_PROFILE` set, every call is timed and the split is
+  printed at shutdown), `r_availableModes` for the video menu (every 32-bit
+  RTG mode of 640x480 or more: 1920x1080 and the like are offered and set
+  through `r_mode -1`), and what the engine's Amiga code takes from a glimp
+  (the window, its message port, the mouse pointer calls).
 - **`ioq3_gl2_ref.c`:** both trees use `REF_API_VERSION 8` with the same
   `refexport_t` and shared types; upstream's `refimport_t` has ten more
   members. The engine's `GetRefAPI` call is adapted to upstream's
   (renamed `GL2_GetRefAPI` at compile time). Also `Q_acos`.
-- **`patches/`** (none yet): changes to the copied upstream files.
+- **`patches/`**: changes to the copied upstream files (they have CRLF line
+  ends; the patches keep them). `0001-lighting-maps-off`: `r_normalMapping`
+  and `r_specularMapping` default to 0. Quake III's data has neither map, so
+  they only cost: at 1920x1080 the A1200's GPU took 43 ms a frame with them,
+  10 ms without (17.7 to 44.8 fps); the menu can still turn them on.
 
 Output: `$B/ioq3gl2/quake3-gl2` and the game `.dll`s. Package
 `tests/a1200/m6-5` runs the timedemo (`Run-M1`) or the game (`Play-Quake`).
 
 ## Notes
 
-- The first start compiles 109 GLSL programs on the Amiga (about 110 s);
-  they are kept in `OGLES2Cache:` and load in 1.4 s afterwards.
+- The renderer builds 109 GLSL programs at start. Compiled on the Amiga
+  they take about 90-110 s once, then load from `OGLES2Cache:` in 1.4 s.
+  The screen size is part of every program's text (`r_FBufScale`), so each
+  mode has its own set; package m6-5 ships the sets for 640x480 and
+  1920x1080 with the default settings (`.v3dp` programs and `.v3ds` shader
+  records, compiled on the A1200): a fresh install starts in 2.4 s.
 - On OpenGL ES 2.0 the renderer has no framebuffer objects: no HDR, SSAO,
   sun shadows or post-processing; it reports the extensions it lacks
   (occlusion queries, depth reads, shadow samplers, standard derivatives).

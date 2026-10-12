@@ -91,13 +91,18 @@ for f in tr_font tr_image_bmp tr_image_jpg tr_image_pcx tr_image_png tr_image_pv
 done
 cd "$ROOT/code/amiga-gl2"
 cc amiga_glimp_gl2.c "$OUT/amiga_glimp_gl2.o" $RFLAGS -I"$REPO/include"
+# The GL functions: gl4es's generated glue over ogles2.library's dispatch
+# table (QUAKE3_GL_PROFILE times every call).
+python3 "$REPO/ports/gl4es/gen_glue.py" "$B/gen/include/libraries/ogles2_dispatch.h" "$OUT/ogles2_glue.c" \
+    QUAKE3_GL_PROFILE > /dev/null
+cc "$OUT/ogles2_glue.c" "$OUT/ogles2_glue.o" -I"$REPO/include" -I"$B/gen/include"
 # Not -DGetRefAPI: it defines the engine's GetRefAPI and calls GL2_GetRefAPI.
 cc ioq3_gl2_ref.c "$OUT/ioq3_gl2_ref.o" $(echo "$RFLAGS" | sed 's/-DGetRefAPI=GL2_GetRefAPI//')
 
 # The engine: ports/ioq3's objects without its renderer and glimp.
 MAIN=$(ls "$ENGINE"/*.o | grep -v -E '/(tr_[a-z_]*|amiga_glimp)\.o$' | tr '\n' ' ')
 $GCC -mcpu=68020 -m68881 -mcrt=clib2 -o "$BUILDOUT/quake3-gl2" $MAIN $RENDERER $GLSL \
-    "$OUT/amiga_glimp_gl2.o" "$OUT/ioq3_gl2_ref.o" \
+    "$OUT/amiga_glimp_gl2.o" "$OUT/ioq3_gl2_ref.o" "$OUT/ogles2_glue.o" \
     -L"$B" -logles2 -L"$LIBM020" -lm881 -lm -lc -lamiga 2>&1 | grep -v lang_reloc || true
 [ -f "$BUILDOUT/quake3-gl2" ] || { echo "link failed"; exit 1; }
 cp "$B"/ioq3/*.dll "$BUILDOUT/"
