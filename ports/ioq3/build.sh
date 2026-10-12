@@ -42,8 +42,11 @@ done
 rm -rf "$OUT"
 mkdir -p "$OUT" "$CGOUT" "$QAOUT" "$UIOUT"
 
-# The MiniGL library port's flags, without USE_MINIGL_LIBRARY.
-CFLAGS="-std=c99 -O2 -finline-functions -mcpu=68020 -m68881 -mcrt=clib2 \
+# The MiniGL library port's flags, without USE_MINIGL_LIBRARY, and with the
+# library's -fbbb set: bebbo's default optimiser pass e drops the fintrz of
+# float-to-integer conversions (CONTRIBUTING.md, Traps), which made
+# renderergl2 pack colours of 1.0 as 0.
+CFLAGS="-std=c99 -O2 -finline-functions -mcpu=68020 -m68881 -mcrt=clib2 -fbbb=abcfhilmnprsz0 \
 -fno-strict-aliasing -fno-builtin-cos -fno-builtin-sin \
 -DAMIGAOS -DNDEBUG -DBOTLIB -DUSE_LOCAL_HEADERS -DDLL -DNO_VM_COMPILED -DUSE_GL4ES"
 # ports/ioq3/include first: <mgl/gl.h> is gl4es's GL there.

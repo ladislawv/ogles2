@@ -184,8 +184,7 @@ Each of these cost real time once.
   come through.
 - **Ports built with their own flags miss `-fbbb=abcfhilmnprsz0`** and get pass `e`'s rounding
   conversions (above): Quake III's renderergl2 packed colours of 1.0 as 0 (invisible
-  sprites). The Quake glimps set the FPU to round-to-zero for the game's task, which makes
-  those conversions truncate; the cleaner fix is the flag.
+  sprites). Every port is built with the flag (`ports/ioq3*/build.sh` too).
 - **PowerShell mangles `$`, `\` and quotes** in `wsl bash -c "..."`: write the commands to a
   script file and run `wsl -d Ubuntu-24.04 bash <file>`.
 - **Line ends:** Windows Python (and some editors) write CRLF into files that must be LF.

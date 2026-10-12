@@ -63,12 +63,11 @@ Output: `$B/ioq3gl2/quake3-gl2` and the game `.dll`s. Package
 - On OpenGL ES 2.0 the renderer has no framebuffer objects: no HDR, SSAO,
   sun shadows or post-processing; it reports the extensions it lacks
   (occlusion queries, depth reads, shadow samplers, standard derivatives).
-- **The FPU's rounding mode:** bebbo's GCC 6.5 converts a float to a short,
-  an unsigned short or an unsigned int without `fintrz`, so the FPU's mode
-  decides; round-to-nearest packed vertex colours of 1.0 as 0 (invisible
-  sprites) and normals of 1.0 as an overflow. The glimp sets round-to-zero
-  for the game's task (`fpu_round_to_zero`), which makes those conversions
-  truncate as C wants. `ports/ioq3`'s glimp does the same.
+- **`-fbbb=abcfhilmnprsz0`:** bebbo's GCC 6.5 drops the `fintrz` of
+  float-to-integer conversions in its default optimiser pass `e`, so they
+  round instead of truncating: vertex colours of 1.0 were packed as 0
+  (invisible sprites) and normals of 1.0 overflowed. Both Quake ports build
+  with the library's `-fbbb` set, which leaves that pass out.
 - **Sound:** the engine's own drivers (`code/amiga`, with the 2026-10-08
   Paula and AHI fixes): AHI by default (16 bit), Paula as the automatic
   fallback or with `s_driver paula`. A timedemo's sound is garbled by nature

@@ -44,9 +44,10 @@ cp "$HERE/amiga_glimp_gl2.c" "$HERE/ioq3_gl2_ref.c" "$ROOT/code/amiga-gl2/"
 rm -rf "$OUT"
 mkdir -p "$OUT/glsl"
 
-# The engine's flags (ports/ioq3), and for the renderer the compatibility
-# header, the GL headers and the engine's jpeg-8c.
-CFLAGS="-std=c99 -O2 -finline-functions -mcpu=68020 -m68881 -mcrt=clib2 \
+# The engine's flags (ports/ioq3, with -fbbb=abcfhilmnprsz0: no pass e), and
+# for the renderer the compatibility header, the GL headers and the engine's
+# jpeg-8c.
+CFLAGS="-std=c99 -O2 -finline-functions -mcpu=68020 -m68881 -mcrt=clib2 -fbbb=abcfhilmnprsz0 \
 -fno-strict-aliasing -fno-builtin-cos -fno-builtin-sin \
 -DAMIGAOS -DNDEBUG -DBOTLIB -DUSE_LOCAL_HEADERS -DNO_VM_COMPILED"
 RFLAGS="-include $REPO/ports/ioq3-gl2/include/ioq3_gl2_compat.h -I$REPO/ports/ioq3-gl2/include \
