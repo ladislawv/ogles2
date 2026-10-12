@@ -1,0 +1,10 @@
+--- a/code/renderergl2/tr_glsl.c
++++ b/code/renderergl2/tr_glsl.c
+@@ -669,6 +669,7 @@
+ 	}
+ 
+ 	result = GLSL_InitGPUShader2(program, name, attribs, vpCode, fragmentShader ? fpCode : NULL);
++	GLimp_ShaderProgress(); /* ogles2 (ports/ioq3-gl2): show progress while compiling */
+ 
+ 	return result;
+ }

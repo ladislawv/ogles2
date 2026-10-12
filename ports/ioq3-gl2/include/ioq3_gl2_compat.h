@@ -27,4 +27,6 @@
 #define QuatCopy(a, b) ((b)[0] = (a)[0], (b)[1] = (a)[1], (b)[2] = (a)[2], (b)[3] = (a)[3])
 #endif
 typedef float quat_t[4]; /* vec_t quat_t[4] upstream; vec_t is float */
+/* amiga_glimp_gl2.c: a progress line while shaders compile (patches/0002) */
+void GLimp_ShaderProgress(void);
 #endif

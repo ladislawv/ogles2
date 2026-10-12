@@ -221,6 +221,58 @@ static ULONG find_mode(int w, int h)
 	return best;
 }
 
+/* Compiling the renderer's shaders on the Amiga takes about 90 s the first
+ * time a screen mode is used (later starts load them from OGLES2Cache: in
+ * about 1.4 s), and nothing is drawn meanwhile. GLSL_InitGPUShader calls
+ * this after each program (ports/ioq3-gl2/patches/0002): once a program has
+ * taken longer than a cache load could, a line and a progress bar are drawn
+ * straight into the window's RastPort (the screen's bitmap the GPU renders
+ * into; the first frame covers them). No GL state is touched. */
+#define SHADERS_EXPECTED 109 /* the default settings' programs */
+static int shader_count, shader_last, shader_shown;
+
+void GLimp_ShaderProgress(void)
+{
+	int now = ri.Milliseconds(), slow = shader_count > 0 && now - shader_last > 150;
+	struct RastPort *rp;
+	char line[128];
+	int x0, y0, w, h, bw, bh, bx, by, fill, len, tw;
+
+	shader_count++;
+	shader_last = now;
+	if ((!shader_shown && !slow) || !win || !CyberGfxBase)
+		return;
+	rp = win->RPort;
+	x0 = win->BorderLeft;
+	y0 = win->BorderTop;
+	w = win->Width - win->BorderLeft - win->BorderRight;
+	h = win->Height - win->BorderTop - win->BorderBottom;
+	if (w < 64 || h < 64)
+		return;
+	if (!shader_shown)
+	{
+		FillPixelArray(rp, x0, y0, w, h, 0x00000000);
+		shader_shown = 1;
+	}
+	Com_sprintf(line, sizeof(line), "Compiling shaders for this screen mode, once: %d of about %d",
+	            shader_count, SHADERS_EXPECTED);
+	len = strlen(line);
+	tw = TextLength(rp, line, len);
+	bw = w / 2;
+	bh = rp->TxHeight + 4;
+	bx = x0 + (w - bw) / 2;
+	by = y0 + h / 2;
+	FillPixelArray(rp, x0, by - 3 * bh, w, 2 * bh, 0x00000000); /* the text's line */
+	SetAPen(rp, 2);
+	SetDrMd(rp, JAM1);
+	Move(rp, x0 + (w - tw) / 2, by - 2 * bh + rp->TxBaseline);
+	Text(rp, line, len);
+	fill = bw * (shader_count < SHADERS_EXPECTED ? shader_count : SHADERS_EXPECTED) / SHADERS_EXPECTED;
+	FillPixelArray(rp, bx, by, bw, bh, 0x00303030);
+	if (fill > 0)
+		FillPixelArray(rp, bx, by, fill, bh, 0x00c08020);
+}
+
 /* r_availableModes for the video menu (q3_ui's GraphicsOptions_GetResolutions,
  * as sdl_glimp.c's GLimp_DetectAvailableModes): every size of a 32-bit RTG
  * mode the GPU can store into, smallest first, "WxH WxH ...". A size not in
@@ -357,6 +409,7 @@ static void fpu_round_to_zero(void)
 void GLimp_Init(qboolean fixedFunction)
 {
 	fpu_round_to_zero();
+	shader_count = shader_shown = 0;
 	ri.Printf(PRINT_ALL, "===== quake3-68k, renderergl2 on ogles2.library =====\n");
 	if (fixedFunction)
 		ri.Error(ERR_FATAL, "GLimp_Init: this build has OpenGL ES 2.0 only (renderergl2)\n");

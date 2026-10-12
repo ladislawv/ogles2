@@ -11,7 +11,7 @@ full screen 640x480, then quits.
 
 Its shader programs come compiled in cache/ for 640x480 and 1920x1080 (the
 renderer's default settings). Another screen mode, chosen in the game's
-System menu, compiles its own once (about 90 s, the screen stays black),
+System menu, compiles its own once (about 90 s, with a progress bar),
 and they are kept in cache/ too.
 
 It needs the Quake III data where it is installed on the test machine

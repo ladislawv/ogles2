@@ -40,6 +40,12 @@ gl4es. The plan and its status: `docs/IOQ3_GLES2_PORT_PLAN.md`.
   and `r_specularMapping` default to 0. Quake III's data has neither map, so
   they only cost: at 1920x1080 the A1200's GPU took 43 ms a frame with them,
   10 ms without (17.7 to 44.8 fps); the menu can still turn them on.
+  `0002-shader-progress`: `GLSL_InitGPUShader` calls the glimp's
+  `GLimp_ShaderProgress` after each program; once one takes longer than a
+  cache load, the glimp draws "Compiling shaders for this screen mode, once:
+  N of about 109" and a progress bar into the window's RastPort (no GL
+  state touched; the first frame covers it). Before, the screen stayed
+  grey for about 90 s and looked stuck.
 
 Output: `$B/ioq3gl2/quake3-gl2` and the game `.dll`s. Package
 `tests/a1200/m6-5` runs the timedemo (`Run-M1`) or the game (`Play-Quake`).
