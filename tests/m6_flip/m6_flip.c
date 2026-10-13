@@ -16,6 +16,8 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <dos/dostags.h>
+#include <string.h>
 #include <exec/types.h>
 #include <exec/ports.h>
 #include <devices/timer.h>
@@ -90,24 +92,116 @@ static void announce(struct Screen *s, int way)
     Delay(50);
 }
 
-/* Ways 1 and 2: straight into the displayed bitmap. */
-static void single(struct Screen *s, int vsync, int way, const char *name)
+/* A process at priority -1 counting loop rounds: it runs only on CPU time
+ * nobody else wants, so its count shows how much a way leaves idle (a wait
+ * that sleeps leaves much, a busy wait none). It cannot starve anything. */
+struct counter
+{
+    struct Message msg;
+    volatile LONG stop;
+    volatile ULONG n;
+    struct Task *parent;
+    BYTE done_bit;
+};
+
+static void counter_main(void)
+{
+    struct Process *me = (struct Process *)FindTask(0);
+    struct counter *c;
+    WaitPort(&me->pr_MsgPort);
+    c = (struct counter *)GetMsg(&me->pr_MsgPort);
+    ReplyMsg(&c->msg);
+    while (!c->stop)
+        c->n++;
+    Forbid();
+    Signal(c->parent, 1UL << c->done_bit);
+}
+
+static BOOL counter_start(struct counter *c)
+{
+    struct MsgPort *reply = CreateMsgPort();
+    struct Process *p;
+    memset(c, 0, sizeof(*c));
+    c->parent = FindTask(0);
+    c->done_bit = AllocSignal(-1);
+    if (!reply || c->done_bit < 0) {
+        if (reply)
+            DeleteMsgPort(reply);
+        if (c->done_bit >= 0)
+            FreeSignal(c->done_bit);
+        return FALSE;
+    }
+    p = CreateNewProcTags(NP_Entry, (ULONG)counter_main, NP_Name, (ULONG) "m6_flip counter", NP_Priority, -1,
+                          NP_StackSize, 4096, TAG_DONE);
+    if (!p) {
+        DeleteMsgPort(reply);
+        FreeSignal(c->done_bit);
+        return FALSE;
+    }
+    c->msg.mn_ReplyPort = reply;
+    c->msg.mn_Length = sizeof(*c);
+    PutMsg(&p->pr_MsgPort, &c->msg);
+    WaitPort(reply);
+    GetMsg(reply);
+    DeleteMsgPort(reply);
+    return TRUE;
+}
+
+static ULONG counter_stop(struct counter *c)
+{
+    SetSignal(0, 1UL << c->done_bit);
+    c->stop = 1;
+    Wait(1UL << c->done_bit); /* this task waits: the counter runs and ends */
+    FreeSignal(c->done_bit);
+    return c->n;
+}
+
+/* Ways 1, 2, 5 and 6: straight into the displayed bitmap.
+ * mode 0: as fast as it goes; 1: WaitTOF before each frame; 2: WaitBOVP;
+ * 3: no drawing, only Delay (the idle baseline for the counter). */
+static ULONG iv_wait[2048];
+static void report(const char *what, const ULONG *iv, int n);
+
+static void single(struct Screen *s, int mode, int way, const char *name)
 {
     struct RastPort *rp = &s->RastPort;
-    ULONG t0, t, frames = 0;
-    int old = -1, x;
+    struct counter c;
+    ULONG t0, t, frames = 0, last = 0, now, idle;
+    int old = -1, x, n = 0;
+    BOOL counting;
     announce(s, way);
+    counting = mode != 0 && counter_start(&c);
     t0 = now_us();
     while ((t = now_us() - t0) < (ULONG)seconds * 1000000UL) {
-        if (vsync)
+        if (mode == 3) {
+            Delay(10);
+            continue;
+        }
+        if (mode == 1)
             WaitTOF();
+        else if (mode == 2)
+            WaitBOVP(&s->ViewPort);
+        if (mode) {
+            now = now_us();
+            if (last && n < 2048)
+                iv_wait[n++] = now - last;
+            last = now;
+        }
         x = bar_x(t);
         bar(rp, old, x);
         old = x;
         frames++;
     }
-    printf("%s: %lu frames in %d s, %lu fps\n", name, (unsigned long)frames, seconds,
-           (unsigned long)(frames / seconds));
+    idle = counting ? counter_stop(&c) : 0;
+    if (mode == 3)
+        printf("%s: the counter %lu rounds in %d s (all the CPU)\n", name, (unsigned long)idle, seconds);
+    else
+        printf("%s: %lu frames in %d s, %lu fps%s", name, (unsigned long)frames, seconds,
+               (unsigned long)(frames / seconds), counting ? "" : "\n");
+    if (counting && mode != 3)
+        printf("; the counter %lu rounds (left idle)\n", (unsigned long)idle);
+    if (mode == 1 || mode == 2)
+        report(mode == 1 ? "between WaitTOFs" : "between WaitBOVPs", iv_wait, n);
 }
 
 /* Ways 3 and 4: two buffers flipped by ChangeScreenBuffer (RKRM's
@@ -156,7 +250,7 @@ static void flip(struct Screen *s, int wait_disp, int way, const char *name)
     struct MsgPort *safe_port = CreateMsgPort(), *disp_port = CreateMsgPort();
     struct RastPort rp[2];
     BOOL safe = TRUE, disp = TRUE;
-    ULONG t0, t, frames = 0, refused = 0, last_safe = 0, last_disp = 0, at;
+    ULONG t0, t, frames = 0, refused = 0, last_safe = 0, last_disp = 0, at, csb_sum = 0, csb_max = 0;
     int cur = 1, i, x, old[2] = {-1, -1}, n_safe = 0, n_disp = 0;
     announce(s, way);
     sb[0] = AllocScreenBuffer(s, 0, SB_SCREEN_BITMAP);
@@ -196,7 +290,13 @@ static void flip(struct Screen *s, int wait_disp, int way, const char *name)
                 iv_disp[n_disp++] = at - last_disp;
             last_disp = at;
         }
-        if (ChangeScreenBuffer(s, sb[cur])) {
+        at = now_us();
+        i = ChangeScreenBuffer(s, sb[cur]) != 0;
+        at = now_us() - at;
+        csb_sum += at;
+        if (at > csb_max)
+            csb_max = at;
+        if (i) {
             safe = disp = FALSE;
             cur ^= 1;
             frames++;
@@ -206,6 +306,8 @@ static void flip(struct Screen *s, int wait_disp, int way, const char *name)
     }
     printf("%s: %lu frames in %d s, %lu fps, %lu flips refused\n", name, (unsigned long)frames, seconds,
            (unsigned long)(frames / seconds), (unsigned long)refused);
+    printf("  ChangeScreenBuffer itself: %lu us on average, %lu at most\n",
+           (unsigned long)(frames + refused ? csb_sum / (frames + refused) : 0), (unsigned long)csb_max);
     report("between safe messages", iv_safe, n_safe);
     if (wait_disp)
         report("between displayed messages", iv_disp, n_disp);
@@ -225,6 +327,62 @@ out:
         DeleteMsgPort(safe_port);
     if (disp_port)
         DeleteMsgPort(disp_port);
+}
+
+/* Ways 8 and 9: panning instead of ChangeScreenBuffer, which busy-waits for
+ * the refresh on this RTG (17 ms a call; a priority-20 process flipping in
+ * a loop froze the A1200, M6 run 9). A screen two (8) or three (9) times as
+ * tall as the display: each frame is drawn into a hidden part, then
+ * ScrollVPort shows it (the ViewPort's RyOffset). No waiting for the
+ * display: whether the change waits for the refresh, tears or busy-waits
+ * is what this shows (the time ScrollVPort takes is printed). */
+static void pan(ULONG mode, int parts, int way)
+{
+    struct Screen *s;
+    struct RastPort *rp;
+    ULONG t0, t, frames = 0, err = 0, sv_sum = 0, sv_max = 0;
+    int cur = 1, k, x, old[3] = {-1, -1, -1};
+    s = OpenScreenTags(0, SA_Depth, 24, SA_DisplayID, mode, SA_Width, W, SA_Height, (ULONG)(H * parts),
+                       SA_ErrorCode, (ULONG)&err, SA_ShowTitle, FALSE, SA_Draggable, FALSE, SA_Quiet, TRUE,
+                       SA_AutoScroll, FALSE, TAG_DONE);
+    if (!s) {
+        printf("%d: FAIL, no %dx%d screen (error %lu)\n", way, W, H * parts, (unsigned long)err);
+        return;
+    }
+    rp = &s->RastPort;
+    for (k = 0; k < parts; k++) {
+        int i;
+        FillPixelArray(rp, 0, (UWORD)(k * H), W, H, BACKGROUND);
+        for (i = 0; i < way; i++)
+            FillPixelArray(rp, (UWORD)(24 + (i % 8) * 72), (UWORD)(k * H + 16 + (i / 8) * 56), 48, 40, 0x00FFFFFF);
+    }
+    s->ViewPort.RasInfo->RyOffset = 0;
+    ScrollVPort(&s->ViewPort);
+    Delay(50); /* the number alone for a second */
+    t0 = now_us();
+    while ((t = now_us() - t0) < (ULONG)seconds * 1000000UL) {
+        ULONG a;
+        x = bar_x(t);
+        if (old[cur] != x) {
+            if (old[cur] >= 0)
+                FillPixelArray(rp, (UWORD)old[cur], (UWORD)(cur * H + TOP), BAR, H - TOP, BACKGROUND);
+            FillPixelArray(rp, (UWORD)x, (UWORD)(cur * H + TOP), BAR, H - TOP, 0x00FFFFFF);
+            old[cur] = x;
+        }
+        a = now_us();
+        s->ViewPort.RasInfo->RyOffset = (WORD)(cur * H);
+        ScrollVPort(&s->ViewPort);
+        a = now_us() - a;
+        sv_sum += a;
+        if (a > sv_max)
+            sv_max = a;
+        frames++;
+        cur = (cur + 1) % parts;
+    }
+    printf("%d pan, %d parts: %lu frames in %d s, %lu fps; ScrollVPort %lu us on average, %lu at most\n", way,
+           parts, (unsigned long)frames, seconds, (unsigned long)(frames / seconds),
+           (unsigned long)(frames ? sv_sum / frames : 0), (unsigned long)sv_max);
+    CloseScreen(s);
 }
 
 /* Way n wanted: argument 1 lists them ("34"); without it, all four. */
@@ -274,11 +432,19 @@ int main(int argc, char **argv)
         single(s, 0, 1, "1 single buffer, no wait");
     if (wanted(ways, 2))
         single(s, 1, 2, "2 single buffer, WaitTOF");
+    if (ways && wanted(ways, 6))
+        single(s, 3, 6, "6 idle (Delay only), the baseline");
+    if (ways && wanted(ways, 5))
+        single(s, 2, 5, "5 single buffer, WaitBOVP");
     if (wanted(ways, 3))
         flip(s, 0, 3, "3 ChangeScreenBuffer, safe message");
     if (wanted(ways, 4))
         flip(s, 1, 4, "4 ChangeScreenBuffer, safe and displayed messages");
     CloseScreen(s);
+    if (ways && wanted(ways, 8))
+        pan(mode, 2, 8);
+    if (ways && wanted(ways, 9))
+        pan(mode, 3, 9);
     CloseDevice(&treq.tr_node);
     CloseLibrary(CyberGfxBase);
     CloseLibrary((struct Library *)GfxBase);

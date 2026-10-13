@@ -1,0 +1,17 @@
+ogles2 M6 run 9 - notes
+A white bar crossed the screen four ways, 6 seconds each, in this order
+(the number of white squares at the top of the screen gave the way).
+For each, write what you saw: smooth, jerky (stops and jumps), or torn
+(the bar broken into pieces that do not line up). "ok" is a fine answer.
+
+1 single buffer, no wait:
+
+2 single buffer, WaitTOF:
+
+3 ChangeScreenBuffer, safe message:
+
+4 ChangeScreenBuffer, safe and displayed messages:
+
+Did the machine hang, crash or show a requester at any point?
+
+Anything else you noticed:

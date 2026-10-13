@@ -355,22 +355,10 @@ struct OGLES2Display
     int rb_swap;                    /* 1: BGRA32 target, 0: RGBA32 */
     APTR lock;                      /* cybergraphics bitmap lock, one frame long */
     ULONG bprow, base;              /* valid while locked */
-    /* Vsync on a screen of our own (display.c): three (or two) screen
-     * buffers, frames rendered into a hidden one and shown by
-     * ChangeScreenBuffer. */
-    struct ScreenBuffer *sb[3];
-    struct MsgPort *safe_port;      /* the buffers' safe messages */
-    UBYTE nbuf;                     /* buffers in sb[] */
-    UBYTE back;                     /* the hidden buffer rendered into */
-    UBYTE shown;                    /* the buffer last asked to be shown */
-    UBYTE replaced[3];              /* per buffer: the one its flip took off the screen */
-    UBYTE unsafe;                   /* bit per buffer: off the screen, safe message to come */
-    UBYTE msgs_due;                 /* flips whose safe message has not come */
-    BOOL flip;                      /* flipping (sb[] valid) */
-    BOOL flip_refused;              /* ChangeScreenBuffer refused a flip (logged once) */
-    ULONG flips, flips_late, t_safe; /* flips; safe messages over 25 ms apart; the last one's time */
-    struct Task *boosted;           /* raised from the safe message to the next flip (display.c) */
-    BYTE boost_pri;                 /* its own priority, given back at the flip */
+    /* Vsync (display.c): the task raised from the wait for the refresh to
+     * its frame's submission, and its own priority. */
+    struct Task *boosted;
+    BYTE boost_pri;
 };
 
 struct V3DContext; /* v3dcore */
@@ -534,11 +522,12 @@ void ogles2_display_dma(struct OGLES2Display *d, BOOL after);
 BOOL ogles2_display_lock(struct OGLES2Display *d);
 void ogles2_display_unlock(struct OGLES2Display *d);
 void ogles2_display_present(struct OGLES2Display *d);
-/* aglSetParams2's VSYNC: on a screen of our own, the two screen buffers made
- * or freed (the context's jobs finished first). */
+/* aglSetParams2's VSYNC. */
 void ogles2_display_set_vsync(struct OGLES2Display *d, BOOL on);
-/* aglSwapBuffers' start: with vsync, the task's priority raised to the flip. */
-void ogles2_display_swap_begin(struct OGLES2Display *d);
+/* Vsync: the wait for the display's refresh before the frame goes out
+ * (raising the task's priority), and the end of it after the submission. */
+void ogles2_display_wait_refresh(struct OGLES2Display *d);
+void ogles2_display_wait_done(struct OGLES2Display *d);
 /* glReadPixels: w x h pixels from (x, y) (GL's origin, the bottom-left),
  * clipped by the caller, as RGBA bytes, bottom row first, `stride` apart. */
 void ogles2_display_read(struct OGLES2Display *d, UWORD x, UWORD y, UWORD w, UWORD h, UBYTE *dst,

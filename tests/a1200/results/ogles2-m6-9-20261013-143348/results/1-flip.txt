@@ -1,0 +1,11 @@
+task priority 0 (was 0)
+ogles2 M6: presentation on the RTG screen (watch the white bar)
+screen mode 0x50031300
+2 single buffer, WaitTOF: 300 frames in 5 s, 60 fps; the counter 1105405929 rounds (left idle)
+  between WaitTOFs: 299 intervals, 14014-35989 us, mean 16722 us; most 17 ms; 1 longer than 1.5x that
+   ms:count 14:1 16:5 17:290 18:2 36:1
+6 idle (Delay only), the baseline: the counter 1154365769 rounds in 5 s (all the CPU)
+5 single buffer, WaitBOVP: 301 frames in 5 s, 60 fps; the counter 1106182873 rounds (left idle)
+  between WaitBOVPs: 300 intervals, 6763-26574 us, mean 16666 us; most 17 ms; 1 longer than 1.5x that
+   ms:count 7:1 15:1 16:5 17:291 18:1 27:1
+done

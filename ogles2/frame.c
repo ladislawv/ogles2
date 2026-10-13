@@ -21,12 +21,13 @@ void ogles2_aglSwapBuffers(struct OGLES2Context *ctx)
     ULONG t0, t1;
     if (!has_surface(ctx))
         return;
-    ogles2_display_swap_begin(&ctx->display);
+    /* Vsync on a screen of our own: the frame goes out at the refresh
+     * (display.c). */
+    if (ctx->display.vsync && ctx->display.own_screen)
+        ogles2_display_wait_refresh(&ctx->display);
     ogles2_job_flush(ctx, TRUE);
+    ogles2_display_wait_done(&ctx->display);
     t0 = ogles2_clock_us();
-    /* Flipping (vsync on a screen of our own) shows a finished frame. */
-    if (ctx->display.flip)
-        ogles2_job_finish(ctx);
     ogles2_display_present(&ctx->display);
     t1 = ogles2_clock_us();
     ctx->sum_present += (double)(ULONG)(t1 - t0);
@@ -335,10 +336,6 @@ void ogles2_aglSetParams2(struct OGLES2Context *ctx, struct TagItem *tags)
     while ((t = NextTagItem(&state))) {
         switch (t->ti_Tag) {
         case OGLES2_CCT_VSYNC:
-            if (ctx->v3d) { /* no render may write a buffer that goes or comes */
-                ogles2_job_flush(ctx, FALSE);
-                ogles2_job_finish(ctx);
-            }
             ogles2_display_set_vsync(&ctx->display, t->ti_Data ? TRUE : FALSE);
             break;
         case OGLES2_CCT_WINDOW:
