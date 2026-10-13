@@ -212,6 +212,15 @@ BOOL ogles2_compile_program(const char *vs, const char *fs, const char *path, ch
     return request(V3DGLSL_LINK, vs, fs, path, log, log_size, &result) && result == 0;
 }
 
+/* The variants for samplers that return 32 bits (the program's .v3dw). A
+ * compiler older than V3DGLSL_LINK32 refuses the request (result 3). */
+BOOL ogles2_compile_program_wide(const char *vs, const char *fs, const char *path, char *log,
+                                 ULONG log_size)
+{
+    LONG result;
+    return request(V3DGLSL_LINK32, vs, fs, path, log, log_size, &result) && result == 0;
+}
+
 int ogles2_compile_shader(BOOL fragment, const char *src, char *log, ULONG log_size)
 {
     LONG result;

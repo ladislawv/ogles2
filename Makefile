@@ -54,7 +54,7 @@ CLIENT_OBJ := $(patsubst %.c,$(B)/obj/%.o,$(CLIENT_SRC)) $(B)/obj/client/lvo.o \
 .PHONY: all gen clean vbcc
 all: $(B)/fpcheck.ok $(B)/libv3dcore.a $(B)/ogles2.library $(B)/libogles2.a $(B)/tests/abi_layout $(B)/tests/smoke \
      $(B)/tests/abi_probe $(B)/tests/m1_clear $(B)/tests/m1_probe $(B)/tests/m1_draw $(B)/tests/m1_hwprobe $(B)/tests/m1_soak $(B)/tests/m2_link $(B)/tests/m2_texture $(B)/tests/m2_elements $(B)/tests/m2_buffers $(B)/tests/m4_stress $(B)/tests/m4_depth $(B)/tests/m4_setbitmap $(B)/tests/gears_gles2 $(B)/tests/cachetime $(B)/tests/emuspeed $(B)/tests/m5_fbo \
-     $(B)/tests/rtt_churn $(B)/tests/m6_share $(B)/tests/m6_tasks $(B)/cmd/OGLES2Log $(B)/amictl/amictld
+     $(B)/tests/rtt_churn $(B)/tests/m6_share $(B)/tests/m6_tasks $(B)/tests/m6_ext $(B)/cmd/OGLES2Log $(B)/amictl/amictld
 
 # ---- generated code (plan section 6.6). Re-run when the inputs or the set of
 # implemented ogles2_* functions change.
@@ -174,6 +174,9 @@ $(B)/tests/m6_share: tests/m6_share/m6_share.c $(B)/libogles2.a
 $(B)/tests/m6_tasks: tests/m6_share/m6_tasks.c $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m6_ext: tests/m6_ext/m6_ext.c tests/common/ext_shaders.h $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
 $(B)/tests/m4_setbitmap: tests/m4_setbitmap/m4_setbitmap.c $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
@@ -279,13 +282,13 @@ test-v3dp: $(B)/v3dp/.stamp
 $(B)/v3dp/.stamp: $(wildcard tests/common/*.h) tools/v3dp_tests/emit.c v3dp/v3dp_hashname.py \
                $(wildcard tools/v3dglslc/test/shaders/*)
 	@mkdir -p $(B)/v3dp/src
-	rm -f $(B)/v3dp/*.v3dp
+	rm -f $(B)/v3dp/*.v3dp $(B)/v3dp/*.v3dw
 	gcc -O2 -o $(B)/v3dp/emit tools/v3dp_tests/emit.c
 	cp tools/v3dglslc/test/shaders/light.* tools/v3dglslc/test/shaders/skin.* \
 	    tools/v3dglslc/test/shaders/state.* tools/v3dglslc/test/shaders/tex.* $(B)/v3dp/src/
 	cd $(B)/v3dp/src && ../emit && for v in *.vert; do \
 	    $(V3DGLSLC) -o .. $$v $${v%.vert}.frag || exit 1; done
-	$(PYTHON) v3dp/v3dp_hashname.py $(B)/v3dp/*.v3dp
+	$(PYTHON) v3dp/v3dp_hashname.py $(B)/v3dp/*.v3dp $$(ls $(B)/v3dp/*.v3dw 2>/dev/null)
 	touch $@
 
 # ---- host check of ogles2/etc1.c against Mesa's ETC1 decoder

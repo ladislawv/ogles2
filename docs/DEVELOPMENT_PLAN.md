@@ -1303,11 +1303,21 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
 - **Sources from a fresh clone:** the AmigaOS 3 engine (Cowcat's port, which is not on GitHub, with the PiStorm changes up to build 296) is published as `github.com/ladislawv/ioq3-amiga`; `ports/ioq3/sources.sh` clones it and upstream ioquake3 at pinned commits into `~` on the first build (`IOQ3_SRC`/`IOQ3_UP_SRC` name other trees). `CLAUDE.md` and `CONTRIBUTING.md` describe the setup for a new developer or agent.
 - **A1200 runs:** `ogles2-m6-5-20261012-194531` (the split), `-200429` (640x480 80.7 fps), `-201443` (the shipped cache: 2.35 s, nothing compiled); the 1080p runs in the session's scratch results (44.8 fps).
 
+**Done (2026-10-13): Quake III played; a second build machine.**
+- The user's playing session on renderergl2 (menus, settings, a match) is complete.
+- A second build machine (WSL2, set up from `CONTRIBUTING.md`) builds everything, including the ports; its `v3dglslc` matches the PC's byte for byte (`compare_v3dp.sh` 5/5). The setup scripts gained the CyberGraphX and AHI SDKs (`dev/host-setup`). With that machine's library and Quake build: `ogles2-m2-4-20261012-234543` every test passes; `ogles2-m6-5-20261013-001034` timedemo `four` **80.5 fps** (frame min/avg/max 5.0/12.4/82.0 ms), 0 dropped, 0 bytes of GPU memory left.
+
+**Done (2026-10-13): every extension of Appendix B.3; ogles2.library 1.2.**
+- **Library only:** `OES_texture_npot` (the library already behaved so), `EXT_read_format_bgra` (`glReadPixels` as BGRA bytes and the two reversed 16-bit packings), `EXT_texture_filter_anisotropic` (2 to 16), `EXT_texture_lod_bias` (a texture parameter, as AmigaOS 4's: there is no texture environment; s8.8, ±15; the sampler record's bias half-word was never swapped to little-endian, harmless while it was always 0), `SGIS_texture_lod` (base and max level in the texture state, min and max LOD in the sampler; the GPU copy is laid out from level 0, so level 0 must exist), `ARB_texture_mirror_clamp_to_edge` (in OS4's list, missing from B.3 before; `MIRRORONCE`), `OES_standard_derivatives` (Mesa compiles them; `dFdy` on the flipped default framebuffer reads the `FbWposYTransform` state variable the runtime already computes), `OES_get_program_binary` (the binary is the `.v3dp` file, `GL_PROGRAM_BINARY_V3DP_PISTORM`; images keep their file's bytes), and OS4's `glPolygonMode` (`GL_FRONT_AND_BACK` only: CFG_BITS' wireframe and point-fill modes; the fragment variant follows the class the rasteriser sees, as Mesa's), `glProvokingVertex` (state and CFG_BITS only: GLSL ES 1.00 has no flat varyings) and `glGetBufferParameterivOES` (an `alias` line in `gen/api.txt`: gl.xml has no such command). 159 dispatch entries.
+- **Float and depth textures** (`OES_texture_float`, `OES_texture_half_float(_linear)`, `OES_depth_texture`, and `OES_packed_depth_stencil`'s `DEPTH_STENCIL_OES` texture): each level's RAM copy has a class (RGBA8, RGBA floats, or the stored depth word); storage after Mesa's format table (R/RG/RGBA 32F and 16F, `DEPTH_COMP16`, `DEPTH24_X8`, depth sampled as luminance). 32-bit floats and depth cannot be filtered: sampled nearest (logged). Depth textures are framebuffer attachments: the tile buffer stores into the level's own layout as D16 or D24S8, which the TMU samples.
+- **The 32-bit TMU return** (Mesa's `sampler_is_32b` key) is a second file per program with samplers, `<hash>.v3dw` (`v3dp/FORMAT.md`): the same draws with every sampler bound to an RGBA32F texture. The runtime takes its fragment variants for a draw whose program samples a float or depth texture (the 32-bit return reads 8-bit textures correctly too, as Mesa's `V3D_DEBUG=tmu32` assumes), loaded from `PROGDIR:` or the cache, or compiled then by the on-target compiler (`V3DGLSL_LINK32`, about a second, once per program). Compiling them eagerly would have cost three more fragment compiles for every textured program (Quake III: 109). The offline compiler writes both files.
+- **`ARB_texture_rectangle`:** Mesa patch 0011 (`tools/v3dglslc/patches`; apply it in `~/mesa-build/mesa` on an existing build machine, then `replay.py`, `build_m68k.sh`, `build_host.sh`) lets GLSL ES take `sampler2DRect` with `sampler2D`'s default precision, and the key-state draws bind rectangle textures; V3D 4.2's TMU samples unnormalized coordinates itself (the compiler's P1 bit), so no `TEXRECT_SCALE` uniform. Rectangle textures: level 0, `NEAREST`/`LINEAR`, clamped, also as render targets.
+- **Tests:** `m6_ext` (88 checks) in package `m6-6`, whose step 5 runs it without binaries so the A1200 compiles every program and its `.v3dw` (87 checks, without the memory check: the compiler starts in it). `m2_texture` now tests an invalid type with `GL_INT` (`GL_FLOAT` is valid).
+- **A1200 runs:** `ogles2-m6-6-20261013-105143` (`m6_ext` 88/88, every earlier test as before) and `-105228` (step 5: 87/87; all nine binaries compiled on the A1200, `.v3dw` included, byte-identical to the PC's; m2_link 27/27 once a stale cache file from a run with an old compiler was gone); `ogles2-m2-5-20261013-105342` the corpus 14/14; `ogles2-m6-5-20261013-105533` Quake III 80.6 fps; 0 bytes of GPU memory left everywhere. `compare_v3dp.sh` 7/7 (with the `.v3dw` files), `scan_asm.sh` 0 suspect functions.
+
 **Next, in order (M6: ecosystem, sharing and performance, §9):**
-1. **Quake III:** a longer playing session by the user (menus, settings, a match); optional: the 32 us a draw in ogles2 for renderergl2's draws.
-2. **Per-draw CPU time further** for gl4es programs (the gl4es build: 23.3 ms a frame against MiniGL's 16.4): gl4es's per-draw work (program choice, texture realisation, other uniforms) and Quake's state calls through it; ogles2's draw (about 28 us: vertex data, uniform streams, binning list).
-3. **minigl.library coexistence** (D3): the shared submission component with PiStorm3D's maintainers; the turn across programs above is ogles2's half.
-4. **Extensions** (Appendix B.3) as programs need them; optional: native ETC1 sampling; the large-reply stall (`amictld`).
+1. **glmark2-es2** (an M6 exit criterion), and the other M6 scope not started: presentation (double or triple buffering, vsync), the TFU for mipmaps and uploads, 4x MSAA; optional: native ETC1 sampling; the large-reply stall (`amictld`).
+2. **Postponed (2026-10-13, the developer's decision):** per-draw CPU time for gl4es programs (the gl4es build: 23.3 ms a frame against MiniGL's 16.4; ogles2's draw about 28 us, 32 us for renderergl2's), and minigl.library coexistence (D3: the shared submission component with PiStorm3D's maintainers; the turn across programs above is ogles2's half).
 
 ---
 
@@ -1386,19 +1396,20 @@ PiStorm-specific tags (for example MSAA, swap mode) go in a private value range.
 
 | OS4 ogles2 exposes | Plan |
 |---|---|
-| `GL_OES_mapbuffer` (`glMapBufferOES`, `glUnmapBufferOES`, `glGetBufferPointervOES`) | M4 |
-| `GL_OES_element_index_uint` | M4 |
-| `GL_OES_get_program_binary` (`glProgramBinaryOES`, `glGetProgramBinaryOES`) | M2 (the S1 delivery mechanism) |
+| `GL_OES_mapbuffer` (`glMapBufferOES`, `glUnmapBufferOES`, `glGetBufferPointervOES`) | M4; done |
+| `GL_OES_element_index_uint` | M4; done |
+| `GL_OES_get_program_binary` (`glProgramBinaryOES`, `glGetProgramBinaryOES`) | M6; done (the binary is the `.v3dp` file, format `GL_PROGRAM_BINARY_V3DP_PISTORM`) |
 | `GL_OES_packed_depth_stencil` | M5; done |
-| `GL_EXT_texture_format_BGRA8888` | M4 |
+| `GL_EXT_texture_format_BGRA8888` | M4; done |
 | `GL_EXT_blend_minmax` | M4 (native blend modes); done |
-| `GL_OES_texture_float` | M6 (32-bit TMU return key) |
-| `GL_EXT_texture_filter_anisotropic` | M6 |
-| `GL_EXT_texture_lod_bias`, `GL_SGIS_texture_lod` | M6 (sampler state fields exist) |
-| `GL_ARB_texture_rectangle` | M6 (Mesa `TEXRECT_SCALE` uniforms) |
+| `GL_OES_texture_float` | M6; done (the 32-bit TMU return key: the program's `.v3dw` variants; sampled nearest), with `OES_texture_half_float` and `_half_float_linear` |
+| `GL_EXT_texture_filter_anisotropic` | M6; done (2, 4, 8, 16) |
+| `GL_EXT_texture_lod_bias`, `GL_SGIS_texture_lod` | M6; done (the bias a texture parameter, as OS4's; base and max level, min and max LOD) |
+| `GL_ARB_texture_rectangle` | M6; done (Mesa patch 0011 for GLSL ES; V3D 4.2 samples unnormalized coordinates itself, no `TEXRECT_SCALE`) |
+| `GL_ARB_texture_mirror_clamp_to_edge` (in OS4's list, missing here before) | M6; done |
 | `glDrawElementsBaseVertexOES` (`OES_draw_elements_base_vertex`) | M4; done |
-| `glPolygonMode`, `glProvokingVertex`, `glGetBufferParameterivOES` (OS4 extras) | M6 (hardware supports polygon mode and provoking vertex through CFG_BITS; the query is trivial) |
-| *Not in OS4 list, planned:* `OES_texture_npot`, `OES_compressed_ETC1_RGB8_texture` (done, M4), `EXT_read_format_bgra`, `EXT_discard_framebuffer` (done, M5), `OES_standard_derivatives` (Mesa's compiler supports derivatives; works in S1 and S2), `OES_depth_texture` | M4–M6 |
+| `glPolygonMode`, `glProvokingVertex`, `glGetBufferParameterivOES` (OS4 extras) | M6; done (CFG_BITS' Direct3D wireframe, point-fill and provoking-vertex bits; `GL_FRONT_AND_BACK` only, the hardware has one mode) |
+| *Not in OS4 list, planned:* `OES_texture_npot`, `OES_compressed_ETC1_RGB8_texture` (done, M4), `EXT_read_format_bgra`, `EXT_discard_framebuffer` (done, M5), `OES_standard_derivatives` (Mesa's compiler supports derivatives; works in S1 and S2), `OES_depth_texture` | M4–M6; all done (M6: depth textures 16- and 24-bit, drawn into and sampled, and a `DEPTH_STENCIL_OES` one for both) |
 | *Not in OS4 list, offered since M5:* `OES_rgb8_rgba8`, `OES_fbo_render_mipmap` (Mesa offers both) | M5; done |
 | *GLES 3.0's* `glDrawRangeElements`, through `aglGetProcAddress` (ogles2 1.1): the indices' range given, not scanned (gl4es passes a locked array range) | M6; done |
 

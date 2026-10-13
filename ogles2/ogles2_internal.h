@@ -10,12 +10,16 @@
 #include <graphics/rastport.h>
 #include <utility/tagitem.h>
 #include "ogles2_api.h" /* generated: dispatch struct and every ogles2_* prototype */
+#include <GLES2/gl2ext.h>
+#include <libraries/ogles2.h> /* the extensions' enums gl2ext.h lacks */
 
-/* 1.1: glDrawRangeElements appended to the dispatch table. glGetString's
- * GL_VERSION (context.c) names the same revision. */
+/* 1.1: glDrawRangeElements appended to the dispatch table. 1.2: the
+ * extension entries of AmigaOS 4's ogles2 (program binaries, glPolygonMode,
+ * glProvokingVertex, glGetBufferParameterivOES). glGetString's GL_VERSION
+ * (context.c) names the same revision. */
 #define OGLES2_LIB_VERSION  1
-#define OGLES2_LIB_REVISION 1
-#define OGLES2_LIB_DATE     "12.10.2026"
+#define OGLES2_LIB_REVISION 2
+#define OGLES2_LIB_DATE     "13.10.2026"
 
 struct OGLES2Library
 {
@@ -90,7 +94,10 @@ struct OGLES2State
     GLfloat polygon_offset_factor, polygon_offset_units;
     GLfloat sample_coverage_value;
     GLfloat attrib[OGLES2_MAX_VERTEX_ATTRIBS][4]; /* current generic attributes */
-    GLenum generate_mipmap_hint;    /* glHint, the only target GLES2 has */
+    GLenum generate_mipmap_hint;    /* glHint */
+    GLenum derivative_hint;         /* glHint, OES_standard_derivatives */
+    GLenum polygon_mode;            /* glPolygonMode (AmigaOS 4): GL_FILL, GL_LINE, GL_POINT */
+    GLenum provoking_vertex;        /* glProvokingVertex (AmigaOS 4) */
     GLenum cull_face_mode, front_face, depth_func;
     GLenum blend_src_rgb, blend_dst_rgb, blend_src_alpha, blend_dst_alpha;
     GLenum blend_eq_rgb, blend_eq_alpha;
@@ -240,6 +247,17 @@ struct OGLES2Image
     ULONG code_total;                     /* bytes of code, all variants */
     struct v3d_mem *code_mem;             /* the code in GPU memory; NULL: built in */
     APTR blocks;                          /* v3dp.c's allocations, to free */
+    UBYTE *binary;                        /* the .v3dp file it was loaded from (AllocVec'd; NULL:
+                                             built in): OES_get_program_binary's binary */
+    ULONG binary_len;
+    /* The variants for samplers returning 32 bits (float and depth
+     * textures): the program's .v3dw, loaded or compiled at the first draw
+     * that needs them (program.c, ogles2_image_wide); only its fragment
+     * variants are used. The sources it is compiled from (NULL: a program
+     * from glProgramBinaryOES, which can only find a .v3dw). */
+    struct OGLES2Image *wide;
+    BOOL wide_tried;
+    char *vs_src, *fs_src;
     struct OGLES2Image *next;             /* the context's program cache (program.c) */
 };
 
@@ -288,7 +306,8 @@ struct OGLES2Program
     /* draw.c: the variants and code addresses for the last primitive mode
      * drawn, and the image's sampler uniforms (0xff: not listed yet). */
     BOOL var_ok;
-    GLenum var_mode;
+    GLenum var_mode, var_fsmode;      /* the draw's primitive, the fragment shader's (glPolygonMode) */
+    const struct OGLES2Image *var_fim; /* the fragment shader's image: the program's, or its .v3dw */
     const struct OGLES2Variant *var[3];
     ULONG var_code[3];
     UBYTE nsamplers;
@@ -319,6 +338,9 @@ void ogles2_image_free(struct OGLES2Image *im, struct OGLES2Context *ctx);
 /* The image's variant for `stage` and a draw of primitive `mode` (GL_POINTS ...). */
 const struct OGLES2Variant *ogles2_image_variant(const struct OGLES2Image *im, UBYTE stage,
                                                  GLenum mode);
+/* program.c: the image's 32-bit-sampler variants (im->wide), found or
+ * compiled the first time; NULL if there are none (logged once). */
+const struct OGLES2Image *ogles2_image_wide(struct OGLES2Image *im);
 
 /* The default framebuffer's surface (display.c). */
 struct OGLES2Display
@@ -517,6 +539,22 @@ BOOL ogles2_texture_renderable(const struct OGLES2Texture *t, int k, int l);
 BOOL ogles2_texture_surface(struct OGLES2Context *ctx, struct OGLES2Texture *t, int k, int l,
                             struct OGLES2Surface *s);
 void ogles2_texture_rendered(struct OGLES2Texture *t, int k, int l); /* the GPU's copy is newer */
+/* OES_depth_texture: level l is a depth image (bits 16 or 24; stencil: DEPTH_STENCIL_OES). */
+BOOL ogles2_texture_depth(const struct OGLES2Texture *t, int l, UBYTE *bits, BOOL *stencil);
+/* That image as a job's depth/stencil surface, its GPU storage made first; FALSE: none. */
+BOOL ogles2_texture_zs_surface(struct OGLES2Context *ctx, struct OGLES2Texture *t, int l,
+                               struct OGLES2Surface *s);
+/* The texture kinds a sampler reads (its uniform's type). */
+#define OGLES2_TEX_2D   0
+#define OGLES2_TEX_CUBE 1
+#define OGLES2_TEX_RECT 2 /* ARB_texture_rectangle */
+static inline int ogles2_sampler_kind(GLenum type)
+{
+    return type == GL_SAMPLER_CUBE ? OGLES2_TEX_CUBE : type == GL_SAMPLER_2D_RECT ? OGLES2_TEX_RECT : OGLES2_TEX_2D;
+}
+/* draw.c: the texture a sampler of that kind on `unit` reads returns 32 bits. */
+BOOL ogles2_texture_wide(struct OGLES2Context *ctx, int unit, int kind);
+extern ULONG ogles2_wide_seen; /* such a texture was ever given an image */
 /* A box of the image as RGBA8 rows (row 0 = GL's bottom), from the GPU's copy. */
 BOOL ogles2_texture_read(struct OGLES2Texture *t, int k, int l, int x, int y, int w, int h,
                          UBYTE *rgba, ULONG stride);
@@ -539,9 +577,9 @@ void ogles2_fbo_texture_deleted(struct OGLES2Context *ctx, struct OGLES2Texture 
 BOOL ogles2_fbo_query(struct OGLES2Context *ctx, GLenum pname, GLint *v);
 void ogles2_fbo_free(struct OGLES2Context *ctx);
 BOOL ogles2_texture_query(struct OGLES2Context *ctx, GLenum pname, GLint *v);
-/* The texture and sampler state of texture unit `unit` (its 2D or cube
- * binding), written into the open job's state buffer; FALSE: no memory. */
-BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, BOOL cube, ULONG *tex_state,
+/* The texture and sampler state of texture unit `unit` (its binding of
+ * OGLES2_TEX_* kind), written into the open job's state buffer; FALSE: no memory. */
+BOOL ogles2_texture_state(struct OGLES2Context *ctx, int unit, int kind, ULONG *tex_state,
                           ULONG *sampler_state);
 ULONG ogles2_format(char *buf, ULONG size, const char *fmt, ...); /* log.c: RawDoFmt, bounded */
 /* compiler.c: the on-target shader compiler (plan 8.4) */
@@ -551,6 +589,9 @@ BOOL ogles2_compiler_installed(void);
 ULONG ogles2_compiler_id(void); /* the installed compiler's size and date, hashed; 0: none */
 BOOL ogles2_compile_program(const char *vs, const char *fs, const char *path, char *log,
                             ULONG log_size);
+/* The same program's variants for samplers returning 32 bits (its .v3dw). */
+BOOL ogles2_compile_program_wide(const char *vs, const char *fs, const char *path, char *log,
+                                 ULONG log_size);
 /* One shader through the front end: 1 compiled, 0 GLSL errors (in log),
  * -1 the compiler could not be run. */
 int ogles2_compile_shader(BOOL fragment, const char *src, char *log, ULONG log_size);

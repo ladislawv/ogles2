@@ -81,6 +81,8 @@ static const struct OGLES2Image builtin_smooth = {
     0, 0,
     sizeof(builtin_coordinate) + sizeof(builtin_vertex_smooth) + sizeof(builtin_fragment_smooth),
     0, 0, 0,
+    0, 0,       /* no binary */
+    0, 0, 0, 0, /* no 32-bit-sampler variants, no sources */
 };
 
 const struct OGLES2Image *ogles2_builtin_image(void)
@@ -804,7 +806,12 @@ static struct OGLES2Image *try_file(struct OGLES2Program *p, const UBYTE *hash, 
     if (!(file = read_file(path, &len)))
         return 0;
     im = ogles2_v3dp_load(file, len, why, sizeof(why));
-    FreeVec(file);
+    if (im) { /* kept: glGetProgramBinaryOES hands it out */
+        im->binary = file;
+        im->binary_len = len;
+    } else {
+        FreeVec(file);
+    }
     if (im && memcmp(im->hash, hash, 32)) {
         /* The same first 24 digits, another program: not ours. */
         ogles2_log("glLinkProgram: %s is another program (hash differs)", (ULONG)path);
@@ -871,6 +878,72 @@ static struct OGLES2Image *load_image(struct OGLES2Program *p, const UBYTE *hash
     set_log(p, "no program binary for this program: ", hex);
     note_missing(p, hex);
     return 0;
+}
+
+/* A .v3dw file of the program `hash` (its 32-bit-sampler variants), or 0. */
+static struct OGLES2Image *try_wide(const UBYTE *hash, const char *path)
+{
+    char why[120];
+    struct OGLES2Image *w;
+    UBYTE *file;
+    ULONG len = 0;
+    if (!(file = read_file(path, &len)))
+        return 0;
+    w = ogles2_v3dp_load(file, len, why, sizeof(why));
+    FreeVec(file);
+    if (w && memcmp(w->hash, hash, 32)) {
+        ogles2_image_free(w, 0);
+        return 0;
+    }
+    if (!w)
+        ogles2_log("draw: %s refused: %s", (ULONG)path, (ULONG)why);
+    return w;
+}
+
+/* The program's variants for samplers that return 32 bits (a float or
+ * depth texture bound, draw.c): its .v3dw beside the .v3dp (PROGDIR:, the
+ * disk cache), or compiled now by the on-target compiler into the cache.
+ * Once per image: at the first draw that needs them, which waits for the
+ * compile (about a second on the A1200). NULL if there are none: such draws
+ * then use the 16-bit variants, which read those textures wrongly (logged). */
+const struct OGLES2Image *ogles2_image_wide(struct OGLES2Image *im)
+{
+    static const char digits[] = "0123456789abcdef";
+    char hex[FILE_HASH_DIGITS + 1], path[96];
+    const char *dirs[2];
+    int d, k;
+    if (im->wide || im->wide_tried)
+        return im->wide;
+    im->wide_tried = TRUE;
+    for (k = 0; k < FILE_HASH_DIGITS / 2; k++) {
+        hex[2 * k] = digits[im->hash[k] >> 4];
+        hex[2 * k + 1] = digits[im->hash[k] & 15];
+    }
+    hex[FILE_HASH_DIGITS] = 0;
+    dirs[0] = "PROGDIR:";
+    dirs[1] = ogles2_cache_dir();
+    for (d = 0; d < 2 && !im->wide; d++) {
+        strcpy(path, dirs[d]);
+        strcat(path, hex);
+        strcat(path, ".v3dw");
+        im->wide = try_wide(im->hash, path);
+    }
+    if (!im->wide && im->vs_src && im->fs_src && ogles2_compiler_installed()) {
+        char *log = AllocVec(1024, MEMF_ANY | MEMF_CLEAR);
+        if (log && ogles2_compile_program_wide(im->vs_src, im->fs_src, path, log, 1024))
+            im->wide = try_wide(im->hash, path);
+        else
+            ogles2_log("draw: the compiler made no 32-bit sampler variants for program %s: %s", (ULONG)hex,
+                       (ULONG)(log ? log : "out of memory"));
+        if (log)
+            FreeVec(log);
+    }
+    if (im->wide)
+        ogles2_log("draw: program %s: its 32-bit sampler variants (%ld)", (ULONG)hex, (LONG)im->wide->nvariants);
+    else
+        ogles2_log("draw: program %s samples a float or depth texture but has no 32-bit sampler variants "
+                   "(no %s.v3dw): its colours from that texture are wrong", (ULONG)hex, (ULONG)hex);
+    return im->wide;
 }
 
 /* After an image is set: attribute locations, uniform locations, constant
@@ -986,6 +1059,10 @@ void ogles2_glLinkProgram(struct OGLES2Context *ctx, GLuint program)
             return;
         im->next = ctx->share->images;
         ctx->share->images = im;
+        /* Kept for its 32-bit-sampler variants, compiled when a draw first
+         * needs them (ogles2_image_wide). */
+        im->vs_src = dup_text(p->vs->source, str_len(p->vs->source));
+        im->fs_src = dup_text(p->fs->source, str_len(p->fs->source));
         /* A binary proves both shaders compile: record them, so the next
          * glCompileShader of either needs no compiler. */
         if (ogles2_compiler_installed()) {
@@ -1153,10 +1230,95 @@ void ogles2_glGetProgramiv(struct OGLES2Context *ctx, GLuint program, GLenum pna
                 n = (GLint)active_name_len(active_uniform(im, (GLuint)i)) + 1;
         *params = n;
         break;
+    case GL_PROGRAM_BINARY_LENGTH_OES:
+        *params = p->linked && im ? (GLint)im->binary_len : 0;
+        break;
     default:
         ogles2_error(ctx, GL_INVALID_ENUM);
         break;
     }
+}
+
+/* ---- OES_get_program_binary: the binary is the program's .v3dp file
+ * (GL_PROGRAM_BINARY_V3DP_PISTORM), as the disk cache holds it. ---- */
+
+void ogles2_glGetProgramBinaryOES(struct OGLES2Context *ctx, GLuint program, GLsizei bufSize,
+                                  GLsizei *length, GLenum *binaryFormat, void *binary)
+{
+    struct OGLES2Program *p;
+    const struct OGLES2Image *im;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    im = p->image;
+    /* Not linked, or a buffer too small for it (the extension's errors). */
+    if (!p->linked || !im || !im->binary || bufSize < (GLsizei)im->binary_len) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        if (length)
+            *length = 0;
+        return;
+    }
+    if (binary)
+        memcpy(binary, im->binary, im->binary_len);
+    if (length)
+        *length = (GLsizei)im->binary_len;
+    if (binaryFormat)
+        *binaryFormat = GL_PROGRAM_BINARY_V3DP_PISTORM;
+}
+
+/* The program runs the binary's image: as a link from shaders does, with
+ * the binary in place of the disk cache; a binary that is not usable (its
+ * reason in the info log) leaves the program not linked, which the
+ * extension asks of a binary an implementation refuses. */
+void ogles2_glProgramBinaryOES(struct OGLES2Context *ctx, GLuint program, GLenum binaryFormat,
+                               const void *binary, GLint length)
+{
+    struct OGLES2Program *p;
+    struct OGLES2Image *im, *c;
+    char why[120];
+    UBYTE *copy;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
+        return;
+    if (binaryFormat != GL_PROGRAM_BINARY_V3DP_PISTORM) {
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        return;
+    }
+    unlink_program(ctx, p);
+    if (!binary || length <= 0) {
+        set_log(p, "the program binary was refused: ", "empty");
+        return;
+    }
+    if (!(im = ogles2_v3dp_load((const UBYTE *)binary, (ULONG)length, why, sizeof(why)))) {
+        ogles2_log("glProgramBinaryOES: refused: %s", (ULONG)why);
+        set_log(p, "the program binary was refused: ", why);
+        return;
+    }
+    /* The program cache: an image of the same program is already loaded. */
+    for (c = ctx->share->images; c && memcmp(c->hash, im->hash, 32); c = c->next)
+        ;
+    if (c) {
+        ogles2_image_free(im, 0);
+        im = c;
+    } else if ((copy = AllocVec((ULONG)length, MEMF_ANY))) {
+        memcpy(copy, binary, (ULONG)length);
+        im->binary = copy;
+        im->binary_len = (ULONG)length;
+        im->next = ctx->share->images;
+        ctx->share->images = im;
+    } else {
+        ogles2_image_free(im, 0);
+        set_log(p, "out of memory", 0);
+        return;
+    }
+    if (!bind_image(p, im)) {
+        unlink_program(ctx, p);
+        return;
+    }
+    p->linked = GL_TRUE;
+    set_log(p, "", 0);
 }
 
 void ogles2_glGetProgramInfoLog(struct OGLES2Context *ctx, GLuint program, GLsizei bufSize,
@@ -1319,7 +1481,9 @@ static int type_shape(GLenum t, int *kind, int *comps, int *cols)
     case GL_FLOAT_MAT3:   *kind = K_FLOAT; *comps = 3; *cols = 3; return 1;
     case GL_FLOAT_MAT4:   *kind = K_FLOAT; *comps = 4; *cols = 4; return 1;
     case GL_SAMPLER_2D:
-    case GL_SAMPLER_CUBE: *kind = K_SAMPLER; *comps = 1; return 1;
+    case GL_SAMPLER_CUBE:
+    case GL_SAMPLER_2D_RECT: /* ARB_texture_rectangle */
+        *kind = K_SAMPLER; *comps = 1; return 1;
     default:              return 0;
     }
 }

@@ -436,6 +436,13 @@ void ogles2_glGetBufferParameteriv(struct OGLES2Context *ctx, GLenum target, GLe
         ogles2_error(ctx, GL_INVALID_ENUM);
 }
 
+/* AmigaOS 4's name for the same query (its OES_mapbuffer). */
+void ogles2_glGetBufferParameterivOES(struct OGLES2Context *ctx, GLenum target, GLenum pname,
+                                      GLint *params)
+{
+    ogles2_glGetBufferParameteriv(ctx, target, pname, params);
+}
+
 /* ---- OES_mapbuffer: the mapping is the shadow ---- */
 
 void *ogles2_glMapBufferOES(struct OGLES2Context *ctx, GLenum target, GLenum access)

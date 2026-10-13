@@ -3,7 +3,9 @@
  * glViewport, glScissor, and the agl parameter calls (plan sections 6.4,
  * 7.2, 7.7).
  */
+#include <exec/memory.h>
 #include <utility/tagitem.h>
+#include <proto/exec.h>
 #include <proto/utility.h>
 #include <libraries/ogles2.h>
 #include "ogles2_internal.h"
@@ -83,21 +85,25 @@ void ogles2_glFinish(struct OGLES2Context *ctx)
 }
 
 /* RGBA / UNSIGNED_BYTE, which is also the implementation's read format
- * (plan 7.2): the open job is rendered first, then the rows are read from
- * the render bitmap bottom-up (GL's origin is the bottom-left, 7.11), or
- * from a framebuffer object's colour image (fbo.c; its row 0 is GL's).
- * Pixels outside the framebuffer are left as they are. */
+ * (plan 7.2), and EXT_read_format_bgra's BGRA with unsigned bytes or the
+ * two reversed 16-bit packings: the open job is rendered first, then the
+ * rows are read from the render bitmap bottom-up (GL's origin is the
+ * bottom-left, 7.11), or from a framebuffer object's colour image (fbo.c;
+ * its row 0 is GL's). Pixels outside the framebuffer are left as they are. */
 void ogles2_glReadPixels(struct OGLES2Context *ctx, GLint x, GLint y, GLsizei width, GLsizei height,
                          GLenum format, GLenum type, void *pixels)
 {
     LONG x0, y0, x1, y1;
-    ULONG stride;
+    ULONG stride, bpp, rgba_stride;
+    UBYTE *rgba, *first;
+    BOOL ok = TRUE;
     if (!ogles2_context_valid(ctx))
         return;
     if ((format != GL_ALPHA && format != GL_RGB && format != GL_RGBA && format != GL_LUMINANCE &&
-         format != GL_LUMINANCE_ALPHA) ||
+         format != GL_LUMINANCE_ALPHA && format != GL_BGRA_EXT) ||
         (type != GL_UNSIGNED_BYTE && type != GL_UNSIGNED_SHORT_5_6_5 &&
-         type != GL_UNSIGNED_SHORT_4_4_4_4 && type != GL_UNSIGNED_SHORT_5_5_5_1)) {
+         type != GL_UNSIGNED_SHORT_4_4_4_4 && type != GL_UNSIGNED_SHORT_5_5_5_1 &&
+         type != GL_UNSIGNED_SHORT_4_4_4_4_REV_EXT && type != GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT)) {
         ogles2_error(ctx, GL_INVALID_ENUM);
         return;
     }
@@ -105,7 +111,9 @@ void ogles2_glReadPixels(struct OGLES2Context *ctx, GLint x, GLint y, GLsizei wi
         ogles2_error(ctx, GL_INVALID_VALUE);
         return;
     }
-    if (format != GL_RGBA || type != GL_UNSIGNED_BYTE) {
+    if (!(format == GL_RGBA && type == GL_UNSIGNED_BYTE) &&
+        !(format == GL_BGRA_EXT && (type == GL_UNSIGNED_BYTE || type == GL_UNSIGNED_SHORT_4_4_4_4_REV_EXT ||
+                                    type == GL_UNSIGNED_SHORT_1_5_5_5_REV_EXT))) {
         ogles2_error(ctx, GL_INVALID_OPERATION);
         return;
     }
@@ -119,27 +127,69 @@ void ogles2_glReadPixels(struct OGLES2Context *ctx, GLint x, GLint y, GLsizei wi
         return;
     ogles2_job_flush(ctx, FALSE);
     ogles2_job_finish(ctx);
-    stride = ((ULONG)width * 4 + ctx->pack_alignment - 1) & ~(ULONG)(ctx->pack_alignment - 1);
-    if (ctx->draw_fb) {
-        if (!ogles2_fbo_read(ctx, (int)x0, (int)y0, (int)(x1 - x0), (int)(y1 - y0),
-                             (UBYTE *)pixels + (ULONG)(y0 - y) * stride + (ULONG)(x0 - x) * 4, stride))
-            ogles2_error(ctx, GL_INVALID_OPERATION); /* no colour image */
-        return;
+    bpp = type == GL_UNSIGNED_BYTE ? 4 : 2;
+    stride = ((ULONG)width * bpp + ctx->pack_alignment - 1) & ~(ULONG)(ctx->pack_alignment - 1);
+    first = (UBYTE *)pixels + (ULONG)(y0 - y) * stride + (ULONG)(x0 - x) * bpp;
+    /* RGBA bytes: straight into the application's memory; the 16-bit
+     * packings through a copy of the region. */
+    if (bpp == 4) {
+        rgba = first;
+        rgba_stride = stride;
+    } else {
+        rgba_stride = (ULONG)(x1 - x0) * 4;
+        if (!(rgba = AllocVec(rgba_stride * (ULONG)(y1 - y0), MEMF_ANY))) {
+            ogles2_error(ctx, GL_OUT_OF_MEMORY);
+            return;
+        }
     }
-    ogles2_display_read(&ctx->display, (UWORD)x0, (UWORD)y0, (UWORD)(x1 - x0), (UWORD)(y1 - y0),
-                        (UBYTE *)pixels + (ULONG)(y0 - y) * stride + (ULONG)(x0 - x) * 4, stride);
+    if (ctx->draw_fb)
+        ok = ogles2_fbo_read(ctx, (int)x0, (int)y0, (int)(x1 - x0), (int)(y1 - y0), rgba, rgba_stride);
+    else
+        ogles2_display_read(&ctx->display, (UWORD)x0, (UWORD)y0, (UWORD)(x1 - x0), (UWORD)(y1 - y0),
+                            rgba, rgba_stride);
+    if (!ok)
+        ogles2_error(ctx, GL_INVALID_OPERATION); /* an object without a colour image */
+    else if (format == GL_BGRA_EXT) {
+        LONG i, j;
+        for (j = 0; j < y1 - y0; j++) {
+            UBYTE *s = rgba + (ULONG)j * rgba_stride, *d = first + (ULONG)j * stride;
+            for (i = 0; i < x1 - x0; i++, s += 4) {
+                UBYTE r = s[0], g = s[1], b = s[2], a = s[3];
+                UWORD v;
+                if (bpp == 4) { /* in place: B, G, R, A */
+                    s[0] = b;
+                    s[2] = r;
+                    continue;
+                }
+                /* The reversed packings hold blue in the lowest bits (EXT_read_format_bgra). */
+                if (type == GL_UNSIGNED_SHORT_4_4_4_4_REV_EXT)
+                    v = (UWORD)((b >> 4) | ((g >> 4) << 4) | ((r >> 4) << 8) | ((a >> 4) << 12));
+                else
+                    v = (UWORD)((b >> 3) | ((g >> 3) << 5) | ((r >> 3) << 10) | ((a >> 7) << 15));
+                *(UWORD *)d = v; /* the 68k's own byte order, as GL's packed types are */
+                d += 2;
+            }
+        }
+    }
+    if (bpp != 4)
+        FreeVec(rgba);
 }
 
 void ogles2_glHint(struct OGLES2Context *ctx, GLenum target, GLenum mode)
 {
     if (!ogles2_context_valid(ctx))
         return;
-    if (target != GL_GENERATE_MIPMAP_HINT ||
+    if ((target != GL_GENERATE_MIPMAP_HINT && target != GL_FRAGMENT_SHADER_DERIVATIVE_HINT_OES) ||
         (mode != GL_FASTEST && mode != GL_NICEST && mode != GL_DONT_CARE)) {
         ogles2_error(ctx, GL_INVALID_ENUM);
         return;
     }
-    ctx->state.generate_mipmap_hint = mode; /* glGenerateMipmap has one way */
+    /* glGenerateMipmap has one way, and the compiled shaders one way of
+     * computing derivatives (OES_standard_derivatives): kept for the queries. */
+    if (target == GL_GENERATE_MIPMAP_HINT)
+        ctx->state.generate_mipmap_hint = mode;
+    else
+        ctx->state.derivative_hint = mode;
 }
 
 void ogles2_glClear(struct OGLES2Context *ctx, GLbitfield mask)

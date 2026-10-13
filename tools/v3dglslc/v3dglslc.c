@@ -84,8 +84,19 @@ static void base_name(char *out, const char *path)
 }
 
 /* The render target of the key-state draws: an RGBA8 colour texture and a
- * 16-bit depth buffer, created once. */
-static GLuint draw_fbo, tex_2d, tex_cube;
+ * 16-bit depth buffer, created once; and the textures the samplers get:
+ * RGBA8, or RGBA32F for the variants that sample 32-bit returns. */
+static GLuint draw_fbo, tex_2d, tex_cube, tex_2d32, tex_cube32, tex_rect, tex_rect32;
+
+/* What write_program writes (v3dp/FORMAT.md): the variants of the default
+ * key states (.v3dp); and, for a program with samplers, those of the same
+ * draws with every sampler returning 32 bits (float and depth textures),
+ * which ogles2.library loads only when a draw needs them (.v3dw, the same
+ * file format). The command line writes both; a server request one. */
+#define WRITE_BOTH 0
+#define WRITE_PLAIN 1
+#define WRITE_WIDE 2
+static int write_mode = WRITE_BOTH;
 
 static int make_target(void)
 {
@@ -128,7 +139,76 @@ static int make_target(void)
         _mesa_TexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         _mesa_BindTexture(GL_TEXTURE_CUBE_MAP, 0);
     }
+    /* The same as RGBA32F (OES_texture_float; nearest: not filterable), whose
+     * 32-bit return sets the key's sampler_is_32b. */
+    {
+        static const GLfloat texel[4] = { 1, 1, 1, 1 };
+        GLenum face;
+        _mesa_GenTextures(1, &tex_2d32);
+        _mesa_BindTexture(GL_TEXTURE_2D, tex_2d32);
+        _mesa_TexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_FLOAT, texel);
+        _mesa_TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        _mesa_TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        _mesa_BindTexture(GL_TEXTURE_2D, 0);
+        _mesa_GenTextures(1, &tex_cube32);
+        _mesa_BindTexture(GL_TEXTURE_CUBE_MAP, tex_cube32);
+        for (face = GL_TEXTURE_CUBE_MAP_POSITIVE_X; face <= GL_TEXTURE_CUBE_MAP_NEGATIVE_Z; face++)
+            _mesa_TexImage2D(face, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_FLOAT, texel);
+        _mesa_TexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        _mesa_TexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        _mesa_BindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    }
+    /* Rectangle textures (ARB_texture_rectangle, patches/0011), RGBA8 and
+     * RGBA32F. */
+    {
+        static const GLubyte texel8[4] = { 255, 255, 255, 255 };
+        static const GLfloat texel32[4] = { 1, 1, 1, 1 };
+        _mesa_GenTextures(1, &tex_rect);
+        _mesa_BindTexture(GL_TEXTURE_RECTANGLE, tex_rect);
+        _mesa_TexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, texel8);
+        _mesa_TexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        _mesa_GenTextures(1, &tex_rect32);
+        _mesa_BindTexture(GL_TEXTURE_RECTANGLE, tex_rect32);
+        _mesa_TexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_FLOAT, texel32);
+        _mesa_TexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        _mesa_TexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        _mesa_BindTexture(GL_TEXTURE_RECTANGLE, 0);
+    }
+    if (_mesa_GetError() != GL_NO_ERROR) {
+        fprintf(stderr, "v3dglslc: the key-state textures could not be made\n");
+        return 0;
+    }
     return 1;
+}
+
+/* The program has a sampler uniform. */
+static int has_samplers(GLuint p)
+{
+    GLint n = 0, i, size;
+    GLenum type;
+    char name[256];
+    _mesa_GetProgramiv(p, GL_ACTIVE_UNIFORMS, &n);
+    for (i = 0; i < n; i++) {
+        _mesa_GetActiveUniform(p, i, sizeof(name), NULL, &size, &type, name);
+        if (type == GL_SAMPLER_2D || type == GL_SAMPLER_CUBE || type == GL_SAMPLER_2D_RECT)
+            return 1;
+    }
+    return 0;
+}
+
+/* The texture target and the key-state texture a sampler of `type` gets. */
+static GLenum sampler_target(GLenum type, int wide, GLuint *tex)
+{
+    if (type == GL_SAMPLER_CUBE) {
+        *tex = wide ? tex_cube32 : tex_cube;
+        return GL_TEXTURE_CUBE_MAP;
+    }
+    if (type == GL_SAMPLER_2D_RECT) {
+        *tex = wide ? tex_rect32 : tex_rect;
+        return GL_TEXTURE_RECTANGLE;
+    }
+    *tex = wide ? tex_2d32 : tex_2d;
+    return GL_TEXTURE_2D;
 }
 
 /* Give every sampler of the current program its own texture unit with a
@@ -138,8 +218,9 @@ static int make_target(void)
  *  - samplers of different kinds on one unit make the draw an error (GLES2);
  *  - a sampler with nothing bound makes Mesa build its fallback texture,
  *    which waits on a fence (glFinish) the fake device cannot give;
- *  - the key's sampler_is_32b comes from the bound texture's format. */
-static void bind_samplers(GLuint p, int restore)
+ *  - the key's sampler_is_32b comes from the bound texture's format (wide:
+ *    RGBA32F textures, for the variants with every sampler 32-bit). */
+static void bind_samplers(GLuint p, int restore, int wide)
 {
     GLint n = 0, i, j, unit = 0;
 
@@ -149,7 +230,7 @@ static void bind_samplers(GLuint p, int restore)
         GLint size, loc, units[32];
         GLenum type;
         _mesa_GetActiveUniform(p, i, sizeof(name), NULL, &size, &type, name);
-        if (type != GL_SAMPLER_2D && type != GL_SAMPLER_CUBE)
+        if (type != GL_SAMPLER_2D && type != GL_SAMPLER_CUBE && type != GL_SAMPLER_2D_RECT)
             continue;
         loc = _mesa_GetUniformLocation(p, name);
         if (loc < 0 || size > 32)
@@ -157,9 +238,10 @@ static void bind_samplers(GLuint p, int restore)
         for (j = 0; j < size; j++) {
             units[j] = restore ? 0 : unit;
             if (!restore) {
+                GLuint tex;
+                GLenum target = sampler_target(type, wide, &tex);
                 _mesa_ActiveTexture(GL_TEXTURE0 + unit);
-                _mesa_BindTexture(type == GL_SAMPLER_2D ? GL_TEXTURE_2D : GL_TEXTURE_CUBE_MAP,
-                                  type == GL_SAMPLER_2D ? tex_2d : tex_cube);
+                _mesa_BindTexture(target, tex);
                 unit++;
             }
         }
@@ -172,7 +254,7 @@ static void bind_samplers(GLuint p, int restore)
  * the variants real draws use: triangles, lines and points into an RGBA8
  * target with depth on. The fake device runs nothing; the draws only make
  * the driver compute its keys and compile. */
-static int draw_key_states(GLuint p)
+static int draw_key_states(GLuint p, int wide)
 {
     static const GLenum modes[] = { GL_TRIANGLES, GL_LINES, GL_POINTS };
     static const GLfloat zeros[4 * 4 * 3]; /* 3 vertices of a mat4 attribute */
@@ -182,7 +264,7 @@ static int draw_key_states(GLuint p)
     if (!draw_fbo && !make_target())
         return 0;
     _mesa_UseProgram(p);
-    bind_samplers(p, 0);
+    bind_samplers(p, 0, wide);
     _mesa_GetProgramiv(p, GL_ACTIVE_ATTRIBUTES, &n);
     for (i = 0; i < n; i++) {
         char name[256];
@@ -205,7 +287,7 @@ static int draw_key_states(GLuint p)
     _mesa_Flush();
     for (i = 0; i < 16; i++)
         _mesa_DisableVertexAttribArray(i);
-    bind_samplers(p, 1);
+    bind_samplers(p, 1, 0);
     _mesa_UseProgram(0);
     err = _mesa_GetError();
     if (err != GL_NO_ERROR) {
@@ -236,14 +318,37 @@ static int write_program(GLuint p, const char *path, const char *vs_src, const c
 
     if (!prog)
         return 0;
-    v3dp_capture_begin();
-    drawn = draw_key_states(p);
-    v3dp_capture_end();
-    if (!drawn)
-        return 0;
     sources[0] = vs_src;
     sources[1] = fs_src;
-    return v3dp_write(path, prog, 2, stages, sources) == 0;
+    if (write_mode != WRITE_WIDE) {
+        v3dp_capture_begin();
+        drawn = draw_key_states(p, 0);
+        v3dp_capture_end();
+        if (!drawn || v3dp_write(path, prog, 2, stages, sources) != 0)
+            return 0;
+    }
+    /* The 32-bit-sampler variants. After the plain draws the driver
+     * compiles only the fragment shaders again (the vertex shaders' keys are
+     * the same), so a .v3dw may hold fragment variants only: the runtime
+     * takes only those from it. The command line's goes next to the .v3dp. */
+    if (write_mode != WRITE_PLAIN && has_samplers(p)) {
+        char wpath[512];
+        size_t n = strlen(path);
+        if (write_mode == WRITE_WIDE)
+            snprintf(wpath, sizeof(wpath), "%s", path);
+        else if (n > 5 && !strcmp(path + n - 5, ".v3dp") && n < sizeof(wpath))
+            snprintf(wpath, sizeof(wpath), "%.*s.v3dw", (int)(n - 5), path);
+        else
+            return 0;
+        v3dp_capture_begin();
+        drawn = draw_key_states(p, 1);
+        v3dp_capture_end();
+        if (!drawn || v3dp_write(wpath, prog, 2, stages, sources) != 0)
+            return 0;
+    } else if (write_mode == WRITE_WIDE) {
+        return 0; /* nothing samples: no such file */
+    }
+    return 1;
 }
 
 #ifdef __amigaos__
@@ -289,8 +394,9 @@ static int serve(void)
             if (r->log && r->log_size)
                 r->log[0] = 0;
             if (r->version != V3DGLSL_VERSION ||
-                (r->op != V3DGLSL_LINK && r->op != V3DGLSL_QUIT && r->op != V3DGLSL_COMPILE) ||
-                (r->op == V3DGLSL_LINK && (!r->vs || !r->fs || !r->out_path)) ||
+                (r->op != V3DGLSL_LINK && r->op != V3DGLSL_QUIT && r->op != V3DGLSL_COMPILE &&
+                 r->op != V3DGLSL_LINK32) ||
+                ((r->op == V3DGLSL_LINK || r->op == V3DGLSL_LINK32) && (!r->vs || !r->fs || !r->out_path)) ||
                 (r->op == V3DGLSL_COMPILE && !r->vs == !r->fs)) {
                 log_add(r->log, r->log_size, "the compiler does not understand this request", NULL);
                 r->result = 3;
@@ -310,6 +416,7 @@ static int serve(void)
                 glDeleteShader(s);
                 r->result = ok ? 0 : 1;
             } else {
+                write_mode = r->op == V3DGLSL_LINK32 ? WRITE_WIDE : WRITE_PLAIN;
                 r->result = link_pair("vertex shader", "fragment shader", r->vs, r->fs, r->out_path,
                                       r->log, r->log_size) ? 0 : 1;
                 served++;

@@ -25,8 +25,11 @@ timeout 3000 ~/amitools-venv/bin/vamos -C 68040 -H disable -m 262144 -s 4096 -- 
 echo "m68k v3dglslc rc=$? ($(( $(date +%s) - start )) s under vamos)"
 grep -vE "WARNING|^\s*$" m68k.err | grep -E "ERROR|rror" | head -5
 
+# The programs' files and, for those with samplers, their 32-bit-sampler
+# variants (.v3dw).
 same=0 diff=0
-for f in host/*.v3dp; do
+for f in host/*.v3dp host/*.v3dw; do
+  [ -e "$f" ] || continue
   n=$(basename $f)
   if cmp -s $f m68k/$n; then
     same=$((same + 1))
@@ -35,7 +38,8 @@ for f in host/*.v3dp; do
     echo "DIFFERENT: $n"; cmp -l $f m68k/$n 2>&1 | head -5
   fi
 done
-echo "$same identical, $diff different (of $(ls host/*.v3dp | wc -l))"
-for f in host/*.v3dp; do
-  python3 -I "$V/v3dp_dump.py" $f > ${f%.v3dp}.dump || echo "dump failed: $f"
+echo "$same identical, $diff different (of $(ls host/*.v3dp host/*.v3dw 2>/dev/null | wc -l))"
+for f in host/*.v3dp host/*.v3dw; do
+  [ -e "$f" ] || continue
+  python3 -I "$V/v3dp_dump.py" $f > $f.dump || echo "dump failed: $f"
 done
