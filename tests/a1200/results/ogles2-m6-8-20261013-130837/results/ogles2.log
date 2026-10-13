@@ -1,0 +1,132 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086DC6A8
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 aglCreateContext2: probes "MU" (ENV:OGLES2/Probe)
+    13 display: application bitmap, 256x128, BGRA
+    14 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    15 aglCreateContext2: context 0x08438524, 256x128
+    16 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    17 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+    18 TIMING upload_all 256x256: sync+free 7, alloc 2348, store 7539 us
+    19 TIMING sub 256x256: before_change 71, alloc 26, convert 2675, shadow copy 205, store 202, free 40 us
+    20 TIMING upload_all 256x256: sync+free 33, alloc 1054, store 323 us
+    21 framebuffer 1: tile pools of its own for 512x512
+    22 TIMING upload_all 512x512: sync+free 5, alloc 1696, store 32 us
+    23 TIMING upload_all 512x512: sync+free 14, alloc 4578, store 1738 us
+    24 TIMING upload_all 512x512: sync+free 10, alloc 4173, store 1731 us
+    25 TIMING upload_all 512x512: sync+free 13, alloc 4195, store 1732 us
+    26 TIMING upload_all 512x512: sync+free 10, alloc 4197, store 1641 us
+    27 TIMING upload_all 512x512: sync+free 10, alloc 4188, store 1677 us
+    28 TIMING upload_all 512x512: sync+free 11, alloc 4199, store 1678 us
+    29 TIMING upload_all 512x512: sync+free 9, alloc 4186, store 1674 us
+    30 TIMING upload_all 512x512: sync+free 8, alloc 4196, store 2114 us
+    31 TIMING upload_all 512x512: sync+free 9, alloc 4188, store 1707 us
+    32 TIMING upload_all 512x512: sync+free 10, alloc 4185, store 1687 us
+    33 TIMING upload_all 512x512: sync+free 10, alloc 4466, store 1989 us
+    34 TIMING upload_all 512x512: sync+free 9, alloc 4541, store 1690 us
+    35 TIMING upload_all 512x512: sync+free 10, alloc 4155, store 1654 us
+    36 TIMING upload_all 512x512: sync+free 9, alloc 4356, store 1636 us
+    37 TIMING upload_all 512x512: sync+free 12, alloc 4130, store 1653 us
+    38 TIMING upload_all 512x512: sync+free 8, alloc 4190, store 1696 us
+    39 TIMING upload_all 512x512: sync+free 10, alloc 4184, store 1666 us
+    40 TIMING upload_all 512x512: sync+free 9, alloc 4207, store 1639 us
+    41 TIMING upload_all 512x512: sync+free 10, alloc 4194, store 1675 us
+    42 TIMING upload_all 512x512: sync+free 10, alloc 4189, store 1675 us
+    43 TIMING upload_all 512x512: sync+free 11, alloc 4155, store 1661 us
+    44 TIMING upload_all 512x512: sync+free 10, alloc 4184, store 2237 us
+    45 TIMING upload_all 256x256: sync+free 1, alloc 382, store 3 us
+    46 TIMING upload_all 256x256: sync+free 2, alloc 380, store 209 us
+    47 TIMING sub 256x256: before_change 8, alloc 41, convert 2619, shadow copy 174, store 181, free 23 us
+    48 TIMING upload_all 256x256: sync+free 1, alloc 208, store 3 us
+    49 TIMING sub 256x256: before_change 9, alloc 40, convert 3260, shadow copy 172, store 5208, free 3 us
+    50 TIMING upload_all 1024x1024: sync+free 1, alloc 5600, store 3 us
+    51 TIMING upload_all 1024x1024: sync+free 6, alloc 5659, store 5600 us
+    52 TIMING sub 1024x1024: before_change 9, alloc 40, convert 52261, shadow copy 4049, store 6670, free 44 us
+    53 TIMING upload_all 1024x1024: sync+free 1, alloc 2819, store 3 us
+    54 TIMING sub 1024x1024: before_change 10, alloc 40, convert 51969, shadow copy 3998, store 89253, free 3 us
+    55 aglDestroyContext: context 0x08438524: freeing
+    56 device: context freed, 0 bytes of GPU memory still in use
+    57 aglDestroyContext: context 0x08438524 (72 frames, 0 dropped, 0 binning blocks added)
+    58 timing: 72 jobs, each on average: 684 us of CPU work before its flush, 10 us waiting for binning, 138 us for the render
+    59 timing: and in each flush 112 us building the render list, 87 us for the CPU cache before the GPU, 38 us after
+    60 close (count 0)
+    61 open (count 1)
+    62 display: application bitmap, 256x128, BGRA
+    63 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    64 aglCreateContext2: context 0x08438524, 256x128
+    65 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    66 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+    67 TIMING tfu 256x256: cache clean 222, job 322, cache invalidate 64 us
+    68 TIMING upload_all 256x256: sync+free 4, alloc 1123, store 2463 us
+    69 TIMING tfu 256x256: cache clean 444, job 129, cache invalidate 45 us
+    70 TIMING sub 256x256: before_change 11, alloc 8, convert 2715, shadow copy 177, store 2222, free 3 us
+    71 glGenerateMipmap: the TFU (texture 1, 256x256, 9 levels; logged once)
+    72 framebuffer 1: tile pools of its own for 512x512
+    73 TIMING upload_all 512x512: sync+free 4, alloc 1423, store 5 us
+    74 TIMING tfu 512x512: cache clean 73, job 472, cache invalidate 44 us
+    75 TIMING tfu 256x256: cache clean 67, job 130, cache invalidate 44 us
+    76 TIMING upload_all 512x512: sync+free 15, alloc 4181, store 5068 us
+    77 TIMING upload_all 256x256: sync+free 2, alloc 380, store 4 us
+    78 TIMING tfu 256x256: cache clean 139, job 129, cache invalidate 44 us
+    79 TIMING upload_all 256x256: sync+free 3, alloc 378, store 1763 us
+    80 TIMING tfu 256x256: cache clean 309, job 128, cache invalidate 44 us
+    81 TIMING sub 256x256: before_change 10, alloc 40, convert 2743, shadow copy 175, store 1934, free 5 us
+    82 TIMING upload_all 256x256: sync+free 1, alloc 206, store 3 us
+    83 TIMING tfu 256x256: cache clean 536, job 73, cache invalidate 44 us
+    84 TIMING sub 256x256: before_change 8, alloc 42, convert 3195, shadow copy 176, store 5321, free 3 us
+    85 TIMING upload_all 1024x1024: sync+free 1, alloc 6224, store 3 us
+    86 TIMING tfu 1024x1024: cache clean 290, job 1892, cache invalidate 44 us
+    87 TIMING upload_all 1024x1024: sync+free 5, alloc 5902, store 3692 us
+    88 TIMING tfu 1024x1024: cache clean 219, job 1893, cache invalidate 45 us
+    89 TIMING sub 1024x1024: before_change 9, alloc 42, convert 45455, shadow copy 4069, store 9121, free 5 us
+    90 TIMING upload_all 1024x1024: sync+free 2, alloc 2817, store 3 us
+    91 TIMING tfu 1024x1024: cache clean 200, job 937, cache invalidate 44 us
+    92 TIMING sub 1024x1024: before_change 9, alloc 41, convert 51095, shadow copy 3918, store 54410, free 4 us
+    93 aglDestroyContext: context 0x08438524: freeing
+    94 device: context freed, 0 bytes of GPU memory still in use
+    95 aglDestroyContext: context 0x08438524 (72 frames, 0 dropped, 0 binning blocks added)
+    96 timing: 72 jobs, each on average: 599 us of CPU work before its flush, 8 us waiting for binning, 148 us for the render
+    97 timing: and in each flush 91 us building the render list, 65 us for the CPU cache before the GPU, 38 us after
+    98 close (count 0)
+    99 open (count 1)
+   100 display: application bitmap, 256x128, BGRA
+   101 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+   102 aglCreateContext2: context 0x08438934, 256x128
+   103 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+   104 glLinkProgram: PROGDIR:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+   105 texture 1 sampled while incomplete (it reads black): mip chain, level 0 4x4, min filter 0x2703, level 1 of 3 missing or inconsistent (logged once a texture)
+   106 texture 1 changed after a draw used it in the same frame: renamed (logged once)
+   107 job: depth and stencil kept across a mid-frame flush (logged once)
+   108 aglDestroyContext: context 0x08438934: freeing
+   109 device: context freed, 0 bytes of GPU memory still in use
+   110 aglDestroyContext: context 0x08438934 (29 frames, 0 dropped, 0 binning blocks added)
+   111 timing: 29 jobs, each on average: 413 us of CPU work before its flush, 7 us waiting for binning, 67 us for the render
+   112 timing: and in each flush 119 us building the render list, 73 us for the CPU cache before the GPU, 66 us after
+   113 timing: 27 swaps, 1490 us from one to the next on average, 4 us of it presenting
+   114 timing: per frame 1 draws, 289 us in them; in all 0 ms in glBuffer(Sub)Data, 4 ms in glTex(Sub)Image2D
+   115 close (count 0)
+   116 open (count 1)
+   117 display: application bitmap, 256x128, BGRA
+   118 device: context pools for 256x128, D32F, 17645952 bytes of GPU memory in use
+   119 aglCreateContext2: context 0x08437E9C, 256x128
+   120 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   121 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+   122 framebuffer 1 is not complete (0x8CD7): nothing drawn or read (logged once)
+   123 job: depth and stencil kept across a mid-frame flush (logged once)
+   124 framebuffer 1: tile pools of its own for 512x512
+   125 TIMING upload_all 512x512: sync+free 4, alloc 1428, store 3 us
+   126 aglDestroyContext: context 0x08437E9C: freeing
+   127 device: context freed, 0 bytes of GPU memory still in use
+   128 aglDestroyContext: context 0x08437E9C (102 frames, 0 dropped, 0 binning blocks added)
+   129 timing: 102 jobs, each on average: 171 us of CPU work before its flush, 7 us waiting for binning, 33 us for the render
+   130 timing: and in each flush 198 us building the render list, 66 us for the CPU cache before the GPU, 24 us after
+   131 timing: 43 swaps, 2479 us from one to the next on average, 2 us of it presenting
+   132 timing: per frame 2 draws, 289 us in them; in all 0 ms in glBuffer(Sub)Data, 3 ms in glTex(Sub)Image2D

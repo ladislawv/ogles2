@@ -1,0 +1,57 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086DC6A8
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: application bitmap, 256x128, BGRA
+    13 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08438524, 256x128
+    15 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    16 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+    17 glGenerateMipmap: the TFU (texture 1, 256x256, 9 levels; logged once)
+    18 framebuffer 1: tile pools of its own for 512x512
+    19 aglDestroyContext: context 0x08438524: freeing
+    20 device: context freed, 0 bytes of GPU memory still in use
+    21 aglDestroyContext: context 0x08438524 (67 frames, 0 dropped, 0 binning blocks added)
+    22 timing: 67 jobs, each on average: 551 us of CPU work before its flush, 11 us waiting for binning, 140 us for the render
+    23 timing: and in each flush 93 us building the render list, 91 us for the CPU cache before the GPU, 45 us after
+    24 close (count 0)
+    25 open (count 1)
+    26 display: application bitmap, 256x128, BGRA
+    27 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+    28 aglCreateContext2: context 0x08438524, 256x128
+    29 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+    30 glLinkProgram: PROGDIR:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+    31 texture 1 sampled while incomplete (it reads black): mip chain, level 0 4x4, min filter 0x2703, level 1 of 3 missing or inconsistent (logged once a texture)
+    32 texture 1 changed after a draw used it in the same frame: renamed (logged once)
+    33 job: depth and stencil kept across a mid-frame flush (logged once)
+    34 aglDestroyContext: context 0x08438524: freeing
+    35 device: context freed, 0 bytes of GPU memory still in use
+    36 aglDestroyContext: context 0x08438524 (29 frames, 0 dropped, 0 binning blocks added)
+    37 timing: 29 jobs, each on average: 380 us of CPU work before its flush, 7 us waiting for binning, 67 us for the render
+    38 timing: and in each flush 121 us building the render list, 74 us for the CPU cache before the GPU, 55 us after
+    39 timing: 27 swaps, 1581 us from one to the next on average, 3 us of it presenting
+    40 timing: per frame 1 draws, 281 us in them; in all 0 ms in glBuffer(Sub)Data, 3 ms in glTex(Sub)Image2D
+    41 close (count 0)
+    42 open (count 1)
+    43 display: application bitmap, 256x128, BGRA
+    44 device: context pools for 256x128, D32F, 17645952 bytes of GPU memory in use
+    45 aglCreateContext2: context 0x08438524, 256x128
+    46 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    47 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+    48 framebuffer 1 is not complete (0x8CD7): nothing drawn or read (logged once)
+    49 job: depth and stencil kept across a mid-frame flush (logged once)
+    50 framebuffer 1: tile pools of its own for 512x512
+    51 aglDestroyContext: context 0x08438524: freeing
+    52 device: context freed, 0 bytes of GPU memory still in use
+    53 aglDestroyContext: context 0x08438524 (102 frames, 0 dropped, 0 binning blocks added)
+    54 timing: 102 jobs, each on average: 166 us of CPU work before its flush, 7 us waiting for binning, 38 us for the render
+    55 timing: and in each flush 111 us building the render list, 66 us for the CPU cache before the GPU, 27 us after
+    56 timing: 43 swaps, 1979 us from one to the next on average, 1 us of it presenting
+    57 timing: per frame 2 draws, 282 us in them; in all 0 ms in glBuffer(Sub)Data, 3 ms in glTex(Sub)Image2D
