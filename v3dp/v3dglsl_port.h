@@ -30,6 +30,11 @@
 #define V3DGLSL_LINK32  4 /* as LINK, but write the variants for samplers returning 32 bits (float
                            * and depth textures): the program's .v3dw file. A compiler older than
                            * this answers 3 (bad request). */
+#define V3DGLSL_LINK_BOUND 5 /* as LINK, glBindAttribLocation's `bindings` applied before the link
+                              * (GLES 2.0 2.10.4: aliased attributes, two names bound to one
+                              * location, which Mesa's linker must know of); they are part of the
+                              * program's hash (v3dp/FORMAT.md). A compiler older than this
+                              * answers 3. */
 
 struct V3DGLSLRequest
 {
@@ -41,6 +46,8 @@ struct V3DGLSLRequest
     char *log;            /* compile and link messages, NUL-terminated (may be truncated) */
     ULONG log_size;
     LONG result;          /* reply: 0 done (written); 1 compile or link failed; 2 not written; 3 bad request */
+    const char *bindings; /* V3DGLSL_LINK_BOUND only (read for no other op: an older sender's
+                           * request ends before it): "<index> <name>\n" lines, sorted by name */
 };
 
 #endif

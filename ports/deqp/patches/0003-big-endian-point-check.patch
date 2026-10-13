@@ -1,0 +1,22 @@
+diff --git a/modules/gles2/functional/es2fRasterizationTests.cpp b/modules/gles2/functional/es2fRasterizationTests.cpp
+--- a/modules/gles2/functional/es2fRasterizationTests.cpp
++++ b/modules/gles2/functional/es2fRasterizationTests.cpp
+@@ -673,7 +673,7 @@
+         }
+ 
+         // And test the resulting draw (the test area should still be green).
+-        uint32_t pixels[testAreaWidth * fboHeight] = {};
++        uint8_t pixels[testAreaWidth * fboHeight * 4] = {};
+         gl.readPixels(0, 0, testAreaWidth, fboHeight, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+         TCU_CHECK(gl.getError() == GL_NO_ERROR);
+ 
+@@ -682,7 +682,8 @@
+         {
+             for (uint32_t x = 0; x < testAreaWidth; ++x)
+             {
+-                tcu::RGBA color(pixels[y * testAreaWidth + x]);
++                const uint8_t *p = &pixels[(y * testAreaWidth + x) * 4];
++                tcu::RGBA color(p[0], p[1], p[2], p[3]);
+                 TCU_CHECK(compareThreshold(color, tcu::RGBA::green(), threshold));
+             }
+         }

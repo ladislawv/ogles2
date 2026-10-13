@@ -1,0 +1,103 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-case=dEQP-GLES2.info.* --deqp-log-filename=M7R1:results/deqp.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.info.vendor
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.info.vendor" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ogles2.library</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">5060</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.info.renderer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.info.renderer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1579</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.info.version
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.info.version" Version="0.3.4" CaseType="SelfValidate">
+ <Text>OpenGL ES 2.0 ogles2.library 1.2</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2035</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.info.shading_language_version
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.info.shading_language_version" Version="0.3.4" CaseType="SelfValidate">
+ <Text>OpenGL ES GLSL ES 1.00</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1421</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.info.extensions
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.info.extensions" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_OES_element_index_uint</Text>
+ <Text>GL_OES_compressed_ETC1_RGB8_texture</Text>
+ <Text>GL_EXT_texture_format_BGRA8888</Text>
+ <Text>GL_OES_mapbuffer</Text>
+ <Text>GL_EXT_blend_minmax</Text>
+ <Text>GL_OES_draw_elements_base_vertex</Text>
+ <Text>GL_OES_rgb8_rgba8</Text>
+ <Text>GL_OES_packed_depth_stencil</Text>
+ <Text>GL_OES_fbo_render_mipmap</Text>
+ <Text>GL_EXT_discard_framebuffer</Text>
+ <Text>GL_OES_texture_npot</Text>
+ <Text>GL_EXT_read_format_bgra</Text>
+ <Text>GL_EXT_texture_filter_anisotropic</Text>
+ <Text>GL_EXT_texture_lod_bias</Text>
+ <Text>GL_SGIS_texture_lod</Text>
+ <Text>GL_ARB_texture_mirror_clamp_to_edge</Text>
+ <Text>GL_OES_standard_derivatives</Text>
+ <Text>GL_OES_get_program_binary</Text>
+ <Text>GL_OES_texture_float</Text>
+ <Text>GL_OES_texture_half_float</Text>
+ <Text>GL_OES_texture_half_float_linear</Text>
+ <Text>GL_OES_depth_texture</Text>
+ <Text>GL_ARB_texture_rectangle</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">4317</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.info.render_target
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.info.render_target" Version="0.3.4" CaseType="SelfValidate">
+ <Number Name="RedBits" Description="Red channel bits" Unit="">8</Number>
+ <Number Name="GreenBits" Description="Green channel bits" Unit="">8</Number>
+ <Number Name="BlueBits" Description="Blue channel bits" Unit="">8</Number>
+ <Number Name="AlphaBits" Description="Alpha channel bits" Unit="">8</Number>
+ <Number Name="DepthBits" Description="Depth bits" Unit="">24</Number>
+ <Number Name="StencilBits" Description="Stencil bits" Unit="">8</Number>
+ <Number Name="NumSamples" Description="Number of samples" Unit="">0</Number>
+ <Number Name="Width" Description="Width" Unit="">256</Number>
+ <Number Name="Height" Description="Height" Unit="">256</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">4690</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 0.12 seconds
+
+#endSession

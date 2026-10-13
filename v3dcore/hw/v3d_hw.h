@@ -1054,13 +1054,17 @@ typedef struct PACKED v3d_blend_cfg
 } v3d_blend_cfg;
 
 #define v3d_OP_BLEND_CONSTANT_COLOR 86
+/* Mesa's v3d_packet.xml: red at bit 0 (the bytes after the opcode), alpha at
+ * 48. ogles2: this struct had them the other way round (alpha first), so the
+ * GPU took the constant as A, B, G, R; dEQP-GLES2's blend tests with the
+ * constant factors failed (M7). */
 typedef struct PACKED v3d_blend_constant_color //LE swapped, use LE16 in code
 {
 	v3d_u8 operation : 8;
-    v3d_uword alpha_f16 : 16;
-    v3d_uword blue_f16 : 16;
+    v3d_uword red_f16 : 16;
     v3d_uword green_f16 : 16;
-	v3d_uword red_f16 : 16;
+    v3d_uword blue_f16 : 16;
+	v3d_uword alpha_f16 : 16;
 } v3d_blend_constant_color;
 
 #define v3d_OP_COLOR_WRITE_MASKS 87

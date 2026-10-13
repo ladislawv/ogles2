@@ -1,0 +1,13 @@
+    48 close (count 2)
+    49 open (count 3)
+    50 display: application bitmap, 64x64, BGRA
+    51 device: context pools for 64x64, D16, 17524864 bytes of GPU memory in use
+    52 aglCreateContext2: context 0x08FD648C, 64x64
+    53 glLinkProgram: OGLES2Cache:2b98836bf907dabfc09ecc32.v3dp (7 variants, 872 bytes of code)
+    54 framebuffer 1: tile pools of its own for 1200x8
+    55 framebuffer 1: tile pools of its own for 264x4
+    56 aglDestroyContext: context 0x08FD648C: freeing
+    57 device: context freed, 0 bytes of GPU memory still in use
+    58 aglDestroyContext: context 0x08FD648C (10 frames, 0 dropped, 0 binning blocks added)
+    59 timing: 10 jobs, each on average: 160 us of CPU work before its flush, 7 us waiting for binning, 35 us for the render
+    60 timing: and in each flush 55 us building the render list, 74 us for the CPU cache before the GPU, 0 us after

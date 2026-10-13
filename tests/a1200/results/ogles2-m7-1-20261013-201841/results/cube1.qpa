@@ -1,0 +1,80 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-case dEQP-GLES2.functional.texture.mipmap.cube.basic.linear_nearest --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/cube1.qpa --deqp-log-images=enable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.mipmap.cube.basic.linear_nearest
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.mipmap.cube.basic.linear_nearest" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Warning: High precision not supported in fragment shaders.</Text>
+ <Text>ERROR: Image verification failed, found 1585 invalid pixels!</Text>
+ <ImageSet Name="Result" Description="Verification result">
+  <Image Name="Rendered" Width="128" Height="128" Format="RGBA8888" CompressionMode="PNG" Description="Rendered image">
+   iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAD70lEQVR4nO3dvW8b
+   dRzH8ffd+RLHbnloAkJUYjHhoRJCoK4goQ79H5DKgkAMjDCCkGhnNgbmUokKJBYm
+   QOrERJAqQVGbeCAiVKIPEJrYsc+O+QdqO7rz+fzL5/Na73y/r5y37s4nJ4nuXnl/
+   tNp7wKIbNPt8u/EptFulr3X/FOx8fpFBEuc+RpQlnL90duz271fPMkxGuY8/C0mc
+   Ueu+fBPYqXSQoxilwMb81uvQJKNAACSscDB2+88vNhikuQ8/Eyl9atWOsLj2aZCR
+   5H59TEJ9QgB/PZGSVRzAEiMHME6HJv0CZ4BpASwKBzBGn7TgGSCmzv4MJyqHAyhR
+   feQzgDRfAsQ5AHE1BlWPMFX+21w7FhyAOAcgzgGIcwDiHIA4ByAuqOcAvbcvc2s9
+   KnycaPNZPrm8NXGfazxfeJ0Q+AwgzgGIcwDiHIA4ByAuqE8BO1c+5GQ0zP36Z9hm
+   952r7D11k88+GL/f4f7J3GuEJqgAOjQo8kXqLivsnYAHOj/fqXwJEOcAxDkAcQ5A
+   nAMQ5wDEOQBxQT0HYKULtfwPghh2Cz1HOI6CCuDCL7+xyj0e49/cx/jj4hnaLfhi
+   /Q34+8mH7rN2F3jvq9xrhMSXAHEOQJwDEBfUPcBPl75jq1XsO4HRVou1L8/z2u0R
+   cOeh+6T0uVZolXAEFcCs3InWJm5fpjenSarnS4A4ByDOAYhzAOIcgDgHIC6oj4EX
+   vu7CqfvwyH+5Xv8np9lkT+Yz/lH4DCDOAYgL6hIwM6v3ID4cv33Un98sFQsqgB/f
+   bfPP40WOsA1s8xI/TN6t3eJXXimyUDCCCgCg3TtDb7nEBXrL0HkOKPDNo4D4HkCc
+   AxDnAMQ5AHEOQJwDEOcAxDkAccE9CAJK//WuiOJ/jTQUQQVw7vYNznGj/IUSeJOP
+   y19nAfgSIM4BiHMA4hyAOAcgzgGIcwDiHIA4ByDOAYhzAOIcgDgHIM4BiHMA4hyA
+   OAcgzgGIcwDiHIA4ByDOAYhzAOIcgLja9eY6t+Knq55jqlrc5/Xd61WPcezU1j96
+   i2jj1arnOJLNOa3z+wsRXP1mTqtVqzZYHgJp1XMslM5S1RPMj+8BxDkAcQ5AnAMQ
+   5wDEOQBxDkCcAxDnAMQ5AHEOQJwDEOcAxDkAcQ5AnAMQ5wDEOQBxDkCcAxDnAMQ5
+   AHEOQJwDEOcAxDkAcQ5AnAMQ5wDEOQBxDkCcAxDnAMQF9c+jQzMI4N0NYMRwHdSr
+   nmA6B1Cig/qo6hGmcgAl8hkgZFkKh0mB18f0HEDAOg2IC7w9g9hngKCVHUCaLcCf
+   Z8yo7Z5I6J/Oqp5koew/GkGnCVGBAIbR5AAaHViq+CZxlPE/5AOqwzvDAUQAAAAA
+   SUVORK5CYII=
+</Image>
+  <Image Name="Reference" Width="128" Height="128" Format="RGBA8888" CompressionMode="PNG" Description="Ideal reference">
+   iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAB/UlEQVR4nO3dS07C
+   UABAUfzsxQTjYhwYXA2ErkaCuzGQuBodOPaXNkK950xLXju4eXl90HLxdli+LWbi
+   eXP4s3Pt9s+jx9hvjp8eu12tR48/hctTXwCnJYA4AcQJIE4AcQKIE0CcAOIEECeA
+   OAHECSBOAHECiBNA3PWpL+A3XvbDZGNtN18f3y2Wk53rnJkB4gQQJ4A4AcQJIG5W
+   dwGLYfwvaa/WH8v/YTt6qH/BDBAngDgBxAkgTgBxAogTQJwA4gQQN6udwO1xN36Q
+   x4/v+R/vV19/bjX+/QBzYAaIE0CcAOJmtQbYPL1OM9CwXtx8M9Tnb/f5X8wAcQKI
+   E0CcAOIEECeAOAHEzWofYLub5u78m8cCU8wAcQKIE0DcrNYAw+pmknGufrQKuJvk
+   XOfODBAngDgBxAkgTgBxAogTQJwA4gQQJ4C4WW0Fr49/97jWw9JWMAECiBNAnADi
+   BBAngDgBxAkgTgBxAogTQJwA4gQQJ4A4AcQJIE4AcQKIE0CcAOIEECeAOAHECSBO
+   AHHXx4fDqa/hPB38aRQBAogTQJwA4gQQJ4A4AcQJIE4AcQKIE0CcAOIEECeAOAHE
+   CSBOAHECiBNAnADiBBAngDgBxAkgTgBxAogTQJwA4gQQJ4A4AcQJIE4AcQKIE0Cc
+   AOIEECeAOAHECSBOAHECiHsHQ3klmfEHVPMAAAAASUVORK5CYII=
+</Image>
+  <Image Name="ErrorMask" Width="128" Height="128" Format="RGBA8888" CompressionMode="PNG" Description="Error mask">
+   iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAACD0lEQVR4nO3d0Yqb
+   QBiA0bHk/V/ZXrQh0EI2oIn5+c653zWsX2ZGB91tX2tfg2wf+LT79uc4+/b+Y13t
+   ttZn/qhHffpkFE7+Wn8D4BpXf/H2ba1f134ErmYEeOLIN3TKFGIEiBNAnADirAHe
+   6Nka4lvWCEaAOAHECSBOAHECiBNAnADikgH8dA1+9S7dJyUD4EEAcQKIE0CcAOLG
+   7QaetYv2LbtxVxsVwNHLs/tJ/+n3lOIwBcQJIE4AcQKIE0CcAOIEEDfqPkDp+vxT
+   RgVwd/SZvVdvCBWYAuIEECeAuHFrgDPnbYvKgQGcwW7ggykgTgBxAogTQJwA4gQQ
+   Ny6AI5dopcu7V40LgHMJIC55J9BU8DAugCN7Aa/+bCmQcVPAu09O6eSvNTAAziWA
+   OAHECSBOAHECiBNAnADiBBA36lbwJx7luh+jckfQCBAngDgBxAkgTgBxAogTQJwA
+   4gQQJ4A4AcQJIE4AcQKIE0CcAOIEECeAOAHECSBOAHECiBNAnADibmt1HoLgf6Oe
+   DBLq+W5r+e9Z/yqFZg0QJ4A4AcQJIE4AcQKIE0CcAOIEECeAOAHECSBOAHECiBNA
+   nADiBBAngDgBxAkgTgBxAogTQJwA4gQQJ4A4AcQJIE4AcQKIE0CcAOIEEDfqFTHT
+   THjTiBEgTgBxAoizBnhiwhx+lBEgzghwoW8YYbZ9La+JDPsNrA81IdFui7sAAAAA
+   SUVORK5CYII=
+</Image>
+</ImageSet>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">282151</Number>
+ <Result StatusCode="Fail">Image verification failed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 1.69 seconds
+
+#endSession

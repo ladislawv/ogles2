@@ -20,9 +20,10 @@
  *   texture later expects (plan 7.11).
  * - Jobs, v1: one open job per context; drawing into another framebuffer
  *   renders the open one first (job.c, ogles2_job_begin).
- * - Deleting a texture or renderbuffer detaches it from every framebuffer
- *   object of the context (GLES2 asks this only of the bound one; the others
- *   would keep an image whose memory is gone).
+ * - Deleting a texture or renderbuffer detaches it from the deleting
+ *   context's bound framebuffer only (GLES 2.0 4.4.3); attached to another,
+ *   it lives on without its name until its last attachment goes (both count
+ *   the attachment points that refer to them).
  */
 #include <exec/memory.h>
 #include <proto/exec.h>
@@ -35,6 +36,12 @@
 #ifndef GL_RGB8_OES
 #define GL_RGB8_OES  0x8051 /* OES_rgb8_rgba8 */
 #define GL_RGBA8_OES 0x8058
+#endif
+#ifndef GL_BGRA_EXT
+#define GL_BGRA_EXT  0x80E1 /* EXT_texture_format_BGRA8888 */
+#endif
+#ifndef GL_BGRA8_EXT
+#define GL_BGRA8_EXT 0x93A1
 #endif
 #ifndef GL_DEPTH24_STENCIL8_OES
 #define GL_DEPTH24_STENCIL8_OES 0x88F0 /* OES_packed_depth_stencil */
@@ -54,6 +61,8 @@ struct OGLES2Renderbuffer
     v3d_mem mem;                /* a depth or stencil format's, GPU only */
     ULONG base, ub, bytes;      /* 4096-aligned image; padded height in UIF blocks; size */
     UBYTE cpp;
+    UWORD refs;                 /* framebuffer attachment points that refer to it */
+    BOOL orphan;                /* deleted while attached: freed with the last of them */
 };
 
 struct OGLES2Attachment
@@ -81,6 +90,7 @@ struct OGLES2FboState
     struct OGLES2Share *sh;          /* the renderbuffers: sh->rbs, sh->nrbs (share.c) */
     struct OGLES2Renderbuffer *rb_bound;
     BOOL warned_incomplete;
+    struct OGLES2FarName *far_fb;    /* fbs' names past OGLES2_NEAR_NAMES (share.c) */
 };
 
 static struct OGLES2FboState *fs_get(struct OGLES2Context *ctx)
@@ -113,12 +123,14 @@ static BOOL table_room(void ***tab, GLuint *n, GLuint name)
 
 static struct OGLES2Framebuffer *fb_by_name(struct OGLES2FboState *fs, GLuint name)
 {
-    return name && name < fs->nfbs ? fs->fbs[name] : 0;
+    GLuint slot = name ? ogles2_name_slot(&fs->far_fb, name, FALSE) : OGLES2_NO_SLOT;
+    return slot < fs->nfbs ? fs->fbs[slot] : 0;
 }
 
 static struct OGLES2Renderbuffer *rb_by_name(struct OGLES2FboState *fs, GLuint name)
 {
-    return name && name < fs->sh->nrbs ? fs->sh->rbs[name] : 0;
+    GLuint slot = name ? ogles2_name_slot(&fs->sh->far_rb, name, FALSE) : OGLES2_NO_SLOT;
+    return slot < fs->sh->nrbs ? fs->sh->rbs[slot] : 0;
 }
 
 /* ---- renderbuffer storage ---- */
@@ -146,7 +158,9 @@ static BOOL is_stencil(GLenum f)
 
 static BOOL is_color(GLenum f)
 {
-    return f == GL_RGBA4 || f == GL_RGB5_A1 || f == GL_RGB565 || f == GL_RGB8_OES || f == GL_RGBA8_OES;
+    /* BGRA_EXT and BGRA8_EXT (EXT_texture_format_BGRA8888) are kept as RGBA8. */
+    return f == GL_RGBA4 || f == GL_RGB5_A1 || f == GL_RGB565 || f == GL_RGB8_OES || f == GL_RGBA8_OES ||
+           f == GL_BGRA_EXT || f == GL_BGRA8_EXT;
 }
 
 /* Depth and stencil: UIF without XOR, Mesa's padding for a UIF level. */
@@ -213,19 +227,49 @@ void ogles2_fbo_texture_changing(struct OGLES2Context *ctx, struct OGLES2Texture
         ogles2_job_finish(ctx);
 }
 
+/* A deleted renderbuffer's memory goes: the jobs that use it rendered first
+ * (`now`: at aglDestroyContext, they are finished). */
+static void rb_destroy(struct OGLES2Context *ctx, struct OGLES2Renderbuffer *rb, BOOL now)
+{
+    struct OGLES2Context *m;
+    if (!now)
+        for (m = ctx->share->first; m; m = m->share_next)
+            before_rb_change(m, rb);
+    rb_free_storage(ctx, rb);
+    FreeVec(rb);
+}
+
+/* An attachment point lets go of its image; an orphan goes with its last. */
+static void att_clear(struct OGLES2Context *ctx, struct OGLES2Attachment *at, BOOL now)
+{
+    if (at->type == GL_TEXTURE && at->tex) {
+        ogles2_texture_detach(ctx, at->tex, now);
+    } else if (at->type == GL_RENDERBUFFER && at->rb) {
+        struct OGLES2Renderbuffer *rb = at->rb;
+        if (rb->refs)
+            rb->refs--;
+        if (!rb->refs && rb->orphan)
+            rb_destroy(ctx, rb, now);
+    }
+    memset(at, 0, sizeof(*at));
+}
+
+/* glDeleteTextures: detached from the bound framebuffer, which renders first. */
 void ogles2_fbo_texture_deleted(struct OGLES2Context *ctx, struct OGLES2Texture *t)
 {
-    struct OGLES2FboState *fs = ctx->fbo;
-    GLuint i;
+    struct OGLES2Framebuffer *fb = ctx->draw_fb;
     int a;
-    if (!fs)
+    if (!ctx->fbo)
         return;
     ogles2_fbo_texture_changing(ctx, t);
-    for (i = 1; i < fs->nfbs; i++)
-        if (fs->fbs[i])
-            for (a = 0; a < 3; a++)
-                if (fs->fbs[i]->att[a].type == GL_TEXTURE && fs->fbs[i]->att[a].tex == t)
-                    memset(&fs->fbs[i]->att[a], 0, sizeof(fs->fbs[i]->att[a]));
+    if (!fb)
+        return;
+    for (a = 0; a < 3; a++)
+        if (fb->att[a].type == GL_TEXTURE && fb->att[a].tex == t) {
+            before_fb_change(ctx, fb);
+            att_clear(ctx, &fb->att[a], FALSE);
+        }
+    ogles2_fb_update(ctx);
 }
 
 /* ---- names and binding ---- */
@@ -249,7 +293,7 @@ void ogles2_glGenFramebuffers(struct OGLES2Context *ctx, GLsizei n, GLuint *fram
         struct OGLES2Framebuffer *fb;
         while (i < fs->nfbs && fs->fbs[i])
             i++;
-        if (!table_room((void ***)&fs->fbs, &fs->nfbs, i) ||
+        if (i >= OGLES2_NEAR_NAMES || !table_room((void ***)&fs->fbs, &fs->nfbs, i) ||
             !(fb = AllocVec(sizeof(*fb), MEMF_ANY | MEMF_CLEAR))) {
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
             return;
@@ -280,7 +324,7 @@ void ogles2_glGenRenderbuffers(struct OGLES2Context *ctx, GLsizei n, GLuint *ren
         struct OGLES2Renderbuffer *rb;
         while (i < fs->sh->nrbs && fs->sh->rbs[i])
             i++;
-        if (!table_room((void ***)&fs->sh->rbs, &fs->sh->nrbs, i) ||
+        if (i >= OGLES2_NEAR_NAMES || !table_room((void ***)&fs->sh->rbs, &fs->sh->nrbs, i) ||
             !(rb = AllocVec(sizeof(*rb), MEMF_ANY | MEMF_CLEAR))) {
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
             return;
@@ -319,13 +363,15 @@ void ogles2_glBindFramebuffer(struct OGLES2Context *ctx, GLenum target, GLuint f
     if (framebuffer) {
         /* GLES2 lets a program bind a name glGenFramebuffers did not return. */
         if (!(fb = fb_by_name(fs, framebuffer))) {
-            if (!table_room((void ***)&fs->fbs, &fs->nfbs, framebuffer) ||
+            GLuint slot = ogles2_name_slot(&fs->far_fb, framebuffer, TRUE);
+            if (slot == OGLES2_NO_SLOT || !table_room((void ***)&fs->fbs, &fs->nfbs, slot) ||
                 !(fb = AllocVec(sizeof(*fb), MEMF_ANY | MEMF_CLEAR))) {
+                ogles2_name_forget(&fs->far_fb, framebuffer);
                 ogles2_error(ctx, GL_OUT_OF_MEMORY);
                 return;
             }
             fb->name = framebuffer;
-            fs->fbs[framebuffer] = fb;
+            fs->fbs[slot] = fb;
         }
         fb->bound_once = TRUE;
     }
@@ -351,14 +397,16 @@ void ogles2_glBindRenderbuffer(struct OGLES2Context *ctx, GLenum target, GLuint 
         return;
     }
     if (renderbuffer && !(rb = rb_by_name(fs, renderbuffer))) {
-        if (!table_room((void ***)&fs->sh->rbs, &fs->sh->nrbs, renderbuffer) ||
+        GLuint slot = ogles2_name_slot(&fs->sh->far_rb, renderbuffer, TRUE);
+        if (slot == OGLES2_NO_SLOT || !table_room((void ***)&fs->sh->rbs, &fs->sh->nrbs, slot) ||
             !(rb = AllocVec(sizeof(*rb), MEMF_ANY | MEMF_CLEAR))) {
+            ogles2_name_forget(&fs->sh->far_rb, renderbuffer);
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
             return;
         }
         rb->name = renderbuffer;
         rb->format = GL_RGBA4;
-        fs->sh->rbs[renderbuffer] = rb;
+        fs->sh->rbs[slot] = rb;
     }
     if (rb)
         rb->bound_once = TRUE;
@@ -369,6 +417,7 @@ void ogles2_glDeleteFramebuffers(struct OGLES2Context *ctx, GLsizei n, const GLu
 {
     struct OGLES2FboState *fs;
     GLsizei k;
+    int a;
     if (!ogles2_context_valid(ctx))
         return;
     if (n < 0) {
@@ -388,7 +437,10 @@ void ogles2_glDeleteFramebuffers(struct OGLES2Context *ctx, GLsizei n, const GLu
             ctx->draw_fb = 0;
             ogles2_fb_update(ctx);
         }
-        fs->fbs[fb->name] = 0;
+        for (a = 0; a < 3; a++)
+            att_clear(ctx, &fb->att[a], FALSE);
+        fs->fbs[ogles2_name_slot(&fs->far_fb, fb->name, FALSE)] = 0;
+        ogles2_name_forget(&fs->far_fb, fb->name);
         fb_free(fb);
     }
 }
@@ -397,8 +449,8 @@ void ogles2_glDeleteRenderbuffers(struct OGLES2Context *ctx, GLsizei n, const GL
 {
     struct OGLES2FboState *fs;
     struct OGLES2Context *m;
+    struct OGLES2Framebuffer *fb;
     GLsizei k;
-    GLuint i;
     int a;
     if (!ogles2_context_valid(ctx))
         return;
@@ -412,25 +464,24 @@ void ogles2_glDeleteRenderbuffers(struct OGLES2Context *ctx, GLsizei n, const GL
         struct OGLES2Renderbuffer *rb = rb_by_name(fs, renderbuffers[k]);
         if (!rb)
             continue;
-        /* Every member of the share group lets go of it: its jobs that use
-         * it rendered first, its binding and attachments cleared (GL would
-         * keep it while attached elsewhere). */
-        for (m = ctx->share->first; m; m = m->share_next) {
-            struct OGLES2FboState *mfs = m->fbo;
-            before_rb_change(m, rb);
-            if (!mfs)
-                continue;
-            if (mfs->rb_bound == rb)
-                mfs->rb_bound = 0;
-            for (i = 1; i < mfs->nfbs; i++)
-                if (mfs->fbs[i])
-                    for (a = 0; a < 3; a++)
-                        if (mfs->fbs[i]->att[a].type == GL_RENDERBUFFER && mfs->fbs[i]->att[a].rb == rb)
-                            memset(&mfs->fbs[i]->att[a], 0, sizeof(mfs->fbs[i]->att[a]));
-        }
-        fs->sh->rbs[rb->name] = 0;
-        rb_free_storage(ctx, rb);
-        FreeVec(rb);
+        /* Every member of the share group unbinds it; it is detached from
+         * this context's bound framebuffer (rendered first). Attached to
+         * another, it lives on without its name (GLES 2.0 4.4.3). */
+        for (m = ctx->share->first; m; m = m->share_next)
+            if (m->fbo && m->fbo->rb_bound == rb)
+                m->fbo->rb_bound = 0;
+        if ((fb = ctx->draw_fb))
+            for (a = 0; a < 3; a++)
+                if (fb->att[a].type == GL_RENDERBUFFER && fb->att[a].rb == rb) {
+                    before_fb_change(ctx, fb);
+                    att_clear(ctx, &fb->att[a], FALSE);
+                }
+        fs->sh->rbs[ogles2_name_slot(&fs->sh->far_rb, rb->name, FALSE)] = 0;
+        ogles2_name_forget(&fs->sh->far_rb, rb->name);
+        if (rb->refs)
+            rb->orphan = TRUE;
+        else
+            rb_destroy(ctx, rb, FALSE);
     }
     for (m = ctx->share->first; m; m = m->share_next)
         ogles2_fb_update(m);
@@ -532,7 +583,9 @@ void ogles2_glFramebufferRenderbuffer(struct OGLES2Context *ctx, GLenum target, 
     }
     before_fb_change(ctx, ctx->draw_fb);
     at = &ctx->draw_fb->att[a];
-    memset(at, 0, sizeof(*at));
+    if (rb)
+        rb->refs++; /* first: re-attaching the same one must not free an orphan */
+    att_clear(ctx, at, FALSE);
     if (rb) {
         at->type = GL_RENDERBUFFER;
         at->rb = rb;
@@ -576,7 +629,9 @@ void ogles2_glFramebufferTexture2D(struct OGLES2Context *ctx, GLenum target, GLe
     }
     before_fb_change(ctx, ctx->draw_fb);
     at = &ctx->draw_fb->att[a];
-    memset(at, 0, sizeof(*at));
+    if (t)
+        ogles2_texture_attach(t); /* first: re-attaching the same one must not free an orphan */
+    att_clear(ctx, at, FALSE);
     if (t) {
         at->type = GL_TEXTURE;
         at->tex = t;
@@ -957,7 +1012,9 @@ static void rb_bits(GLenum f, GLint *r, GLint *g, GLint *b, GLint *a, GLint *d, 
     case GL_RGB5_A1: *r = *g = *b = 5; *a = 1; break;
     case GL_RGB565:  *r = *b = 5; *g = 6; break;
     case GL_RGB8_OES: *r = *g = *b = 8; break;
-    case GL_RGBA8_OES: *r = *g = *b = *a = 8; break;
+    case GL_RGBA8_OES:
+    case GL_BGRA_EXT:
+    case GL_BGRA8_EXT: *r = *g = *b = *a = 8; break;
     case GL_DEPTH_COMPONENT16: *d = 16; break;
     case GL_STENCIL_INDEX8: *s = 8; break;
     case GL_DEPTH24_STENCIL8_OES: *d = 24; *s = 8; break;
@@ -971,7 +1028,7 @@ static void tex_bits(const struct OGLES2Attachment *at, GLint *r, GLint *g, GLin
     GLenum f = 0, ty = 0;
     ogles2_texture_image(at->tex, at->face, at->level, &w, &h, &f, &ty);
     *r = *g = *b = 8;
-    *a = f == GL_RGBA ? 8 : 0;
+    *a = f == GL_RGBA || f == GL_BGRA_EXT ? 8 : 0;
     if (ty == GL_UNSIGNED_SHORT_5_6_5) { *r = *b = 5; *g = 6; }
     if (ty == GL_UNSIGNED_SHORT_4_4_4_4) { *r = *g = *b = *a = 4; }
     if (ty == GL_UNSIGNED_SHORT_5_5_5_1) { *r = *g = *b = 5; *a = 1; }
@@ -1086,6 +1143,13 @@ void ogles2_fbo_free(struct OGLES2Context *ctx)
     struct OGLES2FboState *fs = ctx->fbo;
     struct OGLES2Share *sh = ctx->share;
     GLuint i;
+    int a;
+    /* The attachments let go first: an orphan they keep goes with them. */
+    if (fs)
+        for (i = 1; i < fs->nfbs; i++)
+            if (fs->fbs[i])
+                for (a = 0; a < 3; a++)
+                    att_clear(ctx, &fs->fbs[i]->att[a], TRUE);
     if (sh && sh->members == 1) {
         for (i = 1; i < sh->nrbs; i++)
             if (sh->rbs[i]) {
@@ -1096,6 +1160,7 @@ void ogles2_fbo_free(struct OGLES2Context *ctx)
             FreeVec(sh->rbs);
         sh->rbs = 0;
         sh->nrbs = 0;
+        ogles2_names_free(&sh->far_rb);
     }
     if (!fs)
         return;
@@ -1104,6 +1169,7 @@ void ogles2_fbo_free(struct OGLES2Context *ctx)
             fb_free(fs->fbs[i]);
     if (fs->fbs)
         FreeVec(fs->fbs);
+    ogles2_names_free(&fs->far_fb);
     FreeVec(fs);
     ctx->fbo = 0;
     ctx->draw_fb = ctx->job_fb = 0;

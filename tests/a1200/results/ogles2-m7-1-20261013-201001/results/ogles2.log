@@ -1,0 +1,34 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086C9670
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FD4A44, 256x256
+    15 compiler: started (0 s)
+    16 compiler: shader compiled in 1240 ms
+    17 compiler: shader compiled in 40 ms
+    18 compiler: program compiled in 240 ms, OGLES2Cache:b0b2e9821362c531fcf41345.v3dp
+    19 glLinkProgram: OGLES2Cache:b0b2e9821362c531fcf41345.v3dp (5 variants, 424 bytes of code)
+    20 compiler: shader compiled in 20 ms
+    21 compiler: shader compiled in 40 ms
+    22 compiler: program compiled in 120 ms, OGLES2Cache:dad36e4120f6828c0121b28e.v3dp
+    23 glLinkProgram: OGLES2Cache:dad36e4120f6828c0121b28e.v3dp (5 variants, 448 bytes of code)
+    24 job: depth and stencil kept across a mid-frame flush (logged once)
+    25 compiler: shader compiled in 20 ms
+    26 compiler: program compiled in 120 ms, OGLES2Cache:abaa2ac9aaa666f0b6f6823b.v3dp
+    27 glLinkProgram: OGLES2Cache:abaa2ac9aaa666f0b6f6823b.v3dp (5 variants, 448 bytes of code)
+    28 aglDestroyContext: context 0x08FD4A44: freeing
+    29 device: context freed, 0 bytes of GPU memory still in use
+    30 aglDestroyContext: context 0x08FD4A44 (49 frames, 0 dropped, 0 binning blocks added)
+    31 timing: 49 jobs, each on average: 36633 us of CPU work before its flush, 7 us waiting for binning, 74 us for the render
+    32 timing: and in each flush 124 us building the render list, 87 us for the CPU cache before the GPU, 38 us after
+    33 timing: 33 swaps, 68822 us from one to the next on average, 385 us of it presenting
+    34 timing: per frame 0 draws, 23 us in them; in all 0 ms in glBuffer(Sub)Data, 5 ms in glTex(Sub)Image2D

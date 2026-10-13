@@ -1,0 +1,739 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/polygon_offset.txt --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/polygon_offset.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.default_enable
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.default_enable" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with default depth buffer.</Text>
+ <Text>DepthFunc = GL_LEQUAL</Text>
+ <Text>Draw bottom-right. Color = White.	State: PolygonOffset(0, -2), POLYGON_OFFSET_FILL disabled.</Text>
+ <Text>Draw bottom-right. Color = Red.	State: PolygonOffset(0, -1), POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Expecting: Bottom-right = Red.</Text>
+ <Text>0 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">87236</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.default_displacement_with_units
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.default_displacement_with_units" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with default depth buffer.</Text>
+ <Text>Framebuffer cleared, clear color = Black.</Text>
+ <Text>POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.313474	y=-0.141098	z=0.5	w=1.82545</Text>
+ <Text>	x=0.512278	y=0.191718	z=0.5	w=1.43903</Text>
+ <Text>	x=-0.659389	y=-0.0162829	z=0.5	w=1.71492</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.940792	y=-0.63397	z=0.5	w=1.73878</Text>
+ <Text>	x=0.621481	y=-0.154251	z=0.5	w=1.60591</Text>
+ <Text>	x=-0.711769	y=0.00560534	z=0.5	w=1.89264</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.155313	y=0.367215	z=0.5	w=1.31303</Text>
+ <Text>	x=-0.756847	y=0.0261949	z=0.5	w=1.15966</Text>
+ <Text>	x=-0.221482	y=0.111595	z=0.5	w=1.84212</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.369352	y=0.202365	z=0.5	w=1.88248</Text>
+ <Text>	x=0.464575	y=-0.658093	z=0.5	w=1.53999</Text>
+ <Text>	x=-0.748822	y=-0.673086	z=0.5	w=1.09736</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.211222	y=0.0493355	z=0.5	w=1.99079</Text>
+ <Text>	x=-0.546119	y=0.823127	z=0.5	w=1.89823</Text>
+ <Text>	x=-0.509274	y=0.563751	z=0.5	w=1.76014</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.943411	y=0.0180256	z=0.5	w=1.53867</Text>
+ <Text>	x=-0.641924	y=0.675763	z=0.5	w=1.18179</Text>
+ <Text>	x=0.197766	y=-0.831952	z=0.5	w=1.19486</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.430553	y=-0.454323	z=0.5	w=1.39031</Text>
+ <Text>	x=-0.957275	y=-0.264057	z=0.5	w=1.83104</Text>
+ <Text>	x=0.8015	y=-0.694014	z=0.5	w=1.8899</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.211432	y=0.766116	z=0.5	w=1.53196</Text>
+ <Text>	x=-0.0843968	y=-0.174735	z=0.5	w=1.05905</Text>
+ <Text>	x=0.98177	y=-0.854601	z=0.5	w=1.38325</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.688079	y=0.625314	z=0.5	w=1.37323</Text>
+ <Text>	x=-0.269579	y=-0.805359	z=0.5	w=1.59886</Text>
+ <Text>	x=0.227509	y=-0.511215	z=0.5	w=1.38618</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.772101	y=-0.257451	z=0.5	w=1.81525</Text>
+ <Text>	x=0.485397	y=0.87548	z=0.5	w=1.94805</Text>
+ <Text>	x=0.0448714	y=-0.515963	z=0.5	w=1.69456</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.250454	y=-0.523352	z=0.5	w=1.98573</Text>
+ <Text>	x=-0.70892	y=0.910291	z=0.5	w=1.83891</Text>
+ <Text>	x=0.798973	y=0.701204	z=0.5	w=1.05005</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.977012	y=0.72203	z=0.5	w=1.33228</Text>
+ <Text>	x=0.0614374	y=-0.909204	z=0.5	w=1.51405</Text>
+ <Text>	x=-0.312573	y=-0.505865	z=0.5	w=1.80373</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.609464	y=0.981297	z=0.5	w=1.24134</Text>
+ <Text>	x=0.382186	y=-0.246703	z=0.5	w=1.26517</Text>
+ <Text>	x=-0.593587	y=0.70177	z=0.5	w=1.82243</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.248193	y=0.644619	z=0.5	w=1.36523</Text>
+ <Text>	x=0.610398	y=-0.0936911	z=0.5	w=1.6885</Text>
+ <Text>	x=-0.817183	y=0.731462	z=0.5	w=1.67448</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.504481	y=0.869714	z=0.5	w=1.11093</Text>
+ <Text>	x=0.0335455	y=0.695339	z=0.5	w=1.63701</Text>
+ <Text>	x=0.152344	y=-0.477852	z=0.5	w=1.56586</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.503378	y=0.739647	z=0.5	w=1.68426</Text>
+ <Text>	x=0.210353	y=-0.745543	z=0.5	w=1.5642</Text>
+ <Text>	x=-0.210411	y=0.162809	z=0.5	w=1.14724</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.62818	y=-0.883689	z=0.5	w=1.66434</Text>
+ <Text>	x=-0.867479	y=0.0366082	z=0.5	w=1.60985</Text>
+ <Text>	x=0.308163	y=-0.902147	z=0.5	w=1.98222</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.4862	y=0.0626652	z=0.5	w=1.92326</Text>
+ <Text>	x=-0.204642	y=-0.882955	z=0.5	w=1.67989</Text>
+ <Text>	x=0.229573	y=0.0690874	z=0.5	w=1.36024</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.835137	y=-0.662985	z=0.5	w=1.74913</Text>
+ <Text>	x=-0.520215	y=0.97222	z=0.5	w=1.75438</Text>
+ <Text>	x=-0.392991	y=-0.616552	z=0.5	w=1.25271</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.288989	y=-0.516488	z=0.5	w=1.95784</Text>
+ <Text>	x=0.995235	y=0.430125	z=0.5	w=1.56796</Text>
+ <Text>	x=0.506393	y=-0.721693	z=0.5	w=1.9047</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.971515	y=0.737527	z=0.5	w=1.90882</Text>
+ <Text>	x=0.202269	y=0.479601	z=0.5	w=1.34969</Text>
+ <Text>	x=0.87918	y=-0.0915871	z=0.5	w=1.87477</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.817368	y=-0.36245	z=0.5	w=1.0213</Text>
+ <Text>	x=-0.44286	y=-0.297812	z=0.5	w=1.84399</Text>
+ <Text>	x=-0.390749	y=0.00468802	z=0.5	w=1.82985</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.780622	y=-0.373616	z=0.5	w=1.01531</Text>
+ <Text>	x=-0.490905	y=0.937801	z=0.5	w=1.76094</Text>
+ <Text>	x=0.153961	y=0.00466347	z=0.5	w=1.23899</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.304515	y=0.770741	z=0.5	w=1.6632</Text>
+ <Text>	x=0.445525	y=0.52546	z=0.5	w=1.07036</Text>
+ <Text>	x=0.0620685	y=-0.96973	z=0.5	w=1.82859</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.713945	y=-0.744345	z=0.5	w=1.0572</Text>
+ <Text>	x=0.876225	y=-0.579957	z=0.5	w=1.86627</Text>
+ <Text>	x=0.96843	y=-0.466633	z=0.5	w=1.39495</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.978288	y=0.162345	z=0.5	w=1.17534</Text>
+ <Text>	x=-0.457337	y=-0.0779695	z=0.5	w=1.86616</Text>
+ <Text>	x=0.769436	y=-0.981476	z=0.5	w=1.34279</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.225442	y=0.143851	z=0.5	w=1.80409</Text>
+ <Text>	x=0.713395	y=0.147903	z=0.5	w=1.29986</Text>
+ <Text>	x=-0.42688	y=-0.863524	z=0.5	w=1.95923</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.567499	y=0.801487	z=0.5	w=1.56892</Text>
+ <Text>	x=0.61006	y=-0.75093	z=0.5	w=1.28463</Text>
+ <Text>	x=0.97029	y=0.115325	z=0.5	w=1.60195</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.349464	y=0.505465	z=0.5	w=1.59666</Text>
+ <Text>	x=-0.227539	y=-0.845692	z=0.5	w=1.29198</Text>
+ <Text>	x=-0.628528	y=-0.406077	z=0.5	w=1.31644</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.355622	y=0.536851	z=0.5	w=1.54111</Text>
+ <Text>	x=-0.283062	y=0.668428	z=0.5	w=1.65393</Text>
+ <Text>	x=-0.958215	y=-0.0780627	z=0.5	w=1.86965</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.895833	y=0.223359	z=0.5	w=1.27426</Text>
+ <Text>	x=-0.491602	y=0.814053	z=0.5	w=1.79617</Text>
+ <Text>	x=-0.565677	y=0.843767	z=0.5	w=1.59089</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.406088	y=0.372802	z=0.5	w=1.09445</Text>
+ <Text>	x=-0.990896	y=-0.248171	z=0.5	w=1.44203</Text>
+ <Text>	x=-0.888388	y=-0.276263	z=0.5	w=1.9275</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.223259	y=0.6974	z=0.5	w=1.69542</Text>
+ <Text>	x=0.376824	y=0.474379	z=0.5	w=1.26637</Text>
+ <Text>	x=0.580658	y=0.297925	z=0.5	w=1.81801</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.43722	y=0.964851	z=0.5	w=1.39406</Text>
+ <Text>	x=-0.449557	y=-0.490398	z=0.5	w=1.71764</Text>
+ <Text>	x=0.690989	y=-0.566232	z=0.5	w=1.62983</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.851886	y=0.884757	z=0.5	w=1.698</Text>
+ <Text>	x=0.206773	y=-0.639193	z=0.5	w=1.15937</Text>
+ <Text>	x=0.773159	y=0.528205	z=0.5	w=1.57276</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.103909	y=0.252373	z=0.5	w=1.24367</Text>
+ <Text>	x=0.324151	y=-0.461475	z=0.5	w=1.54099</Text>
+ <Text>	x=0.471914	y=0.977062	z=0.5	w=1.78068</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.601657	y=-0.440606	z=0.5	w=1.32958</Text>
+ <Text>	x=0.757685	y=-0.597479	z=0.5	w=1.63726</Text>
+ <Text>	x=-0.98005	y=-0.517066	z=0.5	w=1.17279</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.996338	y=-0.454771	z=0.5	w=1.54618</Text>
+ <Text>	x=-0.218634	y=0.365071	z=0.5	w=1.69906</Text>
+ <Text>	x=0.309622	y=0.645226	z=0.5	w=1.6612</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.759232	y=-0.0767971	z=0.5	w=1.99774</Text>
+ <Text>	x=0.785819	y=-0.0142913	z=0.5	w=1.31343</Text>
+ <Text>	x=0.517589	y=0.0724974	z=0.5	w=1.63607</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.688468	y=-0.216285	z=0.5	w=1.3776</Text>
+ <Text>	x=-0.981436	y=-0.719225	z=0.5	w=1.80611</Text>
+ <Text>	x=0.937943	y=0.921989	z=0.5	w=1.31335</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Expecting black framebuffer.</Text>
+ <Text>15 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">87551</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.default_render_with_units
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.default_render_with_units" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with default depth buffer.</Text>
+ <Text>DepthFunc = GL_LESS.</Text>
+ <Text>POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Draw top-left. Color = White.	State: PolygonOffset(0, 0).</Text>
+ <Text>Draw top-left. Color = Green.	State: PolygonOffset(0, -1).</Text>
+ <Text>Draw bottom-right. Color = White.	State: PolygonOffset(0, 1).</Text>
+ <Text>Draw bottom-right. Color = Yellow.	State: PolygonOffset(0, 0).</Text>
+ <Text>Expecting: Top-left = Green, Bottom-right = Yellow.</Text>
+ <Text>0 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">110730</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.default_render_with_factor
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.default_render_with_factor" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with default depth buffer.</Text>
+ <Text>POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Draw top-left. Color = White.	State: DepthFunc = ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw top-left. Color = Green.	State: DepthFunc = LESS, PolygonOffset(-1, 0).</Text>
+ <Text>Draw bottom-right. Color = White.	State: DepthFunc = ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw bottom-right. Color = Green.	State: DepthFunc = GREATER, PolygonOffset(1, 0).</Text>
+ <Text>Expecting: Top-left = Green, Bottom-right = Green.</Text>
+ <Text>0 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">36064</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.default_factor_0_slope
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.default_factor_0_slope" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with default depth buffer.</Text>
+ <Text>Setup triangle with coordinates:</Text>
+ <Text>	x=-0.4	y=0.4	z=0	w=1</Text>
+ <Text>	x=-0.8	y=-0.5	z=0	w=1</Text>
+ <Text>	x=0.7	y=0.2	z=0	w=1</Text>
+ <Text>POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Draw triangle. Color = Red.	State: DepthFunc = ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw triangle. Color = Black.	State: DepthFunc = EQUAL, PolygonOffset(4, 0).</Text>
+ <Text>Expecting black triangle.</Text>
+ <Text>0 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">36408</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.fixed16_enable
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.fixed16_enable" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with fixed16 depth buffer.</Text>
+ <Text>DepthFunc = GL_LEQUAL</Text>
+ <Text>Draw bottom-right. Color = White.	State: PolygonOffset(0, -2), POLYGON_OFFSET_FILL disabled.</Text>
+ <Text>Draw bottom-right. Color = Red.	State: PolygonOffset(0, -1), POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Expecting: Bottom-right = Red.</Text>
+ <Text>0 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">76263</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.fixed16_displacement_with_units
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.fixed16_displacement_with_units" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with fixed16 depth buffer.</Text>
+ <Text>Framebuffer cleared, clear color = Black.</Text>
+ <Text>POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.313474	y=-0.141098	z=0.5	w=1.82545</Text>
+ <Text>	x=0.512278	y=0.191718	z=0.5	w=1.43903</Text>
+ <Text>	x=-0.659389	y=-0.0162829	z=0.5	w=1.71492</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.940792	y=-0.63397	z=0.5	w=1.73878</Text>
+ <Text>	x=0.621481	y=-0.154251	z=0.5	w=1.60591</Text>
+ <Text>	x=-0.711769	y=0.00560534	z=0.5	w=1.89264</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.155313	y=0.367215	z=0.5	w=1.31303</Text>
+ <Text>	x=-0.756847	y=0.0261949	z=0.5	w=1.15966</Text>
+ <Text>	x=-0.221482	y=0.111595	z=0.5	w=1.84212</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.369352	y=0.202365	z=0.5	w=1.88248</Text>
+ <Text>	x=0.464575	y=-0.658093	z=0.5	w=1.53999</Text>
+ <Text>	x=-0.748822	y=-0.673086	z=0.5	w=1.09736</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.211222	y=0.0493355	z=0.5	w=1.99079</Text>
+ <Text>	x=-0.546119	y=0.823127	z=0.5	w=1.89823</Text>
+ <Text>	x=-0.509274	y=0.563751	z=0.5	w=1.76014</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.943411	y=0.0180256	z=0.5	w=1.53867</Text>
+ <Text>	x=-0.641924	y=0.675763	z=0.5	w=1.18179</Text>
+ <Text>	x=0.197766	y=-0.831952	z=0.5	w=1.19486</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.430553	y=-0.454323	z=0.5	w=1.39031</Text>
+ <Text>	x=-0.957275	y=-0.264057	z=0.5	w=1.83104</Text>
+ <Text>	x=0.8015	y=-0.694014	z=0.5	w=1.8899</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.211432	y=0.766116	z=0.5	w=1.53196</Text>
+ <Text>	x=-0.0843968	y=-0.174735	z=0.5	w=1.05905</Text>
+ <Text>	x=0.98177	y=-0.854601	z=0.5	w=1.38325</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.688079	y=0.625314	z=0.5	w=1.37323</Text>
+ <Text>	x=-0.269579	y=-0.805359	z=0.5	w=1.59886</Text>
+ <Text>	x=0.227509	y=-0.511215	z=0.5	w=1.38618</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.772101	y=-0.257451	z=0.5	w=1.81525</Text>
+ <Text>	x=0.485397	y=0.87548	z=0.5	w=1.94805</Text>
+ <Text>	x=0.0448714	y=-0.515963	z=0.5	w=1.69456</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.250454	y=-0.523352	z=0.5	w=1.98573</Text>
+ <Text>	x=-0.70892	y=0.910291	z=0.5	w=1.83891</Text>
+ <Text>	x=0.798973	y=0.701204	z=0.5	w=1.05005</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.977012	y=0.72203	z=0.5	w=1.33228</Text>
+ <Text>	x=0.0614374	y=-0.909204	z=0.5	w=1.51405</Text>
+ <Text>	x=-0.312573	y=-0.505865	z=0.5	w=1.80373</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.609464	y=0.981297	z=0.5	w=1.24134</Text>
+ <Text>	x=0.382186	y=-0.246703	z=0.5	w=1.26517</Text>
+ <Text>	x=-0.593587	y=0.70177	z=0.5	w=1.82243</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.248193	y=0.644619	z=0.5	w=1.36523</Text>
+ <Text>	x=0.610398	y=-0.0936911	z=0.5	w=1.6885</Text>
+ <Text>	x=-0.817183	y=0.731462	z=0.5	w=1.67448</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.504481	y=0.869714	z=0.5	w=1.11093</Text>
+ <Text>	x=0.0335455	y=0.695339	z=0.5	w=1.63701</Text>
+ <Text>	x=0.152344	y=-0.477852	z=0.5	w=1.56586</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.503378	y=0.739647	z=0.5	w=1.68426</Text>
+ <Text>	x=0.210353	y=-0.745543	z=0.5	w=1.5642</Text>
+ <Text>	x=-0.210411	y=0.162809	z=0.5	w=1.14724</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.62818	y=-0.883689	z=0.5	w=1.66434</Text>
+ <Text>	x=-0.867479	y=0.0366082	z=0.5	w=1.60985</Text>
+ <Text>	x=0.308163	y=-0.902147	z=0.5	w=1.98222</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.4862	y=0.0626652	z=0.5	w=1.92326</Text>
+ <Text>	x=-0.204642	y=-0.882955	z=0.5	w=1.67989</Text>
+ <Text>	x=0.229573	y=0.0690874	z=0.5	w=1.36024</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.835137	y=-0.662985	z=0.5	w=1.74913</Text>
+ <Text>	x=-0.520215	y=0.97222	z=0.5	w=1.75438</Text>
+ <Text>	x=-0.392991	y=-0.616552	z=0.5	w=1.25271</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.288989	y=-0.516488	z=0.5	w=1.95784</Text>
+ <Text>	x=0.995235	y=0.430125	z=0.5	w=1.56796</Text>
+ <Text>	x=0.506393	y=-0.721693	z=0.5	w=1.9047</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.971515	y=0.737527	z=0.5	w=1.90882</Text>
+ <Text>	x=0.202269	y=0.479601	z=0.5	w=1.34969</Text>
+ <Text>	x=0.87918	y=-0.0915871	z=0.5	w=1.87477</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.817368	y=-0.36245	z=0.5	w=1.0213</Text>
+ <Text>	x=-0.44286	y=-0.297812	z=0.5	w=1.84399</Text>
+ <Text>	x=-0.390749	y=0.00468802	z=0.5	w=1.82985</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.780622	y=-0.373616	z=0.5	w=1.01531</Text>
+ <Text>	x=-0.490905	y=0.937801	z=0.5	w=1.76094</Text>
+ <Text>	x=0.153961	y=0.00466347	z=0.5	w=1.23899</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.304515	y=0.770741	z=0.5	w=1.6632</Text>
+ <Text>	x=0.445525	y=0.52546	z=0.5	w=1.07036</Text>
+ <Text>	x=0.0620685	y=-0.96973	z=0.5	w=1.82859</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.713945	y=-0.744345	z=0.5	w=1.0572</Text>
+ <Text>	x=0.876225	y=-0.579957	z=0.5	w=1.86627</Text>
+ <Text>	x=0.96843	y=-0.466633	z=0.5	w=1.39495</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.978288	y=0.162345	z=0.5	w=1.17534</Text>
+ <Text>	x=-0.457337	y=-0.0779695	z=0.5	w=1.86616</Text>
+ <Text>	x=0.769436	y=-0.981476	z=0.5	w=1.34279</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.225442	y=0.143851	z=0.5	w=1.80409</Text>
+ <Text>	x=0.713395	y=0.147903	z=0.5	w=1.29986</Text>
+ <Text>	x=-0.42688	y=-0.863524	z=0.5	w=1.95923</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.567499	y=0.801487	z=0.5	w=1.56892</Text>
+ <Text>	x=0.61006	y=-0.75093	z=0.5	w=1.28463</Text>
+ <Text>	x=0.97029	y=0.115325	z=0.5	w=1.60195</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.349464	y=0.505465	z=0.5	w=1.59666</Text>
+ <Text>	x=-0.227539	y=-0.845692	z=0.5	w=1.29198</Text>
+ <Text>	x=-0.628528	y=-0.406077	z=0.5	w=1.31644</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.355622	y=0.536851	z=0.5	w=1.54111</Text>
+ <Text>	x=-0.283062	y=0.668428	z=0.5	w=1.65393</Text>
+ <Text>	x=-0.958215	y=-0.0780627	z=0.5	w=1.86965</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.895833	y=0.223359	z=0.5	w=1.27426</Text>
+ <Text>	x=-0.491602	y=0.814053	z=0.5	w=1.79617</Text>
+ <Text>	x=-0.565677	y=0.843767	z=0.5	w=1.59089</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.406088	y=0.372802	z=0.5	w=1.09445</Text>
+ <Text>	x=-0.990896	y=-0.248171	z=0.5	w=1.44203</Text>
+ <Text>	x=-0.888388	y=-0.276263	z=0.5	w=1.9275</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.223259	y=0.6974	z=0.5	w=1.69542</Text>
+ <Text>	x=0.376824	y=0.474379	z=0.5	w=1.26637</Text>
+ <Text>	x=0.580658	y=0.297925	z=0.5	w=1.81801</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.43722	y=0.964851	z=0.5	w=1.39406</Text>
+ <Text>	x=-0.449557	y=-0.490398	z=0.5	w=1.71764</Text>
+ <Text>	x=0.690989	y=-0.566232	z=0.5	w=1.62983</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.851886	y=0.884757	z=0.5	w=1.698</Text>
+ <Text>	x=0.206773	y=-0.639193	z=0.5	w=1.15937</Text>
+ <Text>	x=0.773159	y=0.528205	z=0.5	w=1.57276</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.103909	y=0.252373	z=0.5	w=1.24367</Text>
+ <Text>	x=0.324151	y=-0.461475	z=0.5	w=1.54099</Text>
+ <Text>	x=0.471914	y=0.977062	z=0.5	w=1.78068</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.601657	y=-0.440606	z=0.5	w=1.32958</Text>
+ <Text>	x=0.757685	y=-0.597479	z=0.5	w=1.63726</Text>
+ <Text>	x=-0.98005	y=-0.517066	z=0.5	w=1.17279</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, -1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.996338	y=-0.454771	z=0.5	w=1.54618</Text>
+ <Text>	x=-0.218634	y=0.365071	z=0.5	w=1.69906</Text>
+ <Text>	x=0.309622	y=0.645226	z=0.5	w=1.6612</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=-0.759232	y=-0.0767971	z=0.5	w=1.99774</Text>
+ <Text>	x=0.785819	y=-0.0142913	z=0.5	w=1.31343</Text>
+ <Text>	x=0.517589	y=0.0724974	z=0.5	w=1.63607</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Setup triangle with random coordinates:</Text>
+ <Text>	x=0.688468	y=-0.216285	z=0.5	w=1.3776</Text>
+ <Text>	x=-0.981436	y=-0.719225	z=0.5	w=1.80611</Text>
+ <Text>	x=0.937943	y=0.921989	z=0.5	w=1.31335</Text>
+ <Text>Draw colorless triangle.	State: DepthFunc = GL_ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw green triangle.	State: DepthFunc = GL_EQUAL, PolygonOffset(0, 1).</Text>
+ <Text></Text>
+ <Text>Expecting black framebuffer.</Text>
+ <Text>0 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">89314</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.fixed16_render_with_units
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.fixed16_render_with_units" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with fixed16 depth buffer.</Text>
+ <Text>DepthFunc = GL_LESS.</Text>
+ <Text>POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Draw top-left. Color = White.	State: PolygonOffset(0, 0).</Text>
+ <Text>Draw top-left. Color = Green.	State: PolygonOffset(0, -1).</Text>
+ <Text>Draw bottom-right. Color = White.	State: PolygonOffset(0, 1).</Text>
+ <Text>Draw bottom-right. Color = Yellow.	State: PolygonOffset(0, 0).</Text>
+ <Text>Expecting: Top-left = Green, Bottom-right = Yellow.</Text>
+ <Text>0 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">112206</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.fixed16_render_with_factor
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.fixed16_render_with_factor" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with fixed16 depth buffer.</Text>
+ <Text>POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Draw top-left. Color = White.	State: DepthFunc = ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw top-left. Color = Green.	State: DepthFunc = LESS, PolygonOffset(-1, 0).</Text>
+ <Text>Draw bottom-right. Color = White.	State: DepthFunc = ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw bottom-right. Color = Green.	State: DepthFunc = GREATER, PolygonOffset(1, 0).</Text>
+ <Text>Expecting: Top-left = Green, Bottom-right = Green.</Text>
+ <Text>0 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">35127</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.polygon_offset.fixed16_factor_0_slope
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.polygon_offset.fixed16_factor_0_slope" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Testing PolygonOffset with fixed16 depth buffer.</Text>
+ <Text>Setup triangle with coordinates:</Text>
+ <Text>	x=-0.4	y=0.4	z=0	w=1</Text>
+ <Text>	x=-0.8	y=-0.5	z=0	w=1</Text>
+ <Text>	x=0.7	y=0.2	z=0	w=1</Text>
+ <Text>POLYGON_OFFSET_FILL enabled.</Text>
+ <Text>Draw triangle. Color = Red.	State: DepthFunc = ALWAYS, PolygonOffset(0, 0).</Text>
+ <Text>Draw triangle. Color = Black.	State: DepthFunc = EQUAL, PolygonOffset(4, 0).</Text>
+ <Text>Expecting black triangle.</Text>
+ <Text>0 faulty pixel(s) found.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">33329</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 0.83 seconds
+
+#endSession

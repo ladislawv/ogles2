@@ -32,7 +32,7 @@ SetEnv OGLES2/LogFile M6R4:results/ogles2.log
 CD M6R4:bin
 
 If NOT {FROM} GT 1 VAL
-  Echo "Step 1 of 6: SDL3 testgles2 in a window, 6 seconds: a spinning cube"
+  Echo "Step 1 of 8: SDL3 testgles2 in a window, 6 seconds: a spinning cube"
   Echo "  with coloured faces. The first run compiles its shaders: wait a little."
   Wait 2
   M6R4:bin/testgles2 --seconds 6 >M6R4:results/1-testgles2.txt
@@ -40,7 +40,7 @@ If NOT {FROM} GT 1 VAL
 EndIf
 
 If NOT {FROM} GT 2 VAL
-  Echo "Step 2 of 6: SDL3 testsprite on SDL's GLES2 renderer, 6 seconds: many"
+  Echo "Step 2 of 8: SDL3 testsprite on SDL's GLES2 renderer, 6 seconds: many"
   Echo "  small smiley faces bouncing around a window."
   Wait 2
   M6R4:bin/testsprite --renderer opengles2 --info render --seconds 6 >M6R4:results/2-sprites-gles2.txt
@@ -48,14 +48,14 @@ If NOT {FROM} GT 2 VAL
 EndIf
 
 If NOT {FROM} GT 3 VAL
-  Echo "Step 3 of 6: the same on SDL's software renderer, for comparison."
+  Echo "Step 3 of 8: the same on SDL's software renderer, for comparison."
   Wait 2
   M6R4:bin/testsprite --renderer software --info render --seconds 6 >M6R4:results/3-sprites-software.txt
   Echo "step 3 done" >>M6R4:results/00-progress.txt
 EndIf
 
 If NOT {FROM} GT 4 VAL
-  Echo "Step 4 of 6: SDL3 testrendercopyex on the GLES2 renderer, 6 seconds:"
+  Echo "Step 4 of 8: SDL3 testrendercopyex on the GLES2 renderer, 6 seconds:"
   Echo "  a picture with a smiley turning and flipping in its middle."
   Wait 2
   M6R4:bin/testrendercopyex --renderer opengles2 --seconds 6 >M6R4:results/4-copyex.txt
@@ -63,7 +63,7 @@ If NOT {FROM} GT 4 VAL
 EndIf
 
 If NOT {FROM} GT 5 VAL
-  Echo "Step 5 of 6: SDL3 testdraw on the GLES2 renderer, 6 seconds: coloured"
+  Echo "Step 5 of 8: SDL3 testdraw on the GLES2 renderer, 6 seconds: coloured"
   Echo "  lines, rectangles and points changing all the time."
   Wait 2
   M6R4:bin/testdraw --renderer opengles2 --seconds 6 >M6R4:results/5-draw.txt
@@ -71,11 +71,27 @@ If NOT {FROM} GT 5 VAL
 EndIf
 
 If NOT {FROM} GT 6 VAL
-  Echo "Step 6 of 6: SDL3 testgles2 full screen, 6 seconds: the screen switches"
+  Echo "Step 6 of 8: SDL3 testgles2 full screen, 6 seconds: the screen switches"
   Echo "  to the spinning cube and back."
   Wait 2
   M6R4:bin/testgles2 --fullscreen --seconds 6 >M6R4:results/6-testgles2-fullscreen.txt
   Echo "step 6 done" >>M6R4:results/00-progress.txt
+EndIf
+
+; Vsync (SDL_GL_SetSwapInterval 1): ogles2 waits for the display's refresh
+; before each copy into the window. Only these two:  Execute Run-M1 FROM=7
+If NOT {FROM} GT 7 VAL
+  Echo "Step 7 of 8: SDL3 testgles2 in a window with vsync, 6 seconds: the"
+  Echo "  spinning cube, smooth and untorn at the display's 60 frames a second."
+  M6R4:bin/testgles2 --vsync --seconds 6 >M6R4:results/7-testgles2-vsync.txt
+  Echo "step 7 done" >>M6R4:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 8 VAL
+  Echo "Step 8 of 8: the same full screen with vsync, 6 seconds."
+  Wait 2
+  M6R4:bin/testgles2 --fullscreen --vsync --seconds 6 >M6R4:results/8-testgles2-fullscreen-vsync.txt
+  Echo "step 8 done" >>M6R4:results/00-progress.txt
 EndIf
 
 CD M6R4:

@@ -1,0 +1,741 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/lifetime.txt --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/lifetime.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.gen.buffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.gen.buffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832c0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glIsBuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2694</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.gen.texture
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.gen.texture" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenTextures(1, 0x0b2832c0);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glIsTexture(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glDeleteTextures(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2352</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.gen.renderbuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.gen.renderbuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenRenderbuffers(1, 0x0b2832c0);</Text>
+ <Text>// renderbuffers = { 1 }</Text>
+ <Text>glIsRenderbuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glDeleteRenderbuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2803</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.gen.framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.gen.framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b2832c0);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>glIsFramebuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2028</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.gen.shader
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.gen.shader" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glCreateShader(GL_FRAGMENT_SHADER);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glIsShader(1);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glDeleteShader(1);</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2032</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.gen.program
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.gen.program" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glCreateProgram();</Text>
+ <Text>// 1 returned</Text>
+ <Text>glIsProgram(1);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glDeleteProgram(1);</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2032</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete.buffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete.buffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832bc);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Text>glIsBuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2085</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete.texture
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete.texture" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenTextures(1, 0x0b2832bc);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glDeleteTextures(1, { 1 });</Text>
+ <Text>glIsTexture(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2398</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete.renderbuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete.renderbuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenRenderbuffers(1, 0x0b2832bc);</Text>
+ <Text>// renderbuffers = { 1 }</Text>
+ <Text>glDeleteRenderbuffers(1, { 1 });</Text>
+ <Text>glIsRenderbuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2008</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete.framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete.framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b2832bc);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Text>glIsFramebuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1956</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete.shader
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete.shader" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glCreateShader(GL_FRAGMENT_SHADER);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glDeleteShader(1);</Text>
+ <Text>glIsShader(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1983</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete.program
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete.program" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glCreateProgram();</Text>
+ <Text>// 1 returned</Text>
+ <Text>glDeleteProgram(1);</Text>
+ <Text>glIsProgram(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1996</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.bind.buffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.bind.buffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832c0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glIsBuffer(1);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 0);</Text>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2612</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.bind.texture
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.bind.texture" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenTextures(1, 0x0b2832c0);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glIsTexture(1);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 0);</Text>
+ <Text>glDeleteTextures(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">3194</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.bind.renderbuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.bind.renderbuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenRenderbuffers(1, 0x0b2832c0);</Text>
+ <Text>// renderbuffers = { 1 }</Text>
+ <Text>glBindRenderbuffer(GL_RENDERBUFFER, 1);</Text>
+ <Text>glIsRenderbuffer(1);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glBindRenderbuffer(GL_RENDERBUFFER, 0);</Text>
+ <Text>glDeleteRenderbuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2204</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.bind.framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.bind.framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b2832c0);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+ <Text>glIsFramebuffer(1);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2193</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete_bound.buffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete_bound.buffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832c4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Text>glGetIntegerv(GL_ARRAY_BUFFER_BINDING, 0x0b2831c2);</Text>
+ <Text>// data = { 0 }</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>// Single integer output: 0</Text>
+ <Text>glIsBuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 0);</Text>
+ <Text>glGetIntegerv(GL_ARRAY_BUFFER_BINDING, 0x0b2831c2);</Text>
+ <Text>// data = { 0 }</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>// Single integer output: 0</Text>
+ <Text>glIsBuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">3727</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete_bound.texture
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete_bound.texture" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenTextures(1, 0x0b2832c4);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glDeleteTextures(1, { 1 });</Text>
+ <Text>glGetIntegerv(GL_TEXTURE_BINDING_2D, 0x0b2831c2);</Text>
+ <Text>// data = { 0 }</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>// Single integer output: 0</Text>
+ <Text>glIsTexture(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 0);</Text>
+ <Text>glGetIntegerv(GL_TEXTURE_BINDING_2D, 0x0b2831c2);</Text>
+ <Text>// data = { 0 }</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>// Single integer output: 0</Text>
+ <Text>glIsTexture(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">4521</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete_bound.renderbuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete_bound.renderbuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenRenderbuffers(1, 0x0b2832c4);</Text>
+ <Text>// renderbuffers = { 1 }</Text>
+ <Text>glBindRenderbuffer(GL_RENDERBUFFER, 1);</Text>
+ <Text>glDeleteRenderbuffers(1, { 1 });</Text>
+ <Text>glGetIntegerv(GL_RENDERBUFFER_BINDING, 0x0b2831c2);</Text>
+ <Text>// data = { 0 }</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>// Single integer output: 0</Text>
+ <Text>glIsRenderbuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindRenderbuffer(GL_RENDERBUFFER, 0);</Text>
+ <Text>glGetIntegerv(GL_RENDERBUFFER_BINDING, 0x0b2831c2);</Text>
+ <Text>// data = { 0 }</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>// Single integer output: 0</Text>
+ <Text>glIsRenderbuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">4831</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete_bound.framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete_bound.framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b2832c4);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Text>glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, 0x0b2831c2);</Text>
+ <Text>// data = { 0 }</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>// Single integer output: 0</Text>
+ <Text>glIsFramebuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+ <Text>glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, 0x0b2831c2);</Text>
+ <Text>// data = { 0 }</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>// Single integer output: 0</Text>
+ <Text>glIsFramebuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">4074</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.bind_no_gen.buffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.bind_no_gen.buffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glIsBuffer(876225216);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 876225216);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_OUT_OF_MEMORY returned</Text>
+ <Text>// Fail: Failed when binding a name not generated by Gen* call</Text>
+ <Text>glIsBuffer(876225216);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>// Fail: Object was not created by the Bind* call</Text>
+ <Text>glDeleteBuffers(1, { 876225216 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">4009</Number>
+ <Result StatusCode="Fail">Multiple problems, see log for details</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.bind_no_gen.texture
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.bind_no_gen.texture" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glIsTexture(70242211);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 70242211);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glIsTexture(70242211);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glDeleteTextures(1, { 70242211 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">739829</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.bind_no_gen.renderbuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.bind_no_gen.renderbuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glIsRenderbuffer(21254862);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindRenderbuffer(GL_RENDERBUFFER, 21254862);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glIsRenderbuffer(21254862);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glDeleteRenderbuffers(1, { 21254862 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">187348</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.bind_no_gen.framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.bind_no_gen.framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glIsFramebuffer(1437432592);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1437432592);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_OUT_OF_MEMORY returned</Text>
+ <Text>// Fail: Failed when binding a name not generated by Gen* call</Text>
+ <Text>glIsFramebuffer(1437432592);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>// Fail: Object was not created by the Bind* call</Text>
+ <Text>glDeleteFramebuffers(1, { 1437432592 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2542</Number>
+ <Result StatusCode="Fail">Multiple problems, see log for details</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.delete_used.program
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.delete_used.program" Version="0.3.4" CaseType="SelfValidate">
+ <Text>// Created and linked program 3</Text>
+ <Text>glUseProgram(3);</Text>
+ <Text>// Deleted program 3</Text>
+ <Text>glIsProgram(3);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glGetProgramiv(3, GL_DELETE_STATUS, 0x0b28313c);</Text>
+ <Text>// params = { 1 }</Text>
+ <Text>glUseProgram(0);</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">14122</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.attach.deleted_name.texture_framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.attach.deleted_name.texture_framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b2832c4);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>glGenTextures(1, 0x0b2832c0);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>// Drew to texture 1 with seed 0.</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+ <Text>glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 1, 0);</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+ <Text>// Result of query for texture attached to framebuffer 1: 1.</Text>
+ <Text>glDeleteTextures(1, { 1 });</Text>
+ <Text>// Result of query for texture attached to framebuffer 1: 1.</Text>
+ <Text>glIsTexture(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+ <Text>glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+ <Text>// Result of query for texture attached to framebuffer 1: 0.</Text>
+ <Text>glIsTexture(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">6443</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.attach.deleted_name.renderbuffer_framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.attach.deleted_name.renderbuffer_framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b2832c4);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>glGenRenderbuffers(1, 0x0b2832c0);</Text>
+ <Text>// renderbuffers = { 1 }</Text>
+ <Text>// Drew to renderbuffer 1 with seed 0.</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+ <Text>glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 1);</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+ <Text>// Result of query for renderbuffer attached to framebuffer 1: 1.</Text>
+ <Text>glDeleteRenderbuffers(1, { 1 });</Text>
+ <Text>// Result of query for renderbuffer attached to framebuffer 1: 1.</Text>
+ <Text>glIsRenderbuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+ <Text>glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+ <Text>// Result of query for renderbuffer attached to framebuffer 1: 0.</Text>
+ <Text>glIsRenderbuffer(1);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">7369</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.attach.deleted_name.shader_program
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.attach.deleted_name.shader_program" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glCreateProgram();</Text>
+ <Text>// 1 returned</Text>
+ <Text>glCreateShader(GL_FRAGMENT_SHADER);</Text>
+ <Text>// 2 returned</Text>
+ <Text>glShaderSource(2, 1, 0x0b28320e, 0x00000000);</Text>
+ <Text>glCompileShader(2);</Text>
+ <Text>glAttachShader(1, 2);</Text>
+ <Text>// Result of query for shader attached to program 1: 2.</Text>
+ <Text>glDeleteShader(2);</Text>
+ <Text>// Result of query for shader attached to program 1: 2.</Text>
+ <Text>glIsShader(2);</Text>
+ <Text>// GL_TRUE returned</Text>
+ <Text>glDetachShader(1, 2);</Text>
+ <Text>// Result of query for shader attached to program 1: 0.</Text>
+ <Text>glIsShader(2);</Text>
+ <Text>// GL_FALSE returned</Text>
+ <Text>glDeleteProgram(1);</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">7579</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.attach.deleted_input.texture_framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.attach.deleted_input.texture_framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b283212);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>Testing if writing to a newly created object modifies a deleted attachment</Text>
+ <Section Name="Write to original" Description="Writing to an original attachment">
+  <Text>glGenTextures(1, 0x0b28319a);</Text>
+  <Text>// textures = { 1 }</Text>
+  <Text>// Drew to texture 1 with seed 520684172.</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 1, 0);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>// Read pixels from framebuffer 1 to output image.</Text>
+  <Text>glDeleteTextures(1, { 1 });</Text>
+</Section>
+ <Section Name="Write to new" Description="Writing to a new attachment after deleting the original">
+  <Text>// Type does not require Gen* for binding, reusing old id 1.</Text>
+  <Text>// Drew to texture 1 with seed 87023308.</Text>
+  <Text>// Read pixels from framebuffer 1 to output image.</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 1, 0);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>// Read pixels from framebuffer 1 to output image.</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>glDeleteTextures(1, { 1 });</Text>
+</Section>
+ <ImageSet Name="Reading from deleted" Description="Comparison result from reading from a container with a deleted attachment before and after writing to a fresh object." />
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">35075</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.attach.deleted_input.renderbuffer_framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.attach.deleted_input.renderbuffer_framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b283212);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>Testing if writing to a newly created object modifies a deleted attachment</Text>
+ <Section Name="Write to original" Description="Writing to an original attachment">
+  <Text>glGenRenderbuffers(1, 0x0b28319a);</Text>
+  <Text>// renderbuffers = { 1 }</Text>
+  <Text>// Drew to renderbuffer 1 with seed 2883076950.</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 1);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>// Read pixels from framebuffer 1 to output image.</Text>
+  <Text>glDeleteRenderbuffers(1, { 1 });</Text>
+</Section>
+ <Section Name="Write to new" Description="Writing to a new attachment after deleting the original">
+  <Text>// Type does not require Gen* for binding, reusing old id 1.</Text>
+  <Text>// Drew to renderbuffer 1 with seed 4286578584.</Text>
+  <Text>// Read pixels from framebuffer 1 to output image.</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 1);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>// Read pixels from framebuffer 1 to output image.</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>glDeleteRenderbuffers(1, { 1 });</Text>
+</Section>
+ <ImageSet Name="Reading from deleted" Description="Comparison result from reading from a container with a deleted attachment before and after writing to a fresh object." />
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">29928</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.attach.deleted_input.shader_program
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.attach.deleted_input.shader_program" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glCreateProgram();</Text>
+ <Text>// 1 returned</Text>
+ <Text>Testing if writing to a newly created object modifies a deleted attachment</Text>
+ <Section Name="Write to original" Description="Writing to an original attachment">
+  <Text>glCreateShader(GL_FRAGMENT_SHADER);</Text>
+  <Text>// 2 returned</Text>
+  <Text>glShaderSource(2, 1, 0x0b2830d6, 0x00000000);</Text>
+  <Text>glCompileShader(2);</Text>
+  <Text>glAttachShader(1, 2);</Text>
+  <Text>// Attached a temporary vertex shader and linked program 1</Text>
+  <Text>// Positioned viewport randomly</Text>
+  <Text>glUseProgram(1);</Text>
+  <Text>// Drew a fixed triangle</Text>
+  <Text>glUseProgram(0);</Text>
+  <Text>// Copied viewport to output image</Text>
+  <Text>// Removed temporary vertex shader</Text>
+  <Text>glDeleteShader(2);</Text>
+</Section>
+ <Section Name="Write to new" Description="Writing to a new attachment after deleting the original">
+  <Text>glCreateShader(GL_FRAGMENT_SHADER);</Text>
+  <Text>// 3 returned</Text>
+  <Text>glShaderSource(3, 1, 0x0b2830d6, 0x00000000);</Text>
+  <Text>glCompileShader(3);</Text>
+  <Text>// Attached a temporary vertex shader and linked program 1</Text>
+  <Text>// Positioned viewport randomly</Text>
+  <Text>glUseProgram(1);</Text>
+  <Text>// Drew a fixed triangle</Text>
+  <Text>glUseProgram(0);</Text>
+  <Text>// Copied viewport to output image</Text>
+  <Text>// Removed temporary vertex shader</Text>
+  <Text>glDetachShader(1, 2);</Text>
+  <Text>glAttachShader(1, 3);</Text>
+  <Text>// Attached a temporary vertex shader and linked program 1</Text>
+  <Text>// Positioned viewport randomly</Text>
+  <Text>glUseProgram(1);</Text>
+  <Text>// Drew a fixed triangle</Text>
+  <Text>glUseProgram(0);</Text>
+  <Text>// Copied viewport to output image</Text>
+  <Text>// Removed temporary vertex shader</Text>
+  <Text>glDetachShader(1, 3);</Text>
+  <Text>glDeleteShader(3);</Text>
+</Section>
+ <ImageSet Name="Reading from deleted" Description="Comparison result from reading from a container with a deleted attachment before and after writing to a fresh object." />
+ <Text>glDeleteProgram(1);</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">48387</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.attach.deleted_output.texture_framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.attach.deleted_output.texture_framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b283212);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>Testing if writing to a container with a deleted attachment modifies a newly created object</Text>
+ <Section Name="Write to existing" Description="Writing to a container with an existing attachment">
+  <Text>glGenTextures(1, 0x0b28319a);</Text>
+  <Text>// textures = { 1 }</Text>
+  <Text>// Drew to texture 1 with seed 0.</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 1, 0);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>// Drew to framebuffer 1 with seed 520684172.</Text>
+  <Text>// Read pixels from texture 1 to output image.</Text>
+  <Text>glDeleteTextures(1, { 1 });</Text>
+</Section>
+ <Section Name="Write to deleted" Description="Writing to a container after deletion of attachment">
+  <Text>// Type does not require Gen* for binding, reusing old id 1.</Text>
+  <Text>Creating a new object 1</Text>
+  <Text>Recording state of new object before writing to container</Text>
+  <Text>// Drew to texture 1 with seed 87023308.</Text>
+  <Text>// Read pixels from texture 1 to output image.</Text>
+  <Text>Writing to container</Text>
+  <Text>// Drew to framebuffer 1 with seed 520684172.</Text>
+  <Text>// Read pixels from texture 1 to output image.</Text>
+  <Text>glDeleteTextures(1, { 1 });</Text>
+</Section>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+ <Text>glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, 0);</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+ <ImageSet Name="Writing to deleted" Description="Comparison result from reading from a fresh object before and after writing to a container with a deleted attachment" />
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">34746</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.lifetime.attach.deleted_output.renderbuffer_framebuffer
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.lifetime.attach.deleted_output.renderbuffer_framebuffer" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenFramebuffers(1, 0x0b283212);</Text>
+ <Text>// framebuffers = { 1 }</Text>
+ <Text>Testing if writing to a container with a deleted attachment modifies a newly created object</Text>
+ <Section Name="Write to existing" Description="Writing to a container with an existing attachment">
+  <Text>glGenRenderbuffers(1, 0x0b28319a);</Text>
+  <Text>// renderbuffers = { 1 }</Text>
+  <Text>// Drew to renderbuffer 1 with seed 0.</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+  <Text>glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 1);</Text>
+  <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+  <Text>// Drew to framebuffer 1 with seed 2883076950.</Text>
+  <Text>// Read pixels from renderbuffer 1 to output image.</Text>
+  <Text>glDeleteRenderbuffers(1, { 1 });</Text>
+</Section>
+ <Section Name="Write to deleted" Description="Writing to a container after deletion of attachment">
+  <Text>// Type does not require Gen* for binding, reusing old id 1.</Text>
+  <Text>Creating a new object 1</Text>
+  <Text>Recording state of new object before writing to container</Text>
+  <Text>// Drew to renderbuffer 1 with seed 4286578584.</Text>
+  <Text>// Read pixels from renderbuffer 1 to output image.</Text>
+  <Text>Writing to container</Text>
+  <Text>// Drew to framebuffer 1 with seed 2883076950.</Text>
+  <Text>// Read pixels from renderbuffer 1 to output image.</Text>
+  <Text>glDeleteRenderbuffers(1, { 1 });</Text>
+</Section>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 1);</Text>
+ <Text>glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);</Text>
+ <Text>glBindFramebuffer(GL_FRAMEBUFFER, 0);</Text>
+ <ImageSet Name="Writing to deleted" Description="Comparison result from reading from a fresh object before and after writing to a container with a deleted attachment" />
+ <Text>glDeleteFramebuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">36175</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 3.83 seconds
+
+#endSession

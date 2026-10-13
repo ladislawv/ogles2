@@ -1,0 +1,434 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086C9670
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FBB27C, 256x256
+    15 compiler: started (0 s)
+    16 compiler: shader compiled in 1220 ms
+    17 compiler: shader compiled in 40 ms
+    18 compiler: program compiled in 280 ms, OGLES2Cache:9c0b594e7dd2b2d353eb6929.v3dp
+    19 glLinkProgram: OGLES2Cache:9c0b594e7dd2b2d353eb6929.v3dp (5 variants, 6392 bytes of code)
+    20 job: depth and stencil kept across a mid-frame flush (logged once)
+    21 device: GPU reset after a render job it did not finish: the core answers
+    22 job: render timed out
+    23 device: GPU reset after a render job it did not finish: the core answers
+    24 job: render timed out
+    25 device: GPU reset after a render job it did not finish: the core answers
+    26 job: render timed out
+    27 device: GPU reset after a render job it did not finish: the core answers
+    28 job: render timed out
+    29 device: GPU reset after a render job it did not finish: the core answers
+    30 job: render timed out
+    31 device: GPU reset after a render job it did not finish: the core answers
+    32 job: render timed out
+    33 device: GPU reset after a render job it did not finish: the core answers
+    34 job: render timed out
+    35 device: GPU reset after a render job it did not finish: the core answers
+    36 job: render timed out
+    37 device: GPU reset after a render job it did not finish: the core answers
+    38 job: render timed out
+    39 device: GPU reset after a binning job it did not finish: the core answers
+    40 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C42F5E2 (last block 0x3C1387C0), 18 spill blocks
+    41 job: frame dropped: binning failed
+    42 device: GPU reset after a binning job it did not finish: the core answers
+    43 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C5AA75F (last block 0x3C538800), 0 spill blocks
+    44 job: frame dropped: binning failed
+    45 device: GPU reset after a binning job it did not finish: the core answers
+    46 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C26F3AE (last block 0x3C1387C0), 0 spill blocks
+    47 job: frame dropped: binning failed
+    48 device: GPU reset after a binning job it did not finish: the core answers
+    49 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C84FFCE (last block 0x3C538800), 0 spill blocks
+    50 job: frame dropped: binning failed
+    51 device: GPU reset after a binning job it did not finish: the core answers
+    52 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C306532 (last block 0x3C1387C0), 0 spill blocks
+    53 job: frame dropped: binning failed
+    54 device: GPU reset after a binning job it did not finish: the core answers
+    55 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C65C760 (last block 0x3C538800), 0 spill blocks
+    56 job: frame dropped: binning failed
+    57 device: GPU reset after a binning job it did not finish: the core answers
+    58 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C1B2493 (last block 0x3C1387C0), 0 spill blocks
+    59 job: frame dropped: binning failed
+    60 device: GPU reset after a binning job it did not finish: the core answers
+    61 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C6174B3 (last block 0x3C538800), 0 spill blocks
+    62 job: frame dropped: binning failed
+    63 device: GPU reset after a binning job it did not finish: the core answers
+    64 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C2F3828 (last block 0x3C1387C0), 0 spill blocks
+    65 job: frame dropped: binning failed
+    66 device: GPU reset after a binning job it did not finish: the core answers
+    67 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C7300CB (last block 0x3C538800), 0 spill blocks
+    68 job: frame dropped: binning failed
+    69 device: GPU reset after a binning job it did not finish: the core answers
+    70 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C4823FB (last block 0x3C1387C0), 0 spill blocks
+    71 job: frame dropped: binning failed
+    72 device: GPU reset after a binning job it did not finish: the core answers
+    73 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C757906 (last block 0x3C538800), 0 spill blocks
+    74 job: frame dropped: binning failed
+    75 device: GPU reset after a binning job it did not finish: the core answers
+    76 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C333CBA (last block 0x3C1387C0), 0 spill blocks
+    77 job: frame dropped: binning failed
+    78 device: GPU reset after a binning job it did not finish: the core answers
+    79 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C802980 (last block 0x3C538800), 0 spill blocks
+    80 job: frame dropped: binning failed
+    81 device: GPU reset after a binning job it did not finish: the core answers
+    82 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C1A8CD8 (last block 0x3C1387C0), 0 spill blocks
+    83 job: frame dropped: binning failed
+    84 device: GPU reset after a binning job it did not finish: the core answers
+    85 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C7C7E2D (last block 0x3C538800), 0 spill blocks
+    86 job: frame dropped: binning failed
+    87 device: GPU reset after a binning job it did not finish: the core answers
+    88 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C368236 (last block 0x3C1387C0), 0 spill blocks
+    89 job: frame dropped: binning failed
+    90 device: GPU reset after a binning job it did not finish: the core answers
+    91 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C66FFAD (last block 0x3C538800), 0 spill blocks
+    92 job: frame dropped: binning failed
+    93 device: GPU reset after a binning job it did not finish: the core answers
+    94 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C429901 (last block 0x3C1387C0), 0 spill blocks
+    95 job: frame dropped: binning failed
+    96 device: GPU reset after a binning job it did not finish: the core answers
+    97 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C688862 (last block 0x3C538800), 0 spill blocks
+    98 job: frame dropped: binning failed
+    99 device: GPU reset after a binning job it did not finish: the core answers
+   100 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C46C798 (last block 0x3C1387C0), 0 spill blocks
+   101 job: frame dropped: binning failed
+   102 device: GPU reset after a binning job it did not finish: the core answers
+   103 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C8038C2 (last block 0x3C538800), 0 spill blocks
+   104 job: frame dropped: binning failed
+   105 device: GPU reset after a binning job it did not finish: the core answers
+   106 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C475AD8 (last block 0x3C1387C0), 0 spill blocks
+   107 job: frame dropped: binning failed
+   108 device: GPU reset after a render job it did not finish: the core answers
+   109 job: render timed out
+   110 device: GPU reset after a render job it did not finish: the core answers
+   111 job: render timed out
+   112 device: GPU reset after a render job it did not finish: the core answers
+   113 job: render timed out
+   114 device: GPU reset after a render job it did not finish: the core answers
+   115 job: render timed out
+   116 device: GPU reset after a render job it did not finish: the core answers
+   117 job: render timed out
+   118 device: GPU reset after a render job it did not finish: the core answers
+   119 job: render timed out
+   120 device: GPU reset after a render job it did not finish: the core answers
+   121 job: render timed out
+   122 device: GPU reset after a render job it did not finish: the core answers
+   123 job: render timed out
+   124 device: GPU reset after a render job it did not finish: the core answers
+   125 job: render timed out
+   126 device: GPU reset after a render job it did not finish: the core answers
+   127 job: render timed out
+   128 device: GPU reset after a binning job it did not finish: the core answers
+   129 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C78F93D (last block 0x3C538800), 8 spill blocks
+   130 job: frame dropped: binning failed
+   131 device: GPU reset after a binning job it did not finish: the core answers
+   132 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C37A3DE (last block 0x3C1387C0), 0 spill blocks
+   133 job: frame dropped: binning failed
+   134 device: GPU reset after a binning job it did not finish: the core answers
+   135 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C56D7B8 (last block 0x3C538800), 0 spill blocks
+   136 job: frame dropped: binning failed
+   137 device: GPU reset after a binning job it did not finish: the core answers
+   138 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C3DE85C (last block 0x3C1387C0), 0 spill blocks
+   139 job: frame dropped: binning failed
+   140 device: GPU reset after a binning job it did not finish: the core answers
+   141 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C691518 (last block 0x3C538800), 0 spill blocks
+   142 job: frame dropped: binning failed
+   143 device: GPU reset after a binning job it did not finish: the core answers
+   144 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C189021 (last block 0x3C1387C0), 0 spill blocks
+   145 job: frame dropped: binning failed
+   146 device: GPU reset after a binning job it did not finish: the core answers
+   147 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C58A174 (last block 0x3C538800), 0 spill blocks
+   148 job: frame dropped: binning failed
+   149 device: GPU reset after a binning job it did not finish: the core answers
+   150 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C2FE79F (last block 0x3C1387C0), 0 spill blocks
+   151 job: frame dropped: binning failed
+   152 device: GPU reset after a binning job it did not finish: the core answers
+   153 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C6CCAB6 (last block 0x3C538800), 0 spill blocks
+   154 job: frame dropped: binning failed
+   155 device: GPU reset after a render job it did not finish: the core answers
+   156 job: render timed out
+   157 device: GPU reset after a binning job it did not finish: the core answers
+   158 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C6EFC1A (last block 0x3C538800), 0 spill blocks
+   159 job: frame dropped: binning failed
+   160 device: GPU reset after a binning job it did not finish: the core answers
+   161 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C47C739 (last block 0x3C1387C0), 0 spill blocks
+   162 job: frame dropped: binning failed
+   163 device: GPU reset after a binning job it did not finish: the core answers
+   164 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C798213 (last block 0x3C538800), 0 spill blocks
+   165 job: frame dropped: binning failed
+   166 device: GPU reset after a binning job it did not finish: the core answers
+   167 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C38D943 (last block 0x3C1387C0), 0 spill blocks
+   168 job: frame dropped: binning failed
+   169 device: GPU reset after a render job it did not finish: the core answers
+   170 job: render timed out
+   171 device: GPU reset after a binning job it did not finish: the core answers
+   172 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C2F2A3B (last block 0x3C1387C0), 0 spill blocks
+   173 job: frame dropped: binning failed
+   174 device: GPU reset after a binning job it did not finish: the core answers
+   175 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C854D2F (last block 0x3C538800), 0 spill blocks
+   176 job: frame dropped: binning failed
+   177 device: GPU reset after a binning job it did not finish: the core answers
+   178 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C3A2F79 (last block 0x3C1387C0), 0 spill blocks
+   179 job: frame dropped: binning failed
+   180 device: GPU reset after a binning job it did not finish: the core answers
+   181 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C60D937 (last block 0x3C538800), 0 spill blocks
+   182 job: frame dropped: binning failed
+   183 device: GPU reset after a binning job it did not finish: the core answers
+   184 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C1EBFCB (last block 0x3C1387C0), 0 spill blocks
+   185 job: frame dropped: binning failed
+   186 device: GPU reset after a binning job it did not finish: the core answers
+   187 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C7A500E (last block 0x3C538800), 0 spill blocks
+   188 job: frame dropped: binning failed
+   189 device: GPU reset after a binning job it did not finish: the core answers
+   190 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C2424BF (last block 0x3C1387C0), 0 spill blocks
+   191 job: frame dropped: binning failed
+   192 device: GPU reset after a render job it did not finish: the core answers
+   193 job: render timed out
+   194 device: GPU reset after a render job it did not finish: the core answers
+   195 job: render timed out
+   196 device: GPU reset after a render job it did not finish: the core answers
+   197 job: render timed out
+   198 device: GPU reset after a render job it did not finish: the core answers
+   199 job: render timed out
+   200 device: GPU reset after a render job it did not finish: the core answers
+   201 job: render timed out
+   202 device: GPU reset after a render job it did not finish: the core answers
+   203 job: render timed out
+   204 device: GPU reset after a render job it did not finish: the core answers
+   205 job: render timed out
+   206 device: GPU reset after a render job it did not finish: the core answers
+   207 job: render timed out
+   208 device: GPU reset after a render job it did not finish: the core answers
+   209 job: render timed out
+   210 device: GPU reset after a render job it did not finish: the core answers
+   211 job: render timed out
+   212 device: GPU reset after a render job it did not finish: the core answers
+   213 job: render timed out
+   214 device: GPU reset after a binning job it did not finish: the core answers
+   215 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C28C739 (last block 0x3C1387C0), 10 spill blocks
+   216 job: frame dropped: binning failed
+   217 device: GPU reset after a binning job it did not finish: the core answers
+   218 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C62F035 (last block 0x3C538800), 0 spill blocks
+   219 job: frame dropped: binning failed
+   220 device: GPU reset after a binning job it did not finish: the core answers
+   221 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C33B0FA (last block 0x3C1387C0), 0 spill blocks
+   222 job: frame dropped: binning failed
+   223 device: GPU reset after a binning job it did not finish: the core answers
+   224 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C89D04C (last block 0x3C538800), 0 spill blocks
+   225 job: frame dropped: binning failed
+   226 device: GPU reset after a binning job it did not finish: the core answers
+   227 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C36AAC7 (last block 0x3C1387C0), 0 spill blocks
+   228 job: frame dropped: binning failed
+   229 device: GPU reset after a binning job it did not finish: the core answers
+   230 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C6312B8 (last block 0x3C538800), 0 spill blocks
+   231 job: frame dropped: binning failed
+   232 device: GPU reset after a binning job it did not finish: the core answers
+   233 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C41E056 (last block 0x3C1387C0), 0 spill blocks
+   234 job: frame dropped: binning failed
+   235 device: GPU reset after a binning job it did not finish: the core answers
+   236 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C73C725 (last block 0x3C538800), 0 spill blocks
+   237 job: frame dropped: binning failed
+   238 device: GPU reset after a binning job it did not finish: the core answers
+   239 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C28C451 (last block 0x3C1387C0), 0 spill blocks
+   240 job: frame dropped: binning failed
+   241 device: GPU reset after a binning job it did not finish: the core answers
+   242 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C599DD0 (last block 0x3C538800), 0 spill blocks
+   243 job: frame dropped: binning failed
+   244 device: GPU reset after a binning job it did not finish: the core answers
+   245 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C30317D (last block 0x3C1387C0), 0 spill blocks
+   246 job: frame dropped: binning failed
+   247 device: GPU reset after a binning job it did not finish: the core answers
+   248 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C87CFD4 (last block 0x3C538800), 0 spill blocks
+   249 job: frame dropped: binning failed
+   250 device: GPU reset after a binning job it did not finish: the core answers
+   251 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C16BFFA (last block 0x3C1387C0), 0 spill blocks
+   252 job: frame dropped: binning failed
+   253 device: GPU reset after a render job it did not finish: the core answers
+   254 job: render timed out
+   255 device: GPU reset after a binning job it did not finish: the core answers
+   256 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C1E7704 (last block 0x3C1387C0), 0 spill blocks
+   257 job: frame dropped: binning failed
+   258 device: GPU reset after a binning job it did not finish: the core answers
+   259 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C756B38 (last block 0x3C538800), 0 spill blocks
+   260 job: frame dropped: binning failed
+   261 device: GPU reset after a binning job it did not finish: the core answers
+   262 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C267ED3 (last block 0x3C1387C0), 0 spill blocks
+   263 job: frame dropped: binning failed
+   264 device: GPU reset after a binning job it did not finish: the core answers
+   265 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C69DC6A (last block 0x3C538800), 0 spill blocks
+   266 job: frame dropped: binning failed
+   267 device: GPU reset after a binning job it did not finish: the core answers
+   268 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C2F2DBE (last block 0x3C1387C0), 0 spill blocks
+   269 job: frame dropped: binning failed
+   270 device: GPU reset after a binning job it did not finish: the core answers
+   271 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C8AAB5B (last block 0x3C538800), 0 spill blocks
+   272 job: frame dropped: binning failed
+   273 device: GPU reset after a binning job it did not finish: the core answers
+   274 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C2075E9 (last block 0x3C1387C0), 0 spill blocks
+   275 job: frame dropped: binning failed
+   276 device: GPU reset after a render job it did not finish: the core answers
+   277 job: render timed out
+   278 device: GPU reset after a render job it did not finish: the core answers
+   279 job: render timed out
+   280 device: GPU reset after a render job it did not finish: the core answers
+   281 job: render timed out
+   282 device: GPU reset after a render job it did not finish: the core answers
+   283 job: render timed out
+   284 device: GPU reset after a render job it did not finish: the core answers
+   285 job: render timed out
+   286 device: GPU reset after a render job it did not finish: the core answers
+   287 job: render timed out
+   288 device: GPU reset after a render job it did not finish: the core answers
+   289 job: render timed out
+   290 device: GPU reset after a render job it did not finish: the core answers
+   291 job: render timed out
+   292 device: GPU reset after a render job it did not finish: the core answers
+   293 job: render timed out
+   294 device: GPU reset after a render job it did not finish: the core answers
+   295 job: render timed out
+   296 device: GPU reset after a binning job it did not finish: the core answers
+   297 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C7DD5D7 (last block 0x3C538800), 2 spill blocks
+   298 job: frame dropped: binning failed
+   299 device: GPU reset after a binning job it did not finish: the core answers
+   300 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C375B17 (last block 0x3C1387C0), 0 spill blocks
+   301 job: frame dropped: binning failed
+   302 device: GPU reset after a binning job it did not finish: the core answers
+   303 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C68FFE7 (last block 0x3C538800), 0 spill blocks
+   304 job: frame dropped: binning failed
+   305 device: GPU reset after a binning job it did not finish: the core answers
+   306 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C2D2ADA (last block 0x3C1387C0), 0 spill blocks
+   307 job: frame dropped: binning failed
+   308 device: GPU reset after a binning job it did not finish: the core answers
+   309 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C82FB76 (last block 0x3C538800), 0 spill blocks
+   310 job: frame dropped: binning failed
+   311 device: GPU reset after a binning job it did not finish: the core answers
+   312 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C451D39 (last block 0x3C1387C0), 0 spill blocks
+   313 job: frame dropped: binning failed
+   314 device: GPU reset after a binning job it did not finish: the core answers
+   315 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C76FD7E (last block 0x3C538800), 0 spill blocks
+   316 job: frame dropped: binning failed
+   317 device: GPU reset after a binning job it did not finish: the core answers
+   318 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C27C8CE (last block 0x3C1387C0), 0 spill blocks
+   319 job: frame dropped: binning failed
+   320 device: GPU reset after a binning job it did not finish: the core answers
+   321 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C5E0C95 (last block 0x3C538800), 0 spill blocks
+   322 job: frame dropped: binning failed
+   323 device: GPU reset after a binning job it did not finish: the core answers
+   324 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C245EA1 (last block 0x3C1387C0), 0 spill blocks
+   325 job: frame dropped: binning failed
+   326 device: GPU reset after a render job it did not finish: the core answers
+   327 job: render timed out
+   328 device: GPU reset after a binning job it did not finish: the core answers
+   329 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C24B327 (last block 0x3C1387C0), 0 spill blocks
+   330 job: frame dropped: binning failed
+   331 device: GPU reset after a binning job it did not finish: the core answers
+   332 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C7DD7A8 (last block 0x3C538800), 0 spill blocks
+   333 job: frame dropped: binning failed
+   334 device: GPU reset after a binning job it did not finish: the core answers
+   335 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C456600 (last block 0x3C1387C0), 0 spill blocks
+   336 job: frame dropped: binning failed
+   337 device: GPU reset after a binning job it did not finish: the core answers
+   338 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C6A087E (last block 0x3C538800), 0 spill blocks
+   339 job: frame dropped: binning failed
+   340 device: GPU reset after a binning job it did not finish: the core answers
+   341 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C28D5A2 (last block 0x3C1387C0), 0 spill blocks
+   342 job: frame dropped: binning failed
+   343 device: GPU reset after a binning job it did not finish: the core answers
+   344 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C703DBA (last block 0x3C538800), 0 spill blocks
+   345 job: frame dropped: binning failed
+   346 device: GPU reset after a binning job it did not finish: the core answers
+   347 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C2206BB (last block 0x3C1387C0), 0 spill blocks
+   348 job: frame dropped: binning failed
+   349 device: GPU reset after a binning job it did not finish: the core answers
+   350 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C67F886 (last block 0x3C538800), 0 spill blocks
+   351 job: frame dropped: binning failed
+   352 device: GPU reset after a binning job it did not finish: the core answers
+   353 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C286AD4 (last block 0x3C1387C0), 0 spill blocks
+   354 job: frame dropped: binning failed
+   355 device: GPU reset after a binning job it did not finish: the core answers
+   356 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C81129B (last block 0x3C538800), 0 spill blocks
+   357 job: frame dropped: binning failed
+   358 device: GPU reset after a binning job it did not finish: the core answers
+   359 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C1CE939 (last block 0x3C1387C0), 0 spill blocks
+   360 job: frame dropped: binning failed
+   361 device: GPU reset after a render job it did not finish: the core answers
+   362 job: render timed out
+   363 device: GPU reset after a render job it did not finish: the core answers
+   364 job: render timed out
+   365 device: GPU reset after a render job it did not finish: the core answers
+   366 job: render timed out
+   367 device: GPU reset after a render job it did not finish: the core answers
+   368 job: render timed out
+   369 device: GPU reset after a render job it did not finish: the core answers
+   370 job: render timed out
+   371 device: GPU reset after a render job it did not finish: the core answers
+   372 job: render timed out
+   373 device: GPU reset after a render job it did not finish: the core answers
+   374 job: render timed out
+   375 device: GPU reset after a render job it did not finish: the core answers
+   376 job: render timed out
+   377 device: GPU reset after a render job it did not finish: the core answers
+   378 job: render timed out
+   379 device: GPU reset after a render job it did not finish: the core answers
+   380 job: render timed out
+   381 device: GPU reset after a render job it did not finish: the core answers
+   382 job: render timed out
+   383 device: GPU reset after a render job it did not finish: the core answers
+   384 job: render timed out
+   385 device: GPU reset after a render job it did not finish: the core answers
+   386 job: render timed out
+   387 device: GPU reset after a render job it did not finish: the core answers
+   388 job: render timed out
+   389 device: GPU reset after a binning job it did not finish: the core answers
+   390 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C40106D (last block 0x3C1387C0), 13 spill blocks
+   391 job: frame dropped: binning failed
+   392 device: GPU reset after a binning job it did not finish: the core answers
+   393 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C7591F8 (last block 0x3C538800), 0 spill blocks
+   394 job: frame dropped: binning failed
+   395 device: GPU reset after a binning job it did not finish: the core answers
+   396 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C2B7D55 (last block 0x3C1387C0), 0 spill blocks
+   397 job: frame dropped: binning failed
+   398 device: GPU reset after a binning job it did not finish: the core answers
+   399 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C6D764D (last block 0x3C538800), 0 spill blocks
+   400 job: frame dropped: binning failed
+   401 device: GPU reset after a binning job it did not finish: the core answers
+   402 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C4AAADD (last block 0x3C1387C0), 0 spill blocks
+   403 job: frame dropped: binning failed
+   404 device: GPU reset after a binning job it did not finish: the core answers
+   405 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C538800..0x3C7859A3 (last block 0x3C538800), 0 spill blocks
+   406 job: frame dropped: binning failed
+   407 device: GPU reset after a binning job it did not finish: the core answers
+   408 job: binning stopped: CT0CA 0x00000000 CT0EA 0x00000000 CT0CS 0x00000000; list 0x3C1387C0..0x3C4149B2 (last block 0x3C1387C0), 0 spill blocks
+   409 job: frame dropped: binning failed
+   410 device: GPU reset after a render job it did not finish: the core answers
+   411 job: render timed out
+   412 device: GPU reset after a render job it did not finish: the core answers
+   413 job: render timed out
+   414 device: GPU reset after a render job it did not finish: the core answers
+   415 job: render timed out
+   416 device: GPU reset after a render job it did not finish: the core answers
+   417 job: render timed out
+   418 device: GPU reset after a render job it did not finish: the core answers
+   419 job: render timed out
+   420 device: GPU reset after a render job it did not finish: the core answers
+   421 job: render timed out
+   422 device: GPU reset after a render job it did not finish: the core answers
+   423 job: render timed out
+   424 device: GPU reset after a render job it did not finish: the core answers
+   425 job: render timed out
+   426 device: GPU reset after a render job it did not finish: the core answers
+   427 job: render timed out
+   428 aglDestroyContext: context 0x08FBB27C: freeing
+   429 device: context freed, 16777216 bytes of GPU memory still in use
+   430 aglDestroyContext: context 0x08FBB27C (220 frames, 91 dropped, 0 binning blocks added)
+   431 timing: 220 jobs, each on average: 330505 us of CPU work before its flush, 5602 us waiting for binning, 104754 us for the render
+   432 timing: and in each flush 83 us building the render list, 414 us for the CPU cache before the GPU, 48 us after
+   433 timing: 5 swaps, 30944165 us from one to the next on average, 372 us of it presenting
+   434 timing: per frame 1718707 draws, 7864962 us in them; in all 0 ms in glBuffer(Sub)Data, 0 ms in glTex(Sub)Image2D

@@ -118,6 +118,7 @@ void ogles2_buffers_free(struct OGLES2Context *ctx)
             FreeVec(sh->buf);
         sh->buf = 0;
         sh->nbuf = 0;
+        ogles2_names_free(&sh->far_buf);
     }
     if (!bs)
         return;
@@ -150,17 +151,22 @@ static BOOL table_room(struct OGLES2BufState *bs, GLuint name)
 static struct OGLES2Buffer *create(struct OGLES2BufState *bs, GLuint name)
 {
     struct OGLES2Buffer *b;
-    if (!table_room(bs, name) || !(b = AllocVec(sizeof(*b), MEMF_ANY | MEMF_CLEAR)))
+    GLuint slot = ogles2_name_slot(&bs->sh->far_buf, name, TRUE);
+    if (slot == OGLES2_NO_SLOT || !table_room(bs, slot) ||
+        !(b = AllocVec(sizeof(*b), MEMF_ANY | MEMF_CLEAR))) {
+        ogles2_name_forget(&bs->sh->far_buf, name);
         return 0;
+    }
     b->name = name;
     b->usage = GL_STATIC_DRAW;
-    bs->sh->buf[name] = b;
+    bs->sh->buf[slot] = b;
     return b;
 }
 
 static struct OGLES2Buffer *by_name(struct OGLES2BufState *bs, GLuint name)
 {
-    return name && name < bs->sh->nbuf ? bs->sh->buf[name] : 0;
+    GLuint slot = name ? ogles2_name_slot(&bs->sh->far_buf, name, FALSE) : OGLES2_NO_SLOT;
+    return slot < bs->sh->nbuf ? bs->sh->buf[slot] : 0;
 }
 
 void ogles2_glGenBuffers(struct OGLES2Context *ctx, GLsizei n, GLuint *buffers)
@@ -181,7 +187,7 @@ void ogles2_glGenBuffers(struct OGLES2Context *ctx, GLsizei n, GLuint *buffers)
     for (k = 0; k < n; k++) {
         while (i < bs->sh->nbuf && bs->sh->buf[i])
             i++;
-        if (!create(bs, i)) {
+        if (i >= OGLES2_NEAR_NAMES || !create(bs, i)) {
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
             return;
         }
@@ -225,7 +231,8 @@ void ogles2_glDeleteBuffers(struct OGLES2Context *ctx, GLsizei n, const GLuint *
                     m->array[a].pointer = 0;
                 }
         }
-        bs->sh->buf[b->name] = 0;
+        bs->sh->buf[ogles2_name_slot(&bs->sh->far_buf, b->name, FALSE)] = 0;
+        ogles2_name_forget(&bs->sh->far_buf, b->name);
         free_buffer(ctx, b);
     }
 }

@@ -47,6 +47,13 @@ struct OGLES2Texture;
 struct OGLES2Buffer;
 struct OGLES2Renderbuffer;
 struct OGLES2Image;
+/* A name past OGLES2_NEAR_NAMES and its table slot (share.c). */
+struct OGLES2FarName
+{
+    struct OGLES2FarName *next;
+    GLuint name, slot;
+};
+
 struct OGLES2Share
 {
     ULONG members;                    /* contexts in the group */
@@ -60,6 +67,7 @@ struct OGLES2Share
     struct OGLES2Image *images;       /* program.c: the program cache, by hash (plan 7.8) */
     struct OGLES2Renderbuffer **rbs;  /* fbo.c */
     GLuint nrbs;
+    struct OGLES2FarName *far_tex, *far_buf, *far_rb; /* their tables' names past OGLES2_NEAR_NAMES */
     struct SignalSemaphore lock;      /* every call into a member, while there are two or more */
 };
 
@@ -142,6 +150,8 @@ struct OGLES2Array
 #define OGLES2_U_UBO_ADDR          16 /* data: unit << 24 | byte offset; unit 0 only */
 #define OGLES2_U_LINE_WIDTH        26
 #define OGLES2_U_AA_LINE_WIDTH     27
+#define OGLES2_U_SPILL_OFFSET      31 /* the context's spill area (register spilling, draw.c) */
+#define OGLES2_U_SPILL_SIZE_PER_THREAD 32
 #define OGLES2_U_BLEND_CONSTANT_R  42 /* to _A, 45 */
 #define OGLES2_U_PISTORM_VP_WIDTH  0x100 /* PiStorm3D's scale_p: viewport width in pixels */
 #define OGLES2_U_PISTORM_VP_HEIGHT 0x101 /* PiStorm3D's scale_p_y */
@@ -191,9 +201,14 @@ struct OGLES2ImageAttrib
 {
     const char *name;
     GLenum type;          /* GL_FLOAT_VEC3, ... (glGetActiveAttrib) */
-    UBYTE slot;           /* first vertex input slot; 0xff: not read */
-    UBYTE columns;        /* slots it takes: 1, or 2-4 for a matrix */
+    UBYTE slot;           /* the slot of its first column read; 0xff: none read */
+    UBYTE columns;        /* 1, or 2-4 for a matrix */
+    UBYTE colmask;        /* the columns read, each in the next slot (bit k: column k); 0: from a
+                           * compiler that did not say, every column from `slot` on */
 };
+/* Attribute names of a program: 16 locations, more names with aliasing
+ * (GLES 2.0 2.10.4: two names bound to one location). */
+#define OGLES2_MAX_IMAGE_ATTRIBS 64
 
 /* Where glUniform* writes one uniform in one stage's constant buffer. */
 struct OGLES2Place
@@ -277,7 +292,7 @@ struct OGLES2Shader
     UWORD attached;       /* programs it is attached to */
 };
 
-#define OGLES2_MAX_BINDINGS 16
+#define OGLES2_MAX_BINDINGS 64 /* glBindAttribLocation names a program keeps (dEQP binds 32) */
 struct OGLES2Program
 {
     UBYTE kind;           /* OGLES2_OBJ_PROGRAM */
@@ -286,13 +301,16 @@ struct OGLES2Program
     struct OGLES2Shader *vs, *fs;
     GLboolean linked;
     const struct OGLES2Image *image;  /* after a successful link */
-    UBYTE attrib_index[OGLES2_MAX_VERTEX_ATTRIBS]; /* image attribute i <- generic attribute */
+    UBYTE attrib_index[OGLES2_MAX_IMAGE_ATTRIBS]; /* image attribute i <- generic attribute */
     ULONG *cbuf[2];                   /* constant buffers, vertex and fragment */
     ULONG *cbuf_le[2];                /* the same in the GPU's byte order, for the draws'
                                          uniform streams: written with ogles2_cbuf_set */
     UWORD nlocations;                 /* uniform locations: one per array element */
     UWORD *loc_uniform, *loc_element; /* location -> uniform, element */
-    UBYTE *sampler_unit;              /* per uniform: its texture unit (glUniform1i) */
+    UBYTE *sampler_unit;              /* per location: a sampler's (an array element's)
+                                         texture unit (glUniform1i) */
+    UWORD *uniform_loc;               /* per uniform of the image: its first location,
+                                         0xFFFF for a hidden one */
     char bind_name[OGLES2_MAX_BINDINGS][32]; /* glBindAttribLocation, applied at link */
     GLuint bind_index[OGLES2_MAX_BINDINGS];
     UBYTE nbindings;
@@ -544,6 +562,10 @@ void ogles2_textures_free(struct OGLES2Context *ctx);
 struct OGLES2Texture *ogles2_texture_get(struct OGLES2Context *ctx, GLuint name); /* NULL: none */
 GLuint ogles2_texture_name(const struct OGLES2Texture *t);
 GLenum ogles2_texture_target(const struct OGLES2Texture *t); /* 0 until first bound */
+/* An attachment point refers to it, or no longer does (a deleted one that
+ * was attached goes with its last attachment; `now`: at aglDestroyContext). */
+void ogles2_texture_attach(struct OGLES2Texture *t);
+void ogles2_texture_detach(struct OGLES2Context *ctx, struct OGLES2Texture *t, BOOL now);
 /* The image of face k, level l: FALSE if not defined. */
 BOOL ogles2_texture_image(const struct OGLES2Texture *t, int k, int l, UWORD *w, UWORD *h,
                           GLenum *format, GLenum *type);
@@ -604,6 +626,8 @@ ULONG ogles2_compiler_id(void); /* the installed compiler's size and date, hashe
 BOOL ogles2_compile_program(const char *vs, const char *fs, const char *path, char *log,
                             ULONG log_size);
 /* The same program's variants for samplers returning 32 bits (its .v3dw). */
+BOOL ogles2_compile_program_bound(const char *vs, const char *fs, const char *bindings, const char *path,
+                                  char *log, ULONG log_size);
 BOOL ogles2_compile_program_wide(const char *vs, const char *fs, const char *path, char *log,
                                  ULONG log_size);
 /* One shader through the front end: 1 compiled, 0 GLSL errors (in log),
@@ -659,6 +683,15 @@ static inline struct SignalSemaphore *ogles2_share_lock_of(struct OGLES2Context 
  * retire list of the member whose job last used it (serial), else freed now. */
 struct v3d_mem;
 void ogles2_share_defer_free(struct OGLES2Context *ctx, ULONG serial, struct v3d_mem *m);
+/* Name tables (share.c): the slot of an object's name in its table, the
+ * name itself below OGLES2_NEAR_NAMES; a larger name's (create: a new one,
+ * the table then grows to it) through the table's list. OGLES2_NO_SLOT:
+ * none, or no memory. */
+#define OGLES2_NEAR_NAMES 65536UL
+#define OGLES2_NO_SLOT    0xFFFFFFFFUL
+GLuint ogles2_name_slot(struct OGLES2FarName **far, GLuint name, BOOL create);
+void ogles2_name_forget(struct OGLES2FarName **far, GLuint name);   /* the name's slot is free again */
+void ogles2_names_free(struct OGLES2FarName **far);
 
 extern struct ExecBase *SysBase;
 extern struct DosLibrary *DOSBase;

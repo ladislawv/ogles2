@@ -1,0 +1,29 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086C9670
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FD5074, 256x256
+    15 framebuffer 1 is not complete (0x8CD7): nothing drawn or read (logged once)
+    16 glLinkProgram: OGLES2Cache:048eb69114495ca54f2319cb.v3dp (5 variants, 384 bytes of code)
+    17 glLinkProgram: OGLES2Cache:4057673e41bad289d7aea448.v3dp (5 variants, 936 bytes of code)
+    18 glGetBooleanv: pname 0xFFFFFFFF not supported yet
+    19 glGetFloatv: pname 0xFFFFFFFF not supported yet
+    20 glGetIntegerv: pname 0xFFFFFFFF not supported yet
+    21 glLinkProgram: OGLES2Cache:995053e76a13aaa9997677d2.v3dp (5 variants, 544 bytes of code)
+    22 glGetIntegerv: pname 0x821B not supported yet
+    23 aglDestroyContext: context 0x08FD5074: freeing
+    24 device: context freed, 0 bytes of GPU memory still in use
+    25 aglDestroyContext: context 0x08FD5074 (246 frames, 0 dropped, 0 binning blocks added)
+    26 timing: 246 jobs, each on average: 3383 us of CPU work before its flush, 5 us waiting for binning, 76 us for the render
+    27 timing: and in each flush 66 us building the render list, 82 us for the CPU cache before the GPU, 57 us after
+    28 timing: 246 swaps, 28812 us from one to the next on average, 371 us of it presenting
+    29 timing: per frame 0 draws, 0 us in them; in all 0 ms in glBuffer(Sub)Data, 35 ms in glTex(Sub)Image2D

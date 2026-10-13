@@ -1,0 +1,77 @@
+diff --git a/framework/delibs/debase/deDefs.h b/framework/delibs/debase/deDefs.h
+--- a/framework/delibs/debase/deDefs.h
++++ b/framework/delibs/debase/deDefs.h
+@@ -117,6 +117,7 @@
+ #define DE_CPU_MIPS_64 6
+ #define DE_CPU_RISCV_32 7
+ #define DE_CPU_RISCV_64 8
++#define DE_CPU_M68K 9
+ 
+ /* CPU detection. */
+ #if defined(DE_CPU)
+@@ -137,6 +138,8 @@
+ #define DE_CPU DE_CPU_RISCV_32
+ #elif defined(__riscv) && ((__riscv_xlen) == 64)
+ #define DE_CPU DE_CPU_RISCV_64
++#elif defined(__mc68000__) || defined(__m68k__)
++#define DE_CPU DE_CPU_M68K
+ #else
+ #error Unknown CPU.
+ #endif
+diff --git a/framework/delibs/debase/deDefs.c b/framework/delibs/debase/deDefs.c
+--- a/framework/delibs/debase/deDefs.c
++++ b/framework/delibs/debase/deDefs.c
+@@ -40,7 +40,7 @@
+ /* Sanity checks for DE_PTR_SIZE & DE_CPU */
+ #if !((DE_CPU == DE_CPU_X86_64 || DE_CPU == DE_CPU_ARM_64 || DE_CPU == DE_CPU_MIPS_64 || DE_CPU == DE_CPU_RISCV_64) && \
+       (DE_PTR_SIZE == 8)) &&                                                                                           \
+-    !((DE_CPU == DE_CPU_X86 || DE_CPU == DE_CPU_ARM || DE_CPU == DE_CPU_MIPS || DE_CPU == DE_CPU_RISCV_32) &&          \
++    !((DE_CPU == DE_CPU_X86 || DE_CPU == DE_CPU_ARM || DE_CPU == DE_CPU_MIPS || DE_CPU == DE_CPU_RISCV_32 || DE_CPU == DE_CPU_M68K) &&          \
+       (DE_PTR_SIZE == 4))
+ #error "DE_CPU and DE_PTR_SIZE mismatch"
+ #endif
+@@ -54,7 +54,7 @@
+ #include <assert.h>
+ #include <string.h>
+ 
+-#if (DE_OS == DE_OS_OSX) || (DE_OS == DE_OS_IOS) || defined(__FreeBSD__)
++#if (DE_OS == DE_OS_OSX) || (DE_OS == DE_OS_IOS) || defined(__FreeBSD__) || defined(__amigaos__)
+ #include <signal.h>
+ #include <stdlib.h>
+ #endif
+@@ -128,6 +128,10 @@
+     fprintf(stderr, "Assertion '%s' failed at %s:%d\n", reason, file, line);
+     raise(SIGTRAP);
+     abort();
++#elif defined(__amigaos__)
++    printf("Assertion '%s' failed at %s:%d\n", reason, file, line);
++    fflush(stdout);
++    abort();
+ #elif (DE_OS == DE_OS_UNIX) || (DE_OS == DE_OS_FUCHSIA)
+     __assert_fail(reason, file, (unsigned int)line, "Unknown function");
+ #elif (DE_OS == DE_OS_QNX)
+diff --git a/framework/delibs/debase/deMemory.c b/framework/delibs/debase/deMemory.c
+--- a/framework/delibs/debase/deMemory.c
++++ b/framework/delibs/debase/deMemory.c
+@@ -33,7 +33,7 @@
+ #define DE_ALIGNED_MALLOC_WIN32 1
+ #define DE_ALIGNED_MALLOC_GENERIC 2
+ 
+-#if (DE_OS == DE_OS_UNIX) || ((DE_OS == DE_OS_ANDROID) && (DE_ANDROID_API >= 21))
++#if ((DE_OS == DE_OS_UNIX) && !defined(__amigaos__)) || ((DE_OS == DE_OS_ANDROID) && (DE_ANDROID_API >= 21))
+ #define DE_ALIGNED_MALLOC DE_ALIGNED_MALLOC_POSIX
+ #if defined(__FreeBSD__)
+ #include <stdlib.h>
+diff --git a/framework/qphelper/qpCrashHandler.h b/framework/qphelper/qpCrashHandler.h
+--- a/framework/qphelper/qpCrashHandler.h
++++ b/framework/qphelper/qpCrashHandler.h
+@@ -25,7 +25,8 @@
+ 
+ #include "deDefs.h"
+ 
+-#if (DE_OS == DE_OS_UNIX) || (DE_OS == DE_OS_ANDROID) || (DE_OS == DE_OS_OSX) || (DE_OS == DE_OS_IOS)
++#if ((DE_OS == DE_OS_UNIX) && !defined(__amigaos__)) || (DE_OS == DE_OS_ANDROID) || (DE_OS == DE_OS_OSX) || \
++    (DE_OS == DE_OS_IOS)
+ #define QP_USE_SIGNAL_HANDLER 1
+ #endif
+ 

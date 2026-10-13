@@ -239,8 +239,9 @@ def runpkg(st, pkgdir, timeout, shots=0, script_args=""):
     """Upload a package (tests/a1200/<name>/ built into tests/a1200/out/ogles2-<name>/),
     run its Run-* script, fetch results/ into tests/a1200/results/<package>-<time>/.
     With shots, a screenshot about every `shots` seconds goes into shots/ there.
-    script_args (KEY=VALUE words) go to the script's .key line."""
-    if script_args and not re.fullmatch(r"[A-Za-z0-9_]+=[A-Za-z0-9_.]+( [A-Za-z0-9_]+=[A-Za-z0-9_.]+)*",
+    script_args (KEY=VALUE words) go to the script's .key line; a value may hold
+    "-" and "*" too (dEQP's test patterns), never quotes, spaces or ";"."""
+    if script_args and not re.fullmatch(r"[A-Za-z0-9_]+=[A-Za-z0-9_.*-]+( [A-Za-z0-9_]+=[A-Za-z0-9_.*-]+)*",
                                         script_args):
         raise SystemExit("amictl: script arguments must be KEY=VALUE words: %r" % script_args)
     pkgdir = os.path.abspath(pkgdir)

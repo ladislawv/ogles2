@@ -33,8 +33,8 @@
 /* ---- the built-in image ---- */
 
 static const struct OGLES2ImageAttrib smooth_attribs[] = {
-    {"a_position", GL_FLOAT_VEC3, 0, 1}, /* VPM inputs 0-2, both shaders */
-    {"a_color", GL_FLOAT_VEC4, 1, 1},    /* VPM inputs 3-6, vertex shader only */
+    {"a_position", GL_FLOAT_VEC3, 0, 1, 0}, /* VPM inputs 0-2, both shaders */
+    {"a_color", GL_FLOAT_VEC4, 1, 1, 0},    /* VPM inputs 3-6, vertex shader only */
 };
 
 static const struct OGLES2Place smooth_mvp_place[] = {{0, 16, 4, 0, 0}};
@@ -97,6 +97,14 @@ static int str_eq(const char *a, const char *b)
     while (*a && *a == *b)
         a++, b++;
     return *a == *b;
+}
+
+/* <0, 0, >0 as strcmp (bytes unsigned). */
+static int str_cmp(const char *a, const char *b)
+{
+    while (*a && *a == *b)
+        a++, b++;
+    return (int)(UBYTE)*a - (int)(UBYTE)*b;
 }
 
 static ULONG str_len(const char *s)
@@ -196,6 +204,9 @@ static void unlink_program(struct OGLES2Context *ctx, struct OGLES2Program *p)
         FreeVec(p->loc_uniform);
     if (p->sampler_unit)
         FreeVec(p->sampler_unit);
+    if (p->uniform_loc)
+        FreeVec(p->uniform_loc);
+    p->uniform_loc = 0;
     p->loc_uniform = p->loc_element = 0;
     p->sampler_unit = 0;
     p->nlocations = 0;
@@ -610,17 +621,54 @@ void ogles2_glBindAttribLocation(struct OGLES2Context *ctx, GLuint program, GLui
 
 /* ---- linking ---- */
 
+/* GLES 2.0 2.10.4: two attribute names bound to one location (aliasing),
+ * which links only when Mesa's linker applies the bindings (else it gives
+ * every active attribute a location of its own, and more than 16 fail). The
+ * program's bindings then, "<index> <name>\n" lines sorted by name
+ * (AllocVec'd); 0 for a program without aliasing (its bindings are applied
+ * at runtime, by name: the binary does not depend on them). */
+static char *aliased_bindings(const struct OGLES2Program *p)
+{
+    UBYTE order[OGLES2_MAX_BINDINGS];
+    int i, j, n = p->nbindings;
+    BOOL alias = FALSE;
+    ULONG size = 1, at = 0;
+    char *t;
+    for (i = 0; i < n && !alias; i++)
+        for (j = i + 1; j < n; j++)
+            if (p->bind_index[i] == p->bind_index[j]) {
+                alias = TRUE;
+                break;
+            }
+    if (!alias)
+        return 0;
+    for (i = 0; i < n; i++) { /* insertion sort by name */
+        for (j = i; j > 0 && str_cmp(p->bind_name[order[j - 1]], p->bind_name[i]) > 0; j--)
+            order[j] = order[j - 1];
+        order[j] = (UBYTE)i;
+        size += 12 + str_len(p->bind_name[i]);
+    }
+    if (!(t = AllocVec(size, MEMF_ANY)))
+        return 0;
+    for (i = 0; i < n; i++)
+        at += ogles2_format(t + at, size - at, "%lu %s\n", (ULONG)p->bind_index[order[i]],
+                            (ULONG)p->bind_name[order[i]]);
+    t[at] = 0;
+    return t;
+}
+
 /* The program hash (v3dp/FORMAT.md, PROGRAM), as hex: per shader, vertex
- * first, its stage and length as little-endian 32-bit words, then its text. */
-static void program_hash(const struct OGLES2Program *p, UBYTE out[32], char hex[65])
+ * first, its stage and length as little-endian 32-bit words, then its text;
+ * then aliased bindings the same way, as the stage V3DP_HASH_BINDINGS. */
+static void program_hash(const struct OGLES2Program *p, const char *bindings, UBYTE out[32], char hex[65])
 {
     static const char digits[] = "0123456789abcdef";
     struct blake3 h;
     int k;
     blake3_init(&h);
-    for (k = 0; k < 2; k++) {
-        const char *src = k ? p->fs->source : p->vs->source;
-        ULONG stage = k ? 4 : 0, len = str_len(src), i;
+    for (k = 0; k < (bindings ? 3 : 2); k++) {
+        const char *src = k == 2 ? bindings : k ? p->fs->source : p->vs->source;
+        ULONG stage = k == 2 ? 0x42494E44UL /* V3DP_HASH_BINDINGS */ : k ? 4 : 0, len = str_len(src), i;
         UBYTE w[8];
         for (i = 0; i < 4; i++) {
             w[i] = (UBYTE)(stage >> (8 * i));
@@ -839,7 +887,8 @@ static void file_path(char *path, const char *dir, const char *hex)
 /* Plan 7.8: PROGDIR:, the disk cache (OGLES2Cache:, or T: when it is not
  * assigned: that is where compiled programs go then), the on-target
  * compiler, else the sources go to T:ogles2_missing_shaders.txt. */
-static struct OGLES2Image *load_image(struct OGLES2Program *p, const UBYTE *hash, const char *hex)
+static struct OGLES2Image *load_image(struct OGLES2Program *p, const UBYTE *hash, const char *hex,
+                                      const char *bindings)
 {
     char path[96];
     struct OGLES2Image *im;
@@ -861,7 +910,8 @@ static struct OGLES2Image *load_image(struct OGLES2Program *p, const UBYTE *hash
             return 0;
         }
         file_path(path, dirs[1], hex);
-        ok = ogles2_compile_program(p->vs->source, p->fs->source, path, log, 4096);
+        ok = bindings ? ogles2_compile_program_bound(p->vs->source, p->fs->source, bindings, path, log, 4096)
+                      : ogles2_compile_program(p->vs->source, p->fs->source, path, log, 4096);
         if (ok && (im = try_file(p, hash, path, &refused))) {
             FreeVec(log);
             return im;
@@ -992,12 +1042,15 @@ static BOOL bind_image(struct OGLES2Program *p, const struct OGLES2Image *im)
         if (!(im->uniforms[u].flags & (OGLES2_UNIFORM_BUILTIN | OGLES2_UNIFORM_HIDDEN)))
             nloc += im->uniforms[u].array ? im->uniforms[u].array : 1;
     p->loc_uniform = AllocVec(nloc * 4 + 4, MEMF_ANY);
-    p->sampler_unit = AllocVec(im->nuniforms + 1, MEMF_ANY | MEMF_CLEAR);
+    /* A sampler array's elements are samplers of their own (consecutive
+     * texture indices, as Mesa lowers them): a unit per location. */
+    p->sampler_unit = AllocVec(nloc + 1, MEMF_ANY | MEMF_CLEAR);
+    p->uniform_loc = AllocVec((im->nuniforms + 1) * sizeof(UWORD), MEMF_ANY);
     for (k = 0; k < 2; k++) {
         p->cbuf[k] = AllocVec(im->cbuf_words[k] * 4 + 4, MEMF_ANY | MEMF_CLEAR);
         p->cbuf_le[k] = AllocVec(im->cbuf_words[k] * 4 + 4, MEMF_ANY | MEMF_CLEAR);
     }
-    if (!p->loc_uniform || !p->sampler_unit || !p->cbuf[0] || !p->cbuf[1] || !p->cbuf_le[0] ||
+    if (!p->loc_uniform || !p->sampler_unit || !p->uniform_loc || !p->cbuf[0] || !p->cbuf[1] || !p->cbuf_le[0] ||
         !p->cbuf_le[1]) {
         set_log(p, "out of memory", 0);
         return FALSE;
@@ -1007,8 +1060,10 @@ static BOOL bind_image(struct OGLES2Program *p, const struct OGLES2Image *im)
     for (u = 0; u < im->nuniforms; u++) {
         const struct OGLES2ImageUniform *un = &im->uniforms[u];
         UWORD e, ne = un->array ? un->array : 1;
+        p->uniform_loc[u] = 0xFFFF;
         if (un->flags & (OGLES2_UNIFORM_BUILTIN | OGLES2_UNIFORM_HIDDEN))
             continue;
+        p->uniform_loc[u] = (UWORD)nloc;
         for (e = 0; e < ne; e++) {
             p->loc_uniform[nloc] = u;
             p->loc_element[nloc] = e;
@@ -1033,7 +1088,7 @@ void ogles2_glLinkProgram(struct OGLES2Context *ctx, GLuint program)
     struct OGLES2Program *p;
     struct OGLES2Image *im;
     UBYTE hash[32];
-    char hex[65];
+    char hex[65], *bindings;
     if (!ogles2_context_valid(ctx))
         return;
     if (!(p = lookup(ctx, program, OGLES2_OBJ_PROGRAM)))
@@ -1051,11 +1106,16 @@ void ogles2_glLinkProgram(struct OGLES2Context *ctx, GLuint program)
             set_log(p, "a compiled vertex shader and fragment shader must be attached", 0);
         return;
     }
-    program_hash(p, hash, hex);
+    bindings = aliased_bindings(p);
+    program_hash(p, bindings, hash, hex);
     for (im = ctx->share->images; im && memcmp(im->hash, hash, 32); im = im->next)
         ;
     if (!im) {
-        if (!(im = load_image(p, hash, hex)))
+        im = load_image(p, hash, hex, bindings);
+        if (bindings)
+            FreeVec(bindings);
+        bindings = 0;
+        if (!im)
             return;
         im->next = ctx->share->images;
         ctx->share->images = im;
@@ -1070,6 +1130,8 @@ void ogles2_glLinkProgram(struct OGLES2Context *ctx, GLuint program)
             mark_compiled(p->fs);
         }
     }
+    if (bindings)
+        FreeVec(bindings);
     if (!bind_image(p, im)) {
         unlink_program(ctx, p);
         return;
@@ -1541,7 +1603,8 @@ static void set_uniform(struct OGLES2Context *ctx, GLint location, GLsizei count
                 ogles2_error(ctx, GL_INVALID_VALUE);
                 return;
             }
-        p->sampler_unit[p->loc_uniform[location]] = (UBYTE)iv[0];
+        for (i = 0; i < count; i++)
+            p->sampler_unit[location + i] = (UBYTE)iv[i];
         return;
     }
     for (pl = 0; pl < u->nplaces; pl++) {
@@ -1717,8 +1780,8 @@ static void get_uniform(struct OGLES2Context *ctx, GLuint program, GLint locatio
     if (!type_shape(u->type, &kind, &comps, &cols))
         return;
     if (kind == K_SAMPLER) {
-        if (fv) *fv = (GLfloat)p->sampler_unit[p->loc_uniform[location]];
-        if (iv) *iv = p->sampler_unit[p->loc_uniform[location]];
+        if (fv) *fv = (GLfloat)p->sampler_unit[location];
+        if (iv) *iv = p->sampler_unit[location];
         return;
     }
     if (!u->nplaces)

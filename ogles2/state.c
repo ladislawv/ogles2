@@ -521,7 +521,7 @@ void ogles2_glClearStencil(struct OGLES2Context *ctx, GLint s)
  * "Normalised" floats (colours, depth values) map linearly to the full
  * integer range in glGetIntegerv; others round to the nearest integer. */
 
-enum kind { K_BOOL, K_INT, K_FLOAT, K_NFLOAT };
+enum kind { K_BOOL, K_INT, K_UINT, K_FLOAT, K_NFLOAT }; /* K_UINT: a mask, unsigned as a float */
 struct value { enum kind kind; int n; GLint i[4]; GLfloat f[4]; };
 
 static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
@@ -559,6 +559,13 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
     case GL_DEPTH_RANGE:
         v->kind = K_NFLOAT; v->n = 2; v->f[0] = s->depth_range[0]; v->f[1] = s->depth_range[1];
         return 1;
+    /* Mesa's V3D limits (v3d_limits.h): V3D_MAX_LINE_WIDTH, V3D_MAX_POINT_SIZE. */
+    case GL_ALIASED_LINE_WIDTH_RANGE:
+        v->kind = K_FLOAT; v->n = 2; v->f[0] = 1.0f; v->f[1] = 32.0f;
+        return 1;
+    case GL_ALIASED_POINT_SIZE_RANGE:
+        v->kind = K_FLOAT; v->n = 2; v->f[0] = 1.0f; v->f[1] = 512.0f;
+        return 1;
     case GL_LINE_WIDTH:
         v->kind = K_FLOAT; v->n = 1; v->f[0] = s->line_width;
         return 1;
@@ -574,11 +581,22 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
     case GL_MAX_VERTEX_ATTRIBS:
         v->kind = K_INT; v->n = 1; v->i[0] = OGLES2_MAX_VERTEX_ATTRIBS;
         return 1;
-    /* The compiler's (Mesa's v3d_screen.c): a 64 KB constant buffer per
-     * stage, 4096 vec4; V3D_MAX_FS_INPUTS / 4 varyings. */
+    /* GLES2's minimum, as Mesa's v3d driver reports on the same GPU (its
+     * clipper works in 1/256 pixel, V3D_COORD_SHIFT is 6). dEQP's reference
+     * context asks for it in every test that compares against it. */
+    case GL_SUBPIXEL_BITS:
+        v->kind = K_INT; v->n = 1; v->i[0] = 4;
+        return 1;
+    /* The compiler's, as its gl_MaxVertexUniformVectors and
+     * gl_MaxFragmentUniformVectors say (they must match: dEQP-GLES2
+     * builtin_variable): Mesa's v3d has a 64 KB constant buffer per stage,
+     * 4096 vec4, less what Mesa keeps for itself. V3D_MAX_FS_INPUTS / 4
+     * varyings. */
     case GL_MAX_VERTEX_UNIFORM_VECTORS:
+        v->kind = K_INT; v->n = 1; v->i[0] = 4088;
+        return 1;
     case GL_MAX_FRAGMENT_UNIFORM_VECTORS:
-        v->kind = K_INT; v->n = 1; v->i[0] = 4096;
+        v->kind = K_INT; v->n = 1; v->i[0] = 4095;
         return 1;
     case GL_MAX_VARYING_VECTORS:
         v->kind = K_INT; v->n = 1; v->i[0] = 16;
@@ -695,12 +713,12 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
         return 1;
     case GL_STENCIL_VALUE_MASK:
     case GL_STENCIL_BACK_VALUE_MASK:
-        v->kind = K_INT; v->n = 1;
+        v->kind = K_UINT; v->n = 1;
         v->i[0] = (GLint)s->stencil_value_mask[pname == GL_STENCIL_BACK_VALUE_MASK];
         return 1;
     case GL_STENCIL_WRITEMASK:
     case GL_STENCIL_BACK_WRITEMASK:
-        v->kind = K_INT; v->n = 1;
+        v->kind = K_UINT; v->n = 1;
         v->i[0] = (GLint)s->stencil_write_mask[pname == GL_STENCIL_BACK_WRITEMASK];
         return 1;
     case GL_STENCIL_FAIL:
@@ -786,7 +804,9 @@ void ogles2_glGetFloatv(struct OGLES2Context *ctx, GLenum pname, GLfloat *data)
     if (!data || !query(ctx, pname, &v, "glGetFloatv"))
         return;
     for (k = 0; k < v.n; k++)
-        data[k] = (v.kind == K_FLOAT || v.kind == K_NFLOAT) ? v.f[k] : (GLfloat)v.i[k];
+        data[k] = (v.kind == K_FLOAT || v.kind == K_NFLOAT) ? v.f[k]
+                  : v.kind == K_UINT                         ? (GLfloat)(GLuint)v.i[k]
+                                                             : (GLfloat)v.i[k];
 }
 
 void ogles2_glGetVertexAttribfv(struct OGLES2Context *ctx, GLuint index, GLenum pname,
@@ -800,8 +820,13 @@ void ogles2_glGetVertexAttribfv(struct OGLES2Context *ctx, GLuint index, GLenum 
         return;
     }
     if (pname != GL_CURRENT_VERTEX_ATTRIB) {
-        /* The array state (enabled, size, stride...) arrives with M1. */
-        ogles2_unimplemented(ctx, "glGetVertexAttribfv (array state)");
+        /* The array state (enabled, size, stride...): glGetVertexAttribiv's
+         * values, and its GL_INVALID_ENUM for another pname. */
+        GLint i = 0;
+        GLenum before = ctx->error;
+        ogles2_glGetVertexAttribiv(ctx, index, pname, &i);
+        if (ctx->error == before)
+            params[0] = (GLfloat)i;
         return;
     }
     for (k = 0; k < 4; k++)

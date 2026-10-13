@@ -81,6 +81,11 @@ struct OGLES2Texture
     BOOL st_own;                    /* they are in rec */
     v3d_mem rec;                    /* 64 bytes: texture state at 0, sampler state at 32; goes
                                      * with the GPU copy (freed, or deferred when renamed) */
+    /* GLES 2.0 4.4.3: deleting a texture detaches it from the deleting
+     * context's bound framebuffer only; attached to another, it lives on
+     * without its name (orphan) until the last attachment goes. */
+    UWORD fbo_refs;                 /* framebuffer attachment points that refer to it */
+    BOOL orphan;                    /* deleted while attached: freed with the last of them */
 };
 
 /* Both records fit their halves of rec. */
@@ -199,6 +204,7 @@ void ogles2_textures_free(struct OGLES2Context *ctx)
             FreeVec(sh->tex);
         sh->tex = 0;
         sh->ntex = 0;
+        ogles2_names_free(&sh->far_tex);
     }
     if (!ts)
         return;
@@ -285,14 +291,18 @@ static BOOL table_room(struct OGLES2TexState *ts, GLuint name)
     return TRUE;
 }
 
-/* A new texture object named `name` (the slot must be free). */
+/* A new texture object named `name` (no object has it). */
 static struct OGLES2Texture *create(struct OGLES2TexState *ts, GLuint name)
 {
     struct OGLES2Texture *t;
-    if (!table_room(ts, name) || !(t = AllocVec(sizeof(*t), MEMF_ANY | MEMF_CLEAR)))
+    GLuint slot = ogles2_name_slot(&ts->sh->far_tex, name, TRUE);
+    if (slot == OGLES2_NO_SLOT || !table_room(ts, slot) ||
+        !(t = AllocVec(sizeof(*t), MEMF_ANY | MEMF_CLEAR))) {
+        ogles2_name_forget(&ts->sh->far_tex, name);
         return 0;
+    }
     init_object(t, name, 0);
-    ts->sh->tex[name] = t;
+    ts->sh->tex[slot] = t;
     return t;
 }
 
@@ -314,7 +324,7 @@ void ogles2_glGenTextures(struct OGLES2Context *ctx, GLsizei n, GLuint *textures
     for (k = 0; k < n; k++) {
         while (i < ts->sh->ntex && ts->sh->tex[i])
             i++;
-        if (!create(ts, i)) {
+        if (i >= OGLES2_NEAR_NAMES || !create(ts, i)) {
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
             return;
         }
@@ -325,7 +335,19 @@ void ogles2_glGenTextures(struct OGLES2Context *ctx, GLsizei n, GLuint *textures
 
 static struct OGLES2Texture *by_name(struct OGLES2TexState *ts, GLuint name)
 {
-    return name && name < ts->sh->ntex ? ts->sh->tex[name] : 0;
+    GLuint slot = name ? ogles2_name_slot(&ts->sh->far_tex, name, FALSE) : OGLES2_NO_SLOT;
+    return slot < ts->sh->ntex ? ts->sh->tex[slot] : 0;
+}
+
+/* A deleted texture's memory goes (its name already has). */
+static void destroy(struct OGLES2Context *ctx, struct OGLES2TexState *ts, struct OGLES2Texture *t)
+{
+    int u;
+    for (u = 0; u < 6; u++)
+        t->f[u].rendered = 0; /* going: nothing to read back (SDL's render targets: 38 ms) */
+    before_change(ctx, ts, t); /* a queued draw must not read it; a job drawing into it rendered */
+    free_levels(t);
+    FreeVec(t);
 }
 
 void ogles2_glDeleteTextures(struct OGLES2Context *ctx, GLsizei n, const GLuint *textures)
@@ -347,14 +369,10 @@ void ogles2_glDeleteTextures(struct OGLES2Context *ctx, GLsizei n, const GLuint 
         struct OGLES2Texture *t = by_name(ts, textures[k]);
         if (!t)
             continue;
-        /* First the jobs drawing into it: a finished render marks what it
-         * drew as to be read back. Every member of the share group lets go
-         * of it (GL would keep it while bound elsewhere). */
-        for (m = ctx->share->first; m; m = m->share_next)
-            ogles2_fbo_texture_deleted(m, t);
-        for (u = 0; u < 6; u++)
-            t->f[u].rendered = 0; /* going: nothing to read back (SDL's render targets: 38 ms) */
-        before_change(ctx, ts, t); /* its memory goes: a queued draw must not read it */
+        /* Detached from this context's bound framebuffer (its job drawing
+         * into it rendered first); other framebuffers keep it (GLES 2.0
+         * 4.4.3). Every member of the share group unbinds it. */
+        ogles2_fbo_texture_deleted(ctx, t);
         for (m = ctx->share->first; m; m = m->share_next) {
             struct OGLES2TexState *mts = m->tex;
             if (!mts)
@@ -368,10 +386,36 @@ void ogles2_glDeleteTextures(struct OGLES2Context *ctx, GLsizei n, const GLuint 
                     mts->unitrect[u] = &mts->defaultrect;
             }
         }
-        ts->sh->tex[t->name] = 0;
+        ts->sh->tex[ogles2_name_slot(&ts->sh->far_tex, t->name, FALSE)] = 0;
+        ogles2_name_forget(&ts->sh->far_tex, t->name);
+        if (t->fbo_refs)
+            t->orphan = TRUE; /* still attached: lives on, nameless */
+        else
+            destroy(ctx, ts, t);
+    }
+}
+
+/* fbo.c: an attachment point refers to t, or no longer does. An orphan goes
+ * with its last attachment; at aglDestroyContext (`now`: the jobs are
+ * finished) without waiting for jobs. */
+void ogles2_texture_attach(struct OGLES2Texture *t)
+{
+    t->fbo_refs++;
+}
+
+void ogles2_texture_detach(struct OGLES2Context *ctx, struct OGLES2Texture *t, BOOL now)
+{
+    struct OGLES2TexState *ts;
+    if (t->fbo_refs)
+        t->fbo_refs--;
+    if (t->fbo_refs || !t->orphan)
+        return;
+    if (now || !(ts = ts_get(ctx))) {
         free_levels(t);
         FreeVec(t);
+        return;
     }
+    destroy(ctx, ts, t);
 }
 
 GLboolean ogles2_glIsTexture(struct OGLES2Context *ctx, GLuint texture)
@@ -642,7 +686,10 @@ BOOL ogles2_texture_query(struct OGLES2Context *ctx, GLenum pname, GLint *v)
     case GL_MAX_CUBE_MAP_TEXTURE_SIZE: *v = MAX_SIZE; return TRUE;
     case GL_MAX_TEXTURE_IMAGE_UNITS:
     case GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: *v = OGLES2_MAX_TEXTURE_UNITS; return TRUE;
-    case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: *v = 0; return TRUE;
+    /* Vertex texture fetch: the draws bind the units of both stages' samplers
+     * (draw.c texture_states); dEQP-GLES2's texture.vertex tests sample in
+     * the vertex shader (M7). Units are shared between the stages. */
+    case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: *v = OGLES2_MAX_TEXTURE_UNITS; return TRUE;
     case GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT: *v = (GLint)MAX_ANISOTROPY; return TRUE;
     case GL_MAX_TEXTURE_LOD_BIAS: *v = (GLint)MAX_LOD_BIAS; return TRUE;
     default:                      return FALSE;
@@ -698,6 +745,9 @@ static ULONG wide_class(GLenum format, GLenum type)
 /* Bytes per pixel of a valid format/type pair; 0 and the error to set if not. */
 #ifndef GL_BGRA_EXT
 #define GL_BGRA_EXT 0x80E1 /* EXT_texture_format_BGRA8888 */
+#endif
+#ifndef GL_BGRA8_EXT
+#define GL_BGRA8_EXT 0x93A1
 #endif
 
 static int components(GLenum format)
@@ -1026,7 +1076,10 @@ static int level_count(int w, int h)
 static BOOL consistent(const struct OGLES2Face *f, int l)
 {
     int w = f->w[0] >> l, h = f->h[0] >> l;
-    if (!(f->defined & (1UL << l)) || !(f->defined & 1) || level_class(f, l) != level_class(f, 0))
+    /* The same format and type as level 0 (GLES 2.0 3.7.10), not just the
+     * same storage: RGB and RGBA levels are both kept as RGBA8. */
+    if (!(f->defined & (1UL << l)) || !(f->defined & 1) || level_class(f, l) != level_class(f, 0) ||
+        f->format[l] != f->format[0] || f->type[l] != f->type[0])
         return FALSE;
     return f->w[l] == (w ? w : 1) && f->h[l] == (h ? h : 1);
 }
@@ -1046,7 +1099,8 @@ static BOOL base_ok(const struct OGLES2Texture *t)
         return FALSE;
     for (k = 1; k < faces(t); k++)
         if (!(t->f[k].defined & 1) || t->f[k].w[0] != f0->w[0] || t->f[k].h[0] != f0->h[0] ||
-            level_class(&t->f[k], 0) != level_class(f0, 0))
+            level_class(&t->f[k], 0) != level_class(f0, 0) || t->f[k].format[0] != f0->format[0] ||
+            t->f[k].type[0] != f0->type[0])
             return FALSE;
     return faces(t) == 1 || f0->w[0] == f0->h[0];
 }
@@ -1606,7 +1660,9 @@ BOOL ogles2_texture_renderable(const struct OGLES2Texture *t, int k, int l)
     ty = f->type[l];
     if (fm != f0->format[0] || ty != f0->type[0])
         return FALSE;
-    return (ty == GL_UNSIGNED_BYTE && (fm == GL_RGB || fm == GL_RGBA)) ||
+    /* A BGRA_EXT image is kept as RGBA8 (only its uploads swap), so it is
+     * colour-renderable as RGBA is (EXT_texture_format_BGRA8888). */
+    return (ty == GL_UNSIGNED_BYTE && (fm == GL_RGB || fm == GL_RGBA || fm == GL_BGRA_EXT)) ||
            (ty == GL_UNSIGNED_SHORT_5_6_5 && fm == GL_RGB) ||
            ((ty == GL_UNSIGNED_SHORT_4_4_4_4 || ty == GL_UNSIGNED_SHORT_5_5_5_1) && fm == GL_RGBA);
 }
@@ -1777,6 +1833,10 @@ static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLi
         ogles2_error(ctx, GL_INVALID_VALUE);
         return;
     }
+    /* EXT_texture_format_BGRA8888 (revision 1.4 on): its sized format names
+     * the same image as BGRA_EXT. */
+    if ((GLenum)internalformat == GL_BGRA8_EXT && format == GL_BGRA_EXT)
+        internalformat = GL_BGRA_EXT;
     if ((GLenum)internalformat != format) {
         ogles2_error(ctx, internalformat == GL_RGBA || internalformat == GL_RGB ||
                           internalformat == GL_LUMINANCE || internalformat == GL_ALPHA ||
@@ -1980,6 +2040,8 @@ void ogles2_glCopyTexImage2D(struct OGLES2Context *ctx, GLenum target, GLint lev
         ogles2_error(ctx, GL_INVALID_VALUE);
         return;
     }
+    if (!ogles2_fb_ready(ctx)) /* GL_INVALID_FRAMEBUFFER_OPERATION */
+        return;
     if (!(img = read_region(ctx, x, y, width, height, internalformat))) {
         ogles2_error(ctx, GL_OUT_OF_MEMORY);
         return;
@@ -2007,7 +2069,7 @@ void ogles2_glCopyTexSubImage2D(struct OGLES2Context *ctx, GLenum target, GLint 
         ogles2_error(ctx, GL_INVALID_VALUE);
         return;
     }
-    if (!width || !height)
+    if (!ogles2_fb_ready(ctx)) /* GL_INVALID_FRAMEBUFFER_OPERATION */
         return;
     /* In the level's own format, so the conversion is table 3.15's (a
      * LUMINANCE texture takes red); glTexSubImage2D reports a level that
@@ -2021,6 +2083,11 @@ void ogles2_glCopyTexSubImage2D(struct OGLES2Context *ctx, GLenum target, GLint 
         fmt = level >= 0 && level < MAX_LEVELS ? t->f[k].format[level] : 0;
         if (!base_components(fmt))
             fmt = GL_RGBA; /* an undefined level: glTexSubImage2D refuses it */
+    }
+    if (!width || !height) { /* nothing to copy; the level and offsets are still checked */
+        ogles2_glTexSubImage2D(ctx, target, level, xoffset, yoffset, width, height, fmt,
+                               GL_UNSIGNED_BYTE, 0);
+        return;
     }
     if (!(img = read_region(ctx, x, y, width, height, fmt))) {
         ogles2_error(ctx, GL_OUT_OF_MEMORY);
@@ -2203,6 +2270,11 @@ void ogles2_glGenerateMipmap(struct OGLES2Context *ctx, GLenum target)
     }
     if (!(t = bound(ctx, ts, target)))
         return;
+    /* A compressed level 0 (ETC1), of any size: GLES 2.0 3.7.11. */
+    if ((t->f[0].defined & 1) && t->f[0].format[0] == 0x8D64 /* GL_ETC1_RGB8_OES */) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
     if (!base_ok(t)) {
         /* GLES 2.0 3.7.11: a cube map that is not cube complete. */
         if (target == GL_TEXTURE_CUBE_MAP)

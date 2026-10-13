@@ -140,6 +140,7 @@ static BOOL recipe_ok(ULONG t)
     return t <= OGLES2_U_VIEWPORT_Z_SCALE || t == OGLES2_U_TMU_CONFIG_P0 || t == OGLES2_U_TMU_CONFIG_P1 ||
            t == OGLES2_U_UBO_ADDR ||
            t == OGLES2_U_LINE_WIDTH || t == OGLES2_U_AA_LINE_WIDTH ||
+           t == OGLES2_U_SPILL_OFFSET || t == OGLES2_U_SPILL_SIZE_PER_THREAD ||
            (t >= OGLES2_U_BLEND_CONSTANT_R && t <= OGLES2_U_BLEND_CONSTANT_R + 3);
 }
 
@@ -328,20 +329,21 @@ struct OGLES2Image *ogles2_v3dp_load(const UBYTE *file, ULONG len, char *why, UL
         case 5: { /* ATTRIBUTES */
             ULONG n = u32(&s);
             struct OGLES2ImageAttrib *a;
-            if (n > OGLES2_MAX_VERTEX_ATTRIBS)
+            if (n > OGLES2_MAX_IMAGE_ATTRIBS)
                 FAIL("too many attributes:", 0, n);
             a = alloc(im, (n + 1) * sizeof(*a));
             if (!a)
                 FAIL("out of memory", 0, ~0UL);
             for (k = 0; k < n; k++) {
-                ULONG slot;
+                ULONG slot, loc;
                 a[k].name = STR(u32(&s));
                 a[k].type = u32(&s);
-                (void)u32(&s); /* the linker's location: informational */
+                loc = u32(&s); /* the linker's location (informational); its columns read */
                 slot = u32(&s);
                 a[k].slot = slot > 15 ? 0xff : (UBYTE)slot;
                 a[k].columns = a[k].type == GL_FLOAT_MAT2 ? 2 : a[k].type == GL_FLOAT_MAT3 ? 3
                              : a[k].type == GL_FLOAT_MAT4 ? 4 : 1;
+                a[k].colmask = (loc & 0x80000000UL) ? (UBYTE)((loc >> 8) & 15) : 0;
             }
             im->nattribs = (UBYTE)n;
             im->attribs = a;
@@ -438,12 +440,10 @@ struct OGLES2Image *ogles2_v3dp_load(const UBYTE *file, ULONG len, char *why, UL
                 v->no_textures = 1;
                 for (j = 0; j < n; j++)
                     if (rt[j] == OGLES2_U_TMU_CONFIG_P0 || rt[j] == OGLES2_U_TMU_CONFIG_P1 ||
-                        rt[j] == OGLES2_U_UBO_ADDR ||
+                        rt[j] == OGLES2_U_UBO_ADDR || rt[j] == OGLES2_U_SPILL_OFFSET ||
                         (rt[j] >= OGLES2_U_BLEND_CONSTANT_R && rt[j] <= OGLES2_U_BLEND_CONSTANT_R + 3))
-                        v->no_textures = 0; /* nor the blend colour: not in draw.c's key */
+                        v->no_textures = 0; /* nor the blend colour or the spill area: not in draw.c's key */
             }
-            if (v->spill_size)
-                FAIL("a shader that spills is not supported yet", 0, ~0UL);
             codelen = u32(&s);
             if ((codelen & 7) || !need(&s, codelen))
                 FAIL("bad code size", 0, codelen);

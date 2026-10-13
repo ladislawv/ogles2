@@ -1,0 +1,2170 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/buffer.txt --deqp-log-filename=M7R1:results/buffer.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic.array_stream_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic.array_stream_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1020, 0xa5c34e4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1440511</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic.array_static_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic.array_static_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1020, 0xa5c34ec, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">15754</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic.array_dynamic_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic.array_dynamic_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1020, 0xa5c34ec, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">17214</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic.element_array_stream_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic.element_array_stream_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1020, 0xa5c3534, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">17533</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic.element_array_static_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic.element_array_static_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1020, 0xa5c3534, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">16524</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic.element_array_dynamic_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic.element_array_dynamic_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1020, 0xa5c3534, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">17000</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.use.vertex_array.array
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.use.vertex_array.array" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 763, 0xa5c32ac, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 755" />
+ <ImageSet Name="RenderResult" Description="Bytes 751 to 762" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">15041</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.use.vertex_array.element_array
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.use.vertex_array.element_array" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 763, 0xa5c3334, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 755" />
+ <ImageSet Name="RenderResult" Description="Bytes 751 to 762" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">17767</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.use.index_array.array
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.use.index_array.array" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 763, 0xa5c3224, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 128" />
+ <ImageSet Name="RenderResult" Description="Bytes 129 to 257" />
+ <ImageSet Name="RenderResult" Description="Bytes 258 to 386" />
+ <ImageSet Name="RenderResult" Description="Bytes 387 to 515" />
+ <ImageSet Name="RenderResult" Description="Bytes 516 to 644" />
+ <ImageSet Name="RenderResult" Description="Bytes 645 to 762" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">364339</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.use.index_array.element_array
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.use.index_array.element_array" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 763, 0xa5c3224, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 128" />
+ <ImageSet Name="RenderResult" Description="Bytes 129 to 257" />
+ <ImageSet Name="RenderResult" Description="Bytes 258 to 386" />
+ <ImageSet Name="RenderResult" Description="Bytes 387 to 515" />
+ <ImageSet Name="RenderResult" Description="Bytes 516 to 644" />
+ <ImageSet Name="RenderResult" Description="Bytes 645 to 762" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">114270</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.identical_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.identical_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 996, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 995" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 996, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 995" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 996, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 995" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">42415</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.identical_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.identical_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 72, 0xa5c1144, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 71" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 72, 0xa5c1144, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 71" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 72, 0xa5c1144, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 71" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">12339</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.different_target_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.different_target_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 504, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 503" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 504, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 503" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">19185</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.different_target_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.different_target_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 716, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 707" />
+ <ImageSet Name="RenderResult" Description="Bytes 704 to 715" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 716, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 707" />
+ <ImageSet Name="RenderResult" Description="Bytes 704 to 715" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 716, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 707" />
+ <ImageSet Name="RenderResult" Description="Bytes 704 to 715" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">36473</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.different_usage
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.different_usage" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1644, 0xa5c31e4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1643" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1644, 0xa5c31e4, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1643" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1644, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1643" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1644, 0xa5c31e4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1643" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">84590</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.different_size
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.different_size" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1024, 0xa5c31e4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <ImageSet Name="RenderResult" Description="Bytes 1012 to 1023" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 12, 0xa5c31e4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 11" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 3327, 0xa5c35ec, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 3323" />
+ <ImageSet Name="RenderResult" Description="Bytes 3315 to 3326" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 92, 0xa5c35ec, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 83" />
+ <ImageSet Name="RenderResult" Description="Bytes 80 to 91" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 12379, 0xa5c42f4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 12371" />
+ <ImageSet Name="RenderResult" Description="Bytes 12367 to 12378" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 571, 0xa5c42f4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 563" />
+ <ImageSet Name="RenderResult" Description="Bytes 559 to 570" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">201573</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.random_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.random_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 50369, 0xa4bff34, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 50363" />
+ <ImageSet Name="RenderResult" Description="Bytes 50357 to 50368" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 25957, 0xa4bff34, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 25955" />
+ <ImageSet Name="RenderResult" Description="Bytes 25945 to 25956" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 43563, 0xa4bff34, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 43559" />
+ <ImageSet Name="RenderResult" Description="Bytes 43551 to 43562" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 61848, 0xccadb94, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 61439" />
+ <ImageSet Name="RenderResult" Description="Bytes 61440 to 61847" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 8507, 0xccadb94, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 8495" />
+ <ImageSet Name="RenderResult" Description="Bytes 8495 to 8506" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 16603, 0xccadb94, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 16595" />
+ <ImageSet Name="RenderResult" Description="Bytes 16591 to 16602" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1894, 0xccadb94, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1883" />
+ <ImageSet Name="RenderResult" Description="Bytes 1882 to 1893" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 52208, 0xccadb94, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 52199" />
+ <ImageSet Name="RenderResult" Description="Bytes 52196 to 52207" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 838, 0xccadb94, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 827" />
+ <ImageSet Name="RenderResult" Description="Bytes 826 to 837" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2336, 0xccadb94, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 2327" />
+ <ImageSet Name="RenderResult" Description="Bytes 2324 to 2335" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2758944</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.random_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.random_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 65220, 0xc7ce0fc, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 61439" />
+ <ImageSet Name="RenderResult" Description="Bytes 61440 to 65219" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 65084, 0xc7ce0fc, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 61439" />
+ <ImageSet Name="RenderResult" Description="Bytes 61440 to 65075" />
+ <ImageSet Name="RenderResult" Description="Bytes 65072 to 65083" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 27266, 0xc7ce0fc, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 27263" />
+ <ImageSet Name="RenderResult" Description="Bytes 27254 to 27265" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 25073, 0xc7ce0fc, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 25067" />
+ <ImageSet Name="RenderResult" Description="Bytes 25061 to 25072" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2442, 0xc7ce0fc, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 2435" />
+ <ImageSet Name="RenderResult" Description="Bytes 2430 to 2441" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 28794, 0xc7ce0fc, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 28787" />
+ <ImageSet Name="RenderResult" Description="Bytes 28782 to 28793" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 7481, 0xc7ce0fc, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 7475" />
+ <ImageSet Name="RenderResult" Description="Bytes 7469 to 7480" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 29024, 0xc7ce0fc, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 29015" />
+ <ImageSet Name="RenderResult" Description="Bytes 29012 to 29023" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 50822, 0xc7ce0fc, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 50819" />
+ <ImageSet Name="RenderResult" Description="Bytes 50810 to 50821" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 59573, 0xc7ce0fc, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 59567" />
+ <ImageSet Name="RenderResult" Description="Bytes 59561 to 59572" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">3704145</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.random_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.random_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 49630, 0xa4bff34, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 49619" />
+ <ImageSet Name="RenderResult" Description="Bytes 49618 to 49629" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 23680, 0xa4bff34, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 23675" />
+ <ImageSet Name="RenderResult" Description="Bytes 23668 to 23679" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 53661, 0xc7ce0fc, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 53651" />
+ <ImageSet Name="RenderResult" Description="Bytes 53649 to 53660" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 9265, 0xc7ce0fc, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 9263" />
+ <ImageSet Name="RenderResult" Description="Bytes 9253 to 9264" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 7027, 0xc7ce0fc, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 7019" />
+ <ImageSet Name="RenderResult" Description="Bytes 7015 to 7026" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 46475, 0xc7ce0fc, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 46463" />
+ <ImageSet Name="RenderResult" Description="Bytes 46463 to 46474" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 30982, 0xc7ce0fc, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 30971" />
+ <ImageSet Name="RenderResult" Description="Bytes 30970 to 30981" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 307, 0xc7ce0fc, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 299" />
+ <ImageSet Name="RenderResult" Description="Bytes 295 to 306" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 12766, 0xc7ce0fc, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 12755" />
+ <ImageSet Name="RenderResult" Description="Bytes 12754 to 12765" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 43438, 0xc7ce0fc, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 43427" />
+ <ImageSet Name="RenderResult" Description="Bytes 43426 to 43437" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2880810</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.recreate_store.random_4
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.recreate_store.random_4" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b283294);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 20548, 0xa5c31e4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 20543" />
+ <ImageSet Name="RenderResult" Description="Bytes 20536 to 20547" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 18190, 0xa5c31e4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 18179" />
+ <ImageSet Name="RenderResult" Description="Bytes 18178 to 18189" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 26998, 0xa4bff34, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 26987" />
+ <ImageSet Name="RenderResult" Description="Bytes 26986 to 26997" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 56138, 0xc7ce0fc, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 56135" />
+ <ImageSet Name="RenderResult" Description="Bytes 56126 to 56137" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 59331, 0xccadb94, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 59327" />
+ <ImageSet Name="RenderResult" Description="Bytes 59319 to 59330" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 32365, 0xccadb94, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 32363" />
+ <ImageSet Name="RenderResult" Description="Bytes 32353 to 32364" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 44561, 0xccadb94, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 44555" />
+ <ImageSet Name="RenderResult" Description="Bytes 44549 to 44560" />
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 25320, 0xccadb94, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 25319" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 27769, 0xccadb94, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 27767" />
+ <ImageSet Name="RenderResult" Description="Bytes 27757 to 27768" />
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 57672, 0xccadb94, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+ <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+ <ImageSet Name="RenderResult" Description="Bytes 24576 to 36863" />
+ <ImageSet Name="RenderResult" Description="Bytes 36864 to 49151" />
+ <ImageSet Name="RenderResult" Description="Bytes 49152 to 57671" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">3812047</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic_subdata.array_stream_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic_subdata.array_stream_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1020, 0xa5c2ed4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">21330</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic_subdata.array_static_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic_subdata.array_static_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1020, 0xa5c2ed4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">21376</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic_subdata.array_dynamic_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic_subdata.array_dynamic_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1020, 0xa5c2ed4, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">15529</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic_subdata.element_array_stream_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic_subdata.element_array_stream_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1020, 0xa5c2ed4, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">20284</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic_subdata.element_array_static_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic_subdata.element_array_static_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1020, 0xa5c2ed4, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">15866</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.basic_subdata.element_array_dynamic_draw
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.basic_subdata.element_array_dynamic_draw" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832b0);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1020, 0xa5c2ed4, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1019" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">16352</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.whole_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.whole_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 996, 0, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 0, 996, 0xa5c2ed4);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 995" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">16684</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.whole_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.whole_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1728, 0, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 729, 999, 0xa5c31ad);</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, 729, 0xa5c2ed4);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1727" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">23819</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.whole_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.whole_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1944, 0, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 0, 421, 0xa5c2ed4);</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 1421, 523, 0xa5c3461);</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 421, 1000, 0xa5c3079);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1943" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">26196</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.whole_4
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.whole_4" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1200, 0, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, 500, 0xa5c2ed4);</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 429, 200, 0xa5c3081);</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 513, 687, 0xa5c30d5);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 1199" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">20277</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.low_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.low_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1000, 0, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, 513, 0xa5c2ed4);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 503" />
+ <ImageSet Name="RenderResult" Description="Bytes 501 to 512" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">13330</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.low_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.low_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 996, 0, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 0, 98, 0xa5c2ed4);</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 98, 511, 0xa5c2f36);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 599" />
+ <ImageSet Name="RenderResult" Description="Bytes 597 to 608" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">14338</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.low_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.low_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1200, 0, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 0, 591, 0xa5c2ed4);</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 371, 400, 0xa5c3047);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 0 to 767" />
+ <ImageSet Name="RenderResult" Description="Bytes 759 to 770" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">15178</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.high_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.high_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1000, 0, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 500, 500, 0xa5c30c8);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 500 to 991" />
+ <ImageSet Name="RenderResult" Description="Bytes 988 to 999" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">13017</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.high_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.high_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1200, 0, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 600, 123, 0xa5c312c);</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 723, 477, 0xa5c31a7);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 600 to 1199" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">12289</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.high_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.high_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 1200, 0, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 600, 200, 0xa5c312c);</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 601, 599, 0xa5c312d);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 600 to 1199" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">12224</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.middle_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.middle_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2500, 0, GL_STREAM_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1000, 799, 0xa5c32bc);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 1000 to 1791" />
+ <ImageSet Name="RenderResult" Description="Bytes 1787 to 1798" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">16495</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.middle_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.middle_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2500, 0, GL_STATIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 780, 220, 0xa5c31e0);</Text>
+ <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1000, 500, 0xa5c32bc);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 780 to 1499" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">12726</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.partial_specify.middle_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.partial_specify.middle_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b28326c);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+ <Text>glBufferData(GL_ARRAY_BUFFER, 2500, 0, GL_DYNAMIC_DRAW);</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 780, 321, 0xa5c31e0);</Text>
+ <Text>glBufferSubData(GL_ARRAY_BUFFER, 1000, 501, 0xa5c32bc);</Text>
+ <ImageSet Name="RenderResult" Description="Bytes 780 to 1499" />
+ <ImageSet Name="RenderResult" Description="Bytes 1489 to 1500" />
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">13927</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.0
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.0" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 17965, 0xa5c2ed4, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4550, 1328, 0xa5c409a);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 17420, 12, 0xa5c72e0);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3884, 3715, 0xa5c3e00);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2275, 4565, 0xa5c37b7);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 15926, 32, 0xa5c6d0a);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 709, 12, 0xa5c3199);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+  <ImageSet Name="RenderResult" Description="Bytes 12288 to 17963" />
+  <ImageSet Name="RenderResult" Description="Bytes 17953 to 17964" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7355, 4229, 0xa5c4b8f);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 12899, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5860, 389, 0xa5c45b8);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 8847, 2401, 0xa5c5163);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 6497, 3706, 0xa5c4835);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 6226, 2839, 0xa5c4726);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 6961, 618, 0xa5c4a05);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 5860 to 11247" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7535, 2778, 0xa5c4c43);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4171, 102, 0xa5c3f1f);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2118, 991, 0xa5c371a);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 10319, 300, 0xa5c5723);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 10067, 568, 0xa5c5627);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 542, 3669, 0xa5c30f2);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8751, 1364, 0xa5c5103);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 542 to 4261" />
+  <ImageSet Name="RenderResult" Description="Bytes 4261 to 4272" />
+  <ImageSet Name="RenderResult" Description="Bytes 5860 to 11247" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3112, 337, 0xa5c3afc);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1299, 3484, 0xa5c33e7);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2675, 4241, 0xa5c3947);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8984, 276, 0xa5c51ec);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2202, 1418, 0xa5c376e);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2289, 21, 0xa5c37c5);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4610, 210, 0xa5c40d6);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 542 to 11245" />
+  <ImageSet Name="RenderResult" Description="Bytes 11236 to 11247" />
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1435, 1984, 0xa5c346f);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 9948, 659, 0xa5c55b0);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 4833, 336, 0xa5c41b5);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 11982, 78, 0xa5c5da2);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5771, 3668, 0xa5c455f);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 10609, 1420, 0xa5c5845);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1434, 2946, 0xa5c346e);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 542 to 12049" />
+  <ImageSet Name="RenderResult" Description="Bytes 12048 to 12059" />
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">588698</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 11667, 0, GL_STREAM_DRAW);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 517, 12, 0xa5c7711);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5251, 566, 0xa5c898f);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2520, 3247, 0xa5c7ee4);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 6569, 65, 0xa5c8eb5);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5525, 1194, 0xa5c8aa1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 906, 903, 0xa5c7896);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 517 to 528" />
+  <ImageSet Name="RenderResult" Description="Bytes 906 to 1805" />
+  <ImageSet Name="RenderResult" Description="Bytes 1797 to 1808" />
+  <ImageSet Name="RenderResult" Description="Bytes 2520 to 6707" />
+  <ImageSet Name="RenderResult" Description="Bytes 6707 to 6718" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2246, 291, 0xa5c7dd2);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7952, 863, 0xa5c941c);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4542, 12, 0xa5c86ca);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3998, 2413, 0xa5c84aa);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8260, 2965, 0xa5c9550);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1625, 21, 0xa5c7b65);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 6161, 12, 0xa5c8d1d);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 517 to 528" />
+  <ImageSet Name="RenderResult" Description="Bytes 906 to 1805" />
+  <ImageSet Name="RenderResult" Description="Bytes 1797 to 1808" />
+  <ImageSet Name="RenderResult" Description="Bytes 2246 to 6709" />
+  <ImageSet Name="RenderResult" Description="Bytes 6707 to 6718" />
+  <ImageSet Name="RenderResult" Description="Bytes 7952 to 11215" />
+  <ImageSet Name="RenderResult" Description="Bytes 11213 to 11224" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 6036, 126, 0xa5c8ca0);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1328, 346, 0xa5c7a3c);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 40, 3382, 0xa5c7534);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 4730, 2883, 0xa5c8786);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 642, 567, 0xa5c778e);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 427, 12, 0xa5c76b7);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2555, 12, 0xa5c7f07);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 40 to 7611" />
+  <ImageSet Name="RenderResult" Description="Bytes 7601 to 7612" />
+  <ImageSet Name="RenderResult" Description="Bytes 7952 to 11215" />
+  <ImageSet Name="RenderResult" Description="Bytes 11213 to 11224" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 4617, 1734, 0xa5c8715);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5595, 2363, 0xa5c8ae7);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7199, 1388, 0xa5c912b);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 7098, 3399, 0xa5c90c6);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 1350, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 141, 412, 0xa5c7599);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 135, 286, 0xa5c7593);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 135 to 542" />
+  <ImageSet Name="RenderResult" Description="Bytes 541 to 552" />
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 279, 314, 0xa5c7623);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 409, 202, 0xa5c76a5);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 360, 145, 0xa5c7674);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1028, 37, 0xa5c7910);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 316, 12, 0xa5c7648);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 25020, 0, GL_DYNAMIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4736, 1149, 0xa4c11b4);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 4736 to 5875" />
+  <ImageSet Name="RenderResult" Description="Bytes 5873 to 5884" />
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">333767</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 9812, 0xa5c750c, GL_DYNAMIC_DRAW);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 8062, 78, 0xa5c948a);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 839, 754, 0xa5c7853);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 9464, 228, 0xa5c9a04);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1539, 432, 0xa5c7b0f);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2290, 2791, 0xa5c7dfe);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 399, 1037, 0xa5c769b);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 9803" />
+  <ImageSet Name="RenderResult" Description="Bytes 9800 to 9811" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 3022, 106, 0xa5c80da);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 7430, 291, 0xa5c9212);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 6694, 2844, 0xa5c8f32);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5161, 2424, 0xa5c8935);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1026, 477, 0xa5c790e);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7938, 12, 0xa5c940e);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 3130, 12, 0xa5c8146);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 9803" />
+  <ImageSet Name="RenderResult" Description="Bytes 9800 to 9811" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5468, 245, 0xa5c8a68);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7550, 725, 0xa5c928a);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4425, 12, 0xa5c8655);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1195, 2029, 0xa5c79b7);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2293, 2493, 0xa5c7e01);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 3224, 18, 0xa5c81a4);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 185, 12, 0xa5c75c5);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 9803" />
+  <ImageSet Name="RenderResult" Description="Bytes 9800 to 9811" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5686, 762, 0xa5c8b42);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2195, 24, 0xa5c7d9f);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1620, 48, 0xa5c7b60);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 31853, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2012, 1246, 0xa4facd0);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 5239, 0xa4fa4f4, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 104, 55, 0xa4fa55c);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 5231" />
+  <ImageSet Name="RenderResult" Description="Bytes 5227 to 5238" />
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 3361, 1670, 0xa4fb215);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 3542, 12, 0xa4fb2ca);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 4275, 110, 0xa4fb5a7);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3550, 17, 0xa4fb2d2);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3950, 95, 0xa4fb462);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2829, 965, 0xa4fb001);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1898, 219, 0xa4fac5e);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 5231" />
+  <ImageSet Name="RenderResult" Description="Bytes 5227 to 5238" />
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">433337</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3562, 0xa5c750c, GL_STREAM_DRAW);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2397, 962, 0xa5c7e69);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 618, 1171, 0xa5c7776);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 480, 76, 0xa5c76ec);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 849, 392, 0xa5c785d);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1706, 12, 0xa5c7bb6);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1700, 58, 0xa5c7bb0);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 3551" />
+  <ImageSet Name="RenderResult" Description="Bytes 3550 to 3561" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2837, 529, 0xa5c8021);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1167, 721, 0xa5c799b);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 202, 424, 0xa5c75d6);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2340, 1038, 0xa5c7e30);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 1350, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 141, 412, 0xa5c7599);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 135, 286, 0xa5c7593);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 135 to 542" />
+  <ImageSet Name="RenderResult" Description="Bytes 541 to 552" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1164, 105, 0xa5c7998);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1246, 12, 0xa5c79ea);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 908, 12, 0xa5c7898);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 31853, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2012, 1246, 0xa506500);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 5239, 0xa505d24, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 104, 55, 0xa505d8c);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 5231" />
+  <ImageSet Name="RenderResult" Description="Bytes 5227 to 5238" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1113, 131, 0xa50617d);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3689, 387, 0xa506b8d);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5126, 12, 0xa50712a);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2460, 1083, 0xa5066c0);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1126, 1331, 0xa50618a);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1276, 12, 0xa506220);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4421, 12, 0xa506e69);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 5231" />
+  <ImageSet Name="RenderResult" Description="Bytes 5227 to 5238" />
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1694, 446, 0xa5063c2);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 2651, 0, GL_STREAM_DRAW);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1478, 723, 0xa5062ea);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2598, 12, 0xa50674a);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1631, 12, 0xa506383);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1665, 12, 0xa5063a5);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 705, 12, 0xa505fe5);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 705 to 716" />
+  <ImageSet Name="RenderResult" Description="Bytes 1478 to 2197" />
+  <ImageSet Name="RenderResult" Description="Bytes 2189 to 2200" />
+  <ImageSet Name="RenderResult" Description="Bytes 2598 to 2609" />
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">194554</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.4
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.4" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 27479, 0xa4de42c, GL_DYNAMIC_DRAW);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 13278, 1404, 0xa4e180a);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 7750, 715, 0xa4e0272);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 12806, 166, 0xa4e1632);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1045, 7815, 0xa4de841);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1849, 3024, 0xa4deb65);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 588, 6276, 0xa4de678);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+  <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+  <ImageSet Name="RenderResult" Description="Bytes 24576 to 27467" />
+  <ImageSet Name="RenderResult" Description="Bytes 27467 to 27478" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 11788, 6393, 0xa4e1238);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2167, 4118, 0xa4deca3);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 14350, 2948, 0xa4e1c3a);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3062, 745, 0xa4df022);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 9867, 12, 0xa4e0ab7);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 25020, 0, GL_DYNAMIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4736, 1149, 0xa4df6ac);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 4736 to 5875" />
+  <ImageSet Name="RenderResult" Description="Bytes 5873 to 5884" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 14701, 7976, 0xa4e1d99);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 22097, 46, 0xa4e3a7d);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8091, 523, 0xa4e03c7);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 12138, 83, 0xa4e1396);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 18107, 455, 0xa4e2ae7);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 6184, 4610, 0xa4dfc54);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 14742, 1047, 0xa4e1dc2);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 4736 to 5875" />
+  <ImageSet Name="RenderResult" Description="Bytes 5873 to 5884" />
+  <ImageSet Name="RenderResult" Description="Bytes 6184 to 10791" />
+  <ImageSet Name="RenderResult" Description="Bytes 10782 to 10793" />
+  <ImageSet Name="RenderResult" Description="Bytes 12138 to 12209" />
+  <ImageSet Name="RenderResult" Description="Bytes 12209 to 12220" />
+  <ImageSet Name="RenderResult" Description="Bytes 14701 to 22668" />
+  <ImageSet Name="RenderResult" Description="Bytes 22665 to 22676" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 801, 2132, 0xa4de74d);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 2651, 0, GL_STREAM_DRAW);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1478, 723, 0xa4de9f2);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2598, 12, 0xa4dee52);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1631, 12, 0xa4dea8b);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1665, 12, 0xa4deaad);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 705, 12, 0xa4de6ed);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 705 to 716" />
+  <ImageSet Name="RenderResult" Description="Bytes 1478 to 2197" />
+  <ImageSet Name="RenderResult" Description="Bytes 2189 to 2200" />
+  <ImageSet Name="RenderResult" Description="Bytes 2598 to 2609" />
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2370, 66, 0xa4ded6e);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1414, 196, 0xa4de9b2);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1422, 12, 0xa4de9ba);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1531, 548, 0xa4dea27);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1403, 674, 0xa4de9a7);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1424, 12, 0xa4de9bc);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 977, 12, 0xa4de7fd);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 705 to 716" />
+  <ImageSet Name="RenderResult" Description="Bytes 977 to 988" />
+  <ImageSet Name="RenderResult" Description="Bytes 1403 to 2194" />
+  <ImageSet Name="RenderResult" Description="Bytes 2189 to 2200" />
+  <ImageSet Name="RenderResult" Description="Bytes 2370 to 2429" />
+  <ImageSet Name="RenderResult" Description="Bytes 2424 to 2435" />
+  <ImageSet Name="RenderResult" Description="Bytes 2598 to 2609" />
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">524546</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.5
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.5" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 19970, 0, GL_DYNAMIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1809, 433, 0xa5c7c1d);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 16068, 1248, 0xa5cb3d0);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7157, 2045, 0xa5c9101);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 15842, 16, 0xa5cb2ee);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 805, 2256, 0xa5c7831);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1068, 5675, 0xa5c7938);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 805 to 6732" />
+  <ImageSet Name="RenderResult" Description="Bytes 6731 to 6742" />
+  <ImageSet Name="RenderResult" Description="Bytes 7157 to 9196" />
+  <ImageSet Name="RenderResult" Description="Bytes 9190 to 9201" />
+  <ImageSet Name="RenderResult" Description="Bytes 15842 to 15853" />
+  <ImageSet Name="RenderResult" Description="Bytes 15846 to 15857" />
+  <ImageSet Name="RenderResult" Description="Bytes 16068 to 17315" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 4212, 1403, 0xa5c8580);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 10054, 60, 0xa5c9c52);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3944, 1322, 0xa5c8474);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 12374, 3936, 0xa5ca562);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5090, 5499, 0xa5c88ee);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 8239, 1290, 0xa5c953b);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 18142, 48, 0xa5cbbea);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 805 to 10584" />
+  <ImageSet Name="RenderResult" Description="Bytes 10577 to 10588" />
+  <ImageSet Name="RenderResult" Description="Bytes 12374 to 17305" />
+  <ImageSet Name="RenderResult" Description="Bytes 17304 to 17315" />
+  <ImageSet Name="RenderResult" Description="Bytes 18142 to 18189" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 10092, 1580, 0xa5c9c78);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5430, 188, 0xa5c8a42);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 10685, 155, 0xa5c9ec9);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5639, 430, 0xa5c8b13);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 3601, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2540, 40, 0xa5c7ef8);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3471, 70, 0xa5c829b);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 2540 to 2575" />
+  <ImageSet Name="RenderResult" Description="Bytes 2568 to 2579" />
+  <ImageSet Name="RenderResult" Description="Bytes 3471 to 3530" />
+  <ImageSet Name="RenderResult" Description="Bytes 3529 to 3540" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2997, 17, 0xa5c80c1);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3278, 52, 0xa5c81da);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 18, 14, 0xa5c751e);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 955, 222, 0xa5c78c7);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1664, 371, 0xa5c7b8c);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1157, 190, 0xa5c7991);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 20882, 0, GL_STATIC_DRAW);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 15875, 1124, 0xa4c9ef7);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 8799, 57, 0xa4c8353);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5803, 2353, 0xa4c779f);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2152, 5153, 0xa4c695c);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 10399, 12, 0xa4c8993);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 16711, 2808, 0xa4ca23b);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 15516, 2699, 0xa4c9d90);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 2152 to 8151" />
+  <ImageSet Name="RenderResult" Description="Bytes 8144 to 8155" />
+  <ImageSet Name="RenderResult" Description="Bytes 8799 to 8846" />
+  <ImageSet Name="RenderResult" Description="Bytes 8844 to 8855" />
+  <ImageSet Name="RenderResult" Description="Bytes 10399 to 10410" />
+  <ImageSet Name="RenderResult" Description="Bytes 15516 to 19511" />
+  <ImageSet Name="RenderResult" Description="Bytes 19507 to 19518" />
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">401780</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.6
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.6" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 27022, 0xa513a94, GL_STATIC_DRAW);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 15489, 6959, 0xa517715);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 24271, 37, 0xa519963);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 23065, 12, 0xa5194ad);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 8444, 5136, 0xa515b90);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 11924, 423, 0xa516928);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 9089, 6411, 0xa515e15);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+  <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+  <ImageSet Name="RenderResult" Description="Bytes 24576 to 27011" />
+  <ImageSet Name="RenderResult" Description="Bytes 27010 to 27021" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 8252, 5407, 0xa515ad0);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 18640, 12, 0xa518364);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 6072, 12, 0xa51524c);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 3386, 8281, 0xa5147ce);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 22194, 12, 0xa519146);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3821, 1655, 0xa514981);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 19621, 12, 0xa518739);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+  <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+  <ImageSet Name="RenderResult" Description="Bytes 24576 to 27011" />
+  <ImageSet Name="RenderResult" Description="Bytes 27010 to 27021" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 6209, 12, 0xa5152d5);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 13657, 604, 0xa516fed);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5454, 12, 0xa514fe2);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5956, 549, 0xa5151d8);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1153, 1744, 0xa513f15);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 10408, 1729, 0xa51633c);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1194, 2341, 0xa513f3e);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+  <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+  <ImageSet Name="RenderResult" Description="Bytes 24576 to 27011" />
+  <ImageSet Name="RenderResult" Description="Bytes 27010 to 27021" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1943, 9205, 0xa51422b);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 12258, 402, 0xa516a76);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 14256, 26, 0xa517244);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 15913, 286, 0xa5178bd);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 6178, 1757, 0xa5152b6);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 12569, 63, 0xa516bad);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5323, 293, 0xa514f5f);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 0 to 12287" />
+  <ImageSet Name="RenderResult" Description="Bytes 12288 to 24575" />
+  <ImageSet Name="RenderResult" Description="Bytes 24576 to 27011" />
+  <ImageSet Name="RenderResult" Description="Bytes 27010 to 27021" />
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2095, 2703, 0xa5142c3);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 23365, 382, 0xa5195d9);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 21923, 994, 0xa519037);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 13134, 3927, 0xa516de2);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 6973, 155, 0xa5155d1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4692, 0, GL_STREAM_DRAW);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1691, 376, 0xa51412f);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 1691 to 2062" />
+  <ImageSet Name="RenderResult" Description="Bytes 2055 to 2066" />
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1154625</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.7
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.7" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 7496, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5027, 46, 0xa5c88af);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 79, 120, 0xa5c755b);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2365, 2456, 0xa5c7e49);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1377, 12, 0xa5c7a6d);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2091, 12, 0xa5c7d37);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5367, 87, 0xa5c8a03);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 79 to 198" />
+  <ImageSet Name="RenderResult" Description="Bytes 1377 to 1388" />
+  <ImageSet Name="RenderResult" Description="Bytes 2091 to 2102" />
+  <ImageSet Name="RenderResult" Description="Bytes 2365 to 4812" />
+  <ImageSet Name="RenderResult" Description="Bytes 4809 to 4820" />
+  <ImageSet Name="RenderResult" Description="Bytes 5027 to 5062" />
+  <ImageSet Name="RenderResult" Description="Bytes 5061 to 5072" />
+  <ImageSet Name="RenderResult" Description="Bytes 5367 to 5450" />
+  <ImageSet Name="RenderResult" Description="Bytes 5442 to 5453" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 4510, 58, 0xa5c86aa);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 23819, 0xa51cf74, GL_STREAM_DRAW);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 16151, 1481, 0xa520e8b);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 15806, 1609, 0xa520d32);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 197, 0, GL_DYNAMIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 140, 27, 0xa51d000);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 177, 12, 0xa51d025);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 140 to 163" />
+  <ImageSet Name="RenderResult" Description="Bytes 155 to 166" />
+  <ImageSet Name="RenderResult" Description="Bytes 177 to 188" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 40, 32, 0xa51cf9c);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 43, 12, 0xa51cf9f);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 14, 12, 0xa51cf82);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 182, 12, 0xa51d02a);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 107, 12, 0xa51cfdf);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 128, 12, 0xa51cff4);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 53, 12, 0xa51cfa9);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 14 to 25" />
+  <ImageSet Name="RenderResult" Description="Bytes 40 to 63" />
+  <ImageSet Name="RenderResult" Description="Bytes 60 to 71" />
+  <ImageSet Name="RenderResult" Description="Bytes 107 to 118" />
+  <ImageSet Name="RenderResult" Description="Bytes 128 to 163" />
+  <ImageSet Name="RenderResult" Description="Bytes 155 to 166" />
+  <ImageSet Name="RenderResult" Description="Bytes 177 to 188" />
+  <ImageSet Name="RenderResult" Description="Bytes 182 to 193" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 23, 21, 0xa51cf8b);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 20, 28, 0xa51cf88);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 85, 22, 0xa51cfc9);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 168, 12, 0xa51d01c);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 99, 53, 0xa51cfd7);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 125, 35, 0xa51cff1);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 43, 12, 0xa51cf9f);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 14 to 61" />
+  <ImageSet Name="RenderResult" Description="Bytes 60 to 71" />
+  <ImageSet Name="RenderResult" Description="Bytes 85 to 156" />
+  <ImageSet Name="RenderResult" Description="Bytes 155 to 166" />
+  <ImageSet Name="RenderResult" Description="Bytes 168 to 191" />
+  <ImageSet Name="RenderResult" Description="Bytes 182 to 193" />
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 117, 51, 0xa51cfe9);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 63, 13, 0xa51cfb3);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 128, 33, 0xa51cff4);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 95, 50, 0xa51cfd3);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 161, 29, 0xa51d015);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 12112, 0, GL_STREAM_DRAW);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 7140, 1876, 0xa51eb58);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 7140 to 9011" />
+  <ImageSet Name="RenderResult" Description="Bytes 9004 to 9015" />
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">117985</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.8
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.8" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 11533, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8412, 12, 0xa5c95e8);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8031, 802, 0xa5c946b);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2637, 12, 0xa5c7f59);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8030, 1193, 0xa5c946a);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5377, 3040, 0xa5c8a0d);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8940, 1090, 0xa5c97f8);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 2637 to 2648" />
+  <ImageSet Name="RenderResult" Description="Bytes 5377 to 10020" />
+  <ImageSet Name="RenderResult" Description="Bytes 10018 to 10029" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2810, 2436, 0xa5c8006);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8058, 147, 0xa5c9486);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7905, 1411, 0xa5c93ed);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2955, 0, GL_STREAM_DRAW);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1282, 717, 0xa5c7a0e);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1626, 147, 0xa5c7b66);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2587, 246, 0xa5c7f27);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 1282 to 1989" />
+  <ImageSet Name="RenderResult" Description="Bytes 1987 to 1998" />
+  <ImageSet Name="RenderResult" Description="Bytes 2587 to 2826" />
+  <ImageSet Name="RenderResult" Description="Bytes 2821 to 2832" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 2735, 45, 0xa5c7fbb);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 493, 12, 0xa5c76f9);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2161, 739, 0xa5c7d7d);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2848, 12, 0xa5c802c);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1104, 839, 0xa5c795c);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 261, 610, 0xa5c7611);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 568, 547, 0xa5c7744);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 261 to 1988" />
+  <ImageSet Name="RenderResult" Description="Bytes 1987 to 1998" />
+  <ImageSet Name="RenderResult" Description="Bytes 2161 to 2892" />
+  <ImageSet Name="RenderResult" Description="Bytes 2888 to 2899" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1748, 677, 0xa5c7be0);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1381, 257, 0xa5c7a71);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 529, 349, 0xa5c771d);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1623, 0, GL_DYNAMIC_DRAW);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1176, 12, 0xa5c79a4);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1196, 163, 0xa5c79b8);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 896, 12, 0xa5c788c);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 896 to 907" />
+  <ImageSet Name="RenderResult" Description="Bytes 1176 to 1187" />
+  <ImageSet Name="RenderResult" Description="Bytes 1196 to 1351" />
+  <ImageSet Name="RenderResult" Description="Bytes 1347 to 1358" />
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 712, 13, 0xa5c77d4);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 546, 103, 0xa5c772e);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1015, 12, 0xa5c7903);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1066, 12, 0xa5c7936);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 286, 12, 0xa5c762a);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1294, 163, 0xa5c7a1a);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 11360, 0, GL_DYNAMIC_DRAW);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">126071</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.buffer.write.random.9
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.buffer.write.random.9" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glGenBuffers(1, 0x0b2832d4);</Text>
+ <Text>// buffers = { 1 }</Text>
+ <Section Name="Iteration1" Description="Iteration 1 / 5">
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 32728, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7741, 7684, 0xa52ae61);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 24039, 87, 0xa52ee0b);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ARRAY_BUFFER, 22228, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 1014, 4609, 0xa52941a);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 6578, 12, 0xa52a9d6);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5397, 2196, 0xa52a539);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 1014 to 7589" />
+  <ImageSet Name="RenderResult" Description="Bytes 7581 to 7592" />
+</Section>
+ <Section Name="Iteration2" Description="Iteration 2 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 16153, 0, GL_DYNAMIC_DRAW);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 15405, 94, 0xa52cc51);</Text>
+  <Text>glBufferData(GL_ELEMENT_ARRAY_BUFFER, 12359, 0, GL_STATIC_DRAW);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 10627, 579, 0xa52b9a7);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 52, 119, 0xa529058);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4888, 939, 0xa52a33c);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5498, 4175, 0xa52a59e);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 52 to 159" />
+  <ImageSet Name="RenderResult" Description="Bytes 159 to 170" />
+  <ImageSet Name="RenderResult" Description="Bytes 4888 to 9663" />
+  <ImageSet Name="RenderResult" Description="Bytes 9661 to 9672" />
+  <ImageSet Name="RenderResult" Description="Bytes 10627 to 11202" />
+  <ImageSet Name="RenderResult" Description="Bytes 11194 to 11205" />
+</Section>
+ <Section Name="Iteration3" Description="Iteration 3 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7440, 12, 0xa52ad34);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5709, 3530, 0xa52a671);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 524, 944, 0xa529230);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 9593, 18, 0xa52b59d);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4788, 1735, 0xa52a2d8);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 5663, 2491, 0xa52a643);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 7428, 185, 0xa52ad28);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 52 to 159" />
+  <ImageSet Name="RenderResult" Description="Bytes 159 to 170" />
+  <ImageSet Name="RenderResult" Description="Bytes 524 to 1459" />
+  <ImageSet Name="RenderResult" Description="Bytes 1456 to 1467" />
+  <ImageSet Name="RenderResult" Description="Bytes 4788 to 9671" />
+  <ImageSet Name="RenderResult" Description="Bytes 9661 to 9672" />
+  <ImageSet Name="RenderResult" Description="Bytes 10627 to 11202" />
+  <ImageSet Name="RenderResult" Description="Bytes 11194 to 11205" />
+</Section>
+ <Section Name="Iteration4" Description="Iteration 4 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 9783, 2246, 0xa52b65b);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 4330, 1655, 0xa52a10e);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8535, 952, 0xa52b17b);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 1131, 2721, 0xa52948f);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3778, 2875, 0xa529ee6);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 5667, 494, 0xa52a647);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 6523, 26, 0xa52a99f);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 52 to 159" />
+  <ImageSet Name="RenderResult" Description="Bytes 159 to 170" />
+  <ImageSet Name="RenderResult" Description="Bytes 524 to 9667" />
+  <ImageSet Name="RenderResult" Description="Bytes 9661 to 9672" />
+  <ImageSet Name="RenderResult" Description="Bytes 9783 to 12026" />
+  <ImageSet Name="RenderResult" Description="Bytes 12017 to 12028" />
+</Section>
+ <Section Name="Iteration5" Description="Iteration 5 / 5">
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 6576, 271, 0xa52a9d4);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 3953, 733, 0xa529f95);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 8835, 12, 0xa52b2a7);</Text>
+  <Text>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 9523, 1684, 0xa52b557);</Text>
+  <Text>glBindBuffer(GL_ARRAY_BUFFER, 1);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 7238, 4235, 0xa52ac6a);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 4199, 394, 0xa52a08b);</Text>
+  <Text>glBufferSubData(GL_ARRAY_BUFFER, 2734, 4154, 0xa529ad2);</Text>
+  <Text>glGetError();</Text>
+  <Text>// GL_NO_ERROR returned</Text>
+  <ImageSet Name="RenderResult" Description="Bytes 52 to 159" />
+  <ImageSet Name="RenderResult" Description="Bytes 159 to 170" />
+  <ImageSet Name="RenderResult" Description="Bytes 524 to 12019" />
+  <ImageSet Name="RenderResult" Description="Bytes 12017 to 12028" />
+</Section>
+ <Text>glDeleteBuffers(1, { 1 });</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">482775</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 20.51 seconds
+
+#endSession

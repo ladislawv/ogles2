@@ -349,7 +349,7 @@ A host-side Python script reads Khronos `xml/gl.xml` for the GLES 2.0 feature se
 - **Vsync** (`OGLES2_CCT_VSYNC`): `WaitTOF` before presenting, or `ChangeScreenBuffer`'s safe message once double buffering works.
   - **As built (M6, after the presentation investigation):** the swap waits for the display's refresh, then the frame goes out. On a screen of its own the wait is `WaitBOVP` (the screen's own refresh) and the frame's render is submitted right after it: the GPU writes the screen from the top faster than the display scans it out (a 640x480 frame in 1-4 ms against 16.7), so nothing tears, and the CPU builds the next frame while the GPU renders this one. In a window the wait is `WaitTOF` and the copy (`ClipBlit`) follows it. The task runs at priority 10 at least from the wait to the submission (woken late at priority 0 behind a busy task, about 2 refreshes a second were missed).
   - **Findings (A1200, `tests/m6_flip` and `m6_vsync`, package `m6-9`, the developer watching):** drawn straight into the visible bitmap without waiting, the picture tears. `ChangeScreenBuffer` and `ScrollVPort` take a whole refresh per call, at times busy-waiting it (a priority-20 process flipping in a loop froze the A1200; Quake III with two or three screen buffers ran at 60 fps falling to 30, 47-49 in the timedemo; later runs flipped only every second refresh, 30 fps). `WaitTOF` and `WaitBOVP` follow the HDMI refresh (16.7 ms) and sleep (a priority -1 counter kept 96% of an idle system's rounds). Screen buffers were therefore dropped.
-  - **Result:** `m6_vsync` 60 fps with vsync, no tearing and no stutter (the developer watching); Quake III's demo played at its own speed with `r_swapInterval 1`: 16.8-17.2 ms a frame (60 fps), the render overlapped (2 µs waited for it), against 19-24 ms with screen buffers.
+  - **Result:** `m6_vsync` 60 fps with vsync, no tearing and no stutter (the developer watching); Quake III's demo played at its own speed with `r_swapInterval 1`: 16.8-17.2 ms a frame (60 fps), the render overlapped (2 µs waited for it), against 19-24 ms with screen buffers. SDL3 `testgles2 --vsync` (package `m6-4`, steps 7 and 8; SDL's full screen is a window on the Workbench screen, so both take the window path): 59.8 fps in a window, 60.1 full screen (16 761 and 16 666 µs between swaps), no tearing and no stutter (the developer watching).
 - **Resize** (`OGLES2_CCT_RESIZE_VIEWPORT`, `aglSetParams2` with a new window): `v3d_context_resize`, then reset the viewport if requested.
 
 ### 7.3 Memory: buffer objects, coherency, deferred release
@@ -545,7 +545,7 @@ None of these steps does any per-vertex CPU work on the VBO path. That is the ma
 | `MAX_VARYING_VECTORS` | 16 (confirm against Mesa's GLES reporting) | `V3D_MAX_FS_INPUTS`/4 / min 8 |
 | `MAX_VERTEX_UNIFORM_VECTORS`, `MAX_FRAGMENT_UNIFORM_VECTORS` | 256 initially (hardware stream allows far more; Mesa const buffer 16K floats) | min 128 / 16 |
 | `MAX_TEXTURE_IMAGE_UNITS`, `MAX_COMBINED_TEXTURE_IMAGE_UNITS` | 16 | Mesa allows 24 samplers / min 8 |
-| `MAX_VERTEX_TEXTURE_IMAGE_UNITS` | 0 (v1) | min 0 |
+| `MAX_VERTEX_TEXTURE_IMAGE_UNITS` | 16 (0 until M7; the draws bind both stages' samplers) | min 0 |
 | `MAX_TEXTURE_SIZE`, `MAX_CUBE_MAP_TEXTURE_SIZE`, `MAX_RENDERBUFFER_SIZE` | 4096 | `V3D_MAX_IMAGE_DIMENSION`, `V3D_MAX_FRAMEBUFFER_SIZE(42)` |
 | `MAX_VIEWPORT_DIMS` | 4096 × 4096 | |
 | `ALIASED_POINT_SIZE_RANGE` | 1–512 | `V3D_MAX_POINT_SIZE` |
@@ -900,6 +900,31 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
 4. `runpkg` and `wait`; then M1 continues remotely, starting with `ogles2-m1-4`.
 
 **Risks:** the server is new code running permanently on the test machine, so it is kept small and conservative (no shell, no command other than the table above, size limits everywhere); a bug in it is an annoyance, never a risk to the developer's files beyond what `PUT`/`DELETE` allow, which only the token holder can use.
+
+### 10.2 Frame-time targets
+
+M6's exit criterion. Each row is a workload measured on the test A1200 (Pi 4B, Emu68, 640x480 or the size given, 32-bit RTG screen) and the bound a later build must stay within: about 10% above the measured time, so a regression shows and run-to-run noise does not. A change that crosses a bound is either fixed or the bound is moved here with the reason. The goals at the end are not met yet.
+
+| Workload | How it is measured | Measured (2026-10-13) | Target |
+|---|---|---|---|
+| Quake III, renderergl2, timedemo `four`, 640x480 | `m6-5` `Run-M1` | 12.4 ms a frame average (80.5-81 fps); min 5.0, max 82 ms | at most 13.5 ms average (74 fps) |
+| the same, 1920x1080, lighting maps off (the patch's default) | `m6-5` `Play-Quake WIDTH=1920 HEIGHT=1080`, `timedemo 1` and `demo four` in the console | 22.3 ms (44.8 fps); the GPU 9.7 ms | at most 25 ms (40 fps) |
+| the same, 640x480, with vsync, the demo at its own speed | `m6-5` `Run-M1 VSYNC=1 TIMEDEMO=0` | 16.7 ms (60 fps steady; 16.8-17.2 ms per frame) | every frame one refresh, no 30 fps stretches |
+| the same with 4x MSAA | `m6-5` `Run-M1 MSAA=1` | 81 fps, as without | no slower than without MSAA by more than 5% |
+| Quake III on gl4es, 640x480, timedemo `four` | `m6-2` `Run-M1` | 23.3 ms (43.2 fps) | at most 25.5 ms |
+| glmark2-es2, 800x600 window, default list, 10 s a scene | `m6-7` `Run-M1` | score 251-253; `refract` 48 fps | score 230 or more; 0 frames dropped |
+| SDL3 `testgles2`, a window / full screen | `m6-4` steps 1 and 6 | 1.96 / 2.21 ms (504-511 / 445-452 fps) | at most 2.2 / 2.45 ms |
+| the same with `--vsync` | `m6-4` steps 7 and 8 | 16.76 / 16.67 ms between swaps | at most 17.0 ms (one refresh missed in 60) |
+| CPU time of one draw call (renderergl2's draws) | `m6-5` `Run-M1 PROFILE=1` | 28-32 µs | at most 35 µs |
+| a swap's flush (render list, CPU cache before and after) | `ogles2.log` timing lines | 57 + 77 + 56 µs (a 640x480 SDL frame) | at most 210 µs together |
+| `glTexImage2D`, 1024x1024 RGBA8 / RGB565 | `m6-8` (`m6_tfu`'s upload timings) | 9.2 / 24 ms | at most 10 / 27 ms |
+| draw into a 512x512 target and `glGenerateMipmap` | `m6-8` | 1.18 ms | at most 1.3 ms |
+| compile a typical program on the A1200, after the first | `m2-5` | under 1 s (the first 1.6 s) | under 1 s |
+| Quake III's shipped shader cache loaded, 640x480 and 1080p | `m6-5` | 2.35 s, nothing compiled | at most 3 s |
+
+**Goals not met yet:**
+- Quake III on gl4es as fast as on MiniGL: 16.4 ms a frame (60.8 fps) against 23.3 ms. The gap is ogles2's CPU time per draw for gl4es's draw pattern (postponed, §13).
+- glmark2's `buffer` scenes (49-83 fps) above 100 fps: half of a 200-column buffer rewritten every frame.
 
 ---
 
@@ -1355,9 +1380,25 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
 - **Test:** `tests/m6_msaa` (9 checks: the queries, antialiased edges, coverage and its inverse, depth across a mid-frame flush, a framebuffer object in an MSAA context), package `m6-10`, which also runs `m1_draw`, `m2_texture` and `m5_fbo` as before and with `ENV:OGLES2/MSAA` 4.
 - **A1200:** `ogles2-m6-10-20261013-135758`: every check passes (`m6_msaa` 9/9; the earlier tests the same with every context multisampled). Quake III (`m6-5`'s `MSAA=1`, `ogles2-m6-5-20261013-135929`): 81 fps, the same as without (the game is CPU-bound), the edges smoothed.
 
+**Done (2026-10-13): vsync through SDL; frame-time targets (an M6 exit criterion).**
+- SDL3 `testgles2 --vsync` in a window and full screen: 59.8 and 60.1 fps, no tearing or stutter (the developer watching); package `m6-4` steps 7 and 8 (`Run-M1 FROM=7`). Runs `ogles2-m6-4-20261013-145106` and `-145430`.
+- §10.2: the frame-time targets, from this week's measurements, and the goals not met yet.
+- M6's exit criteria: SDL (met), gl4es glxgears and Quake (met), glmark2-es2 (met), frame-time targets (met); a MiniGL game beside an ogles2 program is postponed with D3 (below).
+
+**In progress (2026-10-13): M7, dEQP-GLES2 conformance (§9).**
+- **The runner** (`ports/deqp`, its README): VK-GL-CTS `opengl-es-cts-3.2.14.1`'s `deqp-gles2`, built with GCC 16.2 and libnix by its own script (not the CTS's CMake), on an AmigaOS 3 platform: one ogles2 context in a 256x256 window, the GL functions from `aglGetProcAddress`, delibs' OS layer for one task (no threads; the E-clock). Traps beyond glmark2's: `int32_t` is `long` in this toolchain (dEQP takes it to be `int`: built with `__INT32_TYPE__` redefined); `amiga` is a predefined macro; three big-endian bugs in dEQP itself (patches: a 68k CPU for delibs, the ETC1 `.pkm` loader, the point-size check's pixel read); AmigaDOS has no `./` (`--deqp-archive-dir`).
+- **Running it:** package `m7-1` (`Run-M1` keys `LIST`, `CASES`, `NAME`, `MSAA`, `IMAGES`, `TEST`), the must-pass list (17,165 cases) split by group as `caselists/`; from the PC `ports/deqp/run_groups.py` (group by group through `amictl`), `summary.py` (totals and what failed), `failed_list.py` (a list of the cases to run again), `qpa_images.py` (the logged images as PNG). The whole list took about 2.5 hours on the A1200, mostly the shader groups' compiles on the Amiga.
+- **Results of the first full run:** non-shader groups 6,289 cases, shader groups 10,101: 9,900 passed. Every failure it found was fixed, except one deviation:
+  - **Library fixes:** the blend constant colour (its packet's field order was reversed: 492 blend cases); deleted textures and renderbuffers attached to a framebuffer that is not bound live on without their name (GLES 2.0 4.4.3; 45 fbo cases); BGRA render targets and renderbuffers (`EXT_texture_format_BGRA8888`); `GL_SUBPIXEL_BITS`, the aliased line-width and point-size ranges, stencil masks as unsigned floats; polygon offset units for a 16-bit depth buffer; a depth-only or stencil-only clear no longer changes the other's pending clear value; sampler arrays (a texture unit per element); completeness with mismatched level formats; `glCopyTexSubImage2D`'s and `glGenerateMipmap`'s errors; `glGetVertexAttribfv` of the array state; 16 vertex texture units (0 until now); name tables for names a program never generated (a texture named 70,000,000 took a 512 MB table); register spilling (a scratch area per context: dynamically indexed arrays); attribute aliasing (two names bound to one location: the program is linked with its bindings, `V3DGLSL_LINK_BOUND`); a matrix attribute whose columns are not all read (the binary says which, FORMAT.md).
+  - **Compiler fixes:** GLSL's `gl_MaxDrawBuffers` and `gl_Max*TextureImageUnits` as ogles2 reports them (1 and 16; Mesa's v3d says 4 and 24), the uniform-vector limits the other way round (4088 vertex, 4095 fragment); `gl_PointSize` clamped to 512 (Mesa patch 0012).
+  - **The deviation:** V3D always filters cube maps seamlessly (across the faces' edges, as GLES3 requires); dEQP-GLES2 expects that only of a context that also answers GLES3's `GL_MAJOR_VERSION` (Mesa's v3d is a GLES 3.1 driver), and of a GLES2-only one each face clamped alone. 25 cube cases (`texture.mipmap.cube`, `texture.vertex.cube`, `shaders.texture_functions.vertex.texturecubelod`) fail by design; the developer's decision (2026-10-13): documented, not emulated.
+  - **Not supported, by design:** several colour attachments (`EXT_draw_buffers`), clip control, debug markers, a compressed format with sub-image updates (ETC1 has none), more than 16 combined texture units (8 cases).
+- **Next:** the whole list again on the final library and compiler (a regression check of every change above), the earlier test packages and Quake III (its shipped shader cache compiled again: the compiler changed).
+
 **Next, in order (M6: ecosystem, sharing and performance, §9):**
-1. **The rest of M6's scope:** optional: checking vsync in a window (SDL's full screen is one: `WaitTOF` then the copy), MSAA alpha to coverage; optional: native ETC1 sampling; the large-reply stall (`amictld`). glmark2's `buffer` scenes (49–83 fps: half of a 200-column buffer rewritten every frame) are a candidate for the buffer path.
-2. **Postponed (2026-10-13, the developer's decision):** per-draw CPU time for gl4es programs (the gl4es build: 23.3 ms a frame against MiniGL's 16.4; ogles2's draw about 28 us, 32 us for renderergl2's), and minigl.library coexistence (D3: the shared submission component with PiStorm3D's maintainers; the turn across programs above is ogles2's half).
+1. **M7: dEQP-GLES2** (§9): the five optional features dEQP found missing (`docs/M7_EXTENSIONS_PLAN.md`: debug markers, 32 combined texture units, S3TC, clip control, draw buffers), then the full run on the final build and the conformance results with the release.
+2. **The rest of M6's scope:** optional: MSAA alpha to coverage; optional: native ETC1 sampling; the large-reply stall (`amictld`). glmark2's `buffer` scenes (49–83 fps: half of a 200-column buffer rewritten every frame) are a candidate for the buffer path.
+3. **Postponed (2026-10-13, the developer's decision):** per-draw CPU time for gl4es programs (the gl4es build: 23.3 ms a frame against MiniGL's 16.4; ogles2's draw about 28 us, 32 us for renderergl2's), and minigl.library coexistence (D3: the shared submission component with PiStorm3D's maintainers; the turn across programs above is ogles2's half).
 
 ---
 

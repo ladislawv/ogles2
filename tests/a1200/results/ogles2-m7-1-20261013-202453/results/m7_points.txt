@@ -1,0 +1,15 @@
+ogles2 M7: point sizes as drawn
+GL_ALIASED_POINT_SIZE_RANGE [, ]
+PASS: a 1200x8 framebuffer object
+FAIL: size : drawn x -1..-1, 0 wide (1)
+PASS: size : drawn x 596..603, 8 wide (8)
+PASS: size : drawn x 568..631, 64 wide (64)
+PASS: size : drawn x 472..727, 256 wide (256)
+PASS: size : drawn x 344..854, 511 wide (511)
+PASS: size : drawn x 344..855, 512 wide (512)
+PASS: size : drawn x 344..855, 512 wide (512)
+PASS: size : drawn x 344..855, 512 wide (512)
+PASS: size : drawn x 344..855, 512 wide (512)
+PASS: 264x4, size 528 centred on the right edge: red from x 8 8 8 8 (8)
+PASS: the 4x4 box at (0, 0) read alone: 16 of 16 green; first 0,255,0,255
+FAILED: 11 of 12 checks passed

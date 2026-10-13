@@ -1,0 +1,23 @@
+ogles2: the vertex shader's gl_PointSize clamped to [1, V3D_MAX_POINT_SIZE],
+the range ALIASED_POINT_SIZE_RANGE reports. Mesa clamped only the minimum;
+V3D draws a larger point at the size asked (dEQP-GLES2
+rasterization.limits.points draws one 16 pixels past the maximum and expects
+it clamped). Programs that do not write gl_PointSize compile as before.
+
+diff --git a/src/broadcom/compiler/vir.c b/src/broadcom/compiler/vir.c
+index 6342718a139..1a9814d037a 100644
+--- a/src/broadcom/compiler/vir.c
++++ b/src/broadcom/compiler/vir.c
+@@ -1108,8 +1108,11 @@ v3d_nir_lower_vs_early(struct v3d_compile *c)
+         NIR_PASS(_, c->s, nir_remove_dead_variables, nir_var_shader_in, NULL);
+ 
+         /* This must go before nir_lower_io */
++        /* ogles2: clamped to the size GL reports as the largest
++         * (ALIASED_POINT_SIZE_RANGE, V3D_MAX_POINT_SIZE): the hardware draws
++         * a larger point as it is (dEQP-GLES2 rasterization.limits.points). */
+         if (c->vs_key->per_vertex_point_size)
+-                NIR_PASS(_, c->s, nir_lower_point_size, 1.0f, 0.0f);
++                NIR_PASS(_, c->s, nir_lower_point_size, 1.0f, V3D_MAX_POINT_SIZE);
+ 
+         NIR_PASS(_, c->s, nir_lower_io, nir_var_shader_in | nir_var_shader_out,
+                  type_size_vec4,

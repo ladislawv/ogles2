@@ -1,0 +1,556 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086C9670
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FD4C8C, 256x256
+    15 glLinkProgram: OGLES2Cache:d49b2011a1216f16b1564565.v3dp (5 variants, 512 bytes of code)
+    16 job: depth and stencil kept across a mid-frame flush (logged once)
+    17 glGetIntegerv: pname 0x821B not supported yet
+    18 glGetIntegerv: pname 0x821B not supported yet
+    19 glGetIntegerv: pname 0x821B not supported yet
+    20 glGetIntegerv: pname 0x821B not supported yet
+    21 glGetIntegerv: pname 0x821B not supported yet
+    22 glGetIntegerv: pname 0x821B not supported yet
+    23 glGetIntegerv: pname 0x821B not supported yet
+    24 glGetIntegerv: pname 0x821B not supported yet
+    25 glGetIntegerv: pname 0x821B not supported yet
+    26 glGetIntegerv: pname 0x821B not supported yet
+    27 glGetIntegerv: pname 0x821B not supported yet
+    28 glGetIntegerv: pname 0x821B not supported yet
+    29 glGetIntegerv: pname 0x821B not supported yet
+    30 glGetIntegerv: pname 0x821B not supported yet
+    31 glGetIntegerv: pname 0x821B not supported yet
+    32 glGetIntegerv: pname 0x821B not supported yet
+    33 glGetIntegerv: pname 0x821B not supported yet
+    34 glGetIntegerv: pname 0x821B not supported yet
+    35 glGetIntegerv: pname 0x821B not supported yet
+    36 glGetIntegerv: pname 0x821B not supported yet
+    37 glGetIntegerv: pname 0x821B not supported yet
+    38 glGetIntegerv: pname 0x821B not supported yet
+    39 glGetIntegerv: pname 0x821B not supported yet
+    40 glGetIntegerv: pname 0x821B not supported yet
+    41 glGetIntegerv: pname 0x821B not supported yet
+    42 glLinkProgram: OGLES2Cache:f7422c98a7d8e8682bd58046.v3dp (5 variants, 624 bytes of code)
+    43 compiler: started (0 s)
+    44 compiler: shader compiled in 1240 ms
+    45 compiler: shader compiled in 40 ms
+    46 compiler: program compiled in 240 ms, OGLES2Cache:6d662f019e10a421b799bfde.v3dp
+    47 glLinkProgram: OGLES2Cache:6d662f019e10a421b799bfde.v3dp (5 variants, 512 bytes of code)
+    48 compiler: shader compiled in 20 ms
+    49 compiler: program compiled in 100 ms, OGLES2Cache:c9c8bfc3eb9df8b9251fac4b.v3dp
+    50 glLinkProgram: OGLES2Cache:c9c8bfc3eb9df8b9251fac4b.v3dp (7 variants, 864 bytes of code)
+    51 glGetIntegerv: pname 0x821B not supported yet
+    52 compiler: shader compiled in 40 ms
+    53 compiler: shader compiled in 40 ms
+    54 compiler: program compiled in 160 ms, OGLES2Cache:64407e00d8252c54eb4fb681.v3dp
+    55 glLinkProgram: OGLES2Cache:64407e00d8252c54eb4fb681.v3dp (5 variants, 488 bytes of code)
+    56 glGetIntegerv: pname 0x821B not supported yet
+    57 compiler: shader compiled in 20 ms
+    58 compiler: shader compiled in 40 ms
+    59 compiler: program compiled in 160 ms, OGLES2Cache:d3feab153ae3318524a1e112.v3dp
+    60 glLinkProgram: OGLES2Cache:d3feab153ae3318524a1e112.v3dp (5 variants, 488 bytes of code)
+    61 glGetIntegerv: pname 0x821B not supported yet
+    62 compiler: shader compiled in 20 ms
+    63 compiler: shader compiled in 40 ms
+    64 compiler: program compiled in 120 ms, OGLES2Cache:a640e90d83d51f324609f5ed.v3dp
+    65 glLinkProgram: OGLES2Cache:a640e90d83d51f324609f5ed.v3dp (5 variants, 512 bytes of code)
+    66 glGetIntegerv: pname 0x821B not supported yet
+    67 compiler: shader compiled in 40 ms
+    68 compiler: shader compiled in 40 ms
+    69 compiler: program compiled in 120 ms, OGLES2Cache:68fcdcd829a8916b58962d33.v3dp
+    70 glLinkProgram: OGLES2Cache:68fcdcd829a8916b58962d33.v3dp (5 variants, 512 bytes of code)
+    71 glGetIntegerv: pname 0x821B not supported yet
+    72 compiler: shader compiled in 20 ms
+    73 compiler: shader compiled in 40 ms
+    74 compiler: program compiled in 200 ms, OGLES2Cache:dbea4b3b2840bbcddb22a929.v3dp
+    75 glLinkProgram: OGLES2Cache:dbea4b3b2840bbcddb22a929.v3dp (5 variants, 872 bytes of code)
+    76 glGetIntegerv: pname 0x821B not supported yet
+    77 compiler: shader compiled in 20 ms
+    78 compiler: shader compiled in 20 ms
+    79 compiler: program compiled in 100 ms, OGLES2Cache:85b33e4d0cc9dcf141061218.v3dp
+    80 glLinkProgram: OGLES2Cache:85b33e4d0cc9dcf141061218.v3dp (5 variants, 488 bytes of code)
+    81 glGetIntegerv: pname 0x821B not supported yet
+    82 compiler: shader compiled in 20 ms
+    83 compiler: shader compiled in 20 ms
+    84 compiler: program compiled in 140 ms, OGLES2Cache:195739ac3b7616dc67194bc7.v3dp
+    85 glLinkProgram: OGLES2Cache:195739ac3b7616dc67194bc7.v3dp (5 variants, 632 bytes of code)
+    86 glGetIntegerv: pname 0x821B not supported yet
+    87 compiler: shader compiled in 20 ms
+    88 compiler: shader compiled in 20 ms
+    89 compiler: program compiled in 100 ms, OGLES2Cache:c31de52ca99ec614c6168917.v3dp
+    90 glLinkProgram: OGLES2Cache:c31de52ca99ec614c6168917.v3dp (5 variants, 488 bytes of code)
+    91 glGetIntegerv: pname 0x821B not supported yet
+    92 compiler: shader compiled in 20 ms
+    93 compiler: shader compiled in 20 ms
+    94 compiler: program compiled in 140 ms, OGLES2Cache:f08f2a4b22bf2378a1e77baf.v3dp
+    95 glLinkProgram: OGLES2Cache:f08f2a4b22bf2378a1e77baf.v3dp (5 variants, 552 bytes of code)
+    96 glGetIntegerv: pname 0x821B not supported yet
+    97 compiler: shader compiled in 40 ms
+    98 compiler: shader compiled in 40 ms
+    99 compiler: program compiled in 160 ms, OGLES2Cache:d2b6f3fd4cbde87bb21dfbf5.v3dp
+   100 glLinkProgram: OGLES2Cache:d2b6f3fd4cbde87bb21dfbf5.v3dp (5 variants, 536 bytes of code)
+   101 glGetIntegerv: pname 0x821B not supported yet
+   102 compiler: shader compiled in 40 ms
+   103 compiler: shader compiled in 40 ms
+   104 compiler: program compiled in 200 ms, OGLES2Cache:cad8c755a3759ba6e0f58053.v3dp
+   105 glLinkProgram: OGLES2Cache:cad8c755a3759ba6e0f58053.v3dp (5 variants, 976 bytes of code)
+   106 glGetIntegerv: pname 0x821B not supported yet
+   107 compiler: shader compiled in 40 ms
+   108 compiler: shader compiled in 40 ms
+   109 compiler: program compiled in 120 ms, OGLES2Cache:0744b40e23116823a0642748.v3dp
+   110 glLinkProgram: OGLES2Cache:0744b40e23116823a0642748.v3dp (5 variants, 488 bytes of code)
+   111 glGetIntegerv: pname 0x821B not supported yet
+   112 compiler: shader compiled in 40 ms
+   113 compiler: shader compiled in 40 ms
+   114 compiler: program compiled in 160 ms, OGLES2Cache:efc8c3d0969d126595db4a8a.v3dp
+   115 glLinkProgram: OGLES2Cache:efc8c3d0969d126595db4a8a.v3dp (5 variants, 488 bytes of code)
+   116 glGetIntegerv: pname 0x821B not supported yet
+   117 compiler: shader compiled in 20 ms
+   118 compiler: shader compiled in 40 ms
+   119 compiler: program compiled in 160 ms, OGLES2Cache:2582bb7169e378502c666080.v3dp
+   120 glLinkProgram: OGLES2Cache:2582bb7169e378502c666080.v3dp (5 variants, 544 bytes of code)
+   121 glGetIntegerv: pname 0x821B not supported yet
+   122 compiler: shader compiled in 40 ms
+   123 compiler: shader compiled in 40 ms
+   124 compiler: program compiled in 120 ms, OGLES2Cache:3d440b21496379640372e08a.v3dp
+   125 glLinkProgram: OGLES2Cache:3d440b21496379640372e08a.v3dp (5 variants, 512 bytes of code)
+   126 glGetIntegerv: pname 0x821B not supported yet
+   127 compiler: shader compiled in 20 ms
+   128 compiler: shader compiled in 40 ms
+   129 compiler: program compiled in 160 ms, OGLES2Cache:d43ccd3e39cb9022206152b1.v3dp
+   130 glLinkProgram: OGLES2Cache:d43ccd3e39cb9022206152b1.v3dp (5 variants, 512 bytes of code)
+   131 glGetIntegerv: pname 0x821B not supported yet
+   132 compiler: shader compiled in 20 ms
+   133 compiler: shader compiled in 40 ms
+   134 compiler: program compiled in 160 ms, OGLES2Cache:0ebe6283a2e2cfb1e2b4a00a.v3dp
+   135 glLinkProgram: OGLES2Cache:0ebe6283a2e2cfb1e2b4a00a.v3dp (5 variants, 640 bytes of code)
+   136 glGetIntegerv: pname 0x821B not supported yet
+   137 compiler: shader compiled in 40 ms
+   138 compiler: shader compiled in 40 ms
+   139 compiler: program compiled in 160 ms, OGLES2Cache:413988ac7cae18d8adeb36b3.v3dp
+   140 glLinkProgram: OGLES2Cache:413988ac7cae18d8adeb36b3.v3dp (5 variants, 584 bytes of code)
+   141 glGetIntegerv: pname 0x821B not supported yet
+   142 compiler: shader compiled in 20 ms
+   143 compiler: shader compiled in 40 ms
+   144 compiler: program compiled in 160 ms, OGLES2Cache:ee085e3d218dcedbfad0cc15.v3dp
+   145 glLinkProgram: OGLES2Cache:ee085e3d218dcedbfad0cc15.v3dp (5 variants, 552 bytes of code)
+   146 glGetIntegerv: pname 0x821B not supported yet
+   147 compiler: shader compiled in 40 ms
+   148 compiler: shader compiled in 40 ms
+   149 compiler: program compiled in 160 ms, OGLES2Cache:793b1314962fc0ca3bcee85c.v3dp
+   150 glLinkProgram: OGLES2Cache:793b1314962fc0ca3bcee85c.v3dp (5 variants, 512 bytes of code)
+   151 glGetIntegerv: pname 0x821B not supported yet
+   152 compiler: shader compiled in 20 ms
+   153 compiler: shader compiled in 40 ms
+   154 compiler: program compiled in 160 ms, OGLES2Cache:43c0dc00635570c64fe4b369.v3dp
+   155 glLinkProgram: OGLES2Cache:43c0dc00635570c64fe4b369.v3dp (5 variants, 720 bytes of code)
+   156 glGetIntegerv: pname 0x821B not supported yet
+   157 compiler: shader compiled in 20 ms
+   158 compiler: shader compiled in 40 ms
+   159 compiler: program compiled in 160 ms, OGLES2Cache:8f8f69601ccfc0d5eab5b26e.v3dp
+   160 glLinkProgram: OGLES2Cache:8f8f69601ccfc0d5eab5b26e.v3dp (5 variants, 496 bytes of code)
+   161 glGetIntegerv: pname 0x821B not supported yet
+   162 compiler: shader compiled in 40 ms
+   163 compiler: shader compiled in 40 ms
+   164 compiler: program compiled in 160 ms, OGLES2Cache:0dc648835baf8468368d0574.v3dp
+   165 glLinkProgram: OGLES2Cache:0dc648835baf8468368d0574.v3dp (5 variants, 512 bytes of code)
+   166 glGetIntegerv: pname 0x821B not supported yet
+   167 compiler: shader compiled in 20 ms
+   168 compiler: shader compiled in 40 ms
+   169 compiler: program compiled in 160 ms, OGLES2Cache:3a78193e8a439edde017f4da.v3dp
+   170 glLinkProgram: OGLES2Cache:3a78193e8a439edde017f4da.v3dp (5 variants, 488 bytes of code)
+   171 glGetIntegerv: pname 0x821B not supported yet
+   172 compiler: shader compiled in 40 ms
+   173 compiler: shader compiled in 40 ms
+   174 compiler: program compiled in 160 ms, OGLES2Cache:fedf1c4ac42a10c6bf8260f1.v3dp
+   175 glLinkProgram: OGLES2Cache:fedf1c4ac42a10c6bf8260f1.v3dp (5 variants, 488 bytes of code)
+   176 glGetIntegerv: pname 0x821B not supported yet
+   177 compiler: shader compiled in 20 ms
+   178 compiler: shader compiled in 20 ms
+   179 compiler: program compiled in 200 ms, OGLES2Cache:235c6d341352a1bd261b6176.v3dp
+   180 glLinkProgram: OGLES2Cache:235c6d341352a1bd261b6176.v3dp (5 variants, 672 bytes of code)
+   181 glGetIntegerv: pname 0x821B not supported yet
+   182 compiler: shader compiled in 20 ms
+   183 compiler: shader compiled in 40 ms
+   184 compiler: program compiled in 200 ms, OGLES2Cache:bd246cd16edc08b7b7f26f37.v3dp
+   185 glLinkProgram: OGLES2Cache:bd246cd16edc08b7b7f26f37.v3dp (5 variants, 720 bytes of code)
+   186 glGetIntegerv: pname 0x821B not supported yet
+   187 compiler: shader compiled in 20 ms
+   188 compiler: shader compiled in 20 ms
+   189 compiler: program compiled in 140 ms, OGLES2Cache:9cbc5d471f4b01522a5b433e.v3dp
+   190 glLinkProgram: OGLES2Cache:9cbc5d471f4b01522a5b433e.v3dp (5 variants, 488 bytes of code)
+   191 glGetIntegerv: pname 0x821B not supported yet
+   192 compiler: shader compiled in 20 ms
+   193 compiler: shader compiled in 20 ms
+   194 compiler: program compiled in 180 ms, OGLES2Cache:7ee32c897508d399b9b0f5fb.v3dp
+   195 glLinkProgram: OGLES2Cache:7ee32c897508d399b9b0f5fb.v3dp (5 variants, 912 bytes of code)
+   196 glGetIntegerv: pname 0x821B not supported yet
+   197 compiler: shader compiled in 20 ms
+   198 compiler: shader compiled in 40 ms
+   199 compiler: program compiled in 160 ms, OGLES2Cache:95966737a71d2a4a57ea2d1e.v3dp
+   200 glLinkProgram: OGLES2Cache:95966737a71d2a4a57ea2d1e.v3dp (5 variants, 512 bytes of code)
+   201 glGetIntegerv: pname 0x821B not supported yet
+   202 compiler: shader compiled in 20 ms
+   203 compiler: shader compiled in 40 ms
+   204 compiler: program compiled in 160 ms, OGLES2Cache:6513ff21906c75cc85c5cc2e.v3dp
+   205 glLinkProgram: OGLES2Cache:6513ff21906c75cc85c5cc2e.v3dp (5 variants, 576 bytes of code)
+   206 glGetIntegerv: pname 0x821B not supported yet
+   207 compiler: shader compiled in 40 ms
+   208 compiler: shader compiled in 40 ms
+   209 compiler: program compiled in 160 ms, OGLES2Cache:ee051d03638f3002c7d2f731.v3dp
+   210 glLinkProgram: OGLES2Cache:ee051d03638f3002c7d2f731.v3dp (5 variants, 536 bytes of code)
+   211 glGetIntegerv: pname 0x821B not supported yet
+   212 compiler: shader compiled in 40 ms
+   213 compiler: shader compiled in 40 ms
+   214 compiler: program compiled in 160 ms, OGLES2Cache:e3c193807691a8e09ae34a1c.v3dp
+   215 glLinkProgram: OGLES2Cache:e3c193807691a8e09ae34a1c.v3dp (5 variants, 512 bytes of code)
+   216 glGetIntegerv: pname 0x821B not supported yet
+   217 compiler: shader compiled in 20 ms
+   218 compiler: shader compiled in 40 ms
+   219 compiler: program compiled in 160 ms, OGLES2Cache:c78c612c225a373a500171a5.v3dp
+   220 glLinkProgram: OGLES2Cache:c78c612c225a373a500171a5.v3dp (5 variants, 488 bytes of code)
+   221 glGetIntegerv: pname 0x821B not supported yet
+   222 compiler: shader compiled in 20 ms
+   223 compiler: shader compiled in 40 ms
+   224 compiler: program compiled in 160 ms, OGLES2Cache:6b5fbe0be63be976328de3d6.v3dp
+   225 glLinkProgram: OGLES2Cache:6b5fbe0be63be976328de3d6.v3dp (5 variants, 736 bytes of code)
+   226 glGetIntegerv: pname 0x821B not supported yet
+   227 compiler: shader compiled in 40 ms
+   228 compiler: shader compiled in 40 ms
+   229 compiler: program compiled in 160 ms, OGLES2Cache:d5d9c57157d57c0de786f3ae.v3dp
+   230 glLinkProgram: OGLES2Cache:d5d9c57157d57c0de786f3ae.v3dp (5 variants, 704 bytes of code)
+   231 glGetIntegerv: pname 0x821B not supported yet
+   232 compiler: shader compiled in 20 ms
+   233 compiler: shader compiled in 40 ms
+   234 compiler: program compiled in 200 ms, OGLES2Cache:f4c396f095413a31c25cf9cf.v3dp
+   235 glLinkProgram: OGLES2Cache:f4c396f095413a31c25cf9cf.v3dp (5 variants, 504 bytes of code)
+   236 glGetIntegerv: pname 0x821B not supported yet
+   237 compiler: shader compiled in 40 ms
+   238 compiler: shader compiled in 40 ms
+   239 compiler: program compiled in 160 ms, OGLES2Cache:bbd8ae831537a6d38cbaaeca.v3dp
+   240 glLinkProgram: OGLES2Cache:bbd8ae831537a6d38cbaaeca.v3dp (5 variants, 496 bytes of code)
+   241 glGetIntegerv: pname 0x821B not supported yet
+   242 compiler: shader compiled in 40 ms
+   243 compiler: shader compiled in 40 ms
+   244 compiler: program compiled in 120 ms, OGLES2Cache:a4ec5b8c4b64ae18ea92a0f4.v3dp
+   245 glLinkProgram: OGLES2Cache:a4ec5b8c4b64ae18ea92a0f4.v3dp (5 variants, 536 bytes of code)
+   246 glGetIntegerv: pname 0x821B not supported yet
+   247 compiler: shader compiled in 40 ms
+   248 compiler: shader compiled in 40 ms
+   249 compiler: program compiled in 160 ms, OGLES2Cache:731d945fc3fde39bdcc9e397.v3dp
+   250 glLinkProgram: OGLES2Cache:731d945fc3fde39bdcc9e397.v3dp (5 variants, 496 bytes of code)
+   251 glGetIntegerv: pname 0x821B not supported yet
+   252 compiler: shader compiled in 20 ms
+   253 compiler: shader compiled in 40 ms
+   254 compiler: program compiled in 160 ms, OGLES2Cache:f4e26d4e0cd19428ada3eb66.v3dp
+   255 glLinkProgram: OGLES2Cache:f4e26d4e0cd19428ada3eb66.v3dp (5 variants, 488 bytes of code)
+   256 glGetIntegerv: pname 0x821B not supported yet
+   257 compiler: shader compiled in 20 ms
+   258 compiler: shader compiled in 40 ms
+   259 compiler: program compiled in 200 ms, OGLES2Cache:8d71dfd1ed1ac09e73b049e3.v3dp
+   260 glLinkProgram: OGLES2Cache:8d71dfd1ed1ac09e73b049e3.v3dp (5 variants, 728 bytes of code)
+   261 glGetIntegerv: pname 0x821B not supported yet
+   262 compiler: shader compiled in 20 ms
+   263 compiler: shader compiled in 40 ms
+   264 compiler: program compiled in 160 ms, OGLES2Cache:ced42fffb7874e36f633ebdd.v3dp
+   265 glLinkProgram: OGLES2Cache:ced42fffb7874e36f633ebdd.v3dp (5 variants, 488 bytes of code)
+   266 glGetIntegerv: pname 0x821B not supported yet
+   267 compiler: shader compiled in 20 ms
+   268 compiler: shader compiled in 40 ms
+   269 compiler: program compiled in 160 ms, OGLES2Cache:f6ccba50ef43a2d896ca91d9.v3dp
+   270 glLinkProgram: OGLES2Cache:f6ccba50ef43a2d896ca91d9.v3dp (5 variants, 512 bytes of code)
+   271 glGetIntegerv: pname 0x821B not supported yet
+   272 compiler: shader compiled in 40 ms
+   273 compiler: shader compiled in 20 ms
+   274 compiler: program compiled in 120 ms, OGLES2Cache:3a214909636601364606a9da.v3dp
+   275 glLinkProgram: OGLES2Cache:3a214909636601364606a9da.v3dp (5 variants, 488 bytes of code)
+   276 glGetIntegerv: pname 0x821B not supported yet
+   277 compiler: shader compiled in 20 ms
+   278 compiler: shader compiled in 40 ms
+   279 compiler: program compiled in 140 ms, OGLES2Cache:8dd6854618e0b6e023d5efb9.v3dp
+   280 glLinkProgram: OGLES2Cache:8dd6854618e0b6e023d5efb9.v3dp (5 variants, 584 bytes of code)
+   281 glGetIntegerv: pname 0x821B not supported yet
+   282 compiler: shader compiled in 20 ms
+   283 compiler: shader compiled in 20 ms
+   284 compiler: program compiled in 140 ms, OGLES2Cache:1425093f754c8b93fbf5d58b.v3dp
+   285 glLinkProgram: OGLES2Cache:1425093f754c8b93fbf5d58b.v3dp (5 variants, 656 bytes of code)
+   286 glGetIntegerv: pname 0x821B not supported yet
+   287 compiler: shader compiled in 20 ms
+   288 compiler: shader compiled in 20 ms
+   289 compiler: program compiled in 100 ms, OGLES2Cache:3b139eb6fc8faa39c206e9e9.v3dp
+   290 glLinkProgram: OGLES2Cache:3b139eb6fc8faa39c206e9e9.v3dp (5 variants, 512 bytes of code)
+   291 glGetIntegerv: pname 0x821B not supported yet
+   292 compiler: shader compiled in 20 ms
+   293 compiler: shader compiled in 20 ms
+   294 compiler: program compiled in 140 ms, OGLES2Cache:6e0958d2378d0c20b6ac6fd3.v3dp
+   295 glLinkProgram: OGLES2Cache:6e0958d2378d0c20b6ac6fd3.v3dp (5 variants, 504 bytes of code)
+   296 glGetIntegerv: pname 0x821B not supported yet
+   297 compiler: shader compiled in 40 ms
+   298 compiler: shader compiled in 40 ms
+   299 compiler: program compiled in 160 ms, OGLES2Cache:f2699807280e4205798cb49e.v3dp
+   300 glLinkProgram: OGLES2Cache:f2699807280e4205798cb49e.v3dp (5 variants, 568 bytes of code)
+   301 glGetIntegerv: pname 0x821B not supported yet
+   302 compiler: shader compiled in 40 ms
+   303 compiler: shader compiled in 40 ms
+   304 compiler: program compiled in 160 ms, OGLES2Cache:9179a6d42baf3e57fe83b9ed.v3dp
+   305 glLinkProgram: OGLES2Cache:9179a6d42baf3e57fe83b9ed.v3dp (5 variants, 512 bytes of code)
+   306 glGetIntegerv: pname 0x821B not supported yet
+   307 compiler: shader compiled in 40 ms
+   308 compiler: shader compiled in 40 ms
+   309 compiler: program compiled in 200 ms, OGLES2Cache:5763310456f8fe457f79d3d7.v3dp
+   310 glLinkProgram: OGLES2Cache:5763310456f8fe457f79d3d7.v3dp (5 variants, 952 bytes of code)
+   311 glGetIntegerv: pname 0x821B not supported yet
+   312 compiler: shader compiled in 40 ms
+   313 compiler: shader compiled in 40 ms
+   314 compiler: program compiled in 160 ms, OGLES2Cache:0cb55876174d1ea505c588fb.v3dp
+   315 glLinkProgram: OGLES2Cache:0cb55876174d1ea505c588fb.v3dp (5 variants, 512 bytes of code)
+   316 glGetIntegerv: pname 0x821B not supported yet
+   317 compiler: shader compiled in 40 ms
+   318 compiler: shader compiled in 40 ms
+   319 compiler: program compiled in 160 ms, OGLES2Cache:b748a645e3ea7f2658fc002e.v3dp
+   320 glLinkProgram: OGLES2Cache:b748a645e3ea7f2658fc002e.v3dp (5 variants, 488 bytes of code)
+   321 glGetIntegerv: pname 0x821B not supported yet
+   322 compiler: shader compiled in 20 ms
+   323 compiler: shader compiled in 40 ms
+   324 compiler: program compiled in 160 ms, OGLES2Cache:d95a04f6f46347776036659b.v3dp
+   325 glLinkProgram: OGLES2Cache:d95a04f6f46347776036659b.v3dp (5 variants, 488 bytes of code)
+   326 glGetIntegerv: pname 0x821B not supported yet
+   327 compiler: shader compiled in 40 ms
+   328 compiler: shader compiled in 40 ms
+   329 compiler: program compiled in 200 ms, OGLES2Cache:9de49a7cd9c5a8824657311c.v3dp
+   330 glLinkProgram: OGLES2Cache:9de49a7cd9c5a8824657311c.v3dp (5 variants, 744 bytes of code)
+   331 glGetIntegerv: pname 0x821B not supported yet
+   332 compiler: shader compiled in 40 ms
+   333 compiler: shader compiled in 40 ms
+   334 compiler: program compiled in 120 ms, OGLES2Cache:86038c4c53a084762e857abd.v3dp
+   335 glLinkProgram: OGLES2Cache:86038c4c53a084762e857abd.v3dp (5 variants, 536 bytes of code)
+   336 glGetIntegerv: pname 0x821B not supported yet
+   337 compiler: shader compiled in 20 ms
+   338 compiler: shader compiled in 40 ms
+   339 compiler: program compiled in 120 ms, OGLES2Cache:d96ca9f5364522602c8026f8.v3dp
+   340 glLinkProgram: OGLES2Cache:d96ca9f5364522602c8026f8.v3dp (5 variants, 512 bytes of code)
+   341 glGetIntegerv: pname 0x821B not supported yet
+   342 compiler: shader compiled in 40 ms
+   343 compiler: shader compiled in 40 ms
+   344 compiler: program compiled in 120 ms, OGLES2Cache:87928daad40f2b1a73c983bd.v3dp
+   345 glLinkProgram: OGLES2Cache:87928daad40f2b1a73c983bd.v3dp (5 variants, 512 bytes of code)
+   346 glGetIntegerv: pname 0x821B not supported yet
+   347 compiler: shader compiled in 20 ms
+   348 compiler: shader compiled in 40 ms
+   349 compiler: program compiled in 120 ms, OGLES2Cache:7615d220fe6532de539a26e1.v3dp
+   350 glLinkProgram: OGLES2Cache:7615d220fe6532de539a26e1.v3dp (5 variants, 488 bytes of code)
+   351 glGetIntegerv: pname 0x821B not supported yet
+   352 compiler: shader compiled in 20 ms
+   353 compiler: shader compiled in 40 ms
+   354 compiler: program compiled in 120 ms, OGLES2Cache:fafe26e2c3871bef2ad6b477.v3dp
+   355 glLinkProgram: OGLES2Cache:fafe26e2c3871bef2ad6b477.v3dp (5 variants, 512 bytes of code)
+   356 glGetIntegerv: pname 0x821B not supported yet
+   357 compiler: shader compiled in 20 ms
+   358 compiler: shader compiled in 40 ms
+   359 compiler: program compiled in 160 ms, OGLES2Cache:10ee9d7af046fe436bbc85ba.v3dp
+   360 glLinkProgram: OGLES2Cache:10ee9d7af046fe436bbc85ba.v3dp (5 variants, 608 bytes of code)
+   361 glGetIntegerv: pname 0x821B not supported yet
+   362 compiler: shader compiled in 40 ms
+   363 compiler: shader compiled in 40 ms
+   364 compiler: program compiled in 160 ms, OGLES2Cache:461be4564a26c87425a08a7d.v3dp
+   365 glLinkProgram: OGLES2Cache:461be4564a26c87425a08a7d.v3dp (5 variants, 560 bytes of code)
+   366 glGetIntegerv: pname 0x821B not supported yet
+   367 compiler: shader compiled in 20 ms
+   368 compiler: shader compiled in 40 ms
+   369 compiler: program compiled in 200 ms, OGLES2Cache:12754aad19e3ae70a6245eb4.v3dp
+   370 glLinkProgram: OGLES2Cache:12754aad19e3ae70a6245eb4.v3dp (5 variants, 744 bytes of code)
+   371 glGetIntegerv: pname 0x821B not supported yet
+   372 compiler: shader compiled in 20 ms
+   373 compiler: shader compiled in 40 ms
+   374 compiler: program compiled in 120 ms, OGLES2Cache:3e3b665f6f18e21e6e744f59.v3dp
+   375 glLinkProgram: OGLES2Cache:3e3b665f6f18e21e6e744f59.v3dp (5 variants, 536 bytes of code)
+   376 glGetIntegerv: pname 0x821B not supported yet
+   377 compiler: shader compiled in 20 ms
+   378 compiler: shader compiled in 40 ms
+   379 compiler: program compiled in 160 ms, OGLES2Cache:45491d3936b526f19bb43ea6.v3dp
+   380 glLinkProgram: OGLES2Cache:45491d3936b526f19bb43ea6.v3dp (5 variants, 488 bytes of code)
+   381 glGetIntegerv: pname 0x821B not supported yet
+   382 compiler: shader compiled in 40 ms
+   383 compiler: program compiled in 120 ms, OGLES2Cache:7a9f4b5dba9007b297963b46.v3dp
+   384 glLinkProgram: OGLES2Cache:7a9f4b5dba9007b297963b46.v3dp (5 variants, 512 bytes of code)
+   385 glGetIntegerv: pname 0x821B not supported yet
+   386 compiler: shader compiled in 20 ms
+   387 compiler: shader compiled in 20 ms
+   388 compiler: program compiled in 100 ms, OGLES2Cache:69f5ffde8e7b155202af363d.v3dp
+   389 glLinkProgram: OGLES2Cache:69f5ffde8e7b155202af363d.v3dp (5 variants, 536 bytes of code)
+   390 glGetIntegerv: pname 0x821B not supported yet
+   391 compiler: shader compiled in 20 ms
+   392 compiler: shader compiled in 20 ms
+   393 compiler: program compiled in 140 ms, OGLES2Cache:98330cb9a98c8613ccf5cc81.v3dp
+   394 glLinkProgram: OGLES2Cache:98330cb9a98c8613ccf5cc81.v3dp (5 variants, 728 bytes of code)
+   395 glGetIntegerv: pname 0x821B not supported yet
+   396 compiler: shader compiled in 20 ms
+   397 compiler: shader compiled in 40 ms
+   398 compiler: program compiled in 160 ms, OGLES2Cache:fbd9335bc8754a5e83c3e827.v3dp
+   399 glLinkProgram: OGLES2Cache:fbd9335bc8754a5e83c3e827.v3dp (5 variants, 512 bytes of code)
+   400 glGetIntegerv: pname 0x821B not supported yet
+   401 compiler: shader compiled in 40 ms
+   402 compiler: shader compiled in 40 ms
+   403 compiler: program compiled in 160 ms, OGLES2Cache:f897afd25e3cba5bea4f3b97.v3dp
+   404 glLinkProgram: OGLES2Cache:f897afd25e3cba5bea4f3b97.v3dp (5 variants, 512 bytes of code)
+   405 glGetIntegerv: pname 0x821B not supported yet
+   406 compiler: shader compiled in 40 ms
+   407 compiler: shader compiled in 40 ms
+   408 compiler: program compiled in 160 ms, OGLES2Cache:6a53311f22dd96e8136ed3d9.v3dp
+   409 glLinkProgram: OGLES2Cache:6a53311f22dd96e8136ed3d9.v3dp (5 variants, 512 bytes of code)
+   410 glGetIntegerv: pname 0x821B not supported yet
+   411 compiler: shader compiled in 40 ms
+   412 compiler: shader compiled in 40 ms
+   413 compiler: program compiled in 160 ms, OGLES2Cache:45268f8e566e2831a09a59f5.v3dp
+   414 glLinkProgram: OGLES2Cache:45268f8e566e2831a09a59f5.v3dp (5 variants, 488 bytes of code)
+   415 glGetIntegerv: pname 0x821B not supported yet
+   416 compiler: shader compiled in 40 ms
+   417 compiler: shader compiled in 40 ms
+   418 compiler: program compiled in 160 ms, OGLES2Cache:21aa7be72b0c3d2c49692fc6.v3dp
+   419 glLinkProgram: OGLES2Cache:21aa7be72b0c3d2c49692fc6.v3dp (5 variants, 488 bytes of code)
+   420 glGetIntegerv: pname 0x821B not supported yet
+   421 compiler: shader compiled in 20 ms
+   422 compiler: shader compiled in 40 ms
+   423 compiler: program compiled in 160 ms, OGLES2Cache:b830bc5c207011d08777430f.v3dp
+   424 glLinkProgram: OGLES2Cache:b830bc5c207011d08777430f.v3dp (5 variants, 680 bytes of code)
+   425 glGetIntegerv: pname 0x821B not supported yet
+   426 compiler: shader compiled in 20 ms
+   427 compiler: shader compiled in 40 ms
+   428 compiler: program compiled in 160 ms, OGLES2Cache:e1f79b6a409b608518826b46.v3dp
+   429 glLinkProgram: OGLES2Cache:e1f79b6a409b608518826b46.v3dp (5 variants, 512 bytes of code)
+   430 glGetIntegerv: pname 0x821B not supported yet
+   431 compiler: shader compiled in 40 ms
+   432 compiler: shader compiled in 40 ms
+   433 compiler: program compiled in 200 ms, OGLES2Cache:d89e3bfbc2342abc681b02ce.v3dp
+   434 glLinkProgram: OGLES2Cache:d89e3bfbc2342abc681b02ce.v3dp (5 variants, 688 bytes of code)
+   435 glGetIntegerv: pname 0x821B not supported yet
+   436 compiler: shader compiled in 20 ms
+   437 compiler: shader compiled in 40 ms
+   438 compiler: program compiled in 160 ms, OGLES2Cache:27997646671da1450885b537.v3dp
+   439 glLinkProgram: OGLES2Cache:27997646671da1450885b537.v3dp (5 variants, 776 bytes of code)
+   440 glGetIntegerv: pname 0x821B not supported yet
+   441 compiler: shader compiled in 40 ms
+   442 compiler: shader compiled in 40 ms
+   443 compiler: program compiled in 160 ms, OGLES2Cache:a31660d417eb6b87610dbad9.v3dp
+   444 glLinkProgram: OGLES2Cache:a31660d417eb6b87610dbad9.v3dp (5 variants, 504 bytes of code)
+   445 glGetIntegerv: pname 0x821B not supported yet
+   446 compiler: shader compiled in 20 ms
+   447 compiler: shader compiled in 40 ms
+   448 compiler: program compiled in 160 ms, OGLES2Cache:2f188a94151fff539f8d6c67.v3dp
+   449 glLinkProgram: OGLES2Cache:2f188a94151fff539f8d6c67.v3dp (5 variants, 488 bytes of code)
+   450 glGetIntegerv: pname 0x821B not supported yet
+   451 compiler: shader compiled in 40 ms
+   452 compiler: shader compiled in 40 ms
+   453 compiler: program compiled in 200 ms, OGLES2Cache:706fd4070c38bd785fbee0e5.v3dp
+   454 glLinkProgram: OGLES2Cache:706fd4070c38bd785fbee0e5.v3dp (5 variants, 680 bytes of code)
+   455 glGetIntegerv: pname 0x821B not supported yet
+   456 compiler: shader compiled in 20 ms
+   457 compiler: shader compiled in 40 ms
+   458 compiler: program compiled in 160 ms, OGLES2Cache:3c134b78028efbb4ff839e36.v3dp
+   459 glLinkProgram: OGLES2Cache:3c134b78028efbb4ff839e36.v3dp (5 variants, 512 bytes of code)
+   460 glGetIntegerv: pname 0x821B not supported yet
+   461 compiler: shader compiled in 20 ms
+   462 compiler: shader compiled in 40 ms
+   463 compiler: program compiled in 160 ms, OGLES2Cache:f24abd1ae6ba79fbb03b938a.v3dp
+   464 glLinkProgram: OGLES2Cache:f24abd1ae6ba79fbb03b938a.v3dp (5 variants, 536 bytes of code)
+   465 glGetIntegerv: pname 0x821B not supported yet
+   466 compiler: shader compiled in 40 ms
+   467 compiler: shader compiled in 40 ms
+   468 compiler: program compiled in 120 ms, OGLES2Cache:bb7e3fccdd1478e9668ff4c2.v3dp
+   469 glLinkProgram: OGLES2Cache:bb7e3fccdd1478e9668ff4c2.v3dp (5 variants, 536 bytes of code)
+   470 glGetIntegerv: pname 0x821B not supported yet
+   471 compiler: shader compiled in 20 ms
+   472 compiler: shader compiled in 20 ms
+   473 compiler: program compiled in 160 ms, OGLES2Cache:7b01f763501a6b0263ebd931.v3dp
+   474 glLinkProgram: OGLES2Cache:7b01f763501a6b0263ebd931.v3dp (5 variants, 560 bytes of code)
+   475 glGetIntegerv: pname 0x821B not supported yet
+   476 compiler: shader compiled in 20 ms
+   477 compiler: shader compiled in 40 ms
+   478 compiler: program compiled in 160 ms, OGLES2Cache:1b6a6c21cb1a2d351c3e80cd.v3dp
+   479 glLinkProgram: OGLES2Cache:1b6a6c21cb1a2d351c3e80cd.v3dp (5 variants, 536 bytes of code)
+   480 glGetIntegerv: pname 0x821B not supported yet
+   481 compiler: shader compiled in 20 ms
+   482 compiler: shader compiled in 20 ms
+   483 compiler: program compiled in 140 ms, OGLES2Cache:65f871b1d8cdfb5719e4d3e7.v3dp
+   484 glLinkProgram: OGLES2Cache:65f871b1d8cdfb5719e4d3e7.v3dp (5 variants, 488 bytes of code)
+   485 glGetIntegerv: pname 0x821B not supported yet
+   486 compiler: shader compiled in 20 ms
+   487 compiler: shader compiled in 20 ms
+   488 compiler: program compiled in 140 ms, OGLES2Cache:591e4e818ebe5aff064241a4.v3dp
+   489 glLinkProgram: OGLES2Cache:591e4e818ebe5aff064241a4.v3dp (5 variants, 584 bytes of code)
+   490 glGetIntegerv: pname 0x821B not supported yet
+   491 compiler: shader compiled in 20 ms
+   492 compiler: shader compiled in 20 ms
+   493 compiler: program compiled in 140 ms, OGLES2Cache:ac434c67e0d2c7b30cd1ae4e.v3dp
+   494 glLinkProgram: OGLES2Cache:ac434c67e0d2c7b30cd1ae4e.v3dp (5 variants, 512 bytes of code)
+   495 glGetIntegerv: pname 0x821B not supported yet
+   496 compiler: shader compiled in 20 ms
+   497 compiler: shader compiled in 40 ms
+   498 compiler: program compiled in 120 ms, OGLES2Cache:43f2844d891e087a3fefc350.v3dp
+   499 glLinkProgram: OGLES2Cache:43f2844d891e087a3fefc350.v3dp (5 variants, 512 bytes of code)
+   500 glGetIntegerv: pname 0x821B not supported yet
+   501 compiler: shader compiled in 40 ms
+   502 compiler: shader compiled in 40 ms
+   503 compiler: program compiled in 120 ms, OGLES2Cache:073b873f1853f0d87d3376bb.v3dp
+   504 glLinkProgram: OGLES2Cache:073b873f1853f0d87d3376bb.v3dp (5 variants, 536 bytes of code)
+   505 glGetIntegerv: pname 0x821B not supported yet
+   506 compiler: shader compiled in 40 ms
+   507 compiler: shader compiled in 40 ms
+   508 compiler: program compiled in 240 ms, OGLES2Cache:78ded698bf75c698a3ba1088.v3dp
+   509 glLinkProgram: OGLES2Cache:78ded698bf75c698a3ba1088.v3dp (5 variants, 1072 bytes of code)
+   510 glGetIntegerv: pname 0x821B not supported yet
+   511 compiler: shader compiled in 40 ms
+   512 compiler: shader compiled in 40 ms
+   513 compiler: program compiled in 160 ms, OGLES2Cache:28221c42de8d009cae707854.v3dp
+   514 glLinkProgram: OGLES2Cache:28221c42de8d009cae707854.v3dp (5 variants, 512 bytes of code)
+   515 glGetIntegerv: pname 0x821B not supported yet
+   516 compiler: shader compiled in 40 ms
+   517 compiler: shader compiled in 40 ms
+   518 compiler: program compiled in 120 ms, OGLES2Cache:4906a0ca2e4bbfed5e3052a5.v3dp
+   519 glLinkProgram: OGLES2Cache:4906a0ca2e4bbfed5e3052a5.v3dp (5 variants, 512 bytes of code)
+   520 glGetIntegerv: pname 0x821B not supported yet
+   521 compiler: shader compiled in 40 ms
+   522 compiler: shader compiled in 40 ms
+   523 compiler: program compiled in 120 ms, OGLES2Cache:070eddbe3884b36647a65526.v3dp
+   524 glLinkProgram: OGLES2Cache:070eddbe3884b36647a65526.v3dp (5 variants, 512 bytes of code)
+   525 glGetIntegerv: pname 0x821B not supported yet
+   526 compiler: shader compiled in 40 ms
+   527 compiler: shader compiled in 40 ms
+   528 compiler: program compiled in 120 ms, OGLES2Cache:ade824ef9ee03117b76a0656.v3dp
+   529 glLinkProgram: OGLES2Cache:ade824ef9ee03117b76a0656.v3dp (5 variants, 608 bytes of code)
+   530 glGetIntegerv: pname 0x821B not supported yet
+   531 compiler: shader compiled in 20 ms
+   532 compiler: shader compiled in 40 ms
+   533 compiler: program compiled in 140 ms, OGLES2Cache:2cc5c0a5380c64bdc777b34d.v3dp
+   534 glLinkProgram: OGLES2Cache:2cc5c0a5380c64bdc777b34d.v3dp (5 variants, 512 bytes of code)
+   535 glGetIntegerv: pname 0x821B not supported yet
+   536 compiler: shader compiled in 20 ms
+   537 compiler: shader compiled in 40 ms
+   538 compiler: program compiled in 160 ms, OGLES2Cache:524815185cbf84cd661104a8.v3dp
+   539 glLinkProgram: OGLES2Cache:524815185cbf84cd661104a8.v3dp (5 variants, 624 bytes of code)
+   540 glGetIntegerv: pname 0x821B not supported yet
+   541 compiler: shader compiled in 20 ms
+   542 compiler: shader compiled in 40 ms
+   543 compiler: program compiled in 200 ms, OGLES2Cache:f2a887a3af13f21dadafd33f.v3dp
+   544 glLinkProgram: OGLES2Cache:f2a887a3af13f21dadafd33f.v3dp (5 variants, 624 bytes of code)
+   545 glGetIntegerv: pname 0x821B not supported yet
+   546 compiler: shader compiled in 40 ms
+   547 compiler: shader compiled in 40 ms
+   548 compiler: program compiled in 160 ms, OGLES2Cache:676f8dde1e5a8221701c6cc1.v3dp
+   549 glLinkProgram: OGLES2Cache:676f8dde1e5a8221701c6cc1.v3dp (5 variants, 536 bytes of code)
+   550 aglDestroyContext: context 0x08FD4C8C: freeing
+   551 device: context freed, 0 bytes of GPU memory still in use
+   552 aglDestroyContext: context 0x08FD4C8C (4988 frames, 0 dropped, 0 binning blocks added)
+   553 timing: 4988 jobs, each on average: 6600 us of CPU work before its flush, 26 us waiting for binning, 179 us for the render
+   554 timing: and in each flush 61 us building the render list, 78 us for the CPU cache before the GPU, 58 us after
+   555 timing: 4971 swaps, 97359 us from one to the next on average, 381 us of it presenting
+   556 timing: per frame 38 draws, 563 us in them; in all 0 ms in glBuffer(Sub)Data, 272 ms in glTex(Sub)Image2D

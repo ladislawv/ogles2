@@ -20,6 +20,30 @@
 static const char *out_dir; /* -o: write .v3dp files here */
 #endif
 
+/* glBindAttribLocation's bindings for the next link (V3DGLSL_LINK_BOUND):
+ * "<index> <name>\n" lines; NULL: none. */
+static const char *link_bindings;
+
+static void apply_bindings(GLuint p, const char *b)
+{
+    char name[256];
+    while (b && *b) {
+        unsigned long index = strtoul(b, (char **)&b, 10);
+        size_t n = 0;
+        while (*b == ' ')
+            b++;
+        while (*b && *b != '\n' && n + 1 < sizeof(name))
+            name[n++] = *b++;
+        name[n] = 0;
+        while (*b && *b != '\n')
+            b++;
+        if (*b == '\n')
+            b++;
+        if (n)
+            glBindAttribLocation(p, (GLuint)index, name);
+    }
+}
+
 static char *load_text(const char *path)
 {
     FILE *f = fopen(path, "rb");
@@ -99,6 +123,7 @@ static int link_pair(const char *vs_label, const char *fs_label, const char *vs_
     p = glCreateProgram();
     glAttachShader(p, vs);
     glAttachShader(p, fs);
+    apply_bindings(p, link_bindings);
     glLinkProgram(p);
     glGetProgramiv(p, GL_LINK_STATUS, &ok);
     info[0] = 0;

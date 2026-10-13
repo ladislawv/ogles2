@@ -260,10 +260,20 @@ void ogles2_job_clear(struct OGLES2Context *ctx, GLbitfield mask)
         v->clear_color_value = ((v3d_u32)to_byte(c[3]) << 24) | ((v3d_u32)to_byte(c[0]) << 16) |
                                ((v3d_u32)to_byte(c[1]) << 8) | to_byte(c[2]); /* ARGB */
     }
+    /* The tile buffer clears depth and stencil together; each keeps the
+     * value of the last glClear that named it (a stencil clear after a full
+     * one must not take the newer glClearDepthf, dEQP depth_stencil_clear).
+     * Before the job's first such clear neither holds anything yet. */
     if (mask & (GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)) {
+        if (!v->pending_clear_depth) {
+            v->clear_depth_value = 1.0f;
+            ctx->job_clear_stencil = 0;
+        }
         v->pending_clear_depth = TRUE;
-        v->clear_depth_value = ctx->state.clear_depth;
-        ctx->job_clear_stencil = (UBYTE)ctx->state.clear_stencil; /* the low 8 bits (GLES 2.0 4.2.3) */
+        if (mask & GL_DEPTH_BUFFER_BIT)
+            v->clear_depth_value = ctx->state.clear_depth;
+        if (mask & GL_STENCIL_BUFFER_BIT)
+            ctx->job_clear_stencil = (UBYTE)ctx->state.clear_stencil; /* the low 8 bits (GLES 2.0 4.2.3) */
     }
 }
 

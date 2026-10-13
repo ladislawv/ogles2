@@ -1,0 +1,16 @@
+diff --git a/framework/common/tcuImageIO.cpp b/framework/common/tcuImageIO.cpp
+--- a/framework/common/tcuImageIO.cpp
++++ b/framework/common/tcuImageIO.cpp
+@@ -211,9 +211,9 @@
+ 
+ static inline uint16_t readBigEndianShort(tcu::Resource *resource)
+ {
+-    uint16_t val;
+-    resource->read((uint8_t *)&val, sizeof(val));
+-    return (uint16_t)(((val >> 8) & 0xFF) | ((val << 8) & 0xFF00));
++    uint8_t b[2];
++    resource->read(b, 2);
++    return (uint16_t)((b[0] << 8) | b[1]);
+ }
+ 
+ /*--------------------------------------------------------------------*//*!

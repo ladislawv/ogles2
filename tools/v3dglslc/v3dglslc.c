@@ -39,6 +39,7 @@
 #define glGetProgramInfoLog  _mesa_GetProgramInfoLog
 #define glDeleteShader       _mesa_DeleteShader
 #define glDeleteProgram      _mesa_DeleteProgram
+#define glBindAttribLocation _mesa_BindAttribLocation
 #define V3DC_WRITER
 static void program_path(char *out, size_t size, const char *vs_path, const char *fs_path);
 static int write_program(GLuint p, const char *path, const char *vs_src, const char *fs_src);
@@ -312,19 +313,23 @@ static int write_program(GLuint p, const char *path, const char *vs_src, const c
 {
     GET_CURRENT_CONTEXT(ctx);
     struct gl_shader_program *prog = _mesa_lookup_shader_program(ctx, p);
-    static const unsigned stages[2] = { MESA_SHADER_VERTEX, MESA_SHADER_FRAGMENT };
-    const char *sources[2];
+    /* The bindings of a V3DGLSL_LINK_BOUND request are hashed as a third
+     * "source" (v3dp/FORMAT.md, PROGRAM). */
+    static const unsigned stages[3] = { MESA_SHADER_VERTEX, MESA_SHADER_FRAGMENT, V3DP_HASH_BINDINGS };
+    const char *sources[3];
+    unsigned nsrc = link_bindings ? 3 : 2;
     int drawn;
 
     if (!prog)
         return 0;
     sources[0] = vs_src;
     sources[1] = fs_src;
+    sources[2] = link_bindings;
     if (write_mode != WRITE_WIDE) {
         v3dp_capture_begin();
         drawn = draw_key_states(p, 0);
         v3dp_capture_end();
-        if (!drawn || v3dp_write(path, prog, 2, stages, sources) != 0)
+        if (!drawn || v3dp_write(path, prog, nsrc, stages, sources) != 0)
             return 0;
     }
     /* The 32-bit-sampler variants. After the plain draws the driver
@@ -343,7 +348,7 @@ static int write_program(GLuint p, const char *path, const char *vs_src, const c
         v3dp_capture_begin();
         drawn = draw_key_states(p, 1);
         v3dp_capture_end();
-        if (!drawn || v3dp_write(wpath, prog, 2, stages, sources) != 0)
+        if (!drawn || v3dp_write(wpath, prog, nsrc, stages, sources) != 0)
             return 0;
     } else if (write_mode == WRITE_WIDE) {
         return 0; /* nothing samples: no such file */
@@ -395,8 +400,10 @@ static int serve(void)
                 r->log[0] = 0;
             if (r->version != V3DGLSL_VERSION ||
                 (r->op != V3DGLSL_LINK && r->op != V3DGLSL_QUIT && r->op != V3DGLSL_COMPILE &&
-                 r->op != V3DGLSL_LINK32) ||
-                ((r->op == V3DGLSL_LINK || r->op == V3DGLSL_LINK32) && (!r->vs || !r->fs || !r->out_path)) ||
+                 r->op != V3DGLSL_LINK32 && r->op != V3DGLSL_LINK_BOUND) ||
+                ((r->op == V3DGLSL_LINK || r->op == V3DGLSL_LINK32 || r->op == V3DGLSL_LINK_BOUND) &&
+                 (!r->vs || !r->fs || !r->out_path)) ||
+                (r->op == V3DGLSL_LINK_BOUND && !r->bindings) ||
                 (r->op == V3DGLSL_COMPILE && !r->vs == !r->fs)) {
                 log_add(r->log, r->log_size, "the compiler does not understand this request", NULL);
                 r->result = 3;
@@ -417,8 +424,10 @@ static int serve(void)
                 r->result = ok ? 0 : 1;
             } else {
                 write_mode = r->op == V3DGLSL_LINK32 ? WRITE_WIDE : WRITE_PLAIN;
+                link_bindings = r->op == V3DGLSL_LINK_BOUND ? r->bindings : NULL;
                 r->result = link_pair("vertex shader", "fragment shader", r->vs, r->fs, r->out_path,
                                       r->log, r->log_size) ? 0 : 1;
+                link_bindings = NULL;
                 served++;
             }
             done(r);
@@ -510,6 +519,18 @@ int main(int argc, char **argv)
     if (!st_api_make_current(st, NULL, NULL)) {
         fprintf(stderr, "v3dglslc: st_api_make_current failed\n");
         return 20;
+    }
+    /* ogles2.library's limits, which its GL queries report too (GLSL's
+     * gl_Max* constants must equal them: dEQP-GLES2 builtin_variable): one
+     * draw buffer (no EXT_draw_buffers: gl_FragData[1] does not compile), 16
+     * texture units in each stage and in all (OGLES2_MAX_TEXTURE_UNITS; the
+     * driver offers 24). */
+    {
+        GET_CURRENT_CONTEXT(ctx);
+        ctx->Const.MaxDrawBuffers = 1;
+        ctx->Const.Program[MESA_SHADER_VERTEX].MaxTextureImageUnits = 16;
+        ctx->Const.Program[MESA_SHADER_FRAGMENT].MaxTextureImageUnits = 16;
+        ctx->Const.MaxCombinedTextureImageUnits = 16;
     }
     fprintf(stderr, "v3dglslc: renderer %s\n", (const char *)_mesa_GetString(GL_RENDERER));
 #ifdef __amigaos__

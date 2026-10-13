@@ -1,0 +1,2139 @@
+Writing test log into M7R1:results/fbo.qpa
+dEQP Core unknown (0xcafebabe) starting..
+  target implementation = 'AmigaOS3'
+
+Test case 'dEQP-GLES2.functional.fbo.api.valid_tex2d_attachments'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.valid_texcube_attachments'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.valid_rbo_attachments'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.attach_to_default_fbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.invalid_tex2d_attachments'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.invalid_texcube_attachments'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.invalid_rbo_attachments'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.attach_names'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.texture_levels'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.attachment_query_default_fbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.attachment_query_empty_fbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.attachment_query_tex2d'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.attachment_query_texcube'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.attachment_query_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.delete_tex_2d_attached_to_bound_fbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.delete_tex_cube_attached_to_bound_fbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.delete_rbo_attached_to_bound_fbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.api.delete_tex_2d_attached_to_not_bound_fbo'..
+  Fail (Invalid result for attachment param query)
+
+Test case 'dEQP-GLES2.functional.fbo.api.delete_tex_cube_attached_to_not_bound_fbo'..
+  Fail (Invalid result for attachment param query)
+
+Test case 'dEQP-GLES2.functional.fbo.api.delete_rbo_attached_to_not_bound_fbo'..
+  Fail (Invalid result for attachment param query)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgb565'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgb5_a1'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgba4'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color_clear.rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil_clear.rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_npot_tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_npot_tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_npot_tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_npot_tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_npot_tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.mix_npot_tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_rbo_rgb565'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_rbo_rgb5_a1'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_rbo_rgba4'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_rbo_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_rbo_rgb565'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_rbo_rgb5_a1'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_rbo_rgba4'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_rbo_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.color.blend_npot_rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.npot_tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.npot_tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.npot_tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.npot_rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.npot_rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.npot_rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.depth.npot_rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.stencil.npot_rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer_clear.tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer_clear.tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer_clear.tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:1472)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer_clear.rbo_rgb565'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer_clear.rbo_rgb5_a1'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer_clear.rbo_rgba4'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer_clear.rbo_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:1472)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgb565'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgb5_a1'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgba4'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_colorbuffer.rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.shared_depthbuffer.rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgb565'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgb5_a1'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgba4'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.resize.rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgb565'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgb5_a1'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgba4'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.rebind_rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgb565'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgb5_a1'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgba4'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_bgra'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_colorbuffer.no_rebind_rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.rebind_rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_tex2d_rgb_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_tex2d_rgba_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_tex2d_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_rbo_rgb565_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_rbo_rgb5_a1_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_rbo_rgba4_depth_component16'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_rbo_bgra_depth_component16'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_depthbuffer.no_rebind_rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.rebind_rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_tex2d_rgb_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_tex2d_rgb_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_tex2d_rgba_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_tex2d_rgba_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_tex2d_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_tex2d_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_rbo_rgb565_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_rbo_rgb565_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_rbo_rgb5_a1_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_rbo_rgb5_a1_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_rbo_rgba4_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_rbo_rgba4_depth_component16_stencil_index8'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_rbo_bgra_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.recreate_stencilbuffer.no_rebind_rbo_bgra_depth_component16_stencil_index8'..
+  Fail (Framebuffer is not complete: 'GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT' at es2fFboRenderTest.cpp:554)
+
+Test case 'dEQP-GLES2.functional.fbo.render.texsubimage.after_render_tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.texsubimage.after_render_tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.texsubimage.between_render_tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.texsubimage.between_render_tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.repeated_clear.tex2d_rgb'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.render.repeated_clear.tex2d_rgba'..
+  Fail (glGetError() returned GL_INVALID_ENUM at sglrReferenceContext.cpp:312)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.depth_component_unsigned_short'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.depth_component_unsigned_int'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.red_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.red_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.red_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb_unsigned_short_5_6_5'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb_unsigned_int_10f_11f_11f_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgba_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgba_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgba_unsigned_short_4_4_4_4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgba_unsigned_short_5_5_5_1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgba_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgba_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb10'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgba4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb5_a1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgba8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb10_a2'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.bgra'..
+  Fail (Expected no error but got GL_INVALID_ENUM)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.depth_component16'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.depth_component24'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.depth_component32'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rg_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rg_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rg_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.r8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rg8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.r16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rg16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.depth_stencil_unsigned_int_24_8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgba16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.depth24_stencil8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.r11f_g11f_b10f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.srgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.srgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.srgb_alpha_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.srgb8_alpha8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.stencil_index8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.rgb565'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.sr8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.srg8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.color0.bgra8_ext'..
+  Fail (Expected no error but got GL_INVALID_ENUM)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.depth_component_unsigned_short'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.depth_component_unsigned_int'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.red_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.red_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.red_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb_unsigned_short_5_6_5'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb_unsigned_int_10f_11f_11f_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgba_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgba_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgba_unsigned_short_4_4_4_4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgba_unsigned_short_5_5_5_1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgba_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgba_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb10'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgba4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb5_a1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgba8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb10_a2'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.bgra'..
+  Fail (Expected no error but got GL_INVALID_ENUM)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.depth_component16'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.depth_component24'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.depth_component32'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rg_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rg_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rg_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.r8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rg8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.r16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rg16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.depth_stencil_unsigned_int_24_8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgba16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.depth24_stencil8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.r11f_g11f_b10f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.srgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.srgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.srgb_alpha_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.srgb8_alpha8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.stencil_index8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.rgb565'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.sr8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.srg8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.stencil.bgra8_ext'..
+  Fail (Expected no error but got GL_INVALID_ENUM)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.depth_component_unsigned_short'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.depth_component_unsigned_int'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.red_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.red_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.red_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb_unsigned_short_5_6_5'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb_unsigned_int_10f_11f_11f_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgba_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgba_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgba_unsigned_short_4_4_4_4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgba_unsigned_short_5_5_5_1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgba_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgba_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb10'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgba4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb5_a1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgba8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb10_a2'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.bgra'..
+  Fail (Expected no error but got GL_INVALID_ENUM)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.depth_component16'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.depth_component24'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.depth_component32'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rg_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rg_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rg_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.r8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rg8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.r16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rg16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.depth_stencil_unsigned_int_24_8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgba16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.depth24_stencil8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.r11f_g11f_b10f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.srgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.srgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.srgb_alpha_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.srgb8_alpha8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.stencil_index8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.rgb565'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.sr8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.srg8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.renderbuffer.depth.bgra8_ext'..
+  Fail (Expected no error but got GL_INVALID_ENUM)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.depth_component_unsigned_short'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.depth_component_unsigned_int'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.red_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.red_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.red_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb_unsigned_short_5_6_5'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb_unsigned_int_10f_11f_11f_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgba_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgba_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgba_unsigned_short_4_4_4_4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgba_unsigned_short_5_5_5_1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgba_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgba_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb10'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgba4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb5_a1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgba8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb10_a2'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.bgra'..
+  Fail (Framebuffer checked as incomplete, but with wrong status)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.depth_component16'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.depth_component24'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.depth_component32'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rg_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rg_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rg_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.r8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rg8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.r16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rg16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.depth_stencil_unsigned_int_24_8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgba16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.depth24_stencil8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.r11f_g11f_b10f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.srgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.srgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.srgb_alpha_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.srgb8_alpha8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.stencil_index8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.rgb565'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.sr8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.srg8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.color0.bgra8_ext'..
+  Fail (Expected no error but got GL_INVALID_VALUE)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.depth_component_unsigned_short'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.depth_component_unsigned_int'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.red_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.red_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.red_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb_unsigned_short_5_6_5'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb_unsigned_int_10f_11f_11f_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgba_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgba_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgba_unsigned_short_4_4_4_4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgba_unsigned_short_5_5_5_1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgba_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgba_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb10'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgba4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb5_a1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgba8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb10_a2'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.bgra'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.depth_component16'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.depth_component24'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.depth_component32'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rg_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rg_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rg_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.r8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rg8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.r16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rg16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.depth_stencil_unsigned_int_24_8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgba16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.depth24_stencil8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.r11f_g11f_b10f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.srgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.srgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.srgb_alpha_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.srgb8_alpha8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.stencil_index8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.rgb565'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.sr8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.srg8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.stencil.bgra8_ext'..
+  Fail (Expected no error but got GL_INVALID_VALUE)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.depth_component_unsigned_short'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.depth_component_unsigned_int'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.red_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.red_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.red_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb_unsigned_short_5_6_5'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb_unsigned_int_10f_11f_11f_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgba_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgba_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgba_unsigned_short_4_4_4_4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgba_unsigned_short_5_5_5_1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgba_unsigned_int_2_10_10_10_rev'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgba_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb10'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgba4'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb5_a1'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgba8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb10_a2'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.bgra'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.depth_component16'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.depth_component24'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.depth_component32'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rg_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rg_float'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rg_half_float_oes'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.r8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rg8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.r16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rg16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.depth_stencil_unsigned_int_24_8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgba16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb16f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.depth24_stencil8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.r11f_g11f_b10f'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.srgb_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.srgb8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.srgb_alpha_unsigned_byte'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.srgb8_alpha8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.stencil_index8'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.rgb565'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.sr8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.srg8_ext'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.renderable.texture.depth.bgra8_ext'..
+  Fail (Expected no error but got GL_INVALID_VALUE)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_none_none_none'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_none_none_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_none_none_tex'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_none_rbo_none'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_none_rbo_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_none_rbo_tex'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_none_tex_none'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_none_tex_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_none_tex_tex'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_rbo_none_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_rbo_none_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_rbo_none_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_rbo_rbo_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_rbo_rbo_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_rbo_rbo_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_rbo_tex_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_rbo_tex_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_rbo_tex_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_tex_none_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_tex_none_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_tex_none_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_tex_rbo_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_tex_rbo_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_tex_rbo_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_tex_tex_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_tex_tex_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.none_tex_tex_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_none_none_none'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_none_none_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_none_none_tex'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_none_rbo_none'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_none_rbo_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_none_rbo_tex'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_none_tex_none'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_none_tex_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_none_tex_tex'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_rbo_none_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_rbo_none_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_rbo_none_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_rbo_rbo_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_rbo_rbo_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_rbo_rbo_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_rbo_tex_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_rbo_tex_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_rbo_tex_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_tex_none_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_tex_none_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_tex_none_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_tex_rbo_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_tex_rbo_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_tex_rbo_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_tex_tex_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_tex_tex_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.rbo_tex_tex_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_none_none_none'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_none_none_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_none_none_tex'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_none_rbo_none'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_none_rbo_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_none_rbo_tex'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_none_tex_none'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_none_tex_rbo'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_none_tex_tex'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_rbo_none_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_rbo_none_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_rbo_none_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_rbo_rbo_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_rbo_rbo_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_rbo_rbo_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_rbo_tex_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_rbo_tex_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_rbo_tex_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_tex_none_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_tex_none_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_tex_none_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_tex_rbo_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_tex_rbo_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_tex_rbo_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_tex_tex_none'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_tex_tex_rbo'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.tex_tex_tex_tex'..
+  NotSupported (Multiple attachments not supported: 'm_ctx.haveMultiColorAtts()' at glsFboCompletenessTests.cpp:818)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.attachment_combinations.exists_supported'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.size.zero'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.fbo.completeness.size.distinct'..
+  Pass (Pass)
+
+DONE!
+
+Test run totals:
+  Passed:        323/709 (45.6%)
+  Failed:        332/709 (46.8%)
+  Not supported: 54/709 (7.6%)
+  Warnings:      0/709 (0.0%)
+  Waived:        0/709 (0.0%)

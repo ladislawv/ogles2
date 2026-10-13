@@ -1,0 +1,27 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-case dEQP-GLES2.functional.rasterization.limits.points --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/pts.qpa --deqp-log-images=disable --deqp-log-shader-sources=enable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.limits.points
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.limits.points" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>GL_ALIASED_POINT_SIZE_RANGE is [1, 512]</Text>
+ <Text>Testing with pointSize = 528, fboWidth = 264</Text>
+ <Text>Runtime check failed: &apos;compareThreshold(color, tcu::RGBA::green(), threshold)&apos; at es2fRasterizationTests.cpp:686</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">20508</Number>
+ <Result StatusCode="Fail">Runtime check failed: &apos;compareThreshold(color, tcu::RGBA::green(), threshold)&apos; at es2fRasterizationTests.cpp:686</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 0.11 seconds
+
+#endSession

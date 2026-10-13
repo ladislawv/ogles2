@@ -1,0 +1,60 @@
+Writing test log into M7R1:results/implementation_limits.qpa
+dEQP Core unknown (0xcafebabe) starting..
+  target implementation = 'AmigaOS3'
+
+Test case 'dEQP-GLES2.functional.implementation_limits.subpixel_bits'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_texture_size'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_cube_map_texture_size'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.aliased_point_size_range'..
+  Fail (Query failed: glGetError() returned GL_INVALID_ENUM at es2fImplementationLimitTests.cpp:179)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.aliased_line_width_range'..
+  Fail (Query failed: glGetError() returned GL_INVALID_ENUM at es2fImplementationLimitTests.cpp:179)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.num_compressed_texture_formats'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.num_shader_binary_formats'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.shader_compiler'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_vertex_attribs'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_vertex_uniform_vectors'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_varying_vectors'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_combined_texture_image_units'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_vertex_texture_image_units'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_texture_image_units'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_fragment_uniform_vectors'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.implementation_limits.max_renderbuffer_size'..
+  Pass (Pass)
+
+DONE!
+
+Test run totals:
+  Passed:        14/16 (87.5%)
+  Failed:        2/16 (12.5%)
+  Not supported: 0/16 (0.0%)
+  Warnings:      0/16 (0.0%)
+  Waived:        0/16 (0.0%)

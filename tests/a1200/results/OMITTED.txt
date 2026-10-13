@@ -10,3 +10,22 @@ compiler binaries, rebuilt by tools/v3dglslc/build_m68k.sh):
 
 Screenshots of the test machine's screen (the shots/ directories of amictl
 --shots runs, photos of crash requesters) are kept out of the repository.
+
+dEQP-GLES2 logs (.qpa) over 1 MB, left out (M7, 2026-10-13). Every case's
+result is also in the run's <list>.txt, which dEQP prints as it goes:
+
+   2517517  ogles2-m7-1-20261013-152421/results/fbo.qpa
+   2768718  ogles2-m7-1-20261013-152747/results/fbo.qpa
+   2762049  ogles2-m7-1-20261013-153344/results/fbo.qpa
+   1653871  ogles2-m7-1-20261013-154621/results/state_query.qpa
+   1966301  ogles2-m7-1-20261013-154645/results/vertex_arrays.qpa
+   2762051  ogles2-m7-1-20261013-155330/results/fbo.qpa
+   3833035  ogles2-m7-1-20261013-155606/results/uniform_api.qpa
+   5831052  ogles2-m7-1-20261013-155843/results/fragment_ops.qpa
+   1651983  ogles2-m7-1-20261013-161214/results/state_query.qpa
+   1653319  ogles2-m7-1-20261013-161323/results/texture.qpa
+   9055041  ogles2-m7-1-20261013-161816/results/fragment_ops.qpa
+   3827275  ogles2-m7-1-20261013-163220/results/uniform_api.qpa
+   1705187  ogles2-m7-1-20261013-163255/results/texture.qpa
+   2732432  ogles2-m7-1-20261013-172002/results/shaders-random.qpa
+   3514848  ogles2-m7-1-20261013-180932/results/shaders-operator.qpa

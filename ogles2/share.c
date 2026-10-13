@@ -110,3 +110,59 @@ void ogles2_share_defer_free(struct OGLES2Context *ctx, ULONG serial, struct v3d
         v3d_mem_free(ogles2_device(), m);
     memset(m, 0, sizeof(*m));
 }
+
+/* ---- name tables ----
+ * A table of objects by name is an array: the object named n is at n. A
+ * program may bind a name it never generated (GLES 2.0 4.4.1), and dEQP
+ * binds random 32-bit ones: a table that grew to such a name took hundreds
+ * of megabytes, or failed. A name from OGLES2_NEAR_NAMES on gets a slot of
+ * its own past them instead, found through the table's short list. The
+ * objects keep their names; loops over a table see every slot. */
+GLuint ogles2_name_slot(struct OGLES2FarName **far, GLuint name, BOOL create)
+{
+    struct OGLES2FarName *f;
+    GLuint slot = OGLES2_NEAR_NAMES;
+    BOOL taken;
+    if (name < OGLES2_NEAR_NAMES)
+        return name;
+    for (f = *far; f; f = f->next)
+        if (f->name == name)
+            return f->slot;
+    if (!create)
+        return OGLES2_NO_SLOT;
+    do { /* the lowest far slot no name holds */
+        taken = FALSE;
+        for (f = *far; f; f = f->next)
+            if (f->slot == slot) {
+                taken = TRUE;
+                slot++;
+            }
+    } while (taken);
+    if (!(f = AllocVec(sizeof(*f), MEMF_ANY)))
+        return OGLES2_NO_SLOT;
+    f->name = name;
+    f->slot = slot;
+    f->next = *far;
+    *far = f;
+    return slot;
+}
+
+void ogles2_name_forget(struct OGLES2FarName **far, GLuint name)
+{
+    struct OGLES2FarName **p, *f;
+    for (p = far; (f = *p); p = &f->next)
+        if (f->name == name) {
+            *p = f->next;
+            FreeVec(f);
+            return;
+        }
+}
+
+void ogles2_names_free(struct OGLES2FarName **far)
+{
+    struct OGLES2FarName *f;
+    while ((f = *far)) {
+        *far = f->next;
+        FreeVec(f);
+    }
+}

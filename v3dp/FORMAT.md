@@ -72,7 +72,8 @@ Unknown section types are skipped (forward compatibility within a major version)
 
 | Type | Field |
 |---|---|
-| `u8[32]` | BLAKE3 of the program's sources: for each shader in attach order, its stage (`u32`), its length in bytes (`u32`) and its text. The runtime's disk-cache file name is the hash's first 24 hex digits plus `.v3dp` (29 characters: FFS file names are at most 30); the runtime checks the full hash in the file |
+| `u8[32]` | BLAKE3 of the program's sources: for each shader in attach order, its stage (`u32`), its length in bytes (`u32`) and its text. A program linked with its attribute bindings (aliased attributes, `V3DGLSL_LINK_BOUND`) hashes them after the shaders the same way, as the stage `0x42494E44` ("BIND") with the text `<index> <name>
+` per binding, sorted by name. The runtime's disk-cache file name is the hash's first 24 hex digits plus `.v3dp` (29 characters: FFS file names are at most 30); the runtime checks the full hash in the file |
 | `u32` | stages present: bit 0 vertex, bit 4 fragment (Mesa's `mesa_shader_stage` bit numbers) |
 
 ## `STRINGS`
@@ -141,11 +142,14 @@ matrix column starts on 4 values (16 bytes), e.g. a `mat3` takes 12 values and a
 | per attribute: | |
 | `str` | name |
 | `u32` | GL type |
-| `u32` | GL location the linker assigned (informational) |
-| `u32` | input slot of its first column: the number of vertex inputs the shader reads below this one (`inputs_read` bit order, as `nir_recompute_io_bases` numbers them); 0xffffffff if the shader does not read it |
+| `u32` | GL location the linker assigned in bits 0-7 (informational). With bit 31 set, bits 8-11 say which of its columns the shader reads (bit k: column k; a vector or scalar: bit 0), each taking the next slot; a compiler older than that wrote the location alone, and then every column takes a slot |
+| `u32` | input slot of its first column read: the number of vertex inputs the shader reads below it (`inputs_read` bit order, as `nir_recompute_io_bases` numbers them); 0xffffffff if the shader reads none of it |
 
 The runtime maps an application's attribute arrays to input slots **by name**, so a binary
 does not depend on `glBindAttribLocation`. A matrix attribute takes one slot per column.
+The exception is aliasing (GLES 2.0 2.10.4: two names bound to one location). Mesa's linker
+must know of it, or it gives every active attribute a location of its own and fails past
+16. Such a program is linked with its bindings, and both names read the same slot.
 
 ## `VARIANT`: one compiled shader
 

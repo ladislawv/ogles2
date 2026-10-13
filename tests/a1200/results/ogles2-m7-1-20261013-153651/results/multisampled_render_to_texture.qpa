@@ -1,0 +1,23 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/multisampled_render_to_texture.txt --deqp-log-filename=M7R1:results/multisampled_render_to_texture.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.multisampled_render_to_texture.readpixels
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisampled_render_to_texture.readpixels" Version="0.3.4" CaseType="SelfValidate">
+ <Text>EXT_multisampled_render_to_texture is not supported at es2fMultisampledRenderToTextureTests.cpp:77</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">8367</Number>
+ <Result StatusCode="NotSupported">EXT_multisampled_render_to_texture is not supported at es2fMultisampledRenderToTextureTests.cpp:77</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 0.09 seconds
+
+#endSession

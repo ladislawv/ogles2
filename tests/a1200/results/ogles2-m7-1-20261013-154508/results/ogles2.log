@@ -1,0 +1,290 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086C9670
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FD4C8C, 256x256
+    15 compiler: started (0 s)
+    16 compiler: shader compiled in 1220 ms
+    17 compiler: shader compiled in 40 ms
+    18 compiler: program compiled in 120 ms, OGLES2Cache:58cc5664645179220b17cdc3.v3dp
+    19 glLinkProgram: OGLES2Cache:58cc5664645179220b17cdc3.v3dp (5 variants, 448 bytes of code)
+    20 compiler: shader compiled in 20 ms
+    21 compiler: program compiled in 120 ms, OGLES2Cache:6971e709538546d9ee244767.v3dp
+    22 glLinkProgram: OGLES2Cache:6971e709538546d9ee244767.v3dp (5 variants, 480 bytes of code)
+    23 compiler: shader compiled in 40 ms
+    24 compiler: program compiled in 120 ms, OGLES2Cache:5e7d3df8e96e648b62f2f4cc.v3dp
+    25 glLinkProgram: OGLES2Cache:5e7d3df8e96e648b62f2f4cc.v3dp (5 variants, 536 bytes of code)
+    26 compiler: shader compiled in 40 ms
+    27 compiler: program compiled in 120 ms, OGLES2Cache:b1f9cee804e7bcb5eaedc56a.v3dp
+    28 glLinkProgram: OGLES2Cache:b1f9cee804e7bcb5eaedc56a.v3dp (5 variants, 584 bytes of code)
+    29 compiler: shader compiled in 20 ms
+    30 compiler: program compiled in 120 ms, OGLES2Cache:994c813b8ea992c2bcafc7f6.v3dp
+    31 glLinkProgram: OGLES2Cache:994c813b8ea992c2bcafc7f6.v3dp (5 variants, 584 bytes of code)
+    32 compiler: shader compiled in 20 ms
+    33 compiler: program compiled in 140 ms, OGLES2Cache:b6a64b13c128af01c44a54b9.v3dp
+    34 glLinkProgram: OGLES2Cache:b6a64b13c128af01c44a54b9.v3dp (5 variants, 584 bytes of code)
+    35 compiler: shader compiled in 40 ms
+    36 compiler: program compiled in 120 ms, OGLES2Cache:5214f6437b24f583a7a1d187.v3dp
+    37 glLinkProgram: OGLES2Cache:5214f6437b24f583a7a1d187.v3dp (5 variants, 584 bytes of code)
+    38 compiler: shader compiled in 20 ms
+    39 compiler: program compiled in 200 ms, OGLES2Cache:6314d37eb59188496e01ebec.v3dp
+    40 glLinkProgram: OGLES2Cache:6314d37eb59188496e01ebec.v3dp (5 variants, 912 bytes of code)
+    41 compiler: shader compiled in 40 ms
+    42 compiler: program compiled in 240 ms, OGLES2Cache:39e031827b4a616c9754068e.v3dp
+    43 glLinkProgram: OGLES2Cache:39e031827b4a616c9754068e.v3dp (5 variants, 1432 bytes of code)
+    44 compiler: shader compiled in 40 ms
+    45 compiler: program compiled in 280 ms, OGLES2Cache:740ae30e61a0d6c87461f6b3.v3dp
+    46 glLinkProgram: OGLES2Cache:740ae30e61a0d6c87461f6b3.v3dp (5 variants, 1952 bytes of code)
+    47 compiler: shader compiled in 40 ms
+    48 compiler: program compiled in 320 ms, OGLES2Cache:2545278562eacce31f60ad86.v3dp
+    49 glLinkProgram: OGLES2Cache:2545278562eacce31f60ad86.v3dp (5 variants, 2480 bytes of code)
+    50 compiler: shader compiled in 40 ms
+    51 compiler: program compiled in 220 ms, OGLES2Cache:c2c0929ff3c1857bedb62428.v3dp
+    52 glLinkProgram: OGLES2Cache:c2c0929ff3c1857bedb62428.v3dp (5 variants, 1456 bytes of code)
+    53 compiler: shader compiled in 20 ms
+    54 compiler: program compiled in 200 ms, OGLES2Cache:c3518f009ec855d3a5fd49da.v3dp
+    55 glLinkProgram: OGLES2Cache:c3518f009ec855d3a5fd49da.v3dp (5 variants, 1072 bytes of code)
+    56 compiler: shader compiled in 20 ms
+    57 compiler: program compiled in 160 ms, OGLES2Cache:1791990f50179d586c59a1f5.v3dp
+    58 glLinkProgram: OGLES2Cache:1791990f50179d586c59a1f5.v3dp (5 variants, 944 bytes of code)
+    59 compiler: shader compiled in 20 ms
+    60 compiler: program compiled in 200 ms, OGLES2Cache:58dcf690dc7844d25d30cde6.v3dp
+    61 glLinkProgram: OGLES2Cache:58dcf690dc7844d25d30cde6.v3dp (5 variants, 712 bytes of code)
+    62 compiler: shader compiled in 40 ms
+    63 glBindAttribLocation: "a_8" not kept (too many or too long)
+    64 glBindAttribLocation: "a_24" not kept (too many or too long)
+    65 glBindAttribLocation: "a_9" not kept (too many or too long)
+    66 glBindAttribLocation: "a_25" not kept (too many or too long)
+    67 glBindAttribLocation: "a_10" not kept (too many or too long)
+    68 glBindAttribLocation: "a_26" not kept (too many or too long)
+    69 glBindAttribLocation: "a_11" not kept (too many or too long)
+    70 glBindAttribLocation: "a_27" not kept (too many or too long)
+    71 glBindAttribLocation: "a_12" not kept (too many or too long)
+    72 glBindAttribLocation: "a_28" not kept (too many or too long)
+    73 glBindAttribLocation: "a_13" not kept (too many or too long)
+    74 glBindAttribLocation: "a_29" not kept (too many or too long)
+    75 glBindAttribLocation: "a_14" not kept (too many or too long)
+    76 glBindAttribLocation: "a_30" not kept (too many or too long)
+    77 glBindAttribLocation: "a_15" not kept (too many or too long)
+    78 glBindAttribLocation: "a_31" not kept (too many or too long)
+    79 compiler: program failed in 20 ms, OGLES2Cache:66eced0fb7748bb821acb7ec.v3dp
+    80 glLinkProgram: the compiler failed: link failed: error: too many vertex shader inputs (max 16)
+
+    81 compiler: shader compiled in 40 ms
+    82 glBindAttribLocation: "a_8" not kept (too many or too long)
+    83 glBindAttribLocation: "a_24" not kept (too many or too long)
+    84 glBindAttribLocation: "a_9" not kept (too many or too long)
+    85 glBindAttribLocation: "a_25" not kept (too many or too long)
+    86 glBindAttribLocation: "a_10" not kept (too many or too long)
+    87 glBindAttribLocation: "a_26" not kept (too many or too long)
+    88 glBindAttribLocation: "a_11" not kept (too many or too long)
+    89 glBindAttribLocation: "a_27" not kept (too many or too long)
+    90 glBindAttribLocation: "a_12" not kept (too many or too long)
+    91 glBindAttribLocation: "a_28" not kept (too many or too long)
+    92 glBindAttribLocation: "a_13" not kept (too many or too long)
+    93 glBindAttribLocation: "a_29" not kept (too many or too long)
+    94 glBindAttribLocation: "a_14" not kept (too many or too long)
+    95 glBindAttribLocation: "a_30" not kept (too many or too long)
+    96 glBindAttribLocation: "a_15" not kept (too many or too long)
+    97 glBindAttribLocation: "a_31" not kept (too many or too long)
+    98 compiler: program compiled in 260 ms, OGLES2Cache:1eb72090125ade54a1b6dbd2.v3dp
+    99 glLinkProgram: OGLES2Cache:1eb72090125ade54a1b6dbd2.v3dp (5 variants, 960 bytes of code)
+   100 compiler: shader compiled in 20 ms
+   101 compiler: program compiled in 200 ms, OGLES2Cache:dd91f0c4ba2435f63108b772.v3dp
+   102 glLinkProgram: OGLES2Cache:dd91f0c4ba2435f63108b772.v3dp (5 variants, 752 bytes of code)
+   103 compiler: shader compiled in 20 ms
+   104 glBindAttribLocation: "a_8" not kept (too many or too long)
+   105 glBindAttribLocation: "a_24" not kept (too many or too long)
+   106 glBindAttribLocation: "a_9" not kept (too many or too long)
+   107 glBindAttribLocation: "a_25" not kept (too many or too long)
+   108 glBindAttribLocation: "a_10" not kept (too many or too long)
+   109 glBindAttribLocation: "a_26" not kept (too many or too long)
+   110 glBindAttribLocation: "a_11" not kept (too many or too long)
+   111 glBindAttribLocation: "a_27" not kept (too many or too long)
+   112 glBindAttribLocation: "a_12" not kept (too many or too long)
+   113 glBindAttribLocation: "a_28" not kept (too many or too long)
+   114 glBindAttribLocation: "a_13" not kept (too many or too long)
+   115 glBindAttribLocation: "a_29" not kept (too many or too long)
+   116 glBindAttribLocation: "a_14" not kept (too many or too long)
+   117 glBindAttribLocation: "a_30" not kept (too many or too long)
+   118 glBindAttribLocation: "a_15" not kept (too many or too long)
+   119 glBindAttribLocation: "a_31" not kept (too many or too long)
+   120 compiler: program failed in 60 ms, OGLES2Cache:cb01e1af55d05110986ab6a9.v3dp
+   121 glLinkProgram: the compiler failed: link failed: error: too many vertex shader inputs (max 16)
+
+   122 compiler: shader compiled in 20 ms
+   123 glBindAttribLocation: "a_8" not kept (too many or too long)
+   124 glBindAttribLocation: "a_24" not kept (too many or too long)
+   125 glBindAttribLocation: "a_9" not kept (too many or too long)
+   126 glBindAttribLocation: "a_25" not kept (too many or too long)
+   127 glBindAttribLocation: "a_10" not kept (too many or too long)
+   128 glBindAttribLocation: "a_26" not kept (too many or too long)
+   129 glBindAttribLocation: "a_11" not kept (too many or too long)
+   130 glBindAttribLocation: "a_27" not kept (too many or too long)
+   131 glBindAttribLocation: "a_12" not kept (too many or too long)
+   132 glBindAttribLocation: "a_28" not kept (too many or too long)
+   133 glBindAttribLocation: "a_13" not kept (too many or too long)
+   134 glBindAttribLocation: "a_29" not kept (too many or too long)
+   135 glBindAttribLocation: "a_14" not kept (too many or too long)
+   136 glBindAttribLocation: "a_30" not kept (too many or too long)
+   137 glBindAttribLocation: "a_15" not kept (too many or too long)
+   138 glBindAttribLocation: "a_31" not kept (too many or too long)
+   139 compiler: program compiled in 380 ms, OGLES2Cache:594a071206a631164ebe7a12.v3dp
+   140 glLinkProgram: OGLES2Cache:594a071206a631164ebe7a12.v3dp (5 variants, 1656 bytes of code)
+   141 compiler: shader compiled in 20 ms
+   142 compiler: program compiled in 180 ms, OGLES2Cache:8d46be71e441cb6e2aa4b6c9.v3dp
+   143 glLinkProgram: OGLES2Cache:8d46be71e441cb6e2aa4b6c9.v3dp (5 variants, 744 bytes of code)
+   144 compiler: shader compiled in 40 ms
+   145 glBindAttribLocation: "a_8" not kept (too many or too long)
+   146 glBindAttribLocation: "a_24" not kept (too many or too long)
+   147 glBindAttribLocation: "a_9" not kept (too many or too long)
+   148 glBindAttribLocation: "a_25" not kept (too many or too long)
+   149 glBindAttribLocation: "a_10" not kept (too many or too long)
+   150 glBindAttribLocation: "a_26" not kept (too many or too long)
+   151 glBindAttribLocation: "a_11" not kept (too many or too long)
+   152 glBindAttribLocation: "a_27" not kept (too many or too long)
+   153 glBindAttribLocation: "a_12" not kept (too many or too long)
+   154 glBindAttribLocation: "a_28" not kept (too many or too long)
+   155 glBindAttribLocation: "a_13" not kept (too many or too long)
+   156 glBindAttribLocation: "a_29" not kept (too many or too long)
+   157 glBindAttribLocation: "a_14" not kept (too many or too long)
+   158 glBindAttribLocation: "a_30" not kept (too many or too long)
+   159 glBindAttribLocation: "a_15" not kept (too many or too long)
+   160 glBindAttribLocation: "a_31" not kept (too many or too long)
+   161 compiler: program failed in 60 ms, OGLES2Cache:1026a8f0ebd8ebca6fd793e8.v3dp
+   162 glLinkProgram: the compiler failed: link failed: error: too many vertex shader inputs (max 16)
+
+   163 compiler: shader compiled in 20 ms
+   164 glBindAttribLocation: "a_8" not kept (too many or too long)
+   165 glBindAttribLocation: "a_24" not kept (too many or too long)
+   166 glBindAttribLocation: "a_9" not kept (too many or too long)
+   167 glBindAttribLocation: "a_25" not kept (too many or too long)
+   168 glBindAttribLocation: "a_10" not kept (too many or too long)
+   169 glBindAttribLocation: "a_26" not kept (too many or too long)
+   170 glBindAttribLocation: "a_11" not kept (too many or too long)
+   171 glBindAttribLocation: "a_27" not kept (too many or too long)
+   172 glBindAttribLocation: "a_12" not kept (too many or too long)
+   173 glBindAttribLocation: "a_28" not kept (too many or too long)
+   174 glBindAttribLocation: "a_13" not kept (too many or too long)
+   175 glBindAttribLocation: "a_29" not kept (too many or too long)
+   176 glBindAttribLocation: "a_14" not kept (too many or too long)
+   177 glBindAttribLocation: "a_30" not kept (too many or too long)
+   178 glBindAttribLocation: "a_15" not kept (too many or too long)
+   179 glBindAttribLocation: "a_31" not kept (too many or too long)
+   180 compiler: program compiled in 500 ms, OGLES2Cache:d4ba16a1c26516d418d1fd8d.v3dp
+   181 glLinkProgram: OGLES2Cache:d4ba16a1c26516d418d1fd8d.v3dp (5 variants, 2096 bytes of code)
+   182 compiler: shader compiled in 20 ms
+   183 compiler: program compiled in 180 ms, OGLES2Cache:7844f2af778d9152c743e39a.v3dp
+   184 glLinkProgram: OGLES2Cache:7844f2af778d9152c743e39a.v3dp (5 variants, 744 bytes of code)
+   185 compiler: shader compiled in 40 ms
+   186 glBindAttribLocation: "a_8" not kept (too many or too long)
+   187 glBindAttribLocation: "a_24" not kept (too many or too long)
+   188 glBindAttribLocation: "a_9" not kept (too many or too long)
+   189 glBindAttribLocation: "a_25" not kept (too many or too long)
+   190 glBindAttribLocation: "a_10" not kept (too many or too long)
+   191 glBindAttribLocation: "a_26" not kept (too many or too long)
+   192 glBindAttribLocation: "a_11" not kept (too many or too long)
+   193 glBindAttribLocation: "a_27" not kept (too many or too long)
+   194 glBindAttribLocation: "a_12" not kept (too many or too long)
+   195 glBindAttribLocation: "a_28" not kept (too many or too long)
+   196 glBindAttribLocation: "a_13" not kept (too many or too long)
+   197 glBindAttribLocation: "a_29" not kept (too many or too long)
+   198 glBindAttribLocation: "a_14" not kept (too many or too long)
+   199 glBindAttribLocation: "a_30" not kept (too many or too long)
+   200 glBindAttribLocation: "a_15" not kept (too many or too long)
+   201 glBindAttribLocation: "a_31" not kept (too many or too long)
+   202 compiler: program failed in 60 ms, OGLES2Cache:61147f722cf5d3cea384a0c7.v3dp
+   203 glLinkProgram: the compiler failed: link failed: error: too many vertex shader inputs (max 16)
+
+   204 compiler: shader compiled in 20 ms
+   205 glBindAttribLocation: "a_8" not kept (too many or too long)
+   206 glBindAttribLocation: "a_24" not kept (too many or too long)
+   207 glBindAttribLocation: "a_9" not kept (too many or too long)
+   208 glBindAttribLocation: "a_25" not kept (too many or too long)
+   209 glBindAttribLocation: "a_10" not kept (too many or too long)
+   210 glBindAttribLocation: "a_26" not kept (too many or too long)
+   211 glBindAttribLocation: "a_11" not kept (too many or too long)
+   212 glBindAttribLocation: "a_27" not kept (too many or too long)
+   213 glBindAttribLocation: "a_12" not kept (too many or too long)
+   214 glBindAttribLocation: "a_28" not kept (too many or too long)
+   215 glBindAttribLocation: "a_13" not kept (too many or too long)
+   216 glBindAttribLocation: "a_29" not kept (too many or too long)
+   217 glBindAttribLocation: "a_14" not kept (too many or too long)
+   218 glBindAttribLocation: "a_30" not kept (too many or too long)
+   219 glBindAttribLocation: "a_15" not kept (too many or too long)
+   220 glBindAttribLocation: "a_31" not kept (too many or too long)
+   221 compiler: program compiled in 620 ms, OGLES2Cache:6f716097cae05df80a969242.v3dp
+   222 glLinkProgram: OGLES2Cache:6f716097cae05df80a969242.v3dp (5 variants, 2616 bytes of code)
+   223 compiler: shader compiled in 20 ms
+   224 compiler: program compiled in 180 ms, OGLES2Cache:b9a920c7fa1816c42878d64a.v3dp
+   225 glLinkProgram: OGLES2Cache:b9a920c7fa1816c42878d64a.v3dp (5 variants, 744 bytes of code)
+   226 compiler: shader compiled in 20 ms
+   227 compiler: program failed in 20 ms, OGLES2Cache:601c764ab9a954f39a683523.v3dp
+   228 glLinkProgram: the compiler failed: link failed: error: insufficient contiguous locations available for vertex shader input `a_4'
+
+
+   229 compiler: shader compiled in 20 ms
+   230 compiler: program compiled in 340 ms, OGLES2Cache:19289fa3f343399191db1146.v3dp
+   231 glLinkProgram: OGLES2Cache:19289fa3f343399191db1146.v3dp (5 variants, 1592 bytes of code)
+   232 compiler: shader compiled in 20 ms
+   233 compiler: program compiled in 180 ms, OGLES2Cache:2f75074dccbbfbd4518c2902.v3dp
+   234 glLinkProgram: OGLES2Cache:2f75074dccbbfbd4518c2902.v3dp (5 variants, 744 bytes of code)
+   235 compiler: shader compiled in 20 ms
+   236 compiler: program failed in 20 ms, OGLES2Cache:272aff9b32263828467643fa.v3dp
+   237 glLinkProgram: the compiler failed: link failed: error: insufficient contiguous locations available for vertex shader input `a_18'
+
+
+   238 compiler: shader compiled in 20 ms
+   239 compiler: program compiled in 260 ms, OGLES2Cache:5400c3c1b2ab819a90c96e8c.v3dp
+   240 glLinkProgram: OGLES2Cache:5400c3c1b2ab819a90c96e8c.v3dp (5 variants, 1208 bytes of code)
+   241 compiler: shader compiled in 20 ms
+   242 compiler: program compiled in 180 ms, OGLES2Cache:ea205a22532125c45a22d1ea.v3dp
+   243 glLinkProgram: OGLES2Cache:ea205a22532125c45a22d1ea.v3dp (5 variants, 744 bytes of code)
+   244 compiler: shader compiled in 40 ms
+   245 compiler: program failed in 40 ms, OGLES2Cache:0bf10c82bb5df20f19bd6b2c.v3dp
+   246 glLinkProgram: the compiler failed: link failed: error: insufficient contiguous locations available for vertex shader input `a_2'
+
+
+   247 compiler: shader compiled in 40 ms
+   248 compiler: program compiled in 240 ms, OGLES2Cache:b1dafefc545975f97a5220b8.v3dp
+   249 glLinkProgram: OGLES2Cache:b1dafefc545975f97a5220b8.v3dp (5 variants, 1080 bytes of code)
+   250 compiler: shader compiled in 40 ms
+   251 compiler: program compiled in 320 ms, OGLES2Cache:64de2a7878fd48b4df914739.v3dp
+   252 glLinkProgram: OGLES2Cache:64de2a7878fd48b4df914739.v3dp (5 variants, 2432 bytes of code)
+   253 compiler: shader compiled in 40 ms
+   254 compiler: program compiled in 320 ms, OGLES2Cache:eae3c11bca795a2908e79a21.v3dp
+   255 glLinkProgram: OGLES2Cache:eae3c11bca795a2908e79a21.v3dp (5 variants, 2448 bytes of code)
+   256 compiler: shader compiled in 40 ms
+   257 compiler: program compiled in 320 ms, OGLES2Cache:313cddf9a1ef1d3340dee61f.v3dp
+   258 glLinkProgram: OGLES2Cache:313cddf9a1ef1d3340dee61f.v3dp (5 variants, 2464 bytes of code)
+   259 compiler: shader compiled in 40 ms
+   260 compiler: program compiled in 320 ms, OGLES2Cache:bd6bc5d7de1ac7851cbf84d9.v3dp
+   261 glLinkProgram: OGLES2Cache:bd6bc5d7de1ac7851cbf84d9.v3dp (5 variants, 2368 bytes of code)
+   262 compiler: shader compiled in 40 ms
+   263 compiler: program compiled in 280 ms, OGLES2Cache:35e4a10b4931e6005dc0618a.v3dp
+   264 glLinkProgram: OGLES2Cache:35e4a10b4931e6005dc0618a.v3dp (5 variants, 2240 bytes of code)
+   265 compiler: shader compiled in 40 ms
+   266 compiler: program compiled in 280 ms, OGLES2Cache:52b73bb8f4091c26fd1d9793.v3dp
+   267 glLinkProgram: OGLES2Cache:52b73bb8f4091c26fd1d9793.v3dp (5 variants, 2112 bytes of code)
+   268 compiler: shader compiled in 40 ms
+   269 compiler: program compiled in 160 ms, OGLES2Cache:e89996bc68db75c100d4c106.v3dp
+   270 glLinkProgram: OGLES2Cache:e89996bc68db75c100d4c106.v3dp (5 variants, 696 bytes of code)
+   271 compiler: shader compiled in 40 ms
+   272 compiler: program compiled in 160 ms, OGLES2Cache:252a64fda79112e5c3ff9e8d.v3dp
+   273 glLinkProgram: OGLES2Cache:252a64fda79112e5c3ff9e8d.v3dp (5 variants, 480 bytes of code)
+   274 aglDestroyContext: context 0x08FD4C8C: freeing
+   275 device: context freed, 0 bytes of GPU memory still in use
+   276 aglDestroyContext: context 0x08FD4C8C (50 frames, 0 dropped, 0 binning blocks added)
+   277 timing: 50 jobs, each on average: 257553 us of CPU work before its flush, 6 us waiting for binning, 74 us for the render
+   278 timing: and in each flush 59 us building the render list, 80 us for the CPU cache before the GPU, 57 us after
+   279 timing: 50 swaps, 238232 us from one to the next on average, 374 us of it presenting
+   280 timing: per frame 0 draws, 0 us in them; in all 0 ms in glBuffer(Sub)Data, 7 ms in glTex(Sub)Image2D

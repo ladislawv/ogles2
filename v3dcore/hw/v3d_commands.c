@@ -236,8 +236,10 @@ void LineWidth(V3DContext* context, float width)
 void DepthOffset(V3DContext* context, float factor, float units)
 {
     v3d_static_buffer* buffer = context->current_buf;
-    /* x256 is exact (a power of two), so no FPCR rounding is involved. */
-    float units_scaled = (context->zbuffer_bits == 16) ? units * 256.0f : units;
+    /* ogles2: `units` comes scaled for the target's depth buffer (draw.c:
+     * x256 for a 16-bit one, as Mesa's depth_offset_z16); the context's own
+     * depth bits said nothing about a framebuffer object's. */
+    float units_scaled = units;
 
     V3D_BUFFER_ALLOC_OPERATION(buffer, v3d_OP_DEPTH_OFFSET,
                                v3d_depth_offset, depthOffset);

@@ -64,6 +64,8 @@ struct OGLES2Draw
     v3d_u32 defattr_gen;           /* the default attribute block of this control list */
     ULONG defattr;
     const struct OGLES2Image *missed; /* the last image a variant miss was logged for */
+    v3d_mem spill;                 /* register spilling's scratch area (spill_area) */
+    ULONG spill_size;              /* bytes a thread has in it */
 };
 
 /* ---- vertex arrays ---- */
@@ -213,6 +215,8 @@ void ogles2_draw_free(struct OGLES2Context *ctx)
         return;
     if (d->builtin_code.hostptr)
         v3d_mem_free(ogles2_device(), &d->builtin_code);
+    if (d->spill.hostptr)
+        v3d_mem_free(ogles2_device(), &d->spill);
     if (d->quad_ready)
         ogles2_program_builtin_free(&d->quad);
     FreeVec(d);
@@ -318,6 +322,39 @@ static BOOL ubo_copies(struct OGLES2Context *ctx, const struct OGLES2Program *p,
     return TRUE;
 }
 
+/* Register spilling (Mesa's QUNIFORM_SPILL_*): a shader that ran out of
+ * registers keeps values in a scratch area through the TMU (dEQP-GLES2's
+ * dynamically indexed arrays), a slice per QPU thread. The context's area,
+ * as Mesa's v3d_update_compiled_*: a shader picks its slice by TIDX,
+ * (core << 6) | (qpu << 2) | thread, so QPUs x 4 slices of the largest spill
+ * size drawn with yet. Only the GPU touches it. A smaller old area goes when
+ * the open job has rendered (its draws may use it). */
+static BOOL spill_area(struct OGLES2Context *ctx, const struct OGLES2Variant *const v[3])
+{
+    struct OGLES2Draw *d = ctx->draw;
+    ULONG need = 0;
+    int k;
+    for (k = 0; k < 3; k++)
+        if (v[k]->spill_size > need)
+            need = v[k]->spill_size;
+    if (need <= d->spill_size)
+        return TRUE;
+    if (d->spill.hostptr) {
+        v3d_frame_defer_free(&ctx->v3d->frame, &d->spill);
+        memset(&d->spill, 0, sizeof(d->spill));
+    }
+    d->spill_size = 0;
+    if (v3d_mem_alloc(ogles2_device(), &d->spill,
+                      (ULONG)ogles2_device()->deviceInfo.qpu_count * 4 * need + 256) < 0) {
+        memset(&d->spill, 0, sizeof(d->spill));
+        return FALSE;
+    }
+    d->spill_size = need;
+    ogles2_log("draw: a shader spills registers: a %ld-byte area (%ld bytes a thread)",
+               (LONG)d->spill.size, (LONG)need);
+    return TRUE;
+}
+
 /* The image's sampler uniforms, listed at the program's first draw (most of
  * a fixed-function emulation's uniforms are not samplers): how many to look
  * at, p->samplers[k] or (0xfe, too many to list) every uniform. */
@@ -337,6 +374,12 @@ static UWORD list_samplers(struct OGLES2Program *p)
     return p->nsamplers == 0xfe ? im->nuniforms : p->nsamplers;
 }
 
+/* The texture unit of element e of sampler uniform u (glUniform1i). */
+static UBYTE unit_of(const struct OGLES2Program *p, UWORD u, UWORD e)
+{
+    return p->uniform_loc[u] == 0xFFFF ? 0 : p->sampler_unit[p->uniform_loc[u] + e];
+}
+
 /* A fragment-shader sampler of the program reads a texture the TMU returns
  * 32 bits for (a float or depth texture): the draw needs the 32-bit
  * variants (Mesa's sampler_is_32b key). */
@@ -347,9 +390,12 @@ static BOOL wants_wide(struct OGLES2Context *ctx, struct OGLES2Program *p)
     for (k = 0; k < n; k++) {
         UWORD u = p->nsamplers == 0xfe ? k : p->samplers[k];
         const struct OGLES2ImageUniform *un = &im->uniforms[u];
-        if ((un->flags & OGLES2_UNIFORM_SAMPLER) && un->sampler[1] < OGLES2_MAX_TEXTURE_UNITS &&
-            ogles2_texture_wide(ctx, p->sampler_unit[u], ogles2_sampler_kind(un->type)))
-            return TRUE;
+        UWORD e, ne = un->array ? un->array : 1;
+        if (!(un->flags & OGLES2_UNIFORM_SAMPLER) || un->sampler[1] >= OGLES2_MAX_TEXTURE_UNITS)
+            continue;
+        for (e = 0; e < ne; e++)
+            if (ogles2_texture_wide(ctx, unit_of(p, u, e), ogles2_sampler_kind(un->type)))
+                return TRUE;
     }
     return FALSE;
 }
@@ -370,12 +416,15 @@ static BOOL texture_states(struct OGLES2Context *ctx, struct OGLES2Program *p,
         if (!(un->flags & OGLES2_UNIFORM_SAMPLER))
             continue;
         for (st = 0; st < 2; st++) {
-            ULONG idx = un->sampler[st];
-            if (idx >= OGLES2_MAX_TEXTURE_UNITS)
-                continue;
-            if (!ogles2_texture_state(ctx, p->sampler_unit[u], ogles2_sampler_kind(un->type),
-                                      &ts->tex[st][idx], &ts->smp[st][idx]))
-                return FALSE;
+            UWORD e, ne = un->array ? un->array : 1;
+            for (e = 0; e < ne; e++) { /* an array: an element a texture index */
+                ULONG idx = un->sampler[st] + e;
+                if (un->sampler[st] >= OGLES2_MAX_TEXTURE_UNITS || idx >= OGLES2_MAX_TEXTURE_UNITS)
+                    break;
+                if (!ogles2_texture_state(ctx, unit_of(p, u, e), ogles2_sampler_kind(un->type),
+                                          &ts->tex[st][idx], &ts->smp[st][idx]))
+                    return FALSE;
+            }
         }
     }
     return TRUE;
@@ -442,6 +491,10 @@ static ULONG write_uniforms(struct OGLES2Context *ctx, const struct OGLES2Progra
             w = tst->smp[si][(d >> 24) & (OGLES2_MAX_TEXTURE_UNITS - 1)] | (d & 0xffffff);
             break;
         case OGLES2_U_UBO_ADDR:          w = tst->ubo[si] + (d & 0xffffff); break;
+        case OGLES2_U_SPILL_OFFSET:
+            w = (ULONG)V3D_ALIGN_UP((v3d_uintptr)ctx->draw->spill.hostptr, 256);
+            break;
+        case OGLES2_U_SPILL_SIZE_PER_THREAD: w = ctx->draw->spill_size; break;
         case OGLES2_U_PISTORM_VP_WIDTH:  w = float_bits((GLfloat)ctx->viewport[2]); break;
         case OGLES2_U_PISTORM_VP_HEIGHT: w = float_bits((GLfloat)ctx->viewport[3]); break;
         default:                         w = 0; break; /* the loader refuses the rest */
@@ -697,6 +750,7 @@ static BOOL constant_attrib(struct OGLES2Context *ctx, GLuint index, struct attr
  * them once; it is used while they agree). */
 static void put_le32(UBYTE *b, ULONG x);
 static BOOL packets_ok(V3DContext *v);
+static int column_slot(const struct OGLES2ImageAttrib *at, int k);
 
 static void attr_record(UBYTE *b, ULONG address, UBYTE normalized, UBYTE is_signed, UBYTE vsize,
                         UBYTE vtype, UBYTE vs_reads, UBYTE cs_reads, ULONG stride, ULONG maxindex)
@@ -1096,12 +1150,16 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
         }
         dd->st = TRUE;
     }
-    if (edo && (!dd->do_valid || dd->do_factor != s->polygon_offset_factor ||
-                dd->do_units != s->polygon_offset_units)) {
-        DepthOffset(v, s->polygon_offset_factor, s->polygon_offset_units);
-        dd->do_valid = TRUE;
-        dd->do_factor = s->polygon_offset_factor;
-        dd->do_units = s->polygon_offset_units;
+    if (edo) {
+        /* The GPU counts units in a 24-bit depth buffer's steps: x256 for a
+         * 16-bit one (Mesa's depth_offset_z16; exact, a power of two). */
+        GLfloat units = s->polygon_offset_units * (ctx->fb_depth_bits == 16 ? 256.0f : 1.0f);
+        if (!dd->do_valid || dd->do_factor != s->polygon_offset_factor || dd->do_units != units) {
+            DepthOffset(v, s->polygon_offset_factor, units);
+            dd->do_valid = TRUE;
+            dd->do_factor = s->polygon_offset_factor;
+            dd->do_units = units;
+        }
     }
     /* POINT_SIZE on every draw (Mesa's V3D 4.2 binner erratum workaround):
      * with the draw's other packets (draw_packets). */
@@ -1393,7 +1451,7 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
     {
         const struct OGLES2Variant *vv[3];
         vv[0] = cs; vv[1] = vs; vv[2] = fs;
-        if (!ubo_copies(ctx, p, vv, &tst))
+        if (!ubo_copies(ctx, p, vv, &tst) || !spill_area(ctx, vv))
             goto nomem;
     }
     if (!texture_states(ctx, p, &tst))
@@ -1412,18 +1470,19 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
     /* Mapped at the program's first draw (attribute locations are fixed
      * at link). */
     if (p->nslots == 0xff) {
+        int k, cs;
         for (a = 0; a < im->nattribs; a++)
-            if (im->attribs[a].slot != 0xff && im->attribs[a].slot + im->attribs[a].columns > nslots)
-                nslots = im->attribs[a].slot + im->attribs[a].columns;
+            for (k = 0; k < im->attribs[a].columns; k++)
+                if ((cs = column_slot(&im->attribs[a], k)) >= 0 && cs + 1 > nslots)
+                    nslots = cs + 1;
         if (nslots > 16)
             nslots = 16;
         for (i = 0; i < nslots; i++) {
             GLuint g = 0xff;
-            for (a = 0; a < im->nattribs; a++) {
-                const struct OGLES2ImageAttrib *at = &im->attribs[a];
-                if (at->slot != 0xff && i >= at->slot && i < at->slot + at->columns)
-                    g = p->attrib_index[a] + (i - at->slot);
-            }
+            for (a = 0; a < im->nattribs; a++)
+                for (k = 0; k < im->attribs[a].columns; k++)
+                    if (column_slot(&im->attribs[a], k) == (int)i)
+                        g = p->attrib_index[a] + k;
             p->slot_attrib[i] = (UBYTE)(g < OGLES2_MAX_VERTEX_ATTRIBS ? g : 0xff);
         }
         p->nslots = (UBYTE)nslots;
@@ -1509,6 +1568,23 @@ nomem:
     ogles2_log("glDrawArrays: out of memory for the draw's GPU data; frame dropped");
     v->frame_corrupted = TRUE;
     ogles2_error(ctx, GL_OUT_OF_MEMORY);
+}
+
+/* The vertex input slot of column k of an attribute (a matrix's columns are
+ * generic attributes of their own), -1 if the shader does not read it. */
+static int column_slot(const struct OGLES2ImageAttrib *at, int k)
+{
+    int j, n = 0;
+    if (at->slot == 0xff)
+        return -1;
+    if (!at->colmask) /* every column, from the slot on */
+        return at->slot + k;
+    if (!(at->colmask & (1 << k)))
+        return -1;
+    for (j = 0; j < k; j++)
+        if (at->colmask & (1 << j))
+            n++;
+    return at->slot + n;
 }
 
 /* Every enabled array the program reads has data, and a buffer's holds

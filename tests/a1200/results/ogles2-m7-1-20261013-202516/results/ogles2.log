@@ -1,0 +1,10 @@
+    61 open (count 4)
+    62 display: own window, 256x256, BGRA
+    63 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    64 aglCreateContext2: context 0x08FD4A8C, 256x256
+    65 glLinkProgram: OGLES2Cache:3788bddd857f43661f0fe175.v3dp (7 variants, 1064 bytes of code)
+    66 aglDestroyContext: context 0x08FD4A8C: freeing
+    67 device: context freed, 0 bytes of GPU memory still in use
+    68 aglDestroyContext: context 0x08FD4A8C (2 frames, 0 dropped, 0 binning blocks added)
+    69 timing: 2 jobs, each on average: 1079 us of CPU work before its flush, 6 us waiting for binning, 36 us for the render
+    70 timing: and in each flush 272 us building the render list, 115 us for the CPU cache before the GPU, 30 us after

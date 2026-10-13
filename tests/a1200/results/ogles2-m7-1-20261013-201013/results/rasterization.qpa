@@ -1,0 +1,2256 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/rasterization.txt --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/rasterization.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.triangles
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.triangles" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering 2 triangle(s):</Text>
+  <Text>Triangle 1:
+	(0.2, 0.8, 0, 1)
+	(0.5, 0.2, 0, 1)
+	(0.5, 0.3, 0, 1)</Text>
+  <Text>Triangle 2:
+	(-0.5, 0.2, 0, 1)
+	(-1.5, -0.4, 0, 1)
+	(-0.4, 0.2, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering 2 triangle(s):</Text>
+  <Text>Triangle 1:
+	(-0.499, 0.128, 0, 1)
+	(-0.501, -0.3, 0, 1)
+	(0.11, -0.2, 0, 1)</Text>
+  <Text>Triangle 2:
+	(0.11, 0.2, 0, 1)
+	(0.88, 0.9, 0, 1)
+	(0.4, 1.2, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering 2 triangle(s):</Text>
+  <Text>Triangle 1:
+	(-0.9, -0.3, 0, 1)
+	(1.1, -0.9, 0, 1)
+	(-1.1, -0.1, 0, 1)</Text>
+  <Text>Triangle 2:
+	(-0.11, 0.2, 0, 1)
+	(0.88, 0.7, 0, 1)
+	(-0.4, 0.4, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1869780</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.triangle_strip
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.triangle_strip" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering triangle strip, 5 vertices.</Text>
+  <Text>	(-0.504, 0.8, 0, 1)</Text>
+  <Text>	(-0.2, -0.2, 0, 1)</Text>
+  <Text>	(-0.2, 0.199, 0, 1)</Text>
+  <Text>	(0.5, 0.201, 0, 1)</Text>
+  <Text>	(1.5, 0.4, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering triangle strip, 5 vertices.</Text>
+  <Text>	(-0.499, 0.129, 0, 1)</Text>
+  <Text>	(-0.501, -0.3, 0, 1)</Text>
+  <Text>	(0.11, -0.2, 0, 1)</Text>
+  <Text>	(0.11, -0.31, 0, 1)</Text>
+  <Text>	(0.88, 0.9, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering triangle strip, 5 vertices.</Text>
+  <Text>	(-0.9, -0.3, 0, 1)</Text>
+  <Text>	(1.1, -0.9, 0, 1)</Text>
+  <Text>	(-0.87, -0.1, 0, 1)</Text>
+  <Text>	(-0.11, 0.19, 0, 1)</Text>
+  <Text>	(0.88, 0.7, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">405776</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.triangle_fan
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.triangle_fan" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering triangle fan, 5 vertices.</Text>
+  <Text>	(0.01, 0, 0, 1)</Text>
+  <Text>	(0.5, 0.2, 0, 1)</Text>
+  <Text>	(0.46, 0.3, 0, 1)</Text>
+  <Text>	(-0.5, 0.2, 0, 1)</Text>
+  <Text>	(-1.5, -0.4, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering triangle fan, 5 vertices.</Text>
+  <Text>	(-0.499, 0.128, 0, 1)</Text>
+  <Text>	(-0.501, -0.3, 0, 1)</Text>
+  <Text>	(0.11, -0.2, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>	(0.88, 0.9, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering triangle fan, 5 vertices.</Text>
+  <Text>	(-0.9, -0.3, 0, 1)</Text>
+  <Text>	(1.1, -0.9, 0, 1)</Text>
+  <Text>	(0.7, -0.1, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>	(0.88, 0.7, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">392972</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.lines
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.lines" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering 3 lines(s): (width = 1)</Text>
+  <Text>Line 1:
+	(0.01, 0, 0, 1)
+	(0.5, 0.2, 0, 1)</Text>
+  <Text>Line 2:
+	(0.46, 0.3, 0, 1)
+	(-0.3, 0.2, 0, 1)</Text>
+  <Text>Line 3:
+	(-1.5, -0.4, 0, 1)
+	(0.1, 0.5, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Verifying fragment counts:
+	Diamond-exit rule: 301 fragments.
+	Result image: 301 fragments.
+	Allowing deviation of 3 fragments.
+</Text>
+  <Text>Fragment count is valid.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering 3 lines(s): (width = 1)</Text>
+  <Text>Line 1:
+	(-0.499, 0.128, 0, 1)
+	(-0.501, -0.3, 0, 1)</Text>
+  <Text>Line 2:
+	(0.11, -0.2, 0, 1)
+	(0.11, 0.2, 0, 1)</Text>
+  <Text>Line 3:
+	(0.88, 0.9, 0, 1)
+	(0.18, -0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Verifying fragment counts:
+	Diamond-exit rule: 248 fragments.
+	Result image: 249 fragments.
+	Allowing deviation of 3 fragments.
+</Text>
+  <Text>Fragment count is valid.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering 3 lines(s): (width = 1)</Text>
+  <Text>Line 1:
+	(-0.9, -0.3, 0, 1)
+	(1.1, -0.9, 0, 1)</Text>
+  <Text>Line 2:
+	(0.7, -0.1, 0, 1)
+	(0.11, 0.2, 0, 1)</Text>
+  <Text>Line 3:
+	(0.88, 0.7, 0, 1)
+	(0.8, -0.7, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Verifying fragment counts:
+	Diamond-exit rule: 499 fragments.
+	Result image: 499 fragments.
+	Allowing deviation of 3 fragments.
+</Text>
+  <Text>Fragment count is valid.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">384384</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.line_strip
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.line_strip" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering line strip, width = 1, 4 vertices.</Text>
+  <Text>	(0.01, 0, 0, 1)</Text>
+  <Text>	(0.5, 0.2, 0, 1)</Text>
+  <Text>	(0.46, 0.3, 0, 1)</Text>
+  <Text>	(-0.5, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Verifying fragment counts:
+	Diamond-exit rule: 198 fragments.
+	Result image: 198 fragments.
+	Allowing deviation of 3 fragments.
+</Text>
+  <Text>Fragment count is valid.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering line strip, width = 1, 4 vertices.</Text>
+  <Text>	(-0.499, 0.128, 0, 1)</Text>
+  <Text>	(-0.501, -0.3, 0, 1)</Text>
+  <Text>	(0.11, -0.2, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Verifying fragment counts:
+	Diamond-exit rule: 185 fragments.
+	Result image: 186 fragments.
+	Allowing deviation of 3 fragments.
+</Text>
+  <Text>Fragment count is valid.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering line strip, width = 1, 4 vertices.</Text>
+  <Text>	(-0.9, -0.3, 0, 1)</Text>
+  <Text>	(1.1, -0.9, 0, 1)</Text>
+  <Text>	(0.7, -0.1, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Verifying fragment counts:
+	Diamond-exit rule: 397 fragments.
+	Result image: 397 fragments.
+	Allowing deviation of 3 fragments.
+</Text>
+  <Text>Fragment count is valid.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">370831</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.line_loop
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.line_loop" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering line loop, width = 1, 4 vertices.</Text>
+  <Text>	(0.01, 0, 0, 1)</Text>
+  <Text>	(0.5, 0.2, 0, 1)</Text>
+  <Text>	(0.46, 0.3, 0, 1)</Text>
+  <Text>	(-0.5, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Overdraw in scene. Fragment count cannot be verified. Skipping fragment count checks.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering line loop, width = 1, 4 vertices.</Text>
+  <Text>	(-0.499, 0.128, 0, 1)</Text>
+  <Text>	(-0.501, -0.3, 0, 1)</Text>
+  <Text>	(0.11, -0.2, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Verifying fragment counts:
+	Diamond-exit rule: 263 fragments.
+	Result image: 263 fragments.
+	Allowing deviation of 4 fragments.
+</Text>
+  <Text>Fragment count is valid.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering line loop, width = 1, 4 vertices.</Text>
+  <Text>	(-0.9, -0.3, 0, 1)</Text>
+  <Text>	(1.1, -0.9, 0, 1)</Text>
+  <Text>	(0.7, -0.1, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Overdraw in scene. Fragment count cannot be verified. Skipping fragment count checks.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">374156</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.lines_wide
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.lines_wide" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_LINE_WIDTH_RANGE = [1, 32]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering 3 lines(s): (width = 5)</Text>
+  <Text>Line 1:
+	(0.01, 0, 0, 1)
+	(0.5, 0.2, 0, 1)</Text>
+  <Text>Line 2:
+	(0.46, 0.3, 0, 1)
+	(-0.3, 0.2, 0, 1)</Text>
+  <Text>Line 3:
+	(-1.5, -0.4, 0, 1)
+	(0.1, 0.5, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Verifying fragment counts:
+	Diamond-exit rule: 1505 fragments.
+	Result image: 1505 fragments.
+	Allowing deviation of 15 fragments.
+</Text>
+  <Text>Fragment count is valid.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering 3 lines(s): (width = 5)</Text>
+  <Text>Line 1:
+	(-0.499, 0.128, 0, 1)
+	(-0.501, -0.3, 0, 1)</Text>
+  <Text>Line 2:
+	(0.11, -0.2, 0, 1)
+	(0.11, 0.2, 0, 1)</Text>
+  <Text>Line 3:
+	(0.88, 0.9, 0, 1)
+	(0.18, -0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Verifying fragment counts:
+	Diamond-exit rule: 1240 fragments.
+	Result image: 1245 fragments.
+	Allowing deviation of 15 fragments.
+</Text>
+  <Text>Fragment count is valid.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering 3 lines(s): (width = 32)</Text>
+  <Text>Line 1:
+	(-0.9, -0.3, 0, 1)
+	(1.1, -0.9, 0, 1)</Text>
+  <Text>Line 2:
+	(0.7, -0.1, 0, 1)
+	(0.11, 0.2, 0, 1)</Text>
+  <Text>Line 3:
+	(0.88, 0.7, 0, 1)
+	(0.8, -0.7, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Overdraw in scene. Fragment count cannot be verified. Skipping fragment count checks.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">571734</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.line_strip_wide
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.line_strip_wide" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_LINE_WIDTH_RANGE = [1, 32]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering line strip, width = 5, 4 vertices.</Text>
+  <Text>	(0.01, 0, 0, 1)</Text>
+  <Text>	(0.5, 0.2, 0, 1)</Text>
+  <Text>	(0.46, 0.3, 0, 1)</Text>
+  <Text>	(-0.5, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Overdraw in scene. Fragment count cannot be verified. Skipping fragment count checks.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering line strip, width = 5, 4 vertices.</Text>
+  <Text>	(-0.499, 0.128, 0, 1)</Text>
+  <Text>	(-0.501, -0.3, 0, 1)</Text>
+  <Text>	(0.11, -0.2, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Overdraw in scene. Fragment count cannot be verified. Skipping fragment count checks.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering line strip, width = 32, 4 vertices.</Text>
+  <Text>	(-0.9, -0.3, 0, 1)</Text>
+  <Text>	(1.1, -0.9, 0, 1)</Text>
+  <Text>	(0.7, -0.1, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Overdraw in scene. Fragment count cannot be verified. Skipping fragment count checks.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">498709</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.line_loop_wide
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.line_loop_wide" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_LINE_WIDTH_RANGE = [1, 32]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering line loop, width = 5, 4 vertices.</Text>
+  <Text>	(0.01, 0, 0, 1)</Text>
+  <Text>	(0.5, 0.2, 0, 1)</Text>
+  <Text>	(0.46, 0.3, 0, 1)</Text>
+  <Text>	(-0.5, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Overdraw in scene. Fragment count cannot be verified. Skipping fragment count checks.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering line loop, width = 5, 4 vertices.</Text>
+  <Text>	(-0.499, 0.128, 0, 1)</Text>
+  <Text>	(-0.501, -0.3, 0, 1)</Text>
+  <Text>	(0.11, -0.2, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Overdraw in scene. Fragment count cannot be verified. Skipping fragment count checks.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering line loop, width = 32, 4 vertices.</Text>
+  <Text>	(-0.9, -0.3, 0, 1)</Text>
+  <Text>	(1.1, -0.9, 0, 1)</Text>
+  <Text>	(0.7, -0.1, 0, 1)</Text>
+  <Text>	(0.11, 0.2, 0, 1)</Text>
+  <Text>Searching for deviating fragments.</Text>
+  <Text>No invalid deviations found.</Text>
+  <Text>Overdraw in scene. Fragment count cannot be verified. Skipping fragment count checks.</Text>
+  <Text>Verifying line widths of the x-major lines.</Text>
+  <Text>Verifying line widths of the y-major lines.</Text>
+  <Text>Line widths are valid.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">569040</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.primitives.points
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.primitives.points" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_POINT_SIZE_RANGE = [1, 512]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 3" Description="Test iteration 1 / 3">
+  <Text>Rendering 6 point(s): (point size = 10)</Text>
+  <Text>Point 1:	(0.2, 0.8, 0, 1)</Text>
+  <Text>Point 2:	(0.5, 0.2, 0, 1)</Text>
+  <Text>Point 3:	(0.5, 0.3, 0, 1)</Text>
+  <Text>Point 4:	(-0.5, 0.2, 0, 1)</Text>
+  <Text>Point 5:	(-0.2, -0.4, 0, 1)</Text>
+  <Text>Point 6:	(-0.4, 0.2, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 2 / 3" Description="Test iteration 2 / 3">
+  <Text>Rendering 6 point(s): (point size = 10)</Text>
+  <Text>Point 1:	(-0.499, 0.128, 0, 1)</Text>
+  <Text>Point 2:	(-0.501, -0.3, 0, 1)</Text>
+  <Text>Point 3:	(0.11, -0.2, 0, 1)</Text>
+  <Text>Point 4:	(0.11, 0.2, 0, 1)</Text>
+  <Text>Point 5:	(0.88, 0.9, 0, 1)</Text>
+  <Text>Point 6:	(0.4, 1.2, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Test iteration 3 / 3" Description="Test iteration 3 / 3">
+  <Text>Rendering 6 point(s): (point size = 512)</Text>
+  <Text>Point 1:	(-0.9, -0.3, 0, 1)</Text>
+  <Text>Point 2:	(0.3, -0.9, 0, 1)</Text>
+  <Text>Point 3:	(-0.4, -0.1, 0, 1)</Text>
+  <Text>Point 4:	(-0.11, 0.2, 0, 1)</Text>
+  <Text>Point 5:	(0.88, 0.7, 0, 1)</Text>
+  <Text>Point 6:	(-0.4, 0.4, 0, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">830604</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.limits.points
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.limits.points" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>GL_ALIASED_POINT_SIZE_RANGE is [1, 512]</Text>
+ <Text>Testing with pointSize = 528, fboWidth = 264</Text>
+ <Text>Runtime check failed: &apos;compareThreshold(color, tcu::RGBA::green(), threshold)&apos; at es2fRasterizationTests.cpp:686</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">18614</Number>
+ <Result StatusCode="Fail">Runtime check failed: &apos;compareThreshold(color, tcu::RGBA::green(), threshold)&apos; at es2fRasterizationTests.cpp:686</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.fill_rules.basic_quad
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.fill_rules.basic_quad" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 2" Description="Test iteration 1 / 2">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 2 / 2" Description="Test iteration 2 / 2">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">14321</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.fill_rules.basic_quad_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.fill_rules.basic_quad_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 2" Description="Test iteration 1 / 2">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 2 / 2" Description="Test iteration 2 / 2">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">13718</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.fill_rules.clipped_full
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.fill_rules.clipped_full" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 15" Description="Test iteration 1 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 2 / 15" Description="Test iteration 2 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 3 / 15" Description="Test iteration 3 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 4 / 15" Description="Test iteration 4 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 5 / 15" Description="Test iteration 5 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 6 / 15" Description="Test iteration 6 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 7 / 15" Description="Test iteration 7 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 8 / 15" Description="Test iteration 8 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 9 / 15" Description="Test iteration 9 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 10 / 15" Description="Test iteration 10 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 11 / 15" Description="Test iteration 11 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 12 / 15" Description="Test iteration 12 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 13 / 15" Description="Test iteration 13 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 14 / 15" Description="Test iteration 14 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 15 / 15" Description="Test iteration 15 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+  <Text>Searching missing fragments.</Text>
+  <Text>No missing fragments detected.</Text>
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">45287</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.fill_rules.clipped_partly
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.fill_rules.clipped_partly" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 15" Description="Test iteration 1 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 2 / 15" Description="Test iteration 2 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 3 / 15" Description="Test iteration 3 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 4 / 15" Description="Test iteration 4 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 5 / 15" Description="Test iteration 5 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 6 / 15" Description="Test iteration 6 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 7 / 15" Description="Test iteration 7 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 8 / 15" Description="Test iteration 8 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 9 / 15" Description="Test iteration 9 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 10 / 15" Description="Test iteration 10 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 11 / 15" Description="Test iteration 11 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 12 / 15" Description="Test iteration 12 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 13 / 15" Description="Test iteration 13 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 14 / 15" Description="Test iteration 14 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 15 / 15" Description="Test iteration 15 / 15">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">39430</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.fill_rules.projected
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.fill_rules.projected" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Test iteration 1 / 2" Description="Test iteration 1 / 2">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Section Name="Test iteration 2 / 2" Description="Test iteration 2 / 2">
+  <Text>Drawing gray triangles with shared edges.
+Enabling additive blending to detect overlapping fragments.</Text>
+  <Text>Verifying result.</Text>
+  <Text>No overlapping fragments detected.</Text>
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">12703</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.front_triangles
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.front_triangles" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CCW</Text>
+ <Text>Setting cull face to GL_FRONT</Text>
+ <Text>Drawing test pattern (GL_TRIANGLES)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">72064</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.front_triangles_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.front_triangles_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CW</Text>
+ <Text>Setting cull face to GL_FRONT</Text>
+ <Text>Drawing test pattern (GL_TRIANGLES)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">93198</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.front_triangle_strip
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.front_triangle_strip" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CCW</Text>
+ <Text>Setting cull face to GL_FRONT</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_STRIP)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">118892</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.front_triangle_strip_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.front_triangle_strip_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CW</Text>
+ <Text>Setting cull face to GL_FRONT</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_STRIP)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">63127</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.front_triangle_fan
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.front_triangle_fan" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CCW</Text>
+ <Text>Setting cull face to GL_FRONT</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_FAN)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">140037</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.front_triangle_fan_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.front_triangle_fan_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CW</Text>
+ <Text>Setting cull face to GL_FRONT</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_FAN)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">93849</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.back_triangles
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.back_triangles" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CCW</Text>
+ <Text>Setting cull face to GL_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLES)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">97515</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.back_triangles_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.back_triangles_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CW</Text>
+ <Text>Setting cull face to GL_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLES)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">79499</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.back_triangle_strip
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.back_triangle_strip" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CCW</Text>
+ <Text>Setting cull face to GL_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_STRIP)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">76640</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.back_triangle_strip_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.back_triangle_strip_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CW</Text>
+ <Text>Setting cull face to GL_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_STRIP)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">117749</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.back_triangle_fan
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.back_triangle_fan" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CCW</Text>
+ <Text>Setting cull face to GL_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_FAN)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">97440</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.back_triangle_fan_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.back_triangle_fan_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CW</Text>
+ <Text>Setting cull face to GL_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_FAN)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">143159</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.both_triangles
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.both_triangles" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CCW</Text>
+ <Text>Setting cull face to GL_FRONT_AND_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLES)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">53540</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.both_triangles_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.both_triangles_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CW</Text>
+ <Text>Setting cull face to GL_FRONT_AND_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLES)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">55460</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.both_triangle_strip
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.both_triangle_strip" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CCW</Text>
+ <Text>Setting cull face to GL_FRONT_AND_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_STRIP)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">53659</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.both_triangle_strip_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.both_triangle_strip_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CW</Text>
+ <Text>Setting cull face to GL_FRONT_AND_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_STRIP)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">54452</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.both_triangle_fan
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.both_triangle_fan" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CCW</Text>
+ <Text>Setting cull face to GL_FRONT_AND_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_FAN)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">53583</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.culling.both_triangle_fan_reverse
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.culling.both_triangle_fan_reverse" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Text>Setting front face to GL_CW</Text>
+ <Text>Setting cull face to GL_FRONT_AND_BACK</Text>
+ <Text>Drawing test pattern (GL_TRIANGLE_FAN)</Text>
+ <Text>Verifying rasterization result.</Text>
+ <Text>No invalid pixels found.</Text>
+ <ImageSet Name="Verification result" Description="Result of rendering" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">54843</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.basic.triangles
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.basic.triangles" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.520619, 0.889277, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.714178, 0.465963, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.246548, -0.202522, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.785215, 0.867371, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.590981, -0.563023, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.251053, 0.378847, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.506453, -0.0622926, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.134987, -0.257267, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.264562, 0.450548, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.475456, 0.580028, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.0255001, -0.592613, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.677949, -0.551791, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.548977, 0.550117, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.603771, 0.583081, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.0879996, 0.280074, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.0214378, -0.467291, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.269606, 0.267194, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.352549, -0.578844, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">908882</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.basic.triangle_strip
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.basic.triangle_strip" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.520638, -0.16659, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.0868856, -0.284408, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.554413, 0.602586, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.0912268, 0.38931, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.379883, 0.831197, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.416528, 0.884259, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.506466, 0.802274, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.745057, 0.663989, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.642603, -0.766999, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.357315, 0.78085, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.722318, -0.233046, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.135556, 0.701658, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.548964, -0.769366, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.833477, -0.800018, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.308185, 0.702335, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.292076, 0.143649, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.188633, -0.153359, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.172059, -0.0341597, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1266683</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.basic.triangle_fan
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.basic.triangle_fan" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.523503, -0.347279, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.299229, -0.102933, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.758937, 0.00353998, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.316063, 0.501377, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.332736, -0.602515, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.71967, 0.315172, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.506261, 0.808773, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.737672, 0.671168, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.720569, 0.654422, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.111132, -0.893263, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.49405, -0.0854527, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.100202, -0.582082, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.549224, -0.195111, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.00256312, -0.0498726, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.232044, -0.474999, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.268446, -0.122609, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.561937, -0.0158767, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.392441, 0.230406, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1270065</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.basic.lines
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.basic.lines" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.520577, -0.135163, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.0620267, -0.330731, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.635029, 0.0853828, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.129923, -0.106455, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.632333, 0.0638866, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.517639, -0.243171, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.506412, 0.560052, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.592623, 0.70225, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.835676, 0.874938, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.143044, 0.0755453, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.256429, -0.591691, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.0305212, -0.827533, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>Found an invalid pixel at (160,51), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(0, 253, 2, 255)
+	Native color:		(0, 253, 2)
+</Text>
+  <Text>	Candidate (line 2):
+		Reference native color min: (0, 249, 3)
+		Reference native color max: (0, 253, 5)
+		Reference native float min: (0, 249.166, 3.43547)
+		Reference native float max: (0, 252.811, 4.46224)
+		Fmin:	(0, 0.97712, 0.0134724)
+		Fmax:	(0, 0.991416, 0.017499)
+</Text>
+  <Text>1 invalid pixel(s) found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+  <Text>Accurate verification failed, checking with projected weights (inaccurate equation).</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+  <Text>Interpolation was calculated using coordinates projected onto major axis. This method does not produce the same values as the non-projecting method defined in the specification.</Text>
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.548909, -0.291822, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.354284, -0.375199, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.894682, 0.251108, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.809774, -0.264043, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.234006, -0.404478, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.697202, -0.60925, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1427720</Number>
+ <Result StatusCode="QualityWarning">Interpolation was calculated using projected coordinateds</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.basic.line_strip
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.basic.line_strip" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.520605, 0.836946, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.765635, 0.528687, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.269854, 0.734433, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.737159, -0.322781, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.879694, 0.0133144, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.649969, -0.466328, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.50644, -0.158661, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.0948777, -0.413923, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.393221, 0.287737, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.582258, 0.180083, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.432791, 0.0481196, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.63038, -0.257512, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.548936, -0.784229, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.818564, -0.811138, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.233561, 0.820363, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.241981, -0.435019, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.278108, 0.55757, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.478337, -0.0910031, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1118116</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.basic.line_loop
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.basic.line_loop" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.520591, 0.807764, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.738581, 0.554299, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.277956, 0.304275, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.768116, -0.0763973, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.174611, -0.805211, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.748975, -0.0451794, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.506426, 0.0234061, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.173909, 0.331099, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.268314, -0.00593376, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.526718, -0.620813, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.509107, 0.0748555, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.854992, 0.0443667, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.54895, 0.176306, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.0206984, 0.040743, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.58834, 0.670322, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.59408, -0.806266, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.346021, 0.454052, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.826935, -0.228953, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1107337</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.basic.lines_wide
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.basic.lines_wide" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_LINE_WIDTH_RANGE = [1, 32]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.520577, -0.135163, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.0620267, -0.330731, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.635029, 0.0853828, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.129923, -0.106455, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.632333, 0.0638866, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.517639, -0.243171, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.506412, 0.560052, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.592623, 0.70225, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.835676, 0.874938, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.143044, 0.0755453, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.256429, -0.591691, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.0305212, -0.827533, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.548909, -0.291822, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.354284, -0.375199, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.894682, 0.251108, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.809774, -0.264043, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.234006, -0.404478, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.697202, -0.60925, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1232154</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.basic.line_strip_wide
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.basic.line_strip_wide" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_LINE_WIDTH_RANGE = [1, 32]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.520605, 0.836946, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.765635, 0.528687, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.269854, 0.734433, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.737159, -0.322781, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.879694, 0.0133144, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.649969, -0.466328, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.50644, -0.158661, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.0948777, -0.413923, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.393221, 0.287737, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.582258, 0.180083, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.432791, 0.0481196, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.63038, -0.257512, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.548936, -0.784229, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.818564, -0.811138, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.233561, 0.820363, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.241981, -0.435019, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.278108, 0.55757, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.478337, -0.0910031, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1331153</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.basic.line_loop_wide
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.basic.line_loop_wide" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_LINE_WIDTH_RANGE = [1, 32]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.520591, 0.807764, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.738581, 0.554299, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.277956, 0.304275, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.768116, -0.0763973, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.174611, -0.805211, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.748975, -0.0451794, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.506426, 0.0234061, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.173909, 0.331099, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.268314, -0.00593376, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.526718, -0.620813, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.509107, 0.0748555, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.854992, 0.0443667, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.54895, 0.176306, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.0206984, 0.040743, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.58834, 0.670322, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.59408, -0.806266, 0, 1),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.346021, 0.454052, 0, 1),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.826935, -0.228953, 0, 1),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1481113</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.projected.triangles
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.projected.triangles" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.308357, 0.52671, 0, 0.59229),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.779302, -0.41234, 0, 1.67245),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-2.62861, 2.90363, 0, 3.34763),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-1.63265, 0.728002, 0, 2.89979),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.977951, -0.441725, 0, 1.17457),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.357736, -0.124796, 0, 0.408103),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.20788, -0.148566, 0, 2.38497),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.784962, 0.807219, 0, 3.05116),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.972862, 1.18683, 0, 2.04617),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.554157, -0.633956, 0, 0.935108),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.939699, -1.65658, 0, 2.48267),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.123732, 0.259197, 0, 1.8754),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.45311, 0.454051, 0, 0.825372),	color= (1, 0, 0, 1)</Text>
+  <Text>	(1.56923, 0.236831, 0, 2.69127),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.0572211, -1.24728, 0, 2.66917),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.234596, -0.309537, 0, 0.877997),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.55706, 0.896686, 0, 1.31932),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.58621, 1.07819, 0, 1.91343),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1117872</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.projected.triangle_strip
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.projected.triangle_strip" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.18884, -0.380395, 0, 2.28343),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.95906, 1.86955, 0, 3.37213),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.264738, 1.12977, 0, 2.90198),	color= (0, 0, 1, 1)</Text>
+  <Text>	(3.29717, 1.65227, 0, 3.96677),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.0964596, -0.842421, 0, 1.78001),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.0121531, 0.147508, 0, 0.499986),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.26696, 0.422881, 0, 0.527103),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.319232, -0.30895, 0, 0.480779),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.205494, 0.449072, 0, 0.575107),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.834603, -0.485462, 0, 3.58128),	color= (1, 0, 0, 1)</Text>
+  <Text>	(2.20844, -0.893725, 0, 3.87752),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.121514, 0.0343807, 0, 0.294745),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(2.11876, -2.96942, 0, 3.85956),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-2.86623, -1.10414, 0, 3.58271),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.729671, 0.358868, 0, 2.49822),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.310995, 0.348916, 0, 2.02789),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.0730484, 0.611358, 0, 3.15999),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.487536, -0.793341, 0, 3.4113),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1385743</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.projected.triangle_fan
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.projected.triangle_fan" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.43006, -0.948666, 0, 2.73171),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.216929, -1.59944, 0, 2.10747),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.88575, 1.40508, 0, 2.80244),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-1.66617, -1.99015, 0, 2.76536),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.500252, 2.19094, 0, 3.90485),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.53009, 0.250868, 0, 1.12442),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.274744, 0.438916, 0, 0.542693),	color= (1, 0, 0, 1)</Text>
+  <Text>	(2.33671, -2.5087, 0, 3.48156),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.117467, -0.944184, 0, 1.057),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.074443, 0.0872924, 0, 0.87116),	color= (1, 0, 0, 1)</Text>
+  <Text>	(2.48323, -1.36529, 0, 3.14726),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.287615, -0.783128, 0, 1.05937),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.15634, -0.41079, 0, 2.10541),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.0547215, -0.254605, 0, 1.09722),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.882196, -0.402931, 0, 3.28631),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.0410637, 1.01501, 0, 2.58641),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-1.23763, 0.656027, 0, 2.52669),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.07949, 0.277305, 0, 1.4956),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result.</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1442487</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.projected.lines
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.projected.lines" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.16138, -0.301541, 0, 2.23095),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.754149, 1.44803, 0, 2.28025),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.0994004, -0.081446, 0, 0.765074),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.101365, 0.821306, 0, 1.58664),	color= (1, 0, 0, 1)</Text>
+  <Text>	(3.39913, 1.96185, 0, 3.92116),	color= (0, 1, 0, 1)</Text>
+  <Text>	(2.55316, -1.19198, 0, 3.05878),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.429896, 0.475432, 0, 0.848906),	color= (1, 0, 0, 1)</Text>
+  <Text>	(2.77185, -3.29849, 0, 3.94709),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.377828, 0.199541, 0, 2.64135),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.208859, -0.0107736, 0, 0.352986),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.381789, 0.254617, 0, 2.88806),	color= (0, 1, 0, 1)</Text>
+  <Text>	(2.03932, -1.89714, 0, 3.98683),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.56325, -0.83109, 0, 2.84793),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.986817, -2.35312, 0, 2.63012),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.30049, -0.42405, 0, 1.60599),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.329167, 0.567387, 0, 0.813805),	color= (1, 0, 0, 1)</Text>
+  <Text>	(1.06084, -1.36456, 0, 2.52165),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.0419491, -0.0672682, 0, 0.533322),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>Found an invalid pixel at (180,59), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(0, 231, 24, 255)
+	Native color:		(0, 231, 24)
+</Text>
+  <Text>	Candidate (line 2):
+		Reference native color min: (0, 231, 19)
+		Reference native color max: (0, 237, 23)
+		Reference native float min: (0, 231.654, 19.3715)
+		Reference native float max: (0, 236.91, 22.09)
+		Fmin:	(0, 0.908446, 0.0759665)
+		Fmax:	(0, 0.929058, 0.0866274)
+</Text>
+  <Text>Found an invalid pixel at (181,59), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(0, 249, 6, 255)
+	Native color:		(0, 249, 6)
+</Text>
+  <Text>	Candidate (line 2):
+		Reference native color min: (0, 241, 9)
+		Reference native color max: (0, 248, 12)
+		Reference native float min: (0, 241.695, 9.32784)
+		Reference native float max: (0, 247.059, 11.944)
+		Fmin:	(0, 0.947825, 0.0365798)
+		Fmax:	(0, 0.968858, 0.0468392)
+</Text>
+  <Text>Found an invalid pixel at (175,64), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(0, 168, 87, 255)
+	Native color:		(0, 168, 87)
+</Text>
+  <Text>	Candidate (line 2):
+		Reference native color min: (0, 163, 88)
+		Reference native color max: (0, 168, 92)
+		Reference native float min: (0, 163.095, 88.1138)
+		Reference native float max: (0, 167.358, 91.4625)
+		Fmin:	(0, 0.639589, 0.345544)
+		Fmax:	(0, 0.656305, 0.358676)
+</Text>
+  <Text>3 invalid pixel(s) found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+  <Text>Accurate verification failed, checking with projected weights (inaccurate equation).</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+  <Text>Interpolation was calculated using coordinates projected onto major axis. This method does not produce the same values as the non-projecting method defined in the specification.</Text>
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1442642</Number>
+ <Result StatusCode="QualityWarning">Interpolation was calculated using projected coordinateds</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.projected.line_strip
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.projected.line_strip" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.251796, 0.404797, 0, 0.48366),	color= (1, 0, 0, 1)</Text>
+  <Text>	(1.92996, -0.985095, 0, 3.65047),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-2.91703, -1.27729, 0, 3.95713),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.0148526, 0.72506, 0, 1.11553),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-2.34952, 0.384126, 0, 3.50886),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.0789201, 0.0611594, 0, 2.15597),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.16496, -0.364969, 0, 2.3003),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-1.12067, 1.06462, 0, 2.70744),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.69075, 0.213637, 0, 1.18633),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.0748916, -0.981101, 0, 1.55636),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.129881, 0.670963, 0, 1.57587),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.94508, -0.959626, 0, 2.44513),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(2.10137, -3.00209, 0, 3.82808),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-3.10818, -0.894976, 0, 3.83188),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.366089, -0.658132, 0, 1.51288),	color= (0, 0, 1, 1)</Text>
+  <Text>	(1.06378, -0.912611, 0, 1.90788),	color= (1, 0, 0, 1)</Text>
+  <Text>	(1.61829, -2.58838, 0, 3.73714),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.303452, 0.303136, 0, 0.430827),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1115431</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.projected.line_loop
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.projected.line_loop" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.281522, 0.436818, 0, 0.540774),	color= (1, 0, 0, 1)</Text>
+  <Text>	(1.52009, -0.762255, 0, 2.74236),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.89619, -0.188596, 0, 2.46862),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-1.61414, -1.50141, 0, 2.00462),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.61267, 0.328745, 0, 1.48395),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.325965, 0.37493, 0, 0.899372),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.877564, 0.0405595, 0, 1.73286),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.691161, -0.560098, 0, 2.08747),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.67221, -1.97095, 0, 3.17478),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.164208, -1.87556, 0, 2.19366),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-2.2094, 0.765156, 0, 2.49226),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.612299, -1.46183, 0, 3.23855),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.12881, 0.362539, 0, 2.0563),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.143217, 2.06809, 0, 3.51512),	color= (0, 1, 0, 1)</Text>
+  <Text>	(1.68154, -2.28213, 0, 2.83049),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.734046, 1.33687, 0, 1.61666),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.2285, -0.605279, 0, 0.748632),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.204575, -0.174862, 0, 0.227365),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1101312</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.projected.lines_wide
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.projected.lines_wide" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_LINE_WIDTH_RANGE = [1, 32]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.16138, -0.301541, 0, 2.23095),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.754149, 1.44803, 0, 2.28025),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.0994004, -0.081446, 0, 0.765074),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.101365, 0.821306, 0, 1.58664),	color= (1, 0, 0, 1)</Text>
+  <Text>	(3.39913, 1.96185, 0, 3.92116),	color= (0, 1, 0, 1)</Text>
+  <Text>	(2.55316, -1.19198, 0, 3.05878),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.429896, 0.475432, 0, 0.848906),	color= (1, 0, 0, 1)</Text>
+  <Text>	(2.77185, -3.29849, 0, 3.94709),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.377828, 0.199541, 0, 2.64135),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.208859, -0.0107736, 0, 0.352986),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.381789, 0.254617, 0, 2.88806),	color= (0, 1, 0, 1)</Text>
+  <Text>	(2.03932, -1.89714, 0, 3.98683),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.56325, -0.83109, 0, 2.84793),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.986817, -2.35312, 0, 2.63012),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.30049, -0.42405, 0, 1.60599),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-0.329167, 0.567387, 0, 0.813805),	color= (1, 0, 0, 1)</Text>
+  <Text>	(1.06084, -1.36456, 0, 2.52165),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.0419491, -0.0672682, 0, 0.533322),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>Found an invalid pixel at (180,57), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(0, 231, 24, 255)
+	Native color:		(0, 231, 24)
+	Candidate line (line 2):
+		Candidate interpolation point (index 0):
+			Root fragment position (non-replicated fragment): (180, 57):
+			Reference native color min: (0, 231, 19)
+			Reference native color max: (0, 237, 23)
+			Reference native float min: (0, 231.654, 19.3715)
+			Reference native float max: (0, 236.91, 22.09)
+			Fmin:	(0, 0.908446, 0.0759665)
+			Fmax:	(0, 0.929058, 0.0866274)
+		Candidate interpolation point (index 1):
+			Root fragment position (non-replicated fragment): (180, 58):
+			Reference native color min: (0, 223, 27)
+			Reference native color max: (0, 229, 30)
+			Reference native float min: (0, 223.847, 27.3052)
+			Reference native float max: (0, 228.909, 29.9652)
+			Fmin:	(0, 0.87783, 0.107079)
+			Fmax:	(0, 0.897681, 0.11751)
+</Text>
+  <Text>Found an invalid pixel at (181,57), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(0, 249, 6, 255)
+	Native color:		(0, 249, 6)
+	Candidate line (line 2):
+		Candidate interpolation point (index 0):
+			Root fragment position (non-replicated fragment): (181, 57):
+			Reference native color min: (0, 241, 9)
+			Reference native color max: (0, 248, 12)
+			Reference native float min: (0, 241.695, 9.32784)
+			Reference native float max: (0, 247.059, 11.944)
+			Fmin:	(0, 0.947825, 0.0365798)
+			Fmax:	(0, 0.968858, 0.0468392)
+		Candidate interpolation point (index 1):
+			Root fragment position (non-replicated fragment): (181, 58):
+			Reference native color min: (0, 233, 17)
+			Reference native color max: (0, 239, 21)
+			Reference native float min: (0, 233.305, 17.734)
+			Reference native float max: (0, 238.565, 20.4264)
+			Fmin:	(0, 0.914922, 0.0695451)
+			Fmax:	(0, 0.935551, 0.0801036)
+</Text>
+  <Text>Found an invalid pixel at (180,58), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(0, 231, 24, 255)
+	Native color:		(0, 231, 24)
+	Candidate line (line 2):
+		Candidate interpolation point (index 0):
+			Root fragment position (non-replicated fragment): (180, 57):
+			Reference native color min: (0, 231, 19)
+			Reference native color max: (0, 237, 23)
+			Reference native float min: (0, 231.654, 19.3715)
+			Reference native float max: (0, 236.91, 22.09)
+			Fmin:	(0, 0.908446, 0.0759665)
+			Fmax:	(0, 0.929058, 0.0866274)
+		Candidate interpolation point (index 1):
+			Root fragment position (non-replicated fragment): (180, 58):
+			Reference native color min: (0, 223, 27)
+			Reference native color max: (0, 229, 30)
+			Reference native float min: (0, 223.847, 27.3052)
+			Reference native float max: (0, 228.909, 29.9652)
+			Fmin:	(0, 0.87783, 0.107079)
+			Fmax:	(0, 0.897681, 0.11751)
+</Text>
+  <Text>Omitted 11 pixel error description(s).</Text>
+  <Text>15 invalid pixel(s) found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>Found an invalid pixel at (83,13), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(7, 248, 0, 255)
+	Native color:		(7, 248, 0)
+</Text>
+  <Text>	Candidate (line 0):
+		Reference native color min: (4, 246, 0)
+		Reference native color max: (6, 254, 0)
+		Reference native float min: (4.03025, 246.163, 0)
+		Reference native float max: (5.89026, 253.993, 0)
+		Fmin:	(0.0158049, 0.965344, 0)
+		Fmax:	(0.0230991, 0.99605, 0)
+</Text>
+  <Text>Found an invalid pixel at (82,17), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(5, 250, 0, 255)
+	Native color:		(5, 250, 0)
+</Text>
+  <Text>	Candidate (line 0):
+		Reference native color min: (6, 243, 0)
+		Reference native color max: (9, 252, 0)
+		Reference native float min: (6.26128, 243.928, 0)
+		Reference native float max: (8.17697, 251.722, 0)
+		Fmin:	(0.0245541, 0.95658, 0)
+		Fmax:	(0.0320665, 0.987143, 0)
+</Text>
+  <Text>Found an invalid pixel at (85,19), 1 candidate reference value(s) found:
+	Pixel color:		RGBA(11, 244, 0, 255)
+	Native color:		(11, 244, 0)
+</Text>
+  <Text>	Candidate (line 0):
+		Reference native color min: (12, 237, 0)
+		Reference native color max: (15, 246, 0)
+		Reference native float min: (12.2375, 237.921, 0)
+		Reference native float max: (14.2939, 245.625, 0)
+		Fmin:	(0.0479901, 0.933022, 0)
+		Fmax:	(0.0560547, 0.963235, 0)
+</Text>
+  <Text>Omitted 253 pixel error description(s).</Text>
+  <Text>257 invalid pixel(s) found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+  <Text>Accurate verification failed, checking with projected weights (inaccurate equation).</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+  <Text>Interpolation was calculated using coordinates projected onto major axis. This method does not produce the same values as the non-projecting method defined in the specification.</Text>
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2011899</Number>
+ <Result StatusCode="QualityWarning">Interpolation was calculated using projected coordinateds</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.projected.line_strip_wide
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.projected.line_strip_wide" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_LINE_WIDTH_RANGE = [1, 32]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.251796, 0.404797, 0, 0.48366),	color= (1, 0, 0, 1)</Text>
+  <Text>	(1.92996, -0.985095, 0, 3.65047),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-2.91703, -1.27729, 0, 3.95713),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.0148526, 0.72506, 0, 1.11553),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-2.34952, 0.384126, 0, 3.50886),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.0789201, 0.0611594, 0, 2.15597),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.16496, -0.364969, 0, 2.3003),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-1.12067, 1.06462, 0, 2.70744),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.69075, 0.213637, 0, 1.18633),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.0748916, -0.981101, 0, 1.55636),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.129881, 0.670963, 0, 1.57587),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.94508, -0.959626, 0, 2.44513),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(2.10137, -3.00209, 0, 3.82808),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-3.10818, -0.894976, 0, 3.83188),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.366089, -0.658132, 0, 1.51288),	color= (0, 0, 1, 1)</Text>
+  <Text>	(1.06378, -0.912611, 0, 1.90788),	color= (1, 0, 0, 1)</Text>
+  <Text>	(1.61829, -2.58838, 0, 3.73714),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.303452, 0.303136, 0, 0.430827),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1355975</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.rasterization.interpolation.projected.line_loop_wide
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.rasterization.interpolation.projected.line_loop_wide" Version="0.3.4" CaseType="SelfValidate">
+ <Text>ALIASED_LINE_WIDTH_RANGE = [1, 32]</Text>
+ <Text>Sample count = 0</Text>
+ <Text>SUBPIXEL_BITS = 4</Text>
+ <Section Name="Iteration1" Description="Test iteration 1 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.281522, 0.436818, 0, 0.540774),	color= (1, 0, 0, 1)</Text>
+  <Text>	(1.52009, -0.762255, 0, 2.74236),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.89619, -0.188596, 0, 2.46862),	color= (0, 0, 1, 1)</Text>
+  <Text>	(-1.61414, -1.50141, 0, 2.00462),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.61267, 0.328745, 0, 1.48395),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.325965, 0.37493, 0, 0.899372),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration2" Description="Test iteration 2 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(0.877564, 0.0405595, 0, 1.73286),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.691161, -0.560098, 0, 2.08747),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-1.67221, -1.97095, 0, 3.17478),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.164208, -1.87556, 0, 2.19366),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-2.2094, 0.765156, 0, 2.49226),	color= (0, 1, 0, 1)</Text>
+  <Text>	(-0.612299, -1.46183, 0, 3.23855),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Section Name="Iteration3" Description="Test iteration 3 / 3">
+  <Text>Generated vertices:</Text>
+  <Text>	(1.12881, 0.362539, 0, 2.0563),	color= (1, 0, 0, 1)</Text>
+  <Text>	(0.143217, 2.06809, 0, 3.51512),	color= (0, 1, 0, 1)</Text>
+  <Text>	(1.68154, -2.28213, 0, 2.83049),	color= (0, 0, 1, 1)</Text>
+  <Text>	(0.734046, 1.33687, 0, 1.61666),	color= (1, 0, 0, 1)</Text>
+  <Text>	(-0.2285, -0.605279, 0, 0.748632),	color= (0, 1, 0, 1)</Text>
+  <Text>	(0.204575, -0.174862, 0, 0.227365),	color= (0, 0, 1, 1)</Text>
+  <Text>Verifying rasterization result. Native format is RGB888</Text>
+  <Text>No invalid pixels found.</Text>
+  <ImageSet Name="Verification result" Description="Result of rendering" />
+</Section>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1436473</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 31.82 seconds
+
+#endSession

@@ -1,0 +1,102 @@
+; Run-M1 - ogles2 M7 run 1: dEQP-GLES2 conformance tests. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   A group of the must-pass list (caselists/<LIST>.txt):
+;                                  Execute Run-M1 LIST=fbo
+;   Tests by dEQP pattern:         Execute Run-M1 CASES=dEQP-GLES2.functional.fbo.*
+;   The result files' name:        Execute Run-M1 LIST=fbo NAME=fbo-2
+;   With 4x multisampling:         Execute Run-M1 MSAA=1
+;   Result images in the log:      Execute Run-M1 CASES=... IMAGES=1
+;   ogles2's own point size test:  Execute Run-M1 TEST=points
+; Nothing is installed. Output goes to results/: <NAME>.txt (what dEQP
+; prints, with the totals at the end) and <NAME>.qpa (its full log); NAME
+; is LIST's, else "deqp".
+.key CASES/K,LIST/K,NAME/K,MSAA/K,IMAGES/K,TEST/K
+.def CASES dEQP-GLES2.info.*
+.def LIST ""
+.def NAME ""
+.def MSAA 0
+.def IMAGES 0
+.def TEST ""
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m7-1 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M7R1: ""
+If NOT EXISTS M7R1:results
+  MakeDir M7R1:results
+EndIf
+If NOT EXISTS M7R1:cache
+  MakeDir M7R1:cache
+EndIf
+
+; Which tests, and the result files' name. Not in quotes: there "*"
+; escapes the next character.
+Set DEQPSEL --deqp-case={CASES}
+Set DEQPNAME deqp
+If NOT "{LIST}" EQ ""
+  If NOT EXISTS M7R1:caselists/{LIST}.txt
+    Echo "No list caselists/{LIST}.txt (see that directory)."
+    Quit 20
+  EndIf
+  Set DEQPSEL --deqp-caselist-file=M7R1:caselists/{LIST}.txt
+  Set DEQPNAME {LIST}
+EndIf
+If NOT "{NAME}" EQ ""
+  Set DEQPNAME {NAME}
+EndIf
+Set DEQPIMG disable
+If {IMAGES} EQ 1 VAL
+  Set DEQPIMG enable
+EndIf
+Set DEQPCFG rgba8888d24s8ms0
+If {MSAA} EQ 1 VAL
+  Set DEQPCFG rgba8888d24s8ms4
+EndIf
+
+Echo ogles2 M7 run 1: $DEQPSEL >>M7R1:results/00-progress.txt
+Date >>M7R1:results/00-progress.txt
+Assign LIBS: M7R1:libs ADD
+Assign OGLES2Cache: M7R1:cache
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M7R1:results/ogles2.log
+; C++ with exceptions and deep test code: more stack than the Shell's.
+Stack 1048576
+; dEQP reads its data from gles2/ in --deqp-archive-dir (its default, ".",
+; makes paths "./gles2/...", which AmigaDOS does not know).
+CD M7R1:bin
+
+If "{TEST}" EQ "points"
+  M7R1:bin/m7_points >M7R1:results/m7_points.txt
+  Skip done
+EndIf
+Echo dEQP-GLES2: $DEQPSEL
+Echo "  A 256x256 window on the Workbench screen, a test after another; each"
+Echo "  test's shaders are compiled on the Amiga the first time (a pause; kept"
+Echo "  in cache/). Ctrl-C stops it after the current test."
+M7R1:bin/deqp-gles2 $DEQPSEL --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/$DEQPNAME.qpa --deqp-log-images=$DEQPIMG --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=$DEQPCFG >M7R1:results/$DEQPNAME.txt
+Echo "$DEQPNAME done" >>M7R1:results/00-progress.txt
+Lab done
+UnSet DEQPSEL
+UnSet DEQPNAME
+UnSet DEQPCFG
+UnSet DEQPIMG
+
+CD M7R1:
+UnSetEnv OGLES2/LogFile
+Assign OGLES2Cache:
+Assign LIBS: M7R1:libs REMOVE
+If NOT EXISTS M7R1:results/notes.txt
+  Copy M7R1:notes-template.txt M7R1:results/notes.txt
+EndIf
+List M7R1:results >M7R1:results/99-files.txt
+Echo "finished" >>M7R1:results/00-progress.txt
+Date >>M7R1:results/00-progress.txt
+Assign M7R1:
+Echo ""
+Echo "Done. Results are in results/."

@@ -1,0 +1,53 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086C9670
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FD4C8C, 256x256
+    15 glGetFloatv: pname 0x846D not supported yet
+    16 glGetFloatv: pname 0x846D not supported yet
+    17 glGetFloatv: pname 0x846D not supported yet
+    18 glGetFloatv: pname 0x846D not supported yet
+    19 glGetFloatv: pname 0x846D not supported yet
+    20 glGetFloatv: pname 0x846D not supported yet
+    21 glGetFloatv: pname 0x846D not supported yet
+    22 glGetFloatv: pname 0x846D not supported yet
+    23 glGetFloatv: pname 0x846D not supported yet
+    24 glGetFloatv: pname 0x846D not supported yet
+    25 glGetFloatv: pname 0x846D not supported yet
+    26 glGetFloatv: pname 0x846E not supported yet
+    27 glGetFloatv: pname 0x846E not supported yet
+    28 glGetFloatv: pname 0x846E not supported yet
+    29 glGetFloatv: pname 0x846E not supported yet
+    30 glGetFloatv: pname 0x846E not supported yet
+    31 glGetFloatv: pname 0x846E not supported yet
+    32 glGetFloatv: pname 0x846E not supported yet
+    33 glGetFloatv: pname 0x846E not supported yet
+    34 glGetFloatv: pname 0x846E not supported yet
+    35 glGetFloatv: pname 0x846E not supported yet
+    36 glGetFloatv: pname 0x846E not supported yet
+    37 glGetFloatv: pname 0x846E not supported yet
+    38 glGetFloatv: pname 0x846E not supported yet
+    39 glGetFloatv: pname 0x846E not supported yet
+    40 glGetFloatv: pname 0x846E not supported yet
+    41 compiler: started (0 s)
+    42 compiler: shader compiled in 1260 ms
+    43 compiler: shader compiled in 40 ms
+    44 compiler: program compiled in 240 ms, OGLES2Cache:1ab757b5a8d30ecaf2222faf.v3dp
+    45 glLinkProgram: OGLES2Cache:1ab757b5a8d30ecaf2222faf.v3dp (7 variants, 1064 bytes of code)
+    46 job: depth and stencil kept across a mid-frame flush (logged once)
+    47 aglDestroyContext: context 0x08FD4C8C: freeing
+    48 device: context freed, 0 bytes of GPU memory still in use
+    49 aglDestroyContext: context 0x08FD4C8C (576 frames, 0 dropped, 0 binning blocks added)
+    50 timing: 576 jobs, each on average: 7699 us of CPU work before its flush, 8 us waiting for binning, 136 us for the render
+    51 timing: and in each flush 62 us building the render list, 79 us for the CPU cache before the GPU, 56 us after
+    52 timing: 576 swaps, 65342 us from one to the next on average, 434 us of it presenting
+    53 timing: per frame 1 draws, 112 us in them; in all 0 ms in glBuffer(Sub)Data, 87 ms in glTex(Sub)Image2D

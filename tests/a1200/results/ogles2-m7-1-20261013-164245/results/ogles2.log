@@ -1,0 +1,117 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086C9670
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FD5074, 256x256
+    15 compiler: started (0 s)
+    16 compiler: shader failed in 1220 ms
+    17 compiler: shader failed in 20 ms
+    18 compiler: shader failed in 20 ms
+    19 compiler: shader failed in 20 ms
+    20 compiler: shader failed in 20 ms
+    21 compiler: shader failed in 40 ms
+    22 compiler: shader failed in 20 ms
+    23 compiler: shader failed in 20 ms
+    24 compiler: shader failed in 20 ms
+    25 compiler: shader failed in 20 ms
+    26 compiler: shader failed in 20 ms
+    27 compiler: shader failed in 20 ms
+    28 compiler: shader failed in 20 ms
+    29 compiler: shader failed in 20 ms
+    30 compiler: shader failed in 40 ms
+    31 compiler: shader failed in 20 ms
+    32 compiler: shader failed in 40 ms
+    33 compiler: shader failed in 20 ms
+    34 compiler: shader failed in 20 ms
+    35 compiler: shader failed in 20 ms
+    36 compiler: shader failed in 20 ms
+    37 compiler: shader failed in 20 ms
+    38 compiler: shader failed in 20 ms
+    39 compiler: shader failed in 20 ms
+    40 compiler: shader failed in 20 ms
+    41 compiler: shader failed in 20 ms
+    42 compiler: shader failed in 20 ms
+    43 compiler: shader failed in 20 ms
+    44 compiler: shader failed in 20 ms
+    45 compiler: shader failed in 20 ms
+    46 compiler: shader failed in 20 ms
+    47 compiler: shader failed in 20 ms
+    48 compiler: shader failed in 20 ms
+    49 compiler: shader failed in 20 ms
+    50 compiler: shader failed in 20 ms
+    51 compiler: shader failed in 20 ms
+    52 compiler: shader failed in 20 ms
+    53 compiler: shader failed in 20 ms
+    54 compiler: shader failed in 20 ms
+    55 compiler: shader failed in 20 ms
+    56 compiler: shader failed in 20 ms
+    57 compiler: shader failed in 20 ms
+    58 compiler: shader failed in 20 ms
+    59 compiler: shader failed in 20 ms
+    60 compiler: shader failed in 20 ms
+    61 compiler: shader failed in 20 ms
+    62 compiler: shader failed in 20 ms
+    63 compiler: shader failed in 20 ms
+    64 compiler: shader failed in 20 ms
+    65 compiler: shader failed in 20 ms
+    66 compiler: shader failed in 20 ms
+    67 compiler: shader failed in 20 ms
+    68 compiler: shader failed in 40 ms
+    69 compiler: shader failed in 20 ms
+    70 compiler: shader failed in 20 ms
+    71 compiler: shader failed in 20 ms
+    72 compiler: shader failed in 20 ms
+    73 compiler: shader failed in 20 ms
+    74 compiler: shader failed in 20 ms
+    75 compiler: shader failed in 20 ms
+    76 compiler: shader failed in 20 ms
+    77 compiler: shader failed in 20 ms
+    78 compiler: shader failed in 20 ms
+    79 compiler: shader failed in 20 ms
+    80 compiler: shader failed in 20 ms
+    81 compiler: shader failed in 20 ms
+    82 compiler: shader failed in 20 ms
+    83 compiler: shader failed in 20 ms
+    84 compiler: shader failed in 20 ms
+    85 compiler: shader failed in 20 ms
+    86 compiler: shader failed in 20 ms
+    87 compiler: shader failed in 20 ms
+    88 compiler: shader failed in 20 ms
+    89 compiler: shader failed in 20 ms
+    90 compiler: shader failed in 20 ms
+    91 compiler: shader failed in 20 ms
+    92 compiler: shader failed in 20 ms
+    93 compiler: shader failed in 20 ms
+    94 compiler: shader failed in 20 ms
+    95 compiler: shader failed in 20 ms
+    96 compiler: shader failed in 20 ms
+    97 compiler: shader failed in 20 ms
+    98 compiler: shader failed in 20 ms
+    99 compiler: shader failed in 20 ms
+   100 compiler: shader failed in 20 ms
+   101 compiler: shader failed in 20 ms
+   102 compiler: shader failed in 20 ms
+   103 compiler: shader failed in 20 ms
+   104 compiler: shader failed in 20 ms
+   105 compiler: shader failed in 20 ms
+   106 compiler: shader failed in 20 ms
+   107 compiler: shader failed in 20 ms
+   108 compiler: shader failed in 20 ms
+   109 compiler: shader failed in 20 ms
+   110 compiler: shader failed in 20 ms
+   111 aglDestroyContext: context 0x08FD5074: freeing
+   112 device: context freed, 0 bytes of GPU memory still in use
+   113 aglDestroyContext: context 0x08FD5074 (95 frames, 0 dropped, 0 binning blocks added)
+   114 timing: 95 jobs, each on average: 48866 us of CPU work before its flush, 5 us waiting for binning, 75 us for the render
+   115 timing: and in each flush 58 us building the render list, 79 us for the CPU cache before the GPU, 56 us after
+   116 timing: 95 swaps, 40461 us from one to the next on average, 369 us of it presenting
+   117 timing: per frame 0 draws, 0 us in them; in all 0 ms in glBuffer(Sub)Data, 13 ms in glTex(Sub)Image2D

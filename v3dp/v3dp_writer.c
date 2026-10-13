@@ -470,12 +470,25 @@ static int put_attributes(struct buf *b, struct buf *strings, struct gl_shader_p
          * numbers; the driver's input slot is the number of inputs read
          * below it (nir_recompute_io_bases, st_atom_array.cpp). */
         attr = VERT_ATTRIB_GENERIC0 + (unsigned)var->location;
-        put_u32(b, str_add(strings, var->name.string));
-        put_u32(b, var->type->gl_type);
-        put_u32(b, (uint32_t)var->location);
-        put_u32(b, (inputs_read >> attr) & 1
-                   ? (uint32_t)util_bitcount64(inputs_read & BITFIELD64_MASK(attr))
-                   : 0xffffffffu);
+        /* A matrix's columns are inputs of their own, and one the shader
+         * does not read has no slot (mat2(m3) reads two of three): the
+         * location word carries which columns are read (FORMAT.md), the
+         * slot is that of the first of them. */
+        {
+            unsigned cols = var->type->matrix_columns > 1 ? var->type->matrix_columns : 1, k, mask = 0;
+            int first = -1;
+            for (k = 0; k < cols; k++)
+                if ((inputs_read >> (attr + k)) & 1) {
+                    mask |= 1u << k;
+                    if (first < 0)
+                        first = (int)k;
+                }
+            put_u32(b, str_add(strings, var->name.string));
+            put_u32(b, var->type->gl_type);
+            put_u32(b, (uint32_t)var->location | (mask << 8) | 0x80000000u);
+            put_u32(b, first >= 0 ? (uint32_t)util_bitcount64(inputs_read & BITFIELD64_MASK(attr + first))
+                                  : 0xffffffffu);
+        }
     }
     return 0;
 }
