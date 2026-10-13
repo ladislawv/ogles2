@@ -8,12 +8,13 @@
 ;   Quake's own split per frame:   Execute Run-M1 SPEEDS=1 (results/qconsole.log)
 ;   Vsync (r_swapInterval 1):      Execute Run-M1 VSYNC=1
 ;   4x antialiasing:               Execute Run-M1 MSAA=1
+;   Another size (custom mode):    Execute Run-M1 WIDTH=1920 HEIGHT=1080
 ;   The demo at its own speed, paced as a game is (com_maxfps):
 ;                                  Execute Run-M1 TIMEDEMO=0 [MAXFPS=<n>]
 ; Nothing is installed and nothing is written to the game's directory: the
 ; game's own files (config, logs, screenshots) go to home/ here. Output goes
 ; to results/.
-.key Q3DATA/K,FRAMES/K,SOUND/K,PROFILE/K,SPEEDS/K,VSYNC/K,MSAA/K,TIMEDEMO/K,MAXFPS/K
+.key Q3DATA/K,FRAMES/K,SOUND/K,PROFILE/K,SPEEDS/K,VSYNC/K,MSAA/K,TIMEDEMO/K,MAXFPS/K,WIDTH/K,HEIGHT/K
 .def FRAMES 400
 .def SOUND 0
 .def PROFILE 0
@@ -22,6 +23,8 @@
 .def MSAA 0
 .def TIMEDEMO 1
 .def MAXFPS 85
+.def WIDTH 0
+.def HEIGHT 0
 .def Q3DATA "Stuff:Quake3-68k-beta10/Quake3-68k-beta10"
 .bra {
 .ket }
@@ -80,16 +83,23 @@ EndIf
 If {MSAA} EQ 1 VAL
   SetEnv OGLES2/MSAA 4
 EndIf
+; A size of its own: ioquake3's custom mode (r_mode -1), as Play-Quake.
+Set Q3MODE "+set r_mode 3"
+If {WIDTH} GT 0 VAL
+  Set Q3MODE "+set r_mode -1 +set r_customwidth {WIDTH} +set r_customheight {HEIGHT}"
+  Echo "  At {WIDTH}x{HEIGHT}."
+EndIf
 If {FRAMES} EQ 0 VAL
-  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 +set r_swapInterval {VSYNC} $Q3SND $Q3LOG +set com_maxfps {MAXFPS} +set nextdemo quit +timedemo {TIMEDEMO} +demo four >M6R5:results/1-timedemo.txt
+  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 $Q3MODE +set r_swapInterval {VSYNC} $Q3SND $Q3LOG +set com_maxfps {MAXFPS} +set nextdemo quit +timedemo {TIMEDEMO} +demo four >M6R5:results/1-timedemo.txt
 Else
   ; The game takes a screenshot after {FRAMES} frames ("wait N" holds the
   ; rest of the command line that many frames; loading takes about 230 of
   ; them) and quits.
   Echo "  It stops after {FRAMES} frames."
-  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 +set r_swapInterval {VSYNC} $Q3SND $Q3LOG +set com_maxfps {MAXFPS} +set nextdemo quit +timedemo {TIMEDEMO} +demo four +wait {FRAMES} +screenshot +wait 5 +quit >M6R5:results/1-timedemo.txt
+  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 $Q3MODE +set r_swapInterval {VSYNC} $Q3SND $Q3LOG +set com_maxfps {MAXFPS} +set nextdemo quit +timedemo {TIMEDEMO} +demo four +wait {FRAMES} +screenshot +wait 5 +quit >M6R5:results/1-timedemo.txt
 EndIf
 UnSetEnv OGLES2/Probe
+UnSet Q3MODE
 UnSet Q3SND
 UnSet Q3LOG
 UnSetEnv QUAKE3_GL_PROFILE

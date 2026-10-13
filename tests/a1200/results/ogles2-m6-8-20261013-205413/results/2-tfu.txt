@@ -1,0 +1,24 @@
+ogles2 M6: glGenerateMipmap with the TFU
+PASS: smooth and tex1: link
+PASS: upload, first glGenerateMipmap: 8 levels against a 2x2 box filter, largest difference 0 (level -1)
+PASS: upload, new level 0, glGenerateMipmap again: 8 levels against a 2x2 box filter, largest difference 2 (level 2)
+PASS: upload: glGenerateMipmap of 256x256 took 2567 us
+PASS: npot 200x120, first: 7 levels against a 2x2 box filter, largest difference 0 (level -1)
+PASS: npot 200x120, again: 7 levels against a 2x2 box filter, largest difference 1 (level 1)
+PASS: target: 512x512 complete
+PASS: target: drawn, mipmapped: each level's four quadrants (levels 2..8)
+PASS: target: 20 frames of a 512x512 draw and glGenerateMipmap, 1191 us each
+PASS: RGB565: level 3 a5a252 (a5a252, each within 8)
+PASS: RGBA4: level 3 33cc66 (33cc66, each within 17)
+PASS: tfu upload: glTexImage2D 512x512 RGBA8, three windows drawn 1:1: 0 texels wrong
+PASS: tfu upload: then a 32x32 glTexSubImage2D by the CPU: 0 texels wrong
+PASS: tfu upload: then glTexSubImage2D of the whole level: 0 texels wrong
+PASS: tfu upload: glTexImage2D 600x520 RGBA8: 0 texels wrong
+PASS: tfu upload: glTexImage2D 256x128 RGB565: 0 texels wrong
+PASS: upload time 256x256 RGBA8: glTexImage2D 654 us, glTexSubImage2D 673 us
+PASS: upload time 256x256 RGB565: glTexSubImage2D 1961 us
+PASS: upload time 1024x1024 RGBA8: glTexImage2D 9762 us, glTexSubImage2D 10786 us
+PASS: upload time 1024x1024 RGB565: glTexSubImage2D 25093 us
+PASS: no GL error left over
+PASS: destroy returns the memory (0 bytes difference)
+ALL PASSED: 22 of 22 checks passed
