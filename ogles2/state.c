@@ -46,6 +46,9 @@ void ogles2_state_init(struct OGLES2Context *ctx)
     s->clear_depth = 1.0f;
     s->line_width = 1.0f;
     s->generate_mipmap_hint = GL_DONT_CARE;
+    s->derivative_hint = GL_DONT_CARE;
+    s->polygon_mode = GL_FILL;
+    s->provoking_vertex = GL_LAST_VERTEX_CONVENTION;
     s->depth_range[0] = 0.0f;
     s->depth_range[1] = 1.0f;
     s->polygon_offset_factor = s->polygon_offset_units = 0.0f;
@@ -287,6 +290,42 @@ void ogles2_glFrontFace(struct OGLES2Context *ctx, GLenum mode)
         return;
     }
     ctx->state.front_face = mode;
+    ctx->state_ver++;
+}
+
+/* AmigaOS 4's glPolygonMode: triangles drawn as their edges or corners
+ * (CFG_BITS' Direct3D wireframe and point-fill modes, as Mesa's
+ * v3dx_emit.c). The hardware has one mode for both faces, so only
+ * GL_FRONT_AND_BACK is taken (desktop GL 3.2 core's rule too). */
+void ogles2_glPolygonMode(struct OGLES2Context *ctx, GLenum face, GLenum mode)
+{
+    if (!ogles2_context_valid(ctx))
+        return;
+    if ((face != GL_FRONT_AND_BACK && face != GL_FRONT && face != GL_BACK) ||
+        (mode != GL_POINT && mode != GL_LINE && mode != GL_FILL)) {
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        return;
+    }
+    if (face != GL_FRONT_AND_BACK) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    ctx->state.polygon_mode = mode;
+    ctx->state_ver++;
+}
+
+/* AmigaOS 4's glProvokingVertex (EXT_provoking_vertex): the vertex a flat
+ * varying takes its value from. GLSL ES 1.00 has no flat varyings, so it is
+ * only state and CFG_BITS' Direct3D provoking-vertex bit. */
+void ogles2_glProvokingVertex(struct OGLES2Context *ctx, GLenum mode)
+{
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (mode != GL_FIRST_VERTEX_CONVENTION && mode != GL_LAST_VERTEX_CONVENTION) {
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        return;
+    }
+    ctx->state.provoking_vertex = mode;
     ctx->state_ver++;
 }
 
@@ -558,6 +597,24 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
         return 1;
     case GL_GENERATE_MIPMAP_HINT:
         v->kind = K_INT; v->n = 1; v->i[0] = (GLint)s->generate_mipmap_hint;
+        return 1;
+    case GL_FRAGMENT_SHADER_DERIVATIVE_HINT_OES:
+        v->kind = K_INT; v->n = 1; v->i[0] = (GLint)s->derivative_hint;
+        return 1;
+    case GL_POLYGON_MODE: /* front and back: one mode for both (glPolygonMode) */
+        v->kind = K_INT; v->n = 2; v->i[0] = v->i[1] = (GLint)s->polygon_mode;
+        return 1;
+    case GL_PROVOKING_VERTEX:
+        v->kind = K_INT; v->n = 1; v->i[0] = (GLint)s->provoking_vertex;
+        return 1;
+    case GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION: /* no quads in GLES2 */
+        v->kind = K_BOOL; v->n = 1; v->i[0] = 0;
+        return 1;
+    case GL_NUM_PROGRAM_BINARY_FORMATS_OES:
+        v->kind = K_INT; v->n = 1; v->i[0] = 1;
+        return 1;
+    case GL_PROGRAM_BINARY_FORMATS_OES:
+        v->kind = K_INT; v->n = 1; v->i[0] = (GLint)GL_PROGRAM_BINARY_V3DP_PISTORM;
         return 1;
     case GL_IMPLEMENTATION_COLOR_READ_FORMAT:
         v->kind = K_INT; v->n = 1; v->i[0] = GL_RGBA;

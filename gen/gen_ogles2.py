@@ -83,7 +83,17 @@ def read_gl(xml_path, api_path):
         line = line.split("#", 1)[0].split()
         if not line:
             continue
-        what, arg = line
+        what, arg = line[0], line[1]
+        if what == "alias":
+            # An entry gl.xml does not have (AmigaOS 4's own names), with the
+            # parameters of the gl.xml command named after it.
+            if len(line) != 3 or line[2] not in commands:
+                sys.exit("api.txt: alias %s needs a gl.xml command after it" % arg)
+            commands[arg] = commands[line[2]]
+            names.append(arg)
+            continue
+        if len(line) != 2:
+            sys.exit("api.txt: bad line: %s" % " ".join(line))
         if what == "feature":
             feats = [f for f in root.iter("feature") if f.get("name") == arg]
             if not feats:

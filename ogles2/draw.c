@@ -41,7 +41,7 @@ struct dedup
     UBYTE fb_depth_bits, fb_stencil_bits;
     const struct OGLES2Variant *fs;
     BOOL cfg, cw, vp, blend, cwm, lw, st;
-    UBYTE effp, erfp, cp, edo, dtf, zue, eze, ezue, be, se;
+    UBYTE effp, erfp, cp, edo, dtf, zue, eze, ezue, be, se, wf, pf, pv;
     UBYTE stencil[2][5];  /* the STENCIL_CFG bytes last sent, front and back */
     UWORD cw_l, cw_t, cw_w, cw_h;
     UWORD vp_w, vp_h, vp_cx2, vp_cy2;
@@ -317,6 +317,42 @@ static BOOL ubo_copies(struct OGLES2Context *ctx, const struct OGLES2Program *p,
     return TRUE;
 }
 
+/* The image's sampler uniforms, listed at the program's first draw (most of
+ * a fixed-function emulation's uniforms are not samplers): how many to look
+ * at, p->samplers[k] or (0xfe, too many to list) every uniform. */
+static UWORD list_samplers(struct OGLES2Program *p)
+{
+    const struct OGLES2Image *im = p->image;
+    UWORD u, n;
+    if (p->nsamplers == 0xff) {
+        for (u = 0, n = 0; u < im->nuniforms && n <= 16; u++)
+            if (im->uniforms[u].flags & OGLES2_UNIFORM_SAMPLER) {
+                if (n < 16)
+                    p->samplers[n] = u;
+                n++;
+            }
+        p->nsamplers = n <= 16 ? (UBYTE)n : 0xfe;
+    }
+    return p->nsamplers == 0xfe ? im->nuniforms : p->nsamplers;
+}
+
+/* A fragment-shader sampler of the program reads a texture the TMU returns
+ * 32 bits for (a float or depth texture): the draw needs the 32-bit
+ * variants (Mesa's sampler_is_32b key). */
+static BOOL wants_wide(struct OGLES2Context *ctx, struct OGLES2Program *p)
+{
+    const struct OGLES2Image *im = p->image;
+    UWORD k, n = list_samplers(p);
+    for (k = 0; k < n; k++) {
+        UWORD u = p->nsamplers == 0xfe ? k : p->samplers[k];
+        const struct OGLES2ImageUniform *un = &im->uniforms[u];
+        if ((un->flags & OGLES2_UNIFORM_SAMPLER) && un->sampler[1] < OGLES2_MAX_TEXTURE_UNITS &&
+            ogles2_texture_wide(ctx, p->sampler_unit[u], ogles2_sampler_kind(un->type)))
+            return TRUE;
+    }
+    return FALSE;
+}
+
 /* Every sampler uniform of the program: its texture index in each stage
  * that uses it reads the texture unit glUniform1i gave it. */
 static BOOL texture_states(struct OGLES2Context *ctx, struct OGLES2Program *p,
@@ -325,18 +361,7 @@ static BOOL texture_states(struct OGLES2Context *ctx, struct OGLES2Program *p,
     const struct OGLES2Image *im = p->image;
     UWORD u, k, n;
     int st;
-    /* The image's sampler uniforms, listed at the program's first draw
-     * (most of a fixed-function emulation's uniforms are not samplers). */
-    if (p->nsamplers == 0xff) {
-        for (u = 0, n = 0; u < im->nuniforms && n <= 16; u++)
-            if (im->uniforms[u].flags & OGLES2_UNIFORM_SAMPLER) {
-                if (n < 16)
-                    p->samplers[n] = u;
-                n++;
-            }
-        p->nsamplers = n <= 16 ? (UBYTE)n : 0xfe; /* 0xfe: too many to list */
-    }
-    n = p->nsamplers == 0xfe ? im->nuniforms : p->nsamplers;
+    n = list_samplers(p);
     for (k = 0; k < n; k++) {
         const struct OGLES2ImageUniform *un;
         u = p->nsamplers == 0xfe ? k : p->samplers[k];
@@ -347,7 +372,7 @@ static BOOL texture_states(struct OGLES2Context *ctx, struct OGLES2Program *p,
             ULONG idx = un->sampler[st];
             if (idx >= OGLES2_MAX_TEXTURE_UNITS)
                 continue;
-            if (!ogles2_texture_state(ctx, p->sampler_unit[u], un->type == GL_SAMPLER_CUBE,
+            if (!ogles2_texture_state(ctx, p->sampler_unit[u], ogles2_sampler_kind(un->type),
                                       &ts->tex[st][idx], &ts->smp[st][idx]))
                 return FALSE;
         }
@@ -953,7 +978,7 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     BOOL depth_on = (s->caps & OGLES2_CAP_DEPTH_TEST) && ctx->fb_depth_bits;
     BOOL stencil_on = (s->caps & OGLES2_CAP_STENCIL_TEST) && ctx->fb_stencil_bits;
     BOOL flip = ctx->fb_flip;
-    UBYTE effp, erfp, cp, edo, dtf, zue, eze, ezue, be, se;
+    UBYTE effp, erfp, cp, edo, dtf, zue, eze, ezue, be, se, wf, pf, pv;
     LONG fh = (LONG)ctx->fb_h;
     LONG vx = ctx->viewport[0], vy = ctx->viewport[1], vw = ctx->viewport[2], vh = ctx->viewport[3];
     LONG l, t, r, b;
@@ -1031,14 +1056,20 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
         ezue = v->ez_state != V3D_EZ_DISABLED;
     be = (s->caps & OGLES2_CAP_BLEND) ? TRUE : FALSE;
     se = stencil_on ? TRUE : FALSE;
+    /* glPolygonMode and glProvokingVertex (AmigaOS 4), as Mesa's v3dx_emit.c:
+     * the hardware applies the fill modes to triangles only. */
+    wf = s->polygon_mode != GL_FILL;
+    pf = s->polygon_mode == GL_POINT;
+    pv = s->provoking_vertex == GL_FIRST_VERTEX_CONVENTION;
     if (!dd->cfg || dd->effp != effp || dd->erfp != erfp || dd->cp != cp || dd->edo != edo ||
         dd->dtf != dtf || dd->zue != zue || dd->eze != eze || dd->ezue != ezue || dd->be != be ||
-        dd->se != se) {
-        CfgBits(v, effp, erfp, cp, edo, V3D_LINE_RASTERIZATION_DIAMOND_EXIT, 0, FALSE, dtf, zue, eze,
-                ezue, se, be, FALSE, FALSE);
+        dd->se != se || dd->wf != wf || dd->pf != pf || dd->pv != pv) {
+        CfgBits(v, effp, erfp, cp, edo, V3D_LINE_RASTERIZATION_DIAMOND_EXIT, 0, wf, dtf, zue, eze,
+                ezue, se, be, pf, pv);
         dd->cfg = TRUE;
         dd->effp = effp; dd->erfp = erfp; dd->cp = cp; dd->edo = edo; dd->dtf = dtf;
         dd->zue = zue; dd->eze = eze; dd->ezue = ezue; dd->be = be; dd->se = se;
+        dd->wf = wf; dd->pf = pf; dd->pv = pv;
     }
     /* STENCIL_CFG, front and back, while the test is on (Mesa v3dx_emit.c). */
     if (stencil_on) {
@@ -1263,6 +1294,8 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
 {
     const struct OGLES2Image *im = p->image;
     const struct OGLES2Variant *cs, *vs, *fs;
+    const struct OGLES2Image *fim; /* the fragment shader's image */
+    GLenum fsmode;
     struct OGLES2Draw *d;
     V3DContext *v = ctx->v3d;
     struct attr_src src[OGLES2_MAX_VERTEX_ATTRIBS];
@@ -1276,8 +1309,21 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
     }
     mark(ctx, 0);
     /* The program's variants for this primitive mode, as at its last draw
-     * (they and their code stay until it is linked again). */
-    if (p->var_ok && p->var_mode == mode) {
+     * (they and their code stay until it is linked again). The fragment
+     * shader's is the class the rasterizer sees: triangles in glPolygonMode's
+     * GL_LINE or GL_POINT are lines or points to it (Mesa's
+     * v3d_rasterizes_lines/points). */
+    fsmode = mode >= GL_TRIANGLES && ctx->state.polygon_mode != GL_FILL
+                 ? (ctx->state.polygon_mode == GL_POINT ? GL_POINTS : GL_LINES) : mode;
+    /* And from the program's 32-bit-sampler variants while a float or depth
+     * texture is bound to one of its samplers (program.c, the .v3dw). */
+    fim = im;
+    if (ogles2_wide_seen && wants_wide(ctx, p)) {
+        const struct OGLES2Image *w = ogles2_image_wide((struct OGLES2Image *)im);
+        if (w)
+            fim = w;
+    }
+    if (p->var_ok && p->var_mode == mode && p->var_fsmode == fsmode && p->var_fim == fim) {
         cs = p->var[0];
         vs = p->var[1];
         fs = p->var[2];
@@ -1287,21 +1333,21 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
     } else {
         cs = ogles2_image_variant(im, OGLES2_VARIANT_CS, mode);
         vs = ogles2_image_variant(im, OGLES2_VARIANT_VS, mode);
-        fs = ogles2_image_variant(im, OGLES2_VARIANT_FS, mode);
+        fs = ogles2_image_variant(fim, OGLES2_VARIANT_FS, fsmode);
         if (!cs || !vs || !fs) {
             ogles2_log("glDrawArrays: the program has no shader for this primitive; nothing drawn");
             return;
         }
-        if (d->missed != im && (fs->is_points != (mode == GL_POINTS) ||
-                                fs->is_lines != (mode == GL_LINES || mode == GL_LINE_LOOP ||
-                                                 mode == GL_LINE_STRIP))) {
+        if (d->missed != im && (fs->is_points != (fsmode == GL_POINTS) ||
+                                fs->is_lines != (fsmode == GL_LINES || fsmode == GL_LINE_LOOP ||
+                                                 fsmode == GL_LINE_STRIP))) {
             d->missed = im; /* plan 7.8: the closest variant is used; logged once per program */
             ogles2_log("glDrawArrays: no fragment shader variant for primitive %ld; using the closest",
                        (ULONG)mode);
         }
         code[0] = code_address(d, im, cs);
         code[1] = code_address(d, im, vs);
-        code[2] = code_address(d, im, fs);
+        code[2] = code_address(d, fim, fs);
         if (!code[0] || !code[1] || !code[2]) {
             ogles2_error(ctx, GL_OUT_OF_MEMORY);
             return;
@@ -1313,6 +1359,8 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
         p->var_code[1] = code[1];
         p->var_code[2] = code[2];
         p->var_mode = mode;
+        p->var_fsmode = fsmode;
+        p->var_fim = fim;
         p->var_ok = TRUE;
     }
 
@@ -1704,8 +1752,10 @@ void ogles2_draw_clear(struct OGLES2Context *ctx, GLbitfield mask)
     for (k = 0; k < 4; k++)
         s->attrib[OGLES2_MAX_VERTEX_ATTRIBS - 1][k] = s->clear_color[k];
 
-    /* The state: only the scissor test stays the application's. */
+    /* The state: only the scissor test stays the application's (the
+     * rectangle is filled whatever glPolygonMode says). */
     s->caps &= OGLES2_CAP_SCISSOR_TEST;
+    s->polygon_mode = GL_FILL;
     if (!(mask & GL_COLOR_BUFFER_BIT))
         s->color_mask[0] = s->color_mask[1] = s->color_mask[2] = s->color_mask[3] = GL_FALSE;
     if (mask & GL_DEPTH_BUFFER_BIT) {

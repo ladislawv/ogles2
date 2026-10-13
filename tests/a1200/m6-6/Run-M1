@@ -1,0 +1,90 @@
+; Run-M1 - ogles2 M6 run 6: the extensions, and the earlier tests. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m6-6 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M6R6: ""
+If NOT EXISTS M6R6:results
+  MakeDir M6R6:results
+EndIf
+Echo "ogles2 M6 run 6, starting at step {FROM}" >>M6R6:results/00-progress.txt
+Date >>M6R6:results/00-progress.txt
+Assign LIBS: M6R6:libs ADD
+; Expunge libraries nobody has open: an ogles2.library left in memory by an
+; earlier run would otherwise be used instead of this package's.
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M6R6:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 5: the extensions (nothing to see)"
+  M6R6:bin/m6_ext >M6R6:results/1-ext.txt
+  Echo "step 1 done" >>M6R6:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 5: textures and the triangle test on a hidden bitmap (nothing to see)"
+  M6R6:bin/m2_texture BITMAP QUICK >M6R6:results/2-texture.txt
+  M6R6:bin/m1_draw BITMAP QUICK >M6R6:results/2-draw.txt
+  Echo "step 2 done" >>M6R6:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 5: framebuffer objects, depth across a flush (nothing to see)"
+  M6R6:bin/m5_fbo >M6R6:results/3-fbo.txt
+  M6R6:bin/m4_depth >M6R6:results/3-depth.txt
+  Echo "step 3 done" >>M6R6:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 5: linking, uniforms, indexed draws, buffer objects (nothing to see)"
+  M6R6:bin/m2_link >M6R6:results/4-link.txt
+  M6R6:bin/m2_elements >M6R6:results/4-elements.txt
+  M6R6:bin/m2_buffers >M6R6:results/4-buffers.txt
+  Echo "step 4 done" >>M6R6:results/00-progress.txt
+EndIf
+
+; The extension test without binaries: the on-target compiler (libs/v3dglslc)
+; compiles every program into cache/, and the 32-bit-sampler variants (.v3dw)
+; when a draw first samples a float or depth texture.
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 5: the extensions again, every program compiled here; the first"
+  Echo "        start of the compiler takes a few seconds (nothing to see)"
+  If NOT EXISTS M6R6:cache
+    MakeDir M6R6:cache
+  EndIf
+  Delete M6R6:cache/#? QUIET >NIL:
+  Assign OGLES2Cache: M6R6:cache
+  Assign LIBS: M6R6:compiler ADD
+  M6R6:bin2/m6_ext COMPILED >M6R6:results/5-ext-compiled.txt
+  Assign LIBS: M6R6:compiler REMOVE
+  Assign OGLES2Cache:
+  List M6R6:cache >M6R6:results/5-cache-list.txt
+  Copy M6R6:cache M6R6:results/cache ALL QUIET
+  Echo "step 5 done" >>M6R6:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M6R6:libs REMOVE
+; Expunging the library stops the compiler.
+Avail FLUSH >NIL:
+If NOT EXISTS M6R6:results/notes.txt
+  Copy M6R6:notes-template.txt M6R6:results/notes.txt
+EndIf
+List M6R6:results >M6R6:results/99-files.txt
+Echo "finished" >>M6R6:results/00-progress.txt
+Date >>M6R6:results/00-progress.txt
+Assign M6R6:
+Echo ""
+Echo "Done. Results are in results/."

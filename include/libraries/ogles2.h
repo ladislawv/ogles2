@@ -70,6 +70,43 @@ extern "C" {
 #define OGLES2_CCE_UNSUPPORTED     5  /* a requested feature is not supported */
 #define OGLES2_CCE_NOT_IMPLEMENTED 6  /* development builds: entry not written yet */
 
+/* Enums of the extensions ogles2 offers that <GLES2/gl2ext.h> lacks, with
+ * the names AmigaOS 4's ogles2.library uses (desktop GL's, no suffix). */
+#ifndef GL_TEXTURE_LOD_BIAS
+#define GL_TEXTURE_LOD_BIAS           0x8501 /* EXT_texture_lod_bias: a texture parameter */
+#define GL_MAX_TEXTURE_LOD_BIAS       0x84FD
+#endif
+#ifndef GL_TEXTURE_MIN_LOD
+#define GL_TEXTURE_MIN_LOD            0x813A /* SGIS_texture_lod */
+#define GL_TEXTURE_MAX_LOD            0x813B
+#define GL_TEXTURE_BASE_LEVEL         0x813C
+#define GL_TEXTURE_MAX_LEVEL          0x813D
+#endif
+#ifndef GL_MIRROR_CLAMP_TO_EDGE
+#define GL_MIRROR_CLAMP_TO_EDGE       0x8743 /* ARB_texture_mirror_clamp_to_edge */
+#endif
+#ifndef GL_TEXTURE_RECTANGLE
+#define GL_TEXTURE_RECTANGLE          0x84F5 /* ARB_texture_rectangle */
+#define GL_TEXTURE_BINDING_RECTANGLE  0x84F6
+#define GL_PROXY_TEXTURE_RECTANGLE    0x84F7
+#define GL_MAX_RECTANGLE_TEXTURE_SIZE 0x84F8
+#define GL_SAMPLER_2D_RECT            0x8B63
+#endif
+#ifndef GL_POLYGON_MODE
+#define GL_POLYGON_MODE               0x0B40 /* glPolygonMode (AmigaOS 4) */
+#define GL_POINT                      0x1B00
+#define GL_LINE                       0x1B01
+#define GL_FILL                       0x1B02
+#endif
+#ifndef GL_PROVOKING_VERTEX
+#define GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION 0x8E4C /* glProvokingVertex (AmigaOS 4) */
+#define GL_FIRST_VERTEX_CONVENTION    0x8E4D
+#define GL_LAST_VERTEX_CONVENTION     0x8E4E
+#define GL_PROVOKING_VERTEX           0x8E4F
+#endif
+/* OES_get_program_binary: the one binary format, a .v3dp file (v3dp/FORMAT.md). */
+#define GL_PROGRAM_BINARY_V3DP_PISTORM 0x56334450 /* "V3DP" */
+
 extern struct Library *OGLES2Base;
 
 #ifdef __cplusplus

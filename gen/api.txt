@@ -1,6 +1,7 @@
 # The GL part of the dispatch table, read from khronos/gl.xml by gen_ogles2.py.
 #   feature <name>      every command a gl.xml <feature> requires (api gles2)
 #   command <name>      one more command (an extension entry point), once it is implemented
+#   alias <name> <cmd>  an entry gl.xml lacks (AmigaOS 4's own names), with <cmd>'s parameters
 # The table's order is not taken from here but from abi_order.txt (append-only).
 feature GL_ES_VERSION_2_0
 command glMapBufferOES
@@ -9,3 +10,8 @@ command glGetBufferPointervOES
 command glDrawElementsBaseVertexOES
 command glDiscardFramebufferEXT
 command glDrawRangeElements
+command glGetProgramBinaryOES
+command glProgramBinaryOES
+command glPolygonMode
+command glProvokingVertex
+alias glGetBufferParameterivOES glGetBufferParameteriv

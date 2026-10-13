@@ -9,11 +9,13 @@
  *   The job stores straight into the level's own layout (Mesa's
  *   store_general), so the result is sampled as it is; the texture's RAM
  *   copy is read back only when something needs it (texture.c, sync).
- * - Depth and stencil: renderbuffers only (GLES2 has no depth textures):
- *   DEPTH_COMPONENT16, STENCIL_INDEX8 and, OES_packed_depth_stencil,
- *   DEPTH24_STENCIL8. Only the GPU reads them, so they are laid out as the
- *   GPU likes, UIF without XOR, padded as Mesa pads a UIF level (job.c's
- *   depth save does the same). Every job stores them and the next loads them.
+ * - Depth and stencil: renderbuffers, DEPTH_COMPONENT16, STENCIL_INDEX8 and,
+ *   OES_packed_depth_stencil, DEPTH24_STENCIL8. Only the GPU reads them, so
+ *   they are laid out as the GPU likes, UIF without XOR, padded as Mesa pads
+ *   a UIF level (job.c's depth save does the same). Every job stores them and
+ *   the next loads them. And depth textures (OES_depth_texture; a
+ *   DEPTH_STENCIL_OES one for both): the job stores into the level's own
+ *   layout, as for colour, and the TMU samples it from there.
  * - No Y flip: GL's row 0 is the image's row 0, which is what sampling the
  *   texture later expects (plan 7.11).
  * - Jobs, v1: one open job per context; drawing into another framebuffer
@@ -192,10 +194,13 @@ static void before_rb_change(struct OGLES2Context *ctx, struct OGLES2Renderbuffe
         }
 }
 
-/* fb's colour image is texture t (a renderbuffer's own included). */
+/* fb draws into texture t: its colour image (a renderbuffer's own
+ * included), or a depth texture. */
 static BOOL draws_into(const struct OGLES2Framebuffer *fb, const struct OGLES2Texture *t)
 {
     return fb && ((fb->att[ATT_COLOR].type == GL_TEXTURE && fb->att[ATT_COLOR].tex == t) ||
+                  (fb->att[ATT_DEPTH].type == GL_TEXTURE && fb->att[ATT_DEPTH].tex == t) ||
+                  (fb->att[ATT_STENCIL].type == GL_TEXTURE && fb->att[ATT_STENCIL].tex == t) ||
                   (fb->att[ATT_COLOR].type == GL_RENDERBUFFER && fb->att[ATT_COLOR].rb &&
                    fb->att[ATT_COLOR].rb->color == t));
 }
@@ -544,7 +549,8 @@ void ogles2_glFramebufferTexture2D(struct OGLES2Context *ctx, GLenum target, GLe
     BOOL cube_face = textarget >= GL_TEXTURE_CUBE_MAP_POSITIVE_X && textarget <= GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
     if (!ogles2_context_valid(ctx) || !fs_get(ctx))
         return;
-    if (target != GL_FRAMEBUFFER || a < 0 || (texture && textarget != GL_TEXTURE_2D && !cube_face)) {
+    if (target != GL_FRAMEBUFFER || a < 0 ||
+        (texture && textarget != GL_TEXTURE_2D && textarget != GL_TEXTURE_RECTANGLE && !cube_face)) {
         ogles2_error(ctx, GL_INVALID_ENUM);
         return;
     }
@@ -556,12 +562,14 @@ void ogles2_glFramebufferTexture2D(struct OGLES2Context *ctx, GLenum target, GLe
         GLenum tt;
         /* GLES 2.0 4.4.3 takes level 0 only; OES_fbo_render_mipmap (offered,
          * as Mesa does) any level. */
-        if (level < 0 || level > 12) {
+        if (level < 0 || level > 12 || (textarget == GL_TEXTURE_RECTANGLE && level != 0)) {
             ogles2_error(ctx, GL_INVALID_VALUE);
             return;
         }
+        /* The texture's own target: 2D, a rectangle (ARB_texture_rectangle),
+         * or a face for a cube map. */
         if (!(t = ogles2_texture_get(ctx, texture)) || !(tt = ogles2_texture_target(t)) ||
-            (tt == GL_TEXTURE_2D) != (textarget == GL_TEXTURE_2D)) {
+            (cube_face ? tt != GL_TEXTURE_CUBE_MAP : tt != textarget)) {
             ogles2_error(ctx, GL_INVALID_OPERATION);
             return;
         }
@@ -647,6 +655,23 @@ static BOOL att_size(const struct OGLES2Attachment *at, UWORD *w, UWORD *h)
     return ogles2_texture_image(at->tex, at->face, at->level, w, h, &f, &ty);
 }
 
+/* An image with depth and stencil in one: a D24S8 renderbuffer, or a
+ * DEPTH_STENCIL_OES texture. */
+static BOOL packed(const struct OGLES2Attachment *at)
+{
+    UBYTE bits;
+    BOOL st = FALSE;
+    if (at->type == GL_RENDERBUFFER)
+        return at->rb->format == GL_DEPTH24_STENCIL8_OES;
+    return at->type == GL_TEXTURE && ogles2_texture_depth(at->tex, at->level, &bits, &st) && st;
+}
+
+static BOOL same_image(const struct OGLES2Attachment *a, const struct OGLES2Attachment *b)
+{
+    return a->type == b->type &&
+           (a->type == GL_RENDERBUFFER ? a->rb == b->rb : a->tex == b->tex && a->level == b->level);
+}
+
 static GLenum status_of(struct OGLES2Framebuffer *fb)
 {
     const struct OGLES2Attachment *c = &fb->att[ATT_COLOR], *d = &fb->att[ATT_DEPTH],
@@ -664,10 +689,16 @@ static GLenum status_of(struct OGLES2Framebuffer *fb)
             if ((a == ATT_COLOR && !is_color(f)) || (a == ATT_DEPTH && !is_depth(f)) ||
                 (a == ATT_STENCIL && !is_stencil(f)))
                 return GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT;
-        } else if (a != ATT_COLOR) {
-            return GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT; /* no depth or stencil textures */
-        } else if (!ogles2_texture_renderable(at->tex, at->face, at->level)) {
-            return GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT;
+        } else if (a == ATT_COLOR) {
+            if (!ogles2_texture_renderable(at->tex, at->face, at->level))
+                return GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT;
+        } else {
+            /* OES_depth_texture: a depth image for the depth, and, with
+             * OES_packed_depth_stencil, a depth-stencil one for the stencil. */
+            UBYTE bits;
+            BOOL st;
+            if (!ogles2_texture_depth(at->tex, at->level, &bits, &st) || (a == ATT_STENCIL && !st))
+                return GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT;
         }
         if (n++ == 0) {
             w0 = w;
@@ -678,9 +709,9 @@ static GLenum status_of(struct OGLES2Framebuffer *fb)
     }
     if (!n)
         return GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT;
-    /* Depth and stencil: one packed image for both, or D16 and S8 apart. */
-    if (d->type == GL_RENDERBUFFER && s->type == GL_RENDERBUFFER && d->rb != s->rb &&
-        (d->rb->format == GL_DEPTH24_STENCIL8_OES || s->rb->format == GL_DEPTH24_STENCIL8_OES))
+    /* Depth and stencil: one packed image for both, or apart without a
+     * packed one (D16 or a depth texture, and S8). */
+    if (d->type != GL_NONE && s->type != GL_NONE && (packed(d) || packed(s)) && !same_image(d, s))
         return GL_FRAMEBUFFER_UNSUPPORTED;
     (void)c;
     return GL_FRAMEBUFFER_COMPLETE;
@@ -740,6 +771,22 @@ void ogles2_fb_update(struct OGLES2Context *ctx)
         ctx->fb_stencil_bits = 8;
         if (fb->att[ATT_STENCIL].rb->format == GL_DEPTH24_STENCIL8_OES)
             ctx->fb_depth_format = OGLES2_DEPTH_24;
+    }
+    /* OES_depth_texture: a 16-bit depth texture is D16, a 24-bit one (and
+     * a depth-stencil one) D24S8 in the tile buffer. */
+    {
+        UBYTE bits;
+        BOOL st;
+        const struct OGLES2Attachment *d = &fb->att[ATT_DEPTH], *s = &fb->att[ATT_STENCIL];
+        if (d->type == GL_TEXTURE && ogles2_texture_depth(d->tex, d->level, &bits, &st)) {
+            ctx->fb_depth_bits = bits;
+            if (bits == 24)
+                ctx->fb_depth_format = OGLES2_DEPTH_24;
+        }
+        if (s->type == GL_TEXTURE && ogles2_texture_depth(s->tex, s->level, &bits, &st) && st) {
+            ctx->fb_stencil_bits = 8;
+            ctx->fb_depth_format = OGLES2_DEPTH_24;
+        }
     }
 }
 
@@ -859,17 +906,35 @@ BOOL ogles2_fbo_target(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, 
             rb_surface(s->rb, TRUE, &t->s);
         }
     }
+    /* OES_depth_texture: the depth texture's level itself; a depth-stencil
+     * texture for both is one packed image, as a D24S8 renderbuffer. */
+    if (d->type == GL_TEXTURE) {
+        if (!ogles2_texture_zs_surface(ctx, d->tex, d->level, &t->z))
+            return FALSE;
+        t->has_z = TRUE;
+        t->packed_zs = same_image(d, s);
+    }
+    if (s->type == GL_TEXTURE && !t->packed_zs) { /* a depth-stencil texture as the stencil only */
+        if (!ogles2_texture_zs_surface(ctx, s->tex, s->level, &t->z))
+            return FALSE;
+        t->has_z = TRUE;
+        t->packed_zs = TRUE;
+    }
     return TRUE;
 }
 
 void ogles2_fbo_rendered(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb)
 {
     const struct OGLES2Attachment *c = &fb->att[ATT_COLOR];
+    int a;
     (void)ctx;
     if (c->type == GL_TEXTURE)
         ogles2_texture_rendered(c->tex, c->face, c->level);
     else if (c->type == GL_RENDERBUFFER && c->rb->color)
         ogles2_texture_rendered(c->rb->color, 0, 0);
+    for (a = ATT_DEPTH; a <= ATT_STENCIL; a++) /* depth textures (OES_depth_texture) */
+        if (fb->att[a].type == GL_TEXTURE)
+            ogles2_texture_rendered(fb->att[a].tex, 0, fb->att[a].level);
 }
 
 BOOL ogles2_fbo_read(struct OGLES2Context *ctx, int x, int y, int w, int h, UBYTE *rgba, ULONG stride)

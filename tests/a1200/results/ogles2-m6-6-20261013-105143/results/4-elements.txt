@@ -1,0 +1,31 @@
+ogles2 M2: glDrawElements, indirectly indexed uniforms
+PASS: smooth: links
+PASS: glDrawElements 8-bit (indices 4-7) ff0000 red, 16-bit (8-11) 00ff00 green, gap 000000
+PASS: GL_EXTENSIONS lists GL_OES_element_index_uint
+PASS: glReadPixels in the open frame: 00ff00ff green
+PASS: glReadPixels where nothing was drawn: 000000 black
+PASS: implementation read format RGBA, UNSIGNED_BYTE
+PASS: glReadPixels GL_RGB: GL_INVALID_OPERATION
+PASS: glDrawElements 32-bit (8-11): left 000000 empty, right 00ff00 green
+PASS: skin: links (UBO_ADDR)
+PASS: skin: bone[5] moves the triangle right: 6d6d6d drawn, 000000 empty
+PASS: skin: bone[20] moves it up: acacac drawn (grey about ac), 000000 empty
+PASS: GL_EXTENSIONS lists GL_OES_draw_elements_base_vertex
+PASS: indices 0-3 with base vertex 4: left 000000 empty, right 00ff00 green
+PASS: indices 4-7 with base vertex -4: left ff0000 red, right 000000 empty
+PASS: element buffer, base vertex 0: left ff0000 red, right 00ff00 green
+PASS: a bad mode: GL_INVALID_ENUM
+PASS: aglGetProcAddress("glDrawRangeElements") is found
+PASS: 16-bit indices 4-7, range 4-7: left 000000 empty, right 00ff00 green
+PASS: 32-bit indices 0-7, range 0-7: left ff0000 red, right 00ff00 green
+PASS: 8-bit indices 0-3, range 0-3: left ff0000 red, right 000000 empty
+PASS: indices 4-7, range 2-7: right 00ff00 green
+PASS: element buffer at an offset, range 4-7: left 000000 empty, right 00ff00 green
+PASS: end before start: GL_INVALID_VALUE
+PASS: GL_EXTENSIONS lists GL_EXT_blend_minmax
+PASS: glBlendEquation(GL_MIN_EXT) is queried back
+PASS: GL_MIN_EXT over grey, factors ZERO: left 800000 (800000), right 008000 (008000)
+PASS: GL_MAX_EXT over grey, factors ZERO: left ff8080 (ff8080), right 80ff80 (80ff80)
+PASS: no GL error left over
+PASS: destroy returns the memory (0 bytes difference)
+ALL PASSED: 29 of 29 checks passed

@@ -540,6 +540,13 @@ void ogles2_image_free(struct OGLES2Image *im, struct OGLES2Context *ctx)
         else
             v3d_mem_free(ogles2_device(), im->code_mem);
     }
+    if (im->binary)
+        FreeVec(im->binary);
+    ogles2_image_free(im->wide, ctx); /* its code: deferred the same way */
+    if (im->vs_src)
+        FreeVec(im->vs_src);
+    if (im->fs_src)
+        FreeVec(im->fs_src);
     free_blocks(im);
     FreeVec(im);
 }

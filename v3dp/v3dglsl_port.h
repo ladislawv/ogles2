@@ -27,12 +27,15 @@
 #define V3DGLSL_LINK    1 /* compile vs and fs, link, write the .v3dp to out_path */
 #define V3DGLSL_QUIT    2 /* remove the port and exit (queued requests fail) */
 #define V3DGLSL_COMPILE 3 /* compile one shader (vs or fs, the other NULL): status and log only */
+#define V3DGLSL_LINK32  4 /* as LINK, but write the variants for samplers returning 32 bits (float
+                           * and depth textures): the program's .v3dw file. A compiler older than
+                           * this answers 3 (bad request). */
 
 struct V3DGLSLRequest
 {
     struct Message msg;   /* mn_ReplyPort: the sender's */
     ULONG version;        /* V3DGLSL_VERSION */
-    ULONG op;             /* V3DGLSL_LINK or V3DGLSL_QUIT */
+    ULONG op;             /* V3DGLSL_* */
     const char *vs, *fs;  /* GLSL ES sources, NUL-terminated, exactly as the program gave them */
     const char *out_path; /* the .v3dp file to write */
     char *log;            /* compile and link messages, NUL-terminated (may be truncated) */

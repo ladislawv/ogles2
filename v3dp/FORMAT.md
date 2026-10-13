@@ -177,6 +177,16 @@ vertex shader writes `gl_PointSize`, for points) and a fragment shader per primi
 Variants the driver compiles at link time (`V3D_DEBUG=precompile`) are not stored: their keys
 never match a draw (all eight colour buffers for `gl_FragColor`, every vertex output kept).
 
+**`.v3dw`: the 32-bit-sampler variants** (2026-10-13; the format is unchanged). A program
+with samplers has a second file of the same format, `<24 hex digits>.v3dw` beside its
+`.v3dp`: the same draws with every sampler bound to an RGBA32F texture, so its fragment
+variants have every sampler's bit set in `sampler_is_32b` (the TMU returns 32 bits a
+channel, which float and depth textures need, and which reads 8-bit textures correctly too).
+`ogles2.library` uses its fragment variants for draws that sample such a texture; its other
+variants may be missing (`v3dglslc` captures what the driver compiles for those draws). The
+offline compiler writes it next to the `.v3dp`; the on-target compiler writes it on request
+(`V3DGLSL_LINK32`, `v3dp/v3dglsl_port.h`), when a draw first needs it.
+
 ### Common key and prog data (all stages)
 
 Key (`struct v3d_key`): `u32 sampler_is_32b`, then `u8` each: `is_last_geometry_stage`,
