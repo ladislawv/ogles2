@@ -250,7 +250,7 @@ void DepthOffset(V3DContext* context, float factor, float units)
 
 //***************************************************************************
 
-void ClipperXYScaling(V3DContext* context, UWORD width, UWORD height)
+void ClipperXYScaling(V3DContext* context, UWORD width, UWORD height, int y_down)
 {
     v3d_static_buffer* buffer = context->current_buf;
 
@@ -264,7 +264,10 @@ void ClipperXYScaling(V3DContext* context, UWORD width, UWORD height)
      * viewport edge. Even extents are unaffected, which is why no game has
      * shown it. */
     swap_float32_into(&clipperXYScaling->viewport_half_width_in_1_256th_of_pixel, (width * 0.5f) * 256.f);
-    swap_float32_into(&clipperXYScaling->viewport_half_height_in_1_256th_of_pixel, (height * 0.5f) * -256.f);
+    /* ogles2: the sign of the vertex shader's Y scale (it was always
+     * negative: PiStorm3D draws only top-down) */
+    swap_float32_into(&clipperXYScaling->viewport_half_height_in_1_256th_of_pixel,
+                      (height * 0.5f) * (y_down ? -256.f : 256.f));
 }
 
 //***************************************************************************

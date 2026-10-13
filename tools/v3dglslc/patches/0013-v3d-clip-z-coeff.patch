@@ -1,0 +1,106 @@
+ogles2: EXT_clip_control's ZERO_TO_ONE depth mode on V3D 4.2, which clips
+clip-space z to -w..w only (its window-space Z planes clamp; the 0..w mode
+is V3D 7.1's). The vertex and binning shaders lerp the position's z towards
+w by a new uniform, QUNIFORM_CLIP_Z_COEFF (nir_lower_clip_halfz_dynamic's
+form, with Mesa's load_clip_z_coeff): 0 leaves z as it is, -1 gives 2z - w,
+which the hardware then clips and maps as it does -w..w. One uniform and
+three instructions in every vertex and binning shader; Mesa's own GL writes
+0. ogles2 writes -1 in ZERO_TO_ONE mode (ogles2/draw.c).
+
+diff --git a/src/broadcom/compiler/nir_to_vir.c b/src/broadcom/compiler/nir_to_vir.c
+index 452f4d36e70..871304143d0 100644
+--- a/src/broadcom/compiler/nir_to_vir.c
++++ b/src/broadcom/compiler/nir_to_vir.c
+@@ -3660,6 +3660,11 @@ ntq_emit_intrinsic(struct v3d_compile *c, nir_intrinsic_instr *instr)
+                               vir_uniform(c, QUNIFORM_VIEWPORT_Z_OFFSET, 0));
+                 break;
+ 
++        case nir_intrinsic_load_clip_z_coeff:
++                ntq_store_def(c, &instr->def, 0,
++                              vir_uniform(c, QUNIFORM_CLIP_Z_COEFF, 0));
++                break;
++
+         case nir_intrinsic_load_line_coord:
+                 ntq_store_def(c, &instr->def, 0, vir_MOV(c, c->line_x));
+                 break;
+diff --git a/src/broadcom/compiler/v3d_compiler.h b/src/broadcom/compiler/v3d_compiler.h
+index e992847ed73..16400ede7ff 100644
+--- a/src/broadcom/compiler/v3d_compiler.h
++++ b/src/broadcom/compiler/v3d_compiler.h
+@@ -315,6 +315,14 @@ enum quniform_contents {
+         QUNIFORM_BLEND_CONSTANT_G,
+         QUNIFORM_BLEND_CONSTANT_B,
+         QUNIFORM_BLEND_CONSTANT_A,
++
++        /* ogles2 (EXT_clip_control on V3D 4.2, which clips z to -w..w
++         * only): the vertex position's z is lerped towards w by this
++         * coefficient, nir_lower_clip_halfz_dynamic's form. 0 leaves it;
++         * -1 gives 2z - w, so clip-space z from 0..w is clipped and mapped
++         * as -w..w is.
++         */
++        QUNIFORM_CLIP_Z_COEFF,
+ };
+ 
+ static inline uint32_t v3d_unit_data_create(uint32_t unit, uint32_t value)
+diff --git a/src/broadcom/compiler/v3d_nir_lower_io.c b/src/broadcom/compiler/v3d_nir_lower_io.c
+index f7a77838af1..beb3fd8220e 100644
+--- a/src/broadcom/compiler/v3d_nir_lower_io.c
++++ b/src/broadcom/compiler/v3d_nir_lower_io.c
+@@ -506,6 +506,18 @@ v3d_nir_emit_ff_vpm_outputs(struct v3d_compile *c, nir_builder *b,
+                         state->pos[i] = nir_undef(b, 1, 32);
+         }
+ 
++        /* ogles2: the clip-space z the hardware clips and maps, lerped
++         * towards w by QUNIFORM_CLIP_Z_COEFF (EXT_clip_control's
++         * ZERO_TO_ONE on V3D 4.2, which has no 0..w clipping mode).
++         */
++        if (c->s->info.stage == MESA_SHADER_VERTEX) {
++                nir_def *k = nir_load_clip_z_coeff(b);
++                nir_def *d = nir_fsub(b, state->pos[3], state->pos[2]);
++                /* fmul and fadd: ffma is lowered before this pass */
++                state->pos[2] = nir_fadd(b, state->pos[2],
++                                         nir_fmul(b, d, k));
++        }
++
+         nir_def *rcp_wc = nir_frcp(b, state->pos[3]);
+ 
+         if (state->pos_vpm_offset != -1) {
+diff --git a/src/compiler/nir/nir_divergence_analysis.c b/src/compiler/nir/nir_divergence_analysis.c
+index 7f5686d1ec8..047fe8bfded 100644
+--- a/src/compiler/nir/nir_divergence_analysis.c
++++ b/src/compiler/nir/nir_divergence_analysis.c
+@@ -254,6 +254,7 @@ visit_intrinsic(nir_intrinsic_instr *instr, struct divergence_state *state)
+    case nir_intrinsic_load_viewport_x_scale:
+    case nir_intrinsic_load_viewport_y_scale:
+    case nir_intrinsic_load_viewport_z_scale:
++   case nir_intrinsic_load_clip_z_coeff: /* ogles2: v3d's QUNIFORM_CLIP_Z_COEFF */
+    case nir_intrinsic_load_viewport_offset:
+    case nir_intrinsic_load_viewport_x_offset:
+    case nir_intrinsic_load_viewport_y_offset:
+diff --git a/src/gallium/drivers/v3d/v3d_uniforms.c b/src/gallium/drivers/v3d/v3d_uniforms.c
+index 4c7f2902a4f..a74efbb7efe 100644
+--- a/src/gallium/drivers/v3d/v3d_uniforms.c
++++ b/src/gallium/drivers/v3d/v3d_uniforms.c
+@@ -415,6 +415,11 @@ v3d_write_uniforms(struct v3d_context *v3d, struct v3d_job *job,
+                         cl_aligned_f(&uniforms, v3d->blend_color.f.color[3]);
+                         break;
+ 
++                case QUNIFORM_CLIP_Z_COEFF:
++                        /* ogles2: Mesa's GL has no 0..w clip-space z here */
++                        cl_aligned_f(&uniforms, 0.0f);
++                        break;
++
+                 default:
+                         UNREACHABLE("Unknown QUNIFORM");
+ 
+@@ -511,6 +516,10 @@ v3d_set_shader_uniform_dirty_flags(struct v3d_compiled_shader *shader)
+                         dirty |= V3D_DIRTY_BLEND_COLOR;
+                         break;
+ 
++                case QUNIFORM_CLIP_Z_COEFF:
++                        /* ogles2: a constant 0 in Mesa's GL */
++                        break;
++
+                 default:
+                         UNREACHABLE("Unknown QUNIFORM");
+                         break;

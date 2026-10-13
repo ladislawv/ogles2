@@ -51,6 +51,7 @@ struct dedup
     ULONG cwm_mask;
     float lw_value, do_factor, do_units;
     float vp_zs, vp_zo;
+    BOOL vp_down;
     BOOL do_valid;
     int prim;
 };
@@ -247,6 +248,42 @@ static ULONG float_bits(GLfloat f)
     return c.u;
 }
 
+/* EXT_clip_control's ZERO_TO_ONE (docs/M7_EXTENSIONS_PLAN.md step 4). V3D
+ * 4.2 clips clip-space z to -w..w only: its window-space Z planes clamp
+ * (the m7-3 probe). A program compiled with Mesa patch 0013 turns z into
+ * 2z - w itself (OGLES2_U_CLIP_Z_COEFF -1), which the hardware clips and
+ * maps as -w..w: the viewport stays GL's. An older binary gets the 0..w
+ * mapping from the viewport instead: its depth is right, but what lies
+ * before the near plane is drawn at depth n. */
+static BOOL zero_to_one_in_viewport(const struct OGLES2Context *ctx)
+{
+    return ctx->state.clip_depth == GL_ZERO_TO_ONE_EXT &&
+           !(ctx->program && ctx->program->image && ctx->program->image->clip_z_coeff);
+}
+
+/* The viewport's Z scale and offset: clip-space z from -w..w to the depth
+ * range, or from 0..w (Mesa's _mesa_get_viewport_xform). */
+static void viewport_z(const struct OGLES2Context *ctx, float *zs, float *zo)
+{
+    const struct OGLES2State *s = &ctx->state;
+    if (zero_to_one_in_viewport(ctx)) {
+        *zs = s->depth_range[1] - s->depth_range[0];
+        *zo = s->depth_range[0];
+    } else {
+        *zs = (s->depth_range[1] - s->depth_range[0]) * 0.5f;
+        *zo = (s->depth_range[1] + s->depth_range[0]) * 0.5f;
+    }
+}
+
+/* The picture is drawn top-down in the framebuffer's rows: the default
+ * framebuffer (plan 7.11), unless EXT_clip_control's upper-left origin turns
+ * it over again; a framebuffer object only with that origin. A negative Y
+ * scale, and the winding of front faces reversed (Mesa's state tracker). */
+static BOOL y_down(const struct OGLES2Context *ctx)
+{
+    return ctx->fb_flip ^ (ctx->state.clip_origin == GL_UPPER_LEFT_EXT);
+}
+
 /* The program's state variables (FORMAT.md STAGE_PARAMS kind 2), computed
  * into its constant buffers before a draw, as Mesa's prog_statevars.c does
  * for a framebuffer drawn upside down (FlipY: the default framebuffer). */
@@ -294,7 +331,7 @@ static void update_state_vars(struct OGLES2Context *ctx, struct OGLES2Program *p
  * recipes' unit field), [0] vertex, [1] fragment; 0 where unused. */
 struct tex_states
 {
-    ULONG tex[2][OGLES2_MAX_TEXTURE_UNITS], smp[2][OGLES2_MAX_TEXTURE_UNITS];
+    ULONG tex[2][OGLES2_MAX_STAGE_SAMPLERS], smp[2][OGLES2_MAX_STAGE_SAMPLERS];
     ULONG ubo[2];   /* little-endian copy of each stage's constant buffer, if read */
 };
 
@@ -391,7 +428,7 @@ static BOOL wants_wide(struct OGLES2Context *ctx, struct OGLES2Program *p)
         UWORD u = p->nsamplers == 0xfe ? k : p->samplers[k];
         const struct OGLES2ImageUniform *un = &im->uniforms[u];
         UWORD e, ne = un->array ? un->array : 1;
-        if (!(un->flags & OGLES2_UNIFORM_SAMPLER) || un->sampler[1] >= OGLES2_MAX_TEXTURE_UNITS)
+        if (!(un->flags & OGLES2_UNIFORM_SAMPLER) || un->sampler[1] >= OGLES2_MAX_STAGE_SAMPLERS)
             continue;
         for (e = 0; e < ne; e++)
             if (ogles2_texture_wide(ctx, unit_of(p, u, e), ogles2_sampler_kind(un->type)))
@@ -419,7 +456,7 @@ static BOOL texture_states(struct OGLES2Context *ctx, struct OGLES2Program *p,
             UWORD e, ne = un->array ? un->array : 1;
             for (e = 0; e < ne; e++) { /* an array: an element a texture index */
                 ULONG idx = un->sampler[st] + e;
-                if (un->sampler[st] >= OGLES2_MAX_TEXTURE_UNITS || idx >= OGLES2_MAX_TEXTURE_UNITS)
+                if (un->sampler[st] >= OGLES2_MAX_STAGE_SAMPLERS || idx >= OGLES2_MAX_STAGE_SAMPLERS)
                     break;
                 if (!ogles2_texture_state(ctx, unit_of(p, u, e), ogles2_sampler_kind(un->type),
                                           &ts->tex[st][idx], &ts->smp[st][idx]))
@@ -440,11 +477,12 @@ static ULONG write_uniforms(struct OGLES2Context *ctx, const struct OGLES2Progra
     const ULONG *cle = p->cbuf_le[si];
     const ULONG *rtype = var->rtype, *rdata = var->rdata;
     const struct OGLES2State *s = &ctx->state;
-    const GLfloat *dr = s->depth_range;
+    float zs, zo;
     ULONG *u;
     int i, k, n;
     if (!(u = claim(ctx->v3d, (var->nrecipe + 1) * 4UL, 4)))
         return 0;
+    viewport_z(ctx, &zs, &zo);
     ctx->n_uwords += var->nrecipe;
     /* Most of a stream is constant buffer words, already little-endian:
      * every entry is copied as one (the others from word 0), then the
@@ -467,13 +505,16 @@ static ULONG write_uniforms(struct OGLES2Context *ctx, const struct OGLES2Progra
         case OGLES2_U_CONSTANT:          w = d; break;
         /* The default framebuffer is drawn upside down (plan 7.11): a
          * negative Y scale, as Mesa's state tracker gives a window; a
-         * framebuffer object is not. */
+         * framebuffer object is not (y_down). */
         case OGLES2_U_VIEWPORT_X_SCALE:  w = float_bits(ctx->viewport[2] * 0.5f * 256.0f); break;
         case OGLES2_U_VIEWPORT_Y_SCALE:
-            w = float_bits(ctx->viewport[3] * (ctx->fb_flip ? -0.5f : 0.5f) * 256.0f);
+            w = float_bits(ctx->viewport[3] * (y_down(ctx) ? -0.5f : 0.5f) * 256.0f);
             break;
-        case OGLES2_U_VIEWPORT_Z_SCALE:  w = float_bits((dr[1] - dr[0]) * 0.5f); break;
-        case OGLES2_U_VIEWPORT_Z_OFFSET: w = float_bits((dr[1] + dr[0]) * 0.5f); break;
+        case OGLES2_U_VIEWPORT_Z_SCALE:  w = float_bits(zs); break;
+        case OGLES2_U_VIEWPORT_Z_OFFSET: w = float_bits(zo); break;
+        case OGLES2_U_CLIP_Z_COEFF:
+            w = float_bits(s->clip_depth == GL_ZERO_TO_ONE_EXT ? -1.0f : 0.0f);
+            break;
         case OGLES2_U_LINE_WIDTH:
         case OGLES2_U_AA_LINE_WIDTH:     w = float_bits(s->line_width); break;
         case OGLES2_U_BLEND_CONSTANT_R:
@@ -485,10 +526,10 @@ static ULONG write_uniforms(struct OGLES2Context *ctx, const struct OGLES2Progra
         /* Mesa's write_tmu_p0/p1: the state's address with the
          * compiler's configuration bits in its low bits. */
         case OGLES2_U_TMU_CONFIG_P0:
-            w = tst->tex[si][(d >> 24) & (OGLES2_MAX_TEXTURE_UNITS - 1)] | (d & 0xffffff);
+            w = tst->tex[si][(d >> 24) & (OGLES2_MAX_STAGE_SAMPLERS - 1)] | (d & 0xffffff);
             break;
         case OGLES2_U_TMU_CONFIG_P1:
-            w = tst->smp[si][(d >> 24) & (OGLES2_MAX_TEXTURE_UNITS - 1)] | (d & 0xffffff);
+            w = tst->smp[si][(d >> 24) & (OGLES2_MAX_STAGE_SAMPLERS - 1)] | (d & 0xffffff);
             break;
         case OGLES2_U_UBO_ADDR:          w = tst->ubo[si] + (d & 0xffffff); break;
         case OGLES2_U_SPILL_OFFSET:
@@ -536,9 +577,10 @@ static void uniform_state(struct OGLES2Context *ctx)
     ULONG u0 = (ULONG)ctx->viewport[2], u1 = (ULONG)ctx->viewport[3];
     ULONG u2 = float_bits(s->depth_range[0]), u3 = float_bits(s->depth_range[1]);
     ULONG u4 = float_bits(s->line_width), u5 = ctx->fb_flip;
+    ULONG u6 = (s->clip_origin == GL_UPPER_LEFT_EXT) | (s->clip_depth == GL_ZERO_TO_ONE_EXT) << 1;
     ULONG *c = ctx->ustate;
-    if (c[0] != u0 || c[1] != u1 || c[2] != u2 || c[3] != u3 || c[4] != u4 || c[5] != u5) {
-        c[0] = u0; c[1] = u1; c[2] = u2; c[3] = u3; c[4] = u4; c[5] = u5;
+    if (c[0] != u0 || c[1] != u1 || c[2] != u2 || c[3] != u3 || c[4] != u4 || c[5] != u5 || c[6] != u6) {
+        c[0] = u0; c[1] = u1; c[2] = u2; c[3] = u3; c[4] = u4; c[5] = u5; c[6] = u6;
         ctx->ustate_ver++;
     }
 }
@@ -1039,9 +1081,10 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     LONG l, t, r, b;
     UWORD vp_cx2, vp_cy2;
     ULONG cwm;
-    float zs = (s->depth_range[1] - s->depth_range[0]) * 0.5f;
-    float zo = (s->depth_range[1] + s->depth_range[0]) * 0.5f;
+    float zs, zo;
     int k;
+
+    viewport_z(ctx, &zs, &zo);
 
     if (dd->gen != g_v3d_cl_generation) { /* a new control list: emit everything */
         memset(dd, 0, sizeof(*dd));
@@ -1090,13 +1133,14 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
 
     /* CFG_BITS. Culling as Mesa's v3dx_emit.c; the winding flag set for
      * counter-clockwise as PiStorm3D's on the flipped default framebuffer
-     * (its shaders flip y the same way), for clockwise on an object. */
+     * (its shaders flip y the same way), for clockwise on an object, and
+     * the other way round with an upper-left origin (y_down). */
     effp = erfp = TRUE;
     if (s->caps & OGLES2_CAP_CULL_FACE) {
         if (s->cull_face_mode != GL_BACK) effp = FALSE;  /* FRONT or FRONT_AND_BACK */
         if (s->cull_face_mode != GL_FRONT) erfp = FALSE; /* BACK or FRONT_AND_BACK */
     }
-    cp = flip ? s->front_face == GL_CCW : s->front_face == GL_CW;
+    cp = y_down(ctx) ? s->front_face == GL_CCW : s->front_face == GL_CW;
     edo = (s->caps & OGLES2_CAP_POLYGON_OFFSET_FILL) ? TRUE : FALSE;
     dtf = depth_on ? (UBYTE)(s->depth_func - GL_NEVER) : V3D_COMPARE_FUNC_ALWAYS;
     zue = depth_on && s->depth_mask;
@@ -1170,20 +1214,23 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     }
 
     /* The viewport group (CLIPPER_XY_SCALING, the Z packets, VIEWPORT_OFFSET),
-     * as Mesa's v3dx_emit.c: the Z scale and offset from the depth range. */
+     * as Mesa's v3dx_emit.c: the Z scale and offset from the depth range and
+     * mode, the clipper's Y scale of the vertex shader's sign. The Z planes
+     * are the depth range in window depth, in either mode (Mesa's
+     * util_viewport_zmin_zmax). */
     vp_cx2 = (UWORD)(2 * vx + vw);              /* twice the centre, from the left */
     vp_cy2 = (UWORD)(flip ? 2 * (fh - vy) - vh  /* twice the centre, from the top */
                           : 2 * vy + vh);
     if (!dd->vp || dd->vp_w != vw || dd->vp_h != vh || dd->vp_cx2 != vp_cx2 || dd->vp_cy2 != vp_cy2 ||
-        dd->vp_zs != zs || dd->vp_zo != zo) {
-        ClipperXYScaling(v, (UWORD)vw, (UWORD)vh);
+        dd->vp_zs != zs || dd->vp_zo != zo || dd->vp_down != y_down(ctx)) {
+        ClipperXYScaling(v, (UWORD)vw, (UWORD)vh, y_down(ctx));
         ClipperZScaleAndOffset(v, zs, zo);
         ClipperZMinMaxClippingPlanes(v, zo - zs < zo + zs ? zo - zs : zo + zs,
                                      zo - zs < zo + zs ? zo + zs : zo - zs);
         ViewportOffset(v, vp_cx2, 0, vp_cy2, 0);
         dd->vp = TRUE;
         dd->vp_w = (UWORD)vw; dd->vp_h = (UWORD)vh; dd->vp_cx2 = vp_cx2; dd->vp_cy2 = vp_cy2;
-        dd->vp_zs = zs; dd->vp_zo = zo;
+        dd->vp_zs = zs; dd->vp_zo = zo; dd->vp_down = y_down(ctx);
     }
 
     /* Blending: BLEND_ENABLES, BLEND_CFG (all four render targets, as Mesa
@@ -1869,6 +1916,8 @@ void ogles2_draw_clear(struct OGLES2Context *ctx, GLbitfield mask)
     }
     s->depth_range[0] = 0.0f;
     s->depth_range[1] = 1.0f;
+    s->clip_origin = GL_LOWER_LEFT_EXT;
+    s->clip_depth = GL_NEGATIVE_ONE_TO_ONE_EXT;
     ctx->viewport[0] = ctx->viewport[1] = 0;
     ctx->viewport[2] = (GLint)ctx->fb_w;
     ctx->viewport[3] = (GLint)ctx->fb_h;

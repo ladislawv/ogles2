@@ -27,7 +27,9 @@ void CfgBits(V3DContext* context, UBYTE effp, UBYTE erfp, UBYTE cp, UBYTE edo, U
 void PointSize(V3DContext* context, float size);
 void LineWidth(V3DContext* context, float width);
 void DepthOffset(V3DContext* context, float factor, float units);
-void ClipperXYScaling(V3DContext* context, UWORD width, UWORD height);
+/* ogles2: y_down, the vertex shader's Y scale is negative (a picture drawn
+ * top-down): the clipper's takes its sign, as Mesa's v3dx_emit.c. */
+void ClipperXYScaling(V3DContext* context, UWORD width, UWORD height, int y_down);
 void ClipperZScaleAndOffset(V3DContext* context, float vpzs, float vpzo);
 void ClipperZMinMaxClippingPlanes(V3DContext* context, float minzw, float maxzw);
 void ViewportOffset(V3DContext* context, UWORD width, UWORD coarse_x, UWORD height, UWORD coarse_y);

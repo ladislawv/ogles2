@@ -51,6 +51,8 @@ void ogles2_state_init(struct OGLES2Context *ctx)
     s->provoking_vertex = GL_LAST_VERTEX_CONVENTION;
     s->depth_range[0] = 0.0f;
     s->depth_range[1] = 1.0f;
+    s->clip_origin = GL_LOWER_LEFT_EXT;
+    s->clip_depth = GL_NEGATIVE_ONE_TO_ONE_EXT;
     s->polygon_offset_factor = s->polygon_offset_units = 0.0f;
     s->sample_coverage_value = 1.0f;
     s->sample_coverage_invert = GL_FALSE;
@@ -182,6 +184,23 @@ void ogles2_glDepthRangef(struct OGLES2Context *ctx, GLfloat n, GLfloat f)
         return;
     ctx->state.depth_range[0] = clamp01(n);
     ctx->state.depth_range[1] = clamp01(f);
+    ctx->state_ver++;
+}
+
+/* EXT_clip_control (M7, docs/M7_EXTENSIONS_PLAN.md step 4): the window
+ * origin (an upper-left one turns the picture upside down) and clip-space
+ * z's range, -w..w or 0..w. draw.c applies them to the viewport. */
+void ogles2_glClipControlEXT(struct OGLES2Context *ctx, GLenum origin, GLenum depth)
+{
+    if (!ogles2_context_valid(ctx))
+        return;
+    if ((origin != GL_LOWER_LEFT_EXT && origin != GL_UPPER_LEFT_EXT) ||
+        (depth != GL_NEGATIVE_ONE_TO_ONE_EXT && depth != GL_ZERO_TO_ONE_EXT)) {
+        ogles2_error(ctx, GL_INVALID_ENUM);
+        return;
+    }
+    ctx->state.clip_origin = origin;
+    ctx->state.clip_depth = depth;
     ctx->state_ver++;
 }
 
@@ -516,13 +535,13 @@ void ogles2_glClearStencil(struct OGLES2Context *ctx, GLint s)
 }
 
 /* ---- queries ----
- * Each query yields up to four values of one kind; glGetBooleanv,
+ * Each query yields up to eight values of one kind; glGetBooleanv,
  * glGetIntegerv and glGetFloatv convert them as GLES 2.0 section 6.1.2 says.
  * "Normalised" floats (colours, depth values) map linearly to the full
  * integer range in glGetIntegerv; others round to the nearest integer. */
 
 enum kind { K_BOOL, K_INT, K_UINT, K_FLOAT, K_NFLOAT }; /* K_UINT: a mask, unsigned as a float */
-struct value { enum kind kind; int n; GLint i[4]; GLfloat f[4]; };
+struct value { enum kind kind; int n; GLint i[8]; GLfloat f[8]; };
 
 static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
 {
@@ -641,11 +660,23 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
     case GL_IMPLEMENTATION_COLOR_READ_TYPE:
         v->kind = K_INT; v->n = 1; v->i[0] = GL_UNSIGNED_BYTE;
         return 1;
-    case GL_NUM_COMPRESSED_TEXTURE_FORMATS: /* OES_compressed_ETC1_RGB8_texture */
-        v->kind = K_INT; v->n = 1; v->i[0] = 1;
+    case GL_CLIP_ORIGIN_EXT:
+        v->kind = K_INT; v->n = 1; v->i[0] = (GLint)s->clip_origin;
+        return 1;
+    case GL_CLIP_DEPTH_MODE_EXT:
+        v->kind = K_INT; v->n = 1; v->i[0] = (GLint)s->clip_depth;
+        return 1;
+    case GL_NUM_COMPRESSED_TEXTURE_FORMATS: /* OES_compressed_ETC1_RGB8_texture, S3TC (M7) */
+        v->kind = K_INT; v->n = 1; v->i[0] = 5;
         return 1;
     case GL_COMPRESSED_TEXTURE_FORMATS:
-        v->kind = K_INT; v->n = 1; v->i[0] = 0x8D64; /* GL_ETC1_RGB8_OES */
+        /* ETC1 first: dEQP's negative cases take the first format listed. */
+        v->kind = K_INT; v->n = 5;
+        v->i[0] = 0x8D64; /* GL_ETC1_RGB8_OES */
+        v->i[1] = 0x83F0; /* GL_COMPRESSED_RGB_S3TC_DXT1_EXT */
+        v->i[2] = 0x83F1; /* GL_COMPRESSED_RGBA_S3TC_DXT1_EXT */
+        v->i[3] = 0x83F2; /* GL_COMPRESSED_RGBA_S3TC_DXT3_EXT (ANGLE_texture_compression_dxt3) */
+        v->i[4] = 0x83F3; /* GL_COMPRESSED_RGBA_S3TC_DXT5_EXT (ANGLE_texture_compression_dxt5) */
         return 1;
     case GL_SHADER_COMPILER: /* TRUE with offline binaries too (plan 7.8) */
         v->kind = K_BOOL; v->n = 1; v->i[0] = 1;

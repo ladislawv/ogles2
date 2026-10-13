@@ -684,12 +684,12 @@ BOOL ogles2_texture_query(struct OGLES2Context *ctx, GLenum pname, GLint *v)
     case GL_PACK_ALIGNMENT:       *v = ctx->pack_alignment; return TRUE;
     case GL_MAX_TEXTURE_SIZE:
     case GL_MAX_CUBE_MAP_TEXTURE_SIZE: *v = MAX_SIZE; return TRUE;
-    case GL_MAX_TEXTURE_IMAGE_UNITS:
+    case GL_MAX_TEXTURE_IMAGE_UNITS: *v = OGLES2_MAX_STAGE_SAMPLERS; return TRUE;
     case GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: *v = OGLES2_MAX_TEXTURE_UNITS; return TRUE;
     /* Vertex texture fetch: the draws bind the units of both stages' samplers
      * (draw.c texture_states); dEQP-GLES2's texture.vertex tests sample in
      * the vertex shader (M7). Units are shared between the stages. */
-    case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: *v = OGLES2_MAX_TEXTURE_UNITS; return TRUE;
+    case GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: *v = OGLES2_MAX_STAGE_SAMPLERS; return TRUE;
     case GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT: *v = (GLint)MAX_ANISOTROPY; return TRUE;
     case GL_MAX_TEXTURE_LOD_BIAS: *v = (GLint)MAX_LOD_BIAS; return TRUE;
     default:                      return FALSE;
@@ -703,15 +703,43 @@ BOOL ogles2_texture_query(struct OGLES2Context *ctx, GLenum pname, GLint *v)
  *  - FLOAT: RGBA floats, the 68k's own (OES_texture_float, _half_float);
  *  - DEPTH16, DEPTH24: the stored depth word as a ULONG (OES_depth_texture:
  *    16 bits; or 24 bits << 8 with the stencil in the low byte, which is
- *    also OES_packed_depth_stencil's UNSIGNED_INT_24_8 layout).
+ *    also OES_packed_depth_stencil's UNSIGNED_INT_24_8 layout);
+ *  - BLOCKS: S3TC's 4x4 blocks as given, rows of ceil(w/4) blocks (M7,
+ *    docs/M7_EXTENSIONS_PLAN.md step 3), stored as they are: the TMU
+ *    decodes them.
  * The levels of a texture must be of level 0's class to be sampled. */
 #define CLASS_RGBA8   0
 #define CLASS_FLOAT   1
 #define CLASS_DEPTH16 2
 #define CLASS_DEPTH24 3
+#define CLASS_BLOCKS  4
+
+/* EXT_texture_compression_dxt1, EXT_texture_compression_s3tc and ANGLE's
+ * dxt3/dxt5 (the same enums): a block's bytes, 0 for another format. */
+static ULONG dxt_block_bytes(GLenum format)
+{
+    switch (format) {
+    case GL_COMPRESSED_RGB_S3TC_DXT1_EXT:
+    case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
+        return 8;
+    case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
+    case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
+        return 16;
+    default:
+        return 0;
+    }
+}
+
+/* Texels in blocks of 4, rounded up (a level smaller than 4x4 is one block). */
+static ULONG blocks4(ULONG texels)
+{
+    return (texels + 3) / 4;
+}
 
 static int class_of(GLenum format, GLenum type)
 {
+    if (dxt_block_bytes(format))
+        return CLASS_BLOCKS;
     if (type == GL_FLOAT || type == GL_HALF_FLOAT_OES)
         return CLASS_FLOAT;
     if (format == GL_DEPTH_COMPONENT && type == GL_UNSIGNED_SHORT)
@@ -721,7 +749,8 @@ static int class_of(GLenum format, GLenum type)
     return CLASS_RGBA8;
 }
 
-/* Bytes per texel of a RAM copy of that class. */
+/* Bytes per texel of a RAM copy of that class (BLOCKS is never asked: its
+ * copies are only stored and replaced, never converted, filtered or read). */
 static ULONG copy_bytes(int cls)
 {
     return cls == CLASS_FLOAT ? 16 : 4;
@@ -1160,7 +1189,15 @@ static void storage_of(struct OGLES2Texture *t)
     sw[0] = R; sw[1] = G; sw[2] = B; sw[3] = A;
     if (f == GL_RGB)
         sw[3] = O; /* rendered into, the stored alpha is the shader's */
-    if (ty == GL_FLOAT || ty == GL_HALF_FLOAT_OES) {
+    if (dxt_block_bytes(f)) {
+        /* S3TC: BC1-BC3, a block a "texel" (Mesa's table: DXT1 RGB is XYZ1) */
+        type = f == GL_COMPRESSED_RGBA_S3TC_DXT3_EXT   ? V3D_TEXTURE_DATA_FORMAT_BC2
+             : f == GL_COMPRESSED_RGBA_S3TC_DXT5_EXT   ? V3D_TEXTURE_DATA_FORMAT_BC3
+                                                       : V3D_TEXTURE_DATA_FORMAT_BC1;
+        cpp = (UBYTE)dxt_block_bytes(f);
+        if (f == GL_COMPRESSED_RGB_S3TC_DXT1_EXT)
+            sw[3] = O;
+    } else if (ty == GL_FLOAT || ty == GL_HALF_FLOAT_OES) {
         /* OES_texture_float (32-bit returns: the .v3dw variants) and
          * OES_texture_half_float (16-bit, filterable); RGB as RGBA. */
         BOOL h = ty == GL_HALF_FLOAT_OES;
@@ -1489,15 +1526,22 @@ static BOOL store_tfu(struct OGLES2Texture *t, int k, int l, const UBYTE *raster
 }
 
 /* A box of level l of face k, from the RAM copy `src` (`w` texels a row, of
- * level 0's class: complete() saw to it). */
+ * level 0's class: complete() saw to it). S3TC: the box on block bounds,
+ * `src` its blocks, stored as they are (the TFU takes no BC format). */
 static void store_box(struct OGLES2Texture *t, int k, int l, const UBYTE *src, int x, int y, int w,
                       int h)
 {
     V3DTexture tmp;
-    ULONG row = (ULONG)w * t->cpp, in = (ULONG)w * copy_bytes(class_of(t->f[0].format[0], t->f[0].type[0]));
+    ULONG row = (ULONG)w * t->cpp, in;
     UBYTE *packed;
     BOOL whole = x == 0 && y == 0 && w == t->f[k].w[l] && h == t->f[k].h[l];
     int j;
+    if (class_of(t->f[0].format[0], t->f[0].type[0]) == CLASS_BLOCKS) {
+        v3d_texture_store(ogles2_device(), face_gpu(t, k, &tmp), (v3d_u8)l, src, blocks4((ULONG)w) * t->cpp,
+                          x / 4, y / 4, (int)blocks4((ULONG)w), (int)blocks4((ULONG)h));
+        return;
+    }
+    in = (ULONG)w * copy_bytes(class_of(t->f[0].format[0], t->f[0].type[0]));
     /* RGBA8 is stored as the RAM copy holds it: straight from there. */
     if (t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGBA8) {
         if (whole && store_tfu(t, k, l, src, (ULONG)w * 4, w, h))
@@ -1554,7 +1598,8 @@ static BOOL upload_all(struct OGLES2Texture *t)
     if (!(t->gpu = AllocVec(sizeof(*t->gpu), MEMF_ANY | MEMF_CLEAR)))
         return FALSE;
     storage_of(t);
-    if (v3d_texture_alloc_cpp(dev, t->gpu, f0->w[0], f0->h[0], t->cpp) < 0 ||
+    if (v3d_texture_alloc_blocks(dev, t->gpu, f0->w[0], f0->h[0], t->cpp,
+                                 level_class(f0, 0) == CLASS_BLOCKS ? 4 : 1) < 0 ||
         (n > 1 && v3d_texture_alloc_mipchain(dev, t->gpu, (v3d_u8)n) < 0)) {
         free_gpu(t);
         return FALSE;
@@ -1806,13 +1851,15 @@ void ogles2_texture_hidden_free(struct OGLES2Context *ctx, struct OGLES2Texture 
     FreeVec(t);
 }
 
+static void set_level(struct OGLES2Context *ctx, struct OGLES2Texture *t, int k, GLint level, UBYTE *img,
+                      GLsizei width, GLsizei height, GLenum format, GLenum type, BOOL given);
+
 static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLint internalformat,
                          GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type,
                          const void *pixels)
 {
     struct OGLES2TexState *ts;
     struct OGLES2Texture *t;
-    struct OGLES2Face *f;
     GLenum err;
     UBYTE *img;
     ULONG cb;
@@ -1837,6 +1884,13 @@ static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLi
      * the same image as BGRA_EXT. */
     if ((GLenum)internalformat == GL_BGRA8_EXT && format == GL_BGRA_EXT)
         internalformat = GL_BGRA_EXT;
+    /* The 8-bit sized formats (OES_rgb8_rgba8's names) for the image they
+     * store, as OES_required_internalformat takes them: GLES 3 programs and
+     * dEQP's clip_control cases pass them (GLES 2.0 alone: GL_INVALID_VALUE). */
+    if (((GLenum)internalformat == GL_RGBA8_OES && format == GL_RGBA) ||
+        ((GLenum)internalformat == GL_RGB8_OES && format == GL_RGB))
+        if (type == GL_UNSIGNED_BYTE)
+            internalformat = (GLint)format;
     if ((GLenum)internalformat != format) {
         ogles2_error(ctx, internalformat == GL_RGBA || internalformat == GL_RGB ||
                           internalformat == GL_LUMINANCE || internalformat == GL_ALPHA ||
@@ -1852,7 +1906,6 @@ static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLi
     }
     if (!(t = image_texture(ctx, ts, target, level, &k)))
         return;
-    f = &t->f[k];
     before_change(ctx, ts, t);
     cb = copy_bytes(class_of(format, type));
     img = width && height ? AllocVec((ULONG)width * height * cb, MEMF_ANY | MEMF_CLEAR) : 0;
@@ -1864,6 +1917,16 @@ static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLi
         ogles2_wide_seen |= wide_class(format, type);
     if (img && pixels)
         convert(img, (ULONG)width * cb, pixels, format, type, width, height, ctx->unpack_alignment);
+    set_level(ctx, t, k, level, img, width, height, format, type, pixels != 0);
+}
+
+/* Level `level` of face k becomes `img`, its new RAM copy (0: empty);
+ * `given`: it holds the image's texels, else zeros. The caller has dealt
+ * with the jobs that use the texture (before_change). */
+static void set_level(struct OGLES2Context *ctx, struct OGLES2Texture *t, int k, GLint level, UBYTE *img,
+                      GLsizei width, GLsizei height, GLenum format, GLenum type, BOOL given)
+{
+    struct OGLES2Face *f = &t->f[k];
     if (f->shadow[level])
         FreeVec(f->shadow[level]);
     f->shadow[level] = img;
@@ -1872,7 +1935,7 @@ static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLi
     f->format[level] = format;
     f->type[level] = type;
     f->defined |= 1UL << level;
-    if (img && pixels)
+    if (img && given)
         f->blank &= ~(1UL << level);
     else
         f->blank |= 1UL << level;
@@ -2101,12 +2164,42 @@ void ogles2_glCopyTexSubImage2D(struct OGLES2Context *ctx, GLenum target, GLint 
     FreeVec(img);
 }
 
-/* ---- compressed textures: OES_compressed_ETC1_RGB8_texture ----
- * Decoded into the RGBA8 storage (etc1.c) and stored as glTexImage2D does;
- * the level then keeps the ETC1 format, which no TexSubImage may change. */
+/* ---- compressed textures ----
+ * OES_compressed_ETC1_RGB8_texture: decoded into the RGBA8 storage (etc1.c)
+ * and stored as glTexImage2D does; the level then keeps the ETC1 format,
+ * which no TexSubImage may change.
+ * S3TC (DXT1, DXT3, DXT5; M7 step 3): kept as given, in RAM and on the GPU,
+ * which samples BC1-BC3 itself. glCompressedTexSubImage2D replaces whole
+ * blocks; glTexSubImage2D, glCopyTexSubImage2D (another format: refused by
+ * glTexSubImage2D) and glGenerateMipmap give GL_INVALID_OPERATION, and a
+ * framebuffer object cannot draw into one (not colour-renderable). */
 #ifndef GL_ETC1_RGB8_OES
 #define GL_ETC1_RGB8_OES 0x8D64
 #endif
+
+/* Level `level` of an S3TC texture: `bytes` of blocks (data 0: zeros). */
+static void dxt_image(struct OGLES2Context *ctx, struct OGLES2TexState *ts, GLenum target, GLint level,
+                      GLenum format, GLsizei width, GLsizei height, ULONG bytes, const void *data)
+{
+    struct OGLES2Texture *t;
+    UBYTE *img;
+    int k;
+    if (width > (MAX_SIZE >> level) || height > (MAX_SIZE >> level) || (face_target(target) && width != height)) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (!(t = image_texture(ctx, ts, target, level, &k)))
+        return;
+    before_change(ctx, ts, t);
+    img = bytes ? AllocVec(bytes, MEMF_ANY | MEMF_CLEAR) : 0;
+    if (bytes && !img) {
+        ogles2_error(ctx, GL_OUT_OF_MEMORY);
+        return;
+    }
+    if (img && data)
+        CopyMem((APTR)data, img, bytes);
+    set_level(ctx, t, k, level, img, width, height, format, 0, data != 0);
+}
 
 void ogles2_glCompressedTexImage2D(struct OGLES2Context *ctx, GLenum target, GLint level,
                                    GLenum internalformat, GLsizei width, GLsizei height, GLint border,
@@ -2114,7 +2207,7 @@ void ogles2_glCompressedTexImage2D(struct OGLES2Context *ctx, GLenum target, GLi
 {
     struct OGLES2TexState *ts;
     struct OGLES2Texture *t;
-    ULONG bw, bh;
+    ULONG bw, bh, bs;
     UBYTE *img, unpack;
     if (!ogles2_context_valid(ctx) || !(ts = ts_get(ctx)))
         return;
@@ -2122,15 +2215,20 @@ void ogles2_glCompressedTexImage2D(struct OGLES2Context *ctx, GLenum target, GLi
         ogles2_error(ctx, GL_INVALID_ENUM);
         return;
     }
-    if (internalformat != GL_ETC1_RGB8_OES) {
+    bs = dxt_block_bytes(internalformat);
+    if (internalformat != GL_ETC1_RGB8_OES && !bs) {
         ogles2_error(ctx, GL_INVALID_ENUM);
         return;
     }
-    bw = ((ULONG)width + 3) / 4;
-    bh = ((ULONG)height + 3) / 4;
+    bw = blocks4((ULONG)width);
+    bh = blocks4((ULONG)height);
     if (width < 0 || height < 0 || border != 0 || level < 0 || level >= MAX_LEVELS ||
-        imageSize != (GLsizei)(bw * bh * 8)) {
+        imageSize != (GLsizei)(bw * bh * (bs ? bs : 8))) {
         ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (bs) {
+        dxt_image(ctx, ts, target, level, internalformat, width, height, (ULONG)imageSize, data);
         return;
     }
     img = width && height ? AllocVec((ULONG)width * height * 4, MEMF_ANY | MEMF_CLEAR) : 0;
@@ -2157,15 +2255,59 @@ void ogles2_glCompressedTexSubImage2D(struct OGLES2Context *ctx, GLenum target, 
                                       GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
                                       GLenum format, GLsizei imageSize, const void *data)
 {
-    (void)level; (void)xoffset; (void)yoffset; (void)width; (void)height; (void)imageSize; (void)data;
-    if (!ogles2_context_valid(ctx))
+    struct OGLES2TexState *ts;
+    struct OGLES2Texture *t;
+    struct OGLES2Face *f;
+    ULONG bs, bw, bh, row, j;
+    int k;
+    if (!ogles2_context_valid(ctx) || !(ts = ts_get(ctx)))
         return;
-    if ((target != GL_TEXTURE_2D && !face_target(target)) || format != GL_ETC1_RGB8_OES) {
+    bs = dxt_block_bytes(format);
+    if ((target != GL_TEXTURE_2D && !face_target(target)) || (format != GL_ETC1_RGB8_OES && !bs)) {
         ogles2_error(ctx, GL_INVALID_ENUM);
         return;
     }
-    /* OES_compressed_ETC1_RGB8_texture: ETC1 images cannot be updated. */
-    ogles2_error(ctx, GL_INVALID_OPERATION);
+    /* The order of the checks is dEQP's (negative_api.texture): values
+     * first, then the level, its bounds and size; the format and the block
+     * bounds last. */
+    if (level < 0 || level >= MAX_LEVELS || xoffset < 0 || yoffset < 0 || width < 0 || height < 0) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (!(t = image_texture(ctx, ts, target, level, &k)))
+        return;
+    f = &t->f[k];
+    if (!(f->defined & (1UL << level))) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    bw = blocks4((ULONG)width);
+    bh = blocks4((ULONG)height);
+    if (xoffset + width > f->w[level] || yoffset + height > f->h[level] ||
+        imageSize != (GLsizei)(bw * bh * (bs ? bs : 8))) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    /* OES_compressed_ETC1_RGB8_texture: ETC1 images cannot be updated; S3TC
+     * (EXT_texture_compression_s3tc): the level's own format, whole blocks
+     * (a box may end at the level's edge). */
+    if (!bs || format != f->format[level] || ((xoffset | yoffset) & 3) ||
+        ((width & 3) && xoffset + width != f->w[level]) || ((height & 3) && yoffset + height != f->h[level])) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    if (!width || !height || !data)
+        return;
+    before_change(ctx, ts, t);
+    row = blocks4(f->w[level]) * bs;
+    for (j = 0; j < bh; j++)
+        CopyMem((UBYTE *)data + j * bw * bs, f->shadow[level] + ((ULONG)yoffset / 4 + j) * row + (ULONG)xoffset / 4 * bs,
+                bw * bs);
+    f->blank &= ~(1UL << level);
+    if (t->gpu && level < t->gpu->num_levels && consistent(f, level))
+        store_box(t, k, level, (const UBYTE *)data, xoffset, yoffset, width, height);
+    else if (!t->gpu && ctx->v3d && !upload_all(t)) /* renamed: a new copy, whole */
+        ogles2_error(ctx, GL_OUT_OF_MEMORY);
 }
 
 /* Level l+1 from level l: each texel the mean of a 2x2 box (a 1-texel edge
@@ -2270,8 +2412,8 @@ void ogles2_glGenerateMipmap(struct OGLES2Context *ctx, GLenum target)
     }
     if (!(t = bound(ctx, ts, target)))
         return;
-    /* A compressed level 0 (ETC1), of any size: GLES 2.0 3.7.11. */
-    if ((t->f[0].defined & 1) && t->f[0].format[0] == 0x8D64 /* GL_ETC1_RGB8_OES */) {
+    /* A compressed level 0 (ETC1, S3TC), of any size: GLES 2.0 3.7.11. */
+    if ((t->f[0].defined & 1) && (t->f[0].format[0] == GL_ETC1_RGB8_OES || dxt_block_bytes(t->f[0].format[0]))) {
         ogles2_error(ctx, GL_INVALID_OPERATION);
         return;
     }

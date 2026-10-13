@@ -80,6 +80,7 @@ static const struct OGLES2Image builtin_smooth = {
     {16, 0}, {0, 0},
     0, 0,
     sizeof(builtin_coordinate) + sizeof(builtin_vertex_smooth) + sizeof(builtin_fragment_smooth),
+    0,          /* no OGLES2_U_CLIP_Z_COEFF: clears are drawn NEGATIVE_ONE_TO_ONE */
     0, 0, 0,
     0, 0,       /* no binary */
     0, 0, 0, 0, /* no 32-bit-sampler variants, no sources */
@@ -1599,7 +1600,7 @@ static void set_uniform(struct OGLES2Context *ctx, GLint location, GLsizei count
         count = ne - first; /* past the array's end: ignored (GLES 2.0 2.10.4) */
     if (ukind == K_SAMPLER) {
         for (i = 0; i < count; i++)
-            if (iv[i] < 0 || iv[i] >= 16) {
+            if (iv[i] < 0 || iv[i] >= OGLES2_MAX_TEXTURE_UNITS) { /* a unit, 0-31 (combined) */
                 ogles2_error(ctx, GL_INVALID_VALUE);
                 return;
             }

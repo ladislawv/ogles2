@@ -29,7 +29,10 @@ SetEnv OGLES2/LogFile M6R6:results/ogles2.log
 
 If NOT {FROM} GT 1 VAL
   Echo "Step 1 of 5: the extensions (nothing to see)"
+  ; Traced (probe T): the debug markers go into the log.
+  SetEnv OGLES2/Probe T
   M6R6:bin/m6_ext >M6R6:results/1-ext.txt
+  UnSetEnv OGLES2/Probe
   Echo "step 1 done" >>M6R6:results/00-progress.txt
 EndIf
 

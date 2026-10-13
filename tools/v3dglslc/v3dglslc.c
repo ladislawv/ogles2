@@ -51,6 +51,16 @@ static int write_program(GLuint p, const char *path, const char *vs_src, const c
 
 int fake_drm_open(void);
 
+/* The build's stamp (build_m68k.sh: its time and the commits), which
+ * ogles2.library reads from the file's tail to tell compilers apart
+ * (ogles2_compiler_id: a size alone matched two different builds). Writable,
+ * so it goes into the data hunk, which follows the 18 MB of code and its
+ * relocations, a few kilobytes from the end of the file. */
+#ifndef V3DGLSLC_STAMP
+#define V3DGLSLC_STAMP "unstamped"
+#endif
+__attribute__((used)) char v3dglslc_stamp[] = "$V3DGLSLC-STAMP:" V3DGLSLC_STAMP "$";
+
 #ifdef __amigaos__
 void os_amiga_set_option(const char *name, const char *value);
 #define set_option os_amiga_set_option
@@ -391,7 +401,7 @@ static int serve(void)
     port->mp_Node.ln_Pri = 0;
     AddPort(port);
     Permit();
-    fprintf(stderr, "v3dglslc: serving on \"%s\"\n", V3DGLSL_PORT_NAME);
+    fprintf(stderr, "v3dglslc: serving on \"%s\" (%s)\n", V3DGLSL_PORT_NAME, v3dglslc_stamp);
 
     while (!quit) {
         WaitPort(port);
@@ -523,14 +533,15 @@ int main(int argc, char **argv)
     /* ogles2.library's limits, which its GL queries report too (GLSL's
      * gl_Max* constants must equal them: dEQP-GLES2 builtin_variable): one
      * draw buffer (no EXT_draw_buffers: gl_FragData[1] does not compile), 16
-     * texture units in each stage and in all (OGLES2_MAX_TEXTURE_UNITS; the
-     * driver offers 24). */
+     * texture units in each stage (OGLES2_MAX_STAGE_SAMPLERS; the driver
+     * offers 24) and 32 in all (OGLES2_MAX_TEXTURE_UNITS, M7 step 2; the
+     * driver offers 96). */
     {
         GET_CURRENT_CONTEXT(ctx);
         ctx->Const.MaxDrawBuffers = 1;
         ctx->Const.Program[MESA_SHADER_VERTEX].MaxTextureImageUnits = 16;
         ctx->Const.Program[MESA_SHADER_FRAGMENT].MaxTextureImageUnits = 16;
-        ctx->Const.MaxCombinedTextureImageUnits = 16;
+        ctx->Const.MaxCombinedTextureImageUnits = 32;
     }
     fprintf(stderr, "v3dglslc: renderer %s\n", (const char *)_mesa_GetString(GL_RENDERER));
 #ifdef __amigaos__

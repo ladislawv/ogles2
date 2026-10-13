@@ -164,7 +164,9 @@ must know of it, or it gives every active attribute a location of its own and fa
 | `u64[size/8]` | QPU instructions, little-endian |
 
 Recipe type numbers are Mesa's enum values at the validated commit (0 `QUNIFORM_CONSTANT`
-to 45 `QUNIFORM_BLEND_CONSTANT_A` at 74b69717c52b; `v3dp_dump.py` lists them); the reader
+to 45 `QUNIFORM_BLEND_CONSTANT_A` at 74b69717c52b, and 46 `QUNIFORM_CLIP_Z_COEFF` from
+`tools/v3dglslc/patches/0013`: the vertex position's z lerped towards w, -1 for
+`EXT_clip_control`'s `ZERO_TO_ONE`, else 0; `v3dp_dump.py` lists them); the reader
 checks the commit (header) and rejects types it does not implement (plan section 8.6). For
 `QUNIFORM_UNIFORM` the data word is an index, in 32-bit units, into the stage's constant
 buffer (`STAGE_PARAMS`); for `QUNIFORM_CONSTANT` it is the value itself.

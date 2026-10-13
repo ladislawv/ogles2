@@ -15,10 +15,11 @@
 
 /* 1.1: glDrawRangeElements appended to the dispatch table. 1.2: the
  * extension entries of AmigaOS 4's ogles2 (program binaries, glPolygonMode,
- * glProvokingVertex, glGetBufferParameterivOES). glGetString's GL_VERSION
- * (context.c) names the same revision. */
+ * glProvokingVertex, glGetBufferParameterivOES). 1.3: M7's extensions
+ * (docs/M7_EXTENSIONS_PLAN.md: debug markers, clip control, draw buffers).
+ * glGetString's GL_VERSION (context.c) names the same revision. */
 #define OGLES2_LIB_VERSION  1
-#define OGLES2_LIB_REVISION 2
+#define OGLES2_LIB_REVISION 3
 #define OGLES2_LIB_DATE     "13.10.2026"
 
 struct OGLES2Library
@@ -74,7 +75,12 @@ struct OGLES2Share
 /* A GL context. Opaque to clients (struct OGLES2Context in the headers). */
 #define OGLES2_CONTEXT_MAGIC 0x474c4532UL /* "GLE2" */
 #define OGLES2_MAX_VERTEX_ATTRIBS 16
-#define OGLES2_MAX_TEXTURE_UNITS 16 /* plan 7.6 */
+/* Texture units are binding points: a program may use units 0-31 across its
+ * stages (GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS), but a stage has at most 16
+ * samplers, its texture indices 0-15 (GL_MAX_TEXTURE_IMAGE_UNITS, the
+ * TMU_CONFIG recipes' index). M7 step 2; plan 7.6. */
+#define OGLES2_MAX_TEXTURE_UNITS  32
+#define OGLES2_MAX_STAGE_SAMPLERS 16
 #define OGLES2_MAX_VIEWPORT 4096 /* V3D_MAX_FRAMEBUFFER_SIZE on 4.2; GL_MAX_VIEWPORT_DIMS */
 
 /* glEnable capabilities, bits of OGLES2State.caps */
@@ -99,6 +105,7 @@ struct OGLES2State
     GLfloat clear_depth;
     GLfloat line_width;
     GLfloat depth_range[2];         /* near, far */
+    GLenum clip_origin, clip_depth; /* glClipControlEXT (M7): GL_LOWER_LEFT_EXT, GL_NEGATIVE_ONE_TO_ONE_EXT */
     GLfloat polygon_offset_factor, polygon_offset_units;
     GLfloat sample_coverage_value;
     GLfloat attrib[OGLES2_MAX_VERTEX_ATTRIBS][4]; /* current generic attributes */
@@ -153,6 +160,7 @@ struct OGLES2Array
 #define OGLES2_U_SPILL_OFFSET      31 /* the context's spill area (register spilling, draw.c) */
 #define OGLES2_U_SPILL_SIZE_PER_THREAD 32
 #define OGLES2_U_BLEND_CONSTANT_R  42 /* to _A, 45 */
+#define OGLES2_U_CLIP_Z_COEFF      46 /* Mesa patch 0013 (EXT_clip_control): z lerped towards w */
 #define OGLES2_U_PISTORM_VP_WIDTH  0x100 /* PiStorm3D's scale_p: viewport width in pixels */
 #define OGLES2_U_PISTORM_VP_HEIGHT 0x101 /* PiStorm3D's scale_p_y */
 
@@ -260,6 +268,8 @@ struct OGLES2Image
     UWORD nstatevars;
     const struct OGLES2StateVar *statevars;
     ULONG code_total;                     /* bytes of code, all variants */
+    BOOL clip_z_coeff;                    /* its vertex shaders read OGLES2_U_CLIP_Z_COEFF (compiled
+                                             with Mesa patch 0013): ZERO_TO_ONE clips (draw.c) */
     struct v3d_mem *code_mem;             /* the code in GPU memory; NULL: built in */
     APTR blocks;                          /* v3dp.c's allocations, to free */
     UBYTE *binary;                        /* the .v3dp file it was loaded from (AllocVec'd; NULL:
@@ -443,7 +453,7 @@ struct OGLES2Context
     double n_uwords, n_vbytes, n_indices; /* probe P: uniform stream words, vertex bytes, indices copied */
     /* draw.c: the state the uniform recipes read besides the constant
      * buffers, as at the last draw, and its version. */
-    ULONG ustate[6], ustate_ver;
+    ULONG ustate[7], ustate_ver;
     /* Bumped by every change to the state draw.c's emit_state reads (the
      * setters in state.c, glViewport and glScissor, glClear's override):
      * a draw with the same version as the last skips emit_state. */
@@ -489,6 +499,7 @@ struct OGLES2Context
     ULONG pend_serial;              /* its job_serial */
     struct OGLES2Framebuffer *pend_fb; /* NULL: the default framebuffer */
     struct OGLES2Target pend_tg;
+    UBYTE marker_depth;             /* EXT_debug_marker: groups pushed (debug.c) */
     UBYTE job_discard;              /* EXT_discard_framebuffer: OGLES2_DISCARD_* the open job does not store */
     UBYTE job_noload;               /* and those it does not load (discarded before it began) */
 };

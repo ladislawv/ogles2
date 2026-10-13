@@ -452,11 +452,15 @@ static void run(void)
      * row 0, every index 0 (+2): left (255,2,2), right (2,255,2). */
     {
         static const UBYTE block[8] = {0xF0, 0x0F, 0x00, 0x00, 0, 0, 0, 0};
-        GLint n = 0, f = 0;
+        GLint n = 0, f[16], k, etc1 = 0;
         const char *ext = (const char *)glGetString(GL_EXTENSIONS);
         glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS, &n);
-        glGetIntegerv(GL_COMPRESSED_TEXTURE_FORMATS, &f);
-        check(ext && strstr(ext, "GL_OES_compressed_ETC1_RGB8_texture") && n == 1 && f == 0x8D64,
+        memset(f, 0, sizeof(f));
+        if (n > 0 && n <= 16) /* ETC1 and, from M7, the four S3TC formats */
+            glGetIntegerv(GL_COMPRESSED_TEXTURE_FORMATS, f);
+        for (k = 0; k < n && k < 16; k++)
+            etc1 |= f[k] == 0x8D64;
+        check(ext && strstr(ext, "GL_OES_compressed_ETC1_RGB8_texture") && etc1,
               "ETC1: in GL_EXTENSIONS and GL_COMPRESSED_TEXTURE_FORMATS");
         glGenTextures(1, &t);
         glBindTexture(GL_TEXTURE_2D, t);

@@ -141,7 +141,7 @@ static BOOL recipe_ok(ULONG t)
            t == OGLES2_U_UBO_ADDR ||
            t == OGLES2_U_LINE_WIDTH || t == OGLES2_U_AA_LINE_WIDTH ||
            t == OGLES2_U_SPILL_OFFSET || t == OGLES2_U_SPILL_SIZE_PER_THREAD ||
-           (t >= OGLES2_U_BLEND_CONSTANT_R && t <= OGLES2_U_BLEND_CONSTANT_R + 3);
+           (t >= OGLES2_U_BLEND_CONSTANT_R && t <= OGLES2_U_BLEND_CONSTANT_R + 3) || t == OGLES2_U_CLIP_Z_COEFF;
 }
 
 /* The common prog data (FORMAT.md "Common key and prog data"), 28 bytes. */
@@ -418,6 +418,8 @@ struct OGLES2Image *ogles2_v3dp_load(const UBYTE *file, ULONG len, char *why, UL
                     FAIL("a uniform block other than the default one", 0, rd2[j] >> 24);
                 if (rt[j] == OGLES2_U_UBO_ADDR)
                     v->uses_ubo = 1;
+                if (rt[j] == OGLES2_U_CLIP_Z_COEFF)
+                    im->clip_z_coeff = TRUE;
             }
             v->nrecipe = (UWORD)n;
             v->rtype = rt;
