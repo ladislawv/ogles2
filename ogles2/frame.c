@@ -21,6 +21,7 @@ void ogles2_aglSwapBuffers(struct OGLES2Context *ctx)
     ULONG t0, t1;
     if (!has_surface(ctx))
         return;
+    ogles2_display_swap_begin(&ctx->display);
     ogles2_job_flush(ctx, TRUE);
     t0 = ogles2_clock_us();
     /* Flipping (vsync on a screen of our own) shows a finished frame. */
