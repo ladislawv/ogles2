@@ -1,7 +1,8 @@
 /*
- * M6 test: glGenerateMipmap with the TFU (texture formatting unit), on a
- * hidden 256x128 bitmap. Run it as it is (the TFU makes the levels) and
- * with ENV:OGLES2/Probe M (the CPU does): both pass, and the timings
+ * M6 test: the TFU (texture formatting unit) for glGenerateMipmap and for
+ * uploads, on a hidden 256x128 bitmap. Run it as it is (the TFU makes the
+ * levels and tiles whole uploads of 128x128 and up) and with
+ * ENV:OGLES2/Probe MU (the CPU does both): both pass, and the timings
  * compare them. Nothing to watch.
  *   usage: m6_tfu
  *   upload   256x256 RGBA8 noise: the first glGenerateMipmap lays the chain
@@ -13,6 +14,9 @@
  *            colours drawn, mipmapped, each level's quadrants; then 20
  *            frames of draw + glGenerateMipmap, timed
  *   formats  RGB565 and RGBA4 (16-bit storage), one colour through the chain
+ *   tfu upload  512x512 and 600x520 RGBA8, 256x128 RGB565: drawn 1:1,
+ *            exact; a box the CPU stores over a TFU upload
+ *   upload time  glTexImage2D and glTexSubImage2D, 256x256 and 1024x1024
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -370,6 +374,191 @@ static void test_formats(void)
     glDeleteTextures(1, &t);
 }
 
+/* Level 0 of texture t (w x h, within the screen) drawn 1:1 against
+ * `want` (RGBA rows, bottom up): the number of texels whose colour
+ * differs by more than tol in a channel. */
+static int level0_wrong(GLuint t, int w, int h, const UBYTE *want, int tol)
+{
+    UBYTE *got = malloc((size_t)w * h * 4);
+    int i, c, bad = 0;
+    if (!got)
+        return w * h;
+    draw_level(t, 0, w, h, got);
+    for (i = 0; i < w * h; i++)
+        for (c = 0; c < 3; c++) {
+            int d = got[i * 4 + c] - want[i * 4 + c];
+            if (d > tol || d < -tol) {
+                bad++;
+                break;
+            }
+        }
+    free(got);
+    return bad;
+}
+
+/* Level 0 of a texture larger than the screen (tw x th, `want` its rows):
+ * the screen-sized windows at (0,0), at the far corner and in the middle,
+ * each drawn 1:1; the number of texels wrong. */
+static int big_wrong(GLuint t, int tw, int th, const UBYTE *want)
+{
+    static const GLfloat pos[] = {-1, -1, 0, 1, -1, 0, -1, 1, 0, 1, 1, 0};
+    UBYTE *got = malloc(W * H * 4);
+    int win, x, y, c, bad = 0;
+    if (!got)
+        return W * H;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, t);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glUseProgram(tex1);
+    for (win = 0; win < 3; win++) {
+        int x0 = win == 0 ? 0 : win == 1 ? tw - W : (tw - W) / 2;
+        int y0 = win == 0 ? 0 : win == 1 ? th - H : (th - H) / 2;
+        GLfloat tc[8];
+        tc[0] = (GLfloat)x0 / tw;       tc[1] = (GLfloat)y0 / th;
+        tc[2] = (GLfloat)(x0 + W) / tw; tc[3] = tc[1];
+        tc[4] = tc[0];                  tc[5] = (GLfloat)(y0 + H) / th;
+        tc[6] = tc[2];                  tc[7] = tc[5];
+        glClearColor(0, 0, 0, 0);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, pos);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, tc);
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glDisableVertexAttribArray(1);
+        glReadPixels(0, 0, W, H, GL_RGBA, GL_UNSIGNED_BYTE, got);
+        for (y = 0; y < H; y++)
+            for (x = 0; x < W; x++)
+                for (c = 0; c < 3; c++)
+                    if (got[(y * W + x) * 4 + c] != want[((y0 + y) * tw + x0 + x) * 4 + c]) {
+                        bad++;
+                        break;
+                    }
+    }
+    free(got);
+    return bad;
+}
+
+/* Uploads the TFU tiles (whole levels of 512x512 texels and more in RGBA8,
+ * 128x128 in other formats; probe U keeps them on the CPU): what is drawn
+ * is what was given. */
+static void test_tfu_upload(void)
+{
+    UBYTE *img = malloc(600 * 520 * 4), *want = malloc(600 * 520 * 4);
+    UWORD *p565 = malloc(256 * 128 * 2);
+    GLuint t;
+    int i, x, y, bad;
+    char msg[160];
+    if (!img || !want || !p565) {
+        check(0, "memory for the upload test");
+        free(img); free(want); free(p565);
+        return;
+    }
+    for (i = 0; i < 512 * 512 * 4; i++)
+        img[i] = (UBYTE)noise((ULONG)i + 777);
+    t = texture(512, 512, GL_RGBA, GL_UNSIGNED_BYTE, img);
+    bad = big_wrong(t, 512, 512, img);
+    sprintf(msg, "tfu upload: glTexImage2D 512x512 RGBA8, three windows drawn 1:1: %d texels wrong", bad);
+    check(bad == 0, msg);
+    /* A box the CPU stores over it (not a whole level): no stale cache
+     * line of the TFU's level may spoil it or its neighbours. */
+    for (y = 0; y < 32; y++)
+        for (x = 0; x < 32; x++) {
+            UBYTE *p = want + (y * 32 + x) * 4;
+            p[0] = 0x12; p[1] = 0x34; p[2] = 0x56; p[3] = 0xFF;
+        }
+    glBindTexture(GL_TEXTURE_2D, t);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 64, 32, 32, 32, GL_RGBA, GL_UNSIGNED_BYTE, want);
+    memcpy(want, img, 512 * 512 * 4);
+    for (y = 32; y < 64; y++)
+        for (x = 64; x < 96; x++) {
+            UBYTE *p = want + (y * 512 + x) * 4;
+            p[0] = 0x12; p[1] = 0x34; p[2] = 0x56; p[3] = 0xFF;
+        }
+    bad = big_wrong(t, 512, 512, want);
+    sprintf(msg, "tfu upload: then a 32x32 glTexSubImage2D by the CPU: %d texels wrong", bad);
+    check(bad == 0, msg);
+    /* The whole level again (the TFU's): the box is gone. */
+    for (i = 0; i < 512 * 512 * 4; i++)
+        img[i] = (UBYTE)noise((ULONG)i + 4242);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 512, 512, GL_RGBA, GL_UNSIGNED_BYTE, img);
+    bad = big_wrong(t, 512, 512, img);
+    sprintf(msg, "tfu upload: then glTexSubImage2D of the whole level: %d texels wrong", bad);
+    check(bad == 0, msg);
+    glDeleteTextures(1, &t);
+
+    /* Not a power of two: 600x520 (its own padding). */
+    for (i = 0; i < 600 * 520 * 4; i++)
+        img[i] = (UBYTE)noise((ULONG)i + 99);
+    t = texture(600, 520, GL_RGBA, GL_UNSIGNED_BYTE, img);
+    bad = big_wrong(t, 600, 520, img);
+    sprintf(msg, "tfu upload: glTexImage2D 600x520 RGBA8: %d texels wrong", bad);
+    check(bad == 0, msg);
+    glDeleteTextures(1, &t);
+
+    /* RGB565: packed, then tiled; drawn as 8 bits a channel. */
+    for (i = 0; i < 256 * 128; i++) {
+        ULONG n = noise((ULONG)i + 5);
+        int r = (int)(n & 31), g = (int)((n >> 5) & 63), b = (int)((n >> 11) & 31);
+        p565[i] = (UWORD)((r << 11) | (g << 5) | b);
+        want[i * 4] = (UBYTE)((r * 255 + 15) / 31);
+        want[i * 4 + 1] = (UBYTE)((g * 255 + 31) / 63);
+        want[i * 4 + 2] = (UBYTE)((b * 255 + 15) / 31);
+    }
+    t = texture(256, 128, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, p565);
+    bad = level0_wrong(t, 256, 128, want, 1);
+    sprintf(msg, "tfu upload: glTexImage2D 256x128 RGB565: %d texels wrong", bad);
+    check(bad == 0, msg);
+    glDeleteTextures(1, &t);
+    free(img);
+    free(want);
+    free(p565);
+}
+
+/* How long an upload takes (the plan's question: the TFU for uploads), for
+ * glTexImage2D and glTexSubImage2D of the whole image, each after a draw
+ * has used the texture (as a program's texture changes do). */
+static void test_uploadtime(void)
+{
+    static const int sizes[2] = {256, 1024};
+    UBYTE *img = malloc(1024 * 1024 * 4), got[4];
+    int s, i;
+    char msg[160];
+    if (!img)
+        return;
+    for (i = 0; i < 1024 * 1024 * 4; i++)
+        img[i] = (UBYTE)noise((ULONG)i);
+    for (s = 0; s < 2; s++) {
+        int n = sizes[s];
+        ULONG t0, t1, t2, t3;
+        GLuint t = texture(n, n, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        draw_level(t, 0, 1, 1, got);
+        t0 = now_us();
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, n, n, 0, GL_RGBA, GL_UNSIGNED_BYTE, img);
+        t1 = now_us();
+        draw_level(t, 0, 1, 1, got);
+        t2 = now_us();
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, n, n, GL_RGBA, GL_UNSIGNED_BYTE, img);
+        t3 = now_us();
+        sprintf(msg, "upload time %dx%d RGBA8: glTexImage2D %lu us, glTexSubImage2D %lu us", n, n,
+                (unsigned long)(t1 - t0), (unsigned long)(t3 - t2));
+        check(glGetError() == GL_NO_ERROR, msg);
+        glDeleteTextures(1, &t);
+        t = texture(n, n, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        draw_level(t, 0, 1, 1, got);
+        t0 = now_us();
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, n, n, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, img);
+        t1 = now_us();
+        sprintf(msg, "upload time %dx%d RGB565: glTexSubImage2D %lu us", n, n, (unsigned long)(t1 - t0));
+        check(glGetError() == GL_NO_ERROR, msg);
+        glDeleteTextures(1, &t);
+    }
+    free(img);
+}
+
 int main(void)
 {
     ULONG err = 0, before, after;
@@ -402,6 +591,8 @@ int main(void)
     test_npot();
     test_target();
     test_formats();
+    test_tfu_upload();
+    test_uploadtime();
 
     glUseProgram(0);
     glDeleteProgram(smooth);

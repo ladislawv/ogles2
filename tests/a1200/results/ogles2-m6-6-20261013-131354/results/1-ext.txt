@@ -1,0 +1,90 @@
+ogles2 M6: extensions
+PASS: smooth, tex1, tex2, texscale, rect: link
+PASS: GL_EXTENSIONS has GL_OES_texture_npot
+PASS: GL_EXTENSIONS has GL_EXT_read_format_bgra
+PASS: GL_EXTENSIONS has GL_EXT_texture_filter_anisotropic
+PASS: GL_EXTENSIONS has GL_EXT_texture_lod_bias
+PASS: GL_EXTENSIONS has GL_SGIS_texture_lod
+PASS: GL_EXTENSIONS has GL_ARB_texture_mirror_clamp_to_edge
+PASS: GL_EXTENSIONS has GL_OES_standard_derivatives
+PASS: GL_EXTENSIONS has GL_OES_get_program_binary
+PASS: GL_EXTENSIONS has GL_OES_texture_float
+PASS: GL_EXTENSIONS has GL_OES_texture_half_float
+PASS: GL_EXTENSIONS has GL_OES_texture_half_float_linear
+PASS: GL_EXTENSIONS has GL_OES_depth_texture
+PASS: GL_EXTENSIONS has GL_ARB_texture_rectangle
+PASS: GL_VERSION "OpenGL ES 2.0 ogles2.library 1.2" (1.2)
+PASS: 100x60, REPEAT, mipmapped: s .25 ff0000 .75 00ff00 1.25 ff0000 1.75 00ff00 (ff0000 00ff00 ff0000 00ff00)
+PASS: BGRA bytes: 00 80 ff ff 00 80 ff ff (00 80 ff ff twice)
+PASS: BGRA 4444_REV: ff80 (A=f R=f G=8 B=0 from the top nibble down: ff80 or ff70)
+PASS: BGRA 1555_REV: fe00 (A1 R31 G15/16 B0: fe00 or fc00)
+PASS: BGRA with 5_6_5: GL_INVALID_OPERATION
+PASS: RGBA with 4444_REV: GL_INVALID_OPERATION
+PASS: the implementation's read format stays RGBA bytes
+PASS: max anisotropy  (16), the texture's  (1)
+PASS: anisotropy 0.5: GL_INVALID_VALUE
+PASS: anisotropy 64: clamped to 16
+PASS: drawn with anisotropy 16: level 0, red
+PASS: max LOD bias  (15), base level 0 (0), max level 1000 (1000)
+PASS: LOD bias 0, 1, 2: ff0000 00ff00 0000ff (ff0000 00ff00 0000ff), queried 
+PASS: max level 1 with bias 2 00ff00 (00ff00), base level 1 00ff00 (00ff00), min LOD 2 0000ff (0000ff), max LOD 1 with bias 2 00ff00 (00ff00), base level 2 unmipmapped 0000ff (0000ff)
+PASS: base level -1: GL_INVALID_VALUE
+PASS: base level 3, beyond the chain: incomplete, black
+PASS: mirror clamp: s -0.75 00ff00 (00ff00), -0.25 ff0000 (ff0000), -1.75 00ff00 (00ff00), 1.75 00ff00 (00ff00); queried 0x8743
+PASS: the derivatives program (#extension GL_OES_standard_derivatives) links
+PASS: the derivative hint: set and queried
+PASS: default framebuffer: dFdx, dFdy, fwidth 404040 (each ~40)
+PASS: framebuffer object: 404040 (each ~40: dFdy positive there too)
+PASS: GL_POLYGON_MODE: GL_FILL at first
+PASS: fill: inside ffff00 edge ffff00; line: inside 000000 edge ffff00; point: inside 000000 edge 000000 corner ffff00 (ffff00 ffff00 000000 ffff00 000000 000000 ffff00)
+PASS: GL_FRONT alone: GL_INVALID_OPERATION (one mode for both faces)
+PASS: mode GL_POINTS: GL_INVALID_ENUM
+PASS: GL_POLYGON_MODE: GL_POINT
+PASS: a scissored clear in GL_LINE mode still fills
+PASS: GL_PROVOKING_VERTEX: last at first
+PASS: first-vertex convention: set, draws
+PASS: glProvokingVertex(GL_FILL): GL_INVALID_ENUM
+PASS: glGetBufferParameterivOES: the size, as glGetBufferParameteriv
+PASS: 1 format (1), 0x56334450 (56334450), tex1's binary 3264 bytes
+PASS: a buffer one byte short: GL_INVALID_OPERATION
+PASS: glGetProgramBinaryOES: the .v3dp file
+PASS: another format: GL_INVALID_ENUM
+PASS: glProgramBinaryOES: linked, u_tex has a location
+PASS: the program from the binary draws the texture (0000ff)
+PASS: a damaged binary: not linked, no GL error; log "the program binary was refused: CRC mismatch (damaged file)"
+PASS: RGBA float 2x1: glTexImage2D
+PASS: sampled as floats: (3, 1000, -1) x (.25, .0005, -.5) bf8080 (bf8080), (.25, .5, .75) 4080bf (4080bf)
+PASS: a float and an RGBA8 texture multiplied: 404000 (404000)
+PASS: then an RGBA8 texture alone: ff8000
+PASS: glTexSubImage2D with floats bf8080 (bf8080); with bytes: GL_INVALID_OPERATION
+PASS: GL_LINEAR on 32-bit floats: nearest, bf8080 (bf8080)
+PASS: LUMINANCE float 808080 (808080), LUMINANCE_ALPHA float 808080 (808080)
+PASS: glGenerateMipmap on floats, level 2 sampled: 808080 (808080)
+PASS: half floats: (3, 1000, -1) scaled bf8080 (bf8080); linear between 0 and 1 80ffff (~80ffff)
+PASS: BGRA floats: GL_INVALID_OPERATION
+PASS: depth textures sampled as luminance: 16-bit 0.5 808080 (808080), 24-bit 0.25 404040 (404040)
+PASS: glGenerateMipmap on a depth texture: GL_INVALID_OPERATION
+PASS: DEPTH_COMPONENT with UNSIGNED_BYTE: GL_INVALID_OPERATION
+PASS: a depth cube face: GL_INVALID_OPERATION
+PASS: a 16-bit depth texture attached: complete, depth bits 16
+PASS: 16-bit depth texture drawn into, then sampled: left 808080 (808080), right ffffff (ffffff)
+PASS: a 24-bit depth texture attached: complete, depth bits 24
+PASS: 24-bit depth texture drawn into, then sampled: left 808080 (808080), right ffffff (ffffff)
+PASS: a depth-stencil texture for both: complete, stencil bits 8
+PASS: in it: the stencil test, left 0000ff (0000ff) right 00ff00 (00ff00)
+PASS: its depth sampled: left 808080 (808080), right ffffff (ffffff)
+PASS: a depth texture as the colour image: incomplete attachment
+PASS: a rectangle texture: min filter 0x2601 (2601 LINEAR), wrap 0x812f (812f), bound 1, max size 4096
+PASS: sampled in texels: ff0000 00ff00 0000ff ffffff / ffff00 00ffff ff00ff 808080
+PASS: level 1: GL_INVALID_VALUE
+PASS: GL_REPEAT: GL_INVALID_ENUM
+PASS: a mipmapping filter: GL_INVALID_ENUM
+PASS: base level 1: GL_INVALID_OPERATION
+PASS: glGenerateMipmap: GL_INVALID_ENUM
+PASS: the name bound as 2D: GL_INVALID_OPERATION
+PASS: glTexSubImage2D: the top right texel black, the rest kept
+PASS: a float rectangle texture: 4080bf (4080bf)
+PASS: a rectangle texture as a framebuffer object's colour: complete 1, sampled 00ffff (00ffff)
+PASS: no GL error left over
+PASS: destroy returns the memory (0 bytes difference)
+ALL PASSED: 88 of 88 checks passed

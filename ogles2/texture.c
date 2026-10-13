@@ -128,10 +128,13 @@ static void rect_defaults(struct OGLES2Texture *t)
     t->wrap_s = t->wrap_t = GL_CLAMP_TO_EDGE;
 }
 
+static BOOL cpu_uploads; /* probe U of the context last seen here (a test switch): store_tfu */
+
 static struct OGLES2TexState *ts_get(struct OGLES2Context *ctx)
 {
     struct OGLES2TexState *ts = ctx->tex;
     int i;
+    cpu_uploads = (ctx->probe & OGLES2_PROBE_CPU_UPLOAD) != 0;
     if (ts)
         return ts;
     if (!(ts = AllocVec(sizeof(*ts), MEMF_ANY | MEMF_CLEAR)))
@@ -873,6 +876,81 @@ static void convert_depth(UBYTE *dst, ULONG dst_stride, const UBYTE *src, GLenum
     }
 }
 
+/* The 16-bit packed types into an RGBA8 texel (R in the top byte: the copy's
+ * byte order on the 68k) as two table lookups, one per byte, ORed: each
+ * channel's expansion (x5, x6, x4) splits into bits from the high byte and
+ * bits from the low byte that never overlap. [0] by the high byte, [1] by
+ * the low. Made once, 6 KB. */
+static ULONG t565[2][256], t4444[2][256], t5551[2][256];
+static BOOL packed_tables;
+
+static void make_packed_tables(void)
+{
+    int b;
+    for (b = 0; b < 256; b++) {
+        ULONG h = (ULONG)b, l = (ULONG)b;
+        /* 5-6-5: R = h>>3; G = (h&7)<<3 | l>>5; B = l&31 */
+        t565[0][b] = ((ULONG)x5((UWORD)(h >> 3)) << 24) | ((((h & 7) << 5) | ((h & 7) >> 1)) << 16) | 0xFF;
+        t565[1][b] = (((l >> 5) << 2) << 16) | ((ULONG)x5((UWORD)(l & 31)) << 8);
+        /* 4-4-4-4: R = h>>4; G = h&15; B = l>>4; A = l&15 */
+        t4444[0][b] = ((ULONG)x4((UWORD)(h >> 4)) << 24) | ((ULONG)x4((UWORD)(h & 15)) << 16);
+        t4444[1][b] = ((ULONG)x4((UWORD)(l >> 4)) << 8) | x4((UWORD)(l & 15));
+        /* 5-5-5-1: R = h>>3; G = (h&7)<<2 | l>>6; B = (l>>1)&31; A = l&1 */
+        t5551[0][b] = ((ULONG)x5((UWORD)(h >> 3)) << 24) | ((((h & 7) << 5) | (h & 7)) << 16);
+        t5551[1][b] = (((l >> 6) << 3) << 16) | ((ULONG)x5((UWORD)((l >> 1) & 31)) << 8) | ((l & 1) ? 0xFF : 0);
+    }
+    packed_tables = TRUE;
+}
+
+/* One row of RGBA8-class texels from the application's (format, type), the
+ * common cases each in a loop of its own (a switch per texel cost 50 ms a
+ * megapixel on the A1200). FALSE for one convert's general loop does. */
+static BOOL convert_row(ULONG *d, const UBYTE *s, GLenum format, GLenum type, int w)
+{
+    const ULONG (*tab)[256];
+    int x;
+    switch (type) {
+    case GL_UNSIGNED_SHORT_5_6_5:   tab = (const ULONG (*)[256])t565; break;
+    case GL_UNSIGNED_SHORT_4_4_4_4: tab = (const ULONG (*)[256])t4444; break;
+    case GL_UNSIGNED_SHORT_5_5_5_1: tab = (const ULONG (*)[256])t5551; break;
+    case GL_UNSIGNED_BYTE:          tab = 0; break;
+    default:                        return FALSE;
+    }
+    if (tab) {
+        if (!packed_tables)
+            make_packed_tables();
+        for (x = 0; x < w; x++, s += 2) /* big-endian: the 68k's own order */
+            d[x] = tab[0][s[0]] | tab[1][s[1]];
+        return TRUE;
+    }
+    switch (format) {
+    case GL_RGBA:
+        memcpy(d, s, (ULONG)w * 4);
+        return TRUE;
+    case GL_BGRA_EXT:
+        for (x = 0; x < w; x++, s += 4)
+            d[x] = ((ULONG)s[2] << 24) | ((ULONG)s[1] << 16) | ((ULONG)s[0] << 8) | s[3];
+        return TRUE;
+    case GL_RGB:
+        for (x = 0; x < w; x++, s += 3)
+            d[x] = ((ULONG)s[0] << 24) | ((ULONG)s[1] << 16) | ((ULONG)s[2] << 8) | 0xFF;
+        return TRUE;
+    case GL_LUMINANCE_ALPHA:
+        for (x = 0; x < w; x++, s += 2)
+            d[x] = ((ULONG)s[0] * 0x01010100UL) | s[1];
+        return TRUE;
+    case GL_LUMINANCE:
+        for (x = 0; x < w; x++)
+            d[x] = ((ULONG)s[x] * 0x01010100UL) | 0xFF;
+        return TRUE;
+    case GL_ALPHA:
+        for (x = 0; x < w; x++)
+            d[x] = s[x];
+        return TRUE;
+    }
+    return FALSE;
+}
+
 /* w x h pixels of the application's (format, type) at src, rows aligned to
  * the unpack alignment, into the RAM copy at dst (dst_stride bytes per row)
  * in the class of (format, type). */
@@ -889,6 +967,11 @@ static void convert(UBYTE *dst, ULONG dst_stride, const UBYTE *src, GLenum forma
     case CLASS_DEPTH16:
     case CLASS_DEPTH24:
         convert_depth(dst, dst_stride, src, type, w, h, align);
+        return;
+    }
+    if (!((ULONG)dst & 3) && !(dst_stride & 3) && convert_row((ULONG *)dst, src, format, type, 0)) {
+        for (y = 0; y < h; y++, src += src_stride, dst += dst_stride)
+            convert_row((ULONG *)dst, src, format, type, w);
         return;
     }
     for (y = 0; y < h; y++, src += src_stride, dst += dst_stride) {
@@ -1066,36 +1149,61 @@ static void storage_of(struct OGLES2Texture *t)
     memcpy(t->swizzle, sw, 4);
 }
 
+/* A 16-bit texel stored little-endian (the GPU's order) from the 68k. */
+#define LE16_STORE(p, v) (*(UWORD *)(p) = (UWORD)(((v) << 8) | ((v) >> 8)))
+
 /* n RGBA8 texels into the stored format, in the GPU's byte order (16-bit
- * texels little-endian, the GL packing: red in the top bits). */
+ * texels little-endian, the GL packing: red in the top bits). Each format
+ * in a loop of its own, a texel read as one long (R in the top byte): a
+ * switch per texel cost 50 ms a megapixel on the A1200. The copy's rows and
+ * `d` are word aligned (AllocVec, widths in whole texels). */
 static void pack(const struct OGLES2Texture *t, const UBYTE *s, UBYTE *d, ULONG n)
 {
-    ULONG i;
-    UWORD v;
-    for (i = 0; i < n; i++, s += 4) {
-        switch (t->hw_type) {
-        case V3D_TEXTURE_DATA_FORMAT_RGB565:
-            v = (UWORD)(((s[0] >> 3) << 11) | ((s[1] >> 2) << 5) | (s[2] >> 3));
-            *d++ = (UBYTE)v; *d++ = (UBYTE)(v >> 8);
-            break;
-        case V3D_TEXTURE_DATA_FORMAT_RGBA4:
-            v = (UWORD)(((s[0] >> 4) << 12) | ((s[1] >> 4) << 8) | ((s[2] >> 4) << 4) | (s[3] >> 4));
-            *d++ = (UBYTE)v; *d++ = (UBYTE)(v >> 8);
-            break;
-        case V3D_TEXTURE_DATA_FORMAT_RGB5A1:
-            v = (UWORD)(((s[0] >> 3) << 11) | ((s[1] >> 3) << 6) | ((s[2] >> 3) << 1) | (s[3] >> 7));
-            *d++ = (UBYTE)v; *d++ = (UBYTE)(v >> 8);
-            break;
-        case V3D_TEXTURE_DATA_FORMAT_R8: /* luminance (red of the copy) or alpha */
-            *d++ = t->swizzle[3] == v3d_SWIZZLE_RED ? s[3] : s[0];
-            break;
-        case V3D_TEXTURE_DATA_FORMAT_RG8: /* luminance, alpha */
-            *d++ = s[0]; *d++ = s[3];
-            break;
-        default:
-            *d++ = s[0]; *d++ = s[1]; *d++ = s[2]; *d++ = s[3];
-            break;
+    const ULONG *p = (const ULONG *)s;
+    ULONG i, c;
+    switch (t->hw_type) {
+    case V3D_TEXTURE_DATA_FORMAT_RGB565:
+        for (i = 0; i < n; i++, d += 2) {
+            UWORD v;
+            c = p[i];
+            v = (UWORD)(((c >> 16) & 0xF800) | ((c >> 13) & 0x07E0) | ((c >> 11) & 0x001F));
+            LE16_STORE(d, v);
         }
+        return;
+    case V3D_TEXTURE_DATA_FORMAT_RGBA4:
+        for (i = 0; i < n; i++, d += 2) {
+            UWORD v;
+            c = p[i];
+            v = (UWORD)(((c >> 16) & 0xF000) | ((c >> 12) & 0x0F00) | ((c >> 8) & 0x00F0) | ((c >> 4) & 0x000F));
+            LE16_STORE(d, v);
+        }
+        return;
+    case V3D_TEXTURE_DATA_FORMAT_RGB5A1:
+        for (i = 0; i < n; i++, d += 2) {
+            UWORD v;
+            c = p[i];
+            v = (UWORD)(((c >> 16) & 0xF800) | ((c >> 13) & 0x07C0) | ((c >> 10) & 0x003E) | ((c >> 7) & 1));
+            LE16_STORE(d, v);
+        }
+        return;
+    case V3D_TEXTURE_DATA_FORMAT_R8: /* luminance (red of the copy) or alpha */
+        if (t->swizzle[3] == v3d_SWIZZLE_RED)
+            for (i = 0; i < n; i++)
+                d[i] = (UBYTE)p[i];
+        else
+            for (i = 0; i < n; i++)
+                d[i] = (UBYTE)(p[i] >> 24);
+        return;
+    case V3D_TEXTURE_DATA_FORMAT_RG8: /* luminance, alpha */
+        for (i = 0; i < n; i++, d += 2) {
+            c = p[i];
+            d[0] = (UBYTE)(c >> 24);
+            d[1] = (UBYTE)c;
+        }
+        return;
+    default:
+        memcpy(d, s, n * 4);
+        return;
     }
 }
 
@@ -1286,6 +1394,46 @@ static void sync(struct OGLES2Texture *t)
     }
 }
 
+/* A whole level stored by the TFU from a raster copy in the stored format
+ * (`row` bytes a row), where it beats the CPU's tiling (v3d_texture_store),
+ * the copy in memory the GPU reaches, a format the TFU takes. The job's
+ * fixed cost is a cache clean, the lock and a few bridge writes, 0.3-0.5 ms
+ * on the A1200, then about 1.9 ms a megapixel; the CPU tiles RGBA8 into UIF
+ * directly at 5.6 ms a megapixel, other formats at about 40: so 512x512 and
+ * up for RGBA8, 128x128 for the rest. The caller has dealt with the jobs
+ * that use the texture (before_change), as for the CPU's store. Probe U
+ * keeps the CPU's. FALSE: the CPU stores it. */
+#define TFU_UPLOAD_MIN_TEXELS       (128UL * 128UL)
+#define TFU_UPLOAD_MIN_TEXELS_RGBA8 (512UL * 512UL)
+#define TFU_LOCK_TIMEOUT_MS 5000 /* job.c's GPU_LOCK_TIMEOUT_MS */
+static BOOL store_tfu(struct OGLES2Texture *t, int k, int l, const UBYTE *raster, ULONG row, int w, int h)
+{
+    V3DTexture tmp, *g;
+    ULONG len;
+    int r;
+    if (cpu_uploads ||
+        (ULONG)w * (ULONG)h < (t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGBA8 ? TFU_UPLOAD_MIN_TEXELS_RGBA8
+                                                                          : TFU_UPLOAD_MIN_TEXELS) ||
+        !v3d_tfu_supports_mipmaps(t->hw_type) || !ogles2_device_gpu_reachable((ULONG)raster, row * (ULONG)h))
+        return FALSE;
+    g = face_gpu(t, k, &tmp);
+    CacheClearE(0, ~0UL, CACRF_ClearD); /* the copy in memory, and no dirty line over the level */
+    if (!v3d_gpu_lock(ogles2_device_gpu_lock(), TFU_LOCK_TIMEOUT_MS))
+        return FALSE;
+    r = v3d_tfu_store_raster(ogles2_device(), g, (v3d_u8)l, t->hw_type, (v3d_u16)w, (v3d_u16)h, raster, row);
+    v3d_gpu_unlock(ogles2_device_gpu_lock());
+    if (r == -2)
+        ogles2_log("texture %ld: the TFU did not finish an upload (%ldx%ld): the CPU stores it",
+                   (ULONG)t->name, (ULONG)w, (ULONG)h);
+    if (r)
+        return FALSE;
+    /* The level's memory as the TFU left it: no CPU cache line from before
+     * (a later glTexSubImage2D's partial store reads them). */
+    len = g->texture_mem.size;
+    CachePostDMA(g->texture_mem.hostptr, &len, 0);
+    return TRUE;
+}
+
 /* A box of level l of face k, from the RAM copy `src` (`w` texels a row, of
  * level 0's class: complete() saw to it). */
 static void store_box(struct OGLES2Texture *t, int k, int l, const UBYTE *src, int x, int y, int w,
@@ -1294,9 +1442,12 @@ static void store_box(struct OGLES2Texture *t, int k, int l, const UBYTE *src, i
     V3DTexture tmp;
     ULONG row = (ULONG)w * t->cpp, in = (ULONG)w * copy_bytes(class_of(t->f[0].format[0], t->f[0].type[0]));
     UBYTE *packed;
+    BOOL whole = x == 0 && y == 0 && w == t->f[k].w[l] && h == t->f[k].h[l];
     int j;
     /* RGBA8 is stored as the RAM copy holds it: straight from there. */
     if (t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGBA8) {
+        if (whole && store_tfu(t, k, l, src, (ULONG)w * 4, w, h))
+            return;
         v3d_texture_store(ogles2_device(), face_gpu(t, k, &tmp), (v3d_u8)l, src, (ULONG)w * 4, x, y, w, h);
         return;
     }
@@ -1307,7 +1458,8 @@ static void store_box(struct OGLES2Texture *t, int k, int l, const UBYTE *src, i
             pack_wide(t, src + (ULONG)j * in, packed + (ULONG)j * row, (ULONG)w);
         else
             pack(t, src + (ULONG)j * in, packed + (ULONG)j * row, (ULONG)w);
-    v3d_texture_store(ogles2_device(), face_gpu(t, k, &tmp), (v3d_u8)l, packed, row, x, y, w, h);
+    if (!whole || !store_tfu(t, k, l, packed, row, w, h))
+        v3d_texture_store(ogles2_device(), face_gpu(t, k, &tmp), (v3d_u8)l, packed, row, x, y, w, h);
     FreeVec(packed);
 }
 
@@ -1990,7 +2142,6 @@ static void box_down_float(const GLfloat *src, int sw, int sh, GLfloat *dst, int
  * in a format the TFU filters. The levels it writes are newer on the GPU
  * than their RAM copies, as a render target's are (read back when the CPU
  * needs them, sync). Probe M keeps the CPU path. FALSE: the CPU path runs. */
-#define TFU_LOCK_TIMEOUT_MS 5000 /* job.c's GPU_LOCK_TIMEOUT_MS */
 static BOOL generate_tfu(struct OGLES2Context *ctx, struct OGLES2TexState *ts, struct OGLES2Texture *t, int n)
 {
     struct OGLES2Face *f = &t->f[0];

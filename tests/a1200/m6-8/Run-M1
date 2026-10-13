@@ -27,18 +27,18 @@ Assign LIBS: M6R8:libs ADD
 Avail FLUSH >NIL:
 SetEnv OGLES2/LogFile M6R8:results/ogles2.log
 
-; Probe M: the CPU makes the levels, as before the TFU. The same checks, and
-; its timings to compare with step 2's.
+; Probes M and U: the CPU makes the levels and tiles the uploads, as before the
+; TFU. The same checks, and their timings to compare with step 2's.
 If NOT {FROM} GT 1 VAL
-  Echo "Step 1 of 3: mipmaps on the CPU, as before (nothing to see)"
-  SetEnv OGLES2/Probe M
+  Echo "Step 1 of 3: mipmaps and uploads on the CPU, as before (nothing to see)"
+  SetEnv OGLES2/Probe MU
   M6R8:bin/m6_tfu >M6R8:results/1-tfu-cpu.txt
   UnSetEnv OGLES2/Probe
   Echo "step 1 done" >>M6R8:results/00-progress.txt
 EndIf
 
 If NOT {FROM} GT 2 VAL
-  Echo "Step 2 of 3: mipmaps with the TFU (nothing to see)"
+  Echo "Step 2 of 3: mipmaps and uploads with the TFU (nothing to see)"
   M6R8:bin/m6_tfu >M6R8:results/2-tfu.txt
   Echo "step 2 done" >>M6R8:results/00-progress.txt
 EndIf

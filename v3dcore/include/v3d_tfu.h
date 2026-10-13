@@ -25,4 +25,14 @@ int v3d_tfu_supports_mipmaps(v3d_u8 hw_type);
  * cache is invalidated at the next render job's start, as for any upload. */
 int v3d_tfu_generate_mipmaps(V3DDevice* device, V3DTexture* tex, v3d_u8 hw_type, v3d_u8 last_level);
 
+/* Level `level` of `tex` (w x h texels) stored from a raster image: `src`,
+ * rows `src_stride` bytes apart, in the texture's stored format (cpp bytes
+ * a texel, as v3d_texture_store takes it); the TFU tiles it. The whole
+ * level only. `src` is 4-byte aligned memory the GPU reaches, its CPU
+ * writes cleaned to memory; the caller holds the GPU submission lock and
+ * no job that samples the level is still to run. Returns as
+ * v3d_tfu_generate_mipmaps. */
+int v3d_tfu_store_raster(V3DDevice* device, V3DTexture* tex, v3d_u8 level, v3d_u8 hw_type, v3d_u16 w,
+                         v3d_u16 h, const void* src, v3d_u32 src_stride);
+
 #endif
