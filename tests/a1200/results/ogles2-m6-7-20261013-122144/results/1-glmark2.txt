@@ -1,0 +1,46 @@
+=======================================================
+    glmark2 2023.01-amiga
+=======================================================
+    OpenGL Information
+    GL_VENDOR:      ogles2.library
+    GL_RENDERER:    V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+    GL_VERSION:     OpenGL ES 2.0 ogles2.library 1.2
+    Surface Config: buf=32 r=8 g=8 b=8 a=8 depth=24 stencil=8 samples=0
+    Surface Size:   800x600 windowed
+=======================================================
+[build] use-vbo=false: FPS: 288 FrameTime: 3.473 ms
+[build] use-vbo=true: FPS: 338 FrameTime: 2.966 ms
+[texture] texture-filter=nearest: FPS: 321 FrameTime: 3.120 ms
+[texture] texture-filter=linear: FPS: 320 FrameTime: 3.130 ms
+[texture] texture-filter=mipmap: FPS: 318 FrameTime: 3.147 ms
+[shading] shading=gouraud: FPS: 311 FrameTime: 3.216 ms
+[shading] shading=blinn-phong-inf: FPS: 295 FrameTime: 3.392 ms
+[shading] shading=phong: FPS: 272 FrameTime: 3.689 ms
+[shading] shading=cel: FPS: 272 FrameTime: 3.686 ms
+[bump] bump-render=high-poly: FPS: 214 FrameTime: 4.693 ms
+[bump] bump-render=normals: FPS: 319 FrameTime: 3.137 ms
+[bump] bump-render=height: FPS: 329 FrameTime: 3.043 ms
+[effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 252 FrameTime: 3.971 ms
+[effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 167 FrameTime: 6.013 ms
+[pulsar] light=false:quads=5:texture=false: FPS: 328 FrameTime: 3.053 ms
+[desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 73 FrameTime: 13.699 ms
+[desktop] effect=shadow:windows=4: FPS: 129 FrameTime: 7.764 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 164 FrameTime: 6.112 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 277 FrameTime: 3.621 ms
+[buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 146 FrameTime: 6.859 ms
+[ideas] speed=duration: FPS: 149 FrameTime: 6.734 ms
+[jellyfish] <default>: FPS: 203 FrameTime: 4.933 ms
+Error: SceneTerrain requires Vertex Texture Fetch support, but GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS is 0
+[terrain] <default>: Unsupported
+[shadow] <default>: FPS: 127 FrameTime: 7.886 ms
+[refract] <default>: FPS: 3 FrameTime: 370.370 ms
+[conditionals] fragment-steps=0:vertex-steps=0: FPS: 342 FrameTime: 2.925 ms
+[conditionals] fragment-steps=5:vertex-steps=0: FPS: 294 FrameTime: 3.408 ms
+[conditionals] fragment-steps=0:vertex-steps=5: FPS: 352 FrameTime: 2.844 ms
+[function] fragment-complexity=low:fragment-steps=5: FPS: 331 FrameTime: 3.021 ms
+[function] fragment-complexity=medium:fragment-steps=5: FPS: 280 FrameTime: 3.582 ms
+[loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 325 FrameTime: 3.080 ms
+[loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 415 FrameTime: 2.414 ms
+=======================================================
+                                  glmark2 Score: 255 
+=======================================================

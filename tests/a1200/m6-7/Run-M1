@@ -1,0 +1,75 @@
+; Run-M1 - ogles2 M6 run 7: glmark2-es2 on ogles2.library. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   The real benchmark (10 s a scene, as glmark2's own scores):
+;                                  Execute Run-M1 DURATION=10
+;   Another window size:           Execute Run-M1 SIZE=640x480
+;   One benchmark:                 Execute Run-M1 BENCH=shading:shading=phong
+;   glmark2's debug messages:      Execute Run-M1 DEBUG=1
+;   Library probes (ogles2_internal.h): Execute Run-M1 PROBE=P
+; Nothing is installed. Output goes to results/.
+.key DURATION/K,SIZE/K,BENCH/K,DEBUG/K,PROBE/K
+.def DURATION 2
+.def SIZE 800x600
+.def BENCH ""
+.def DEBUG 0
+.def PROBE ""
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m6-7 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M6R7: ""
+If NOT EXISTS M6R7:results
+  MakeDir M6R7:results
+EndIf
+If NOT EXISTS M6R7:cache
+  MakeDir M6R7:cache
+EndIf
+Echo "ogles2 M6 run 7" >>M6R7:results/00-progress.txt
+Date >>M6R7:results/00-progress.txt
+Assign LIBS: M6R7:libs ADD
+Assign OGLES2Cache: M6R7:cache
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M6R7:results/ogles2.log
+; C++ with exceptions and std::filesystem: more stack than the Shell's.
+Stack 262144
+CD M6R7:bin
+
+Echo "glmark2-es2, {SIZE} in a window, {DURATION} s a scene. A shader is"
+Echo "  compiled the first time a scene uses it (a pause; kept in cache/)."
+Echo "  Esc in its window (or Ctrl-C) ends it early."
+If NOT "{PROBE}" EQ ""
+  SetEnv OGLES2/Probe {PROBE}
+EndIf
+Set GM2DBG ""
+If {DEBUG} EQ 1 VAL
+  Set GM2DBG "-d"
+EndIf
+If "{BENCH}" EQ ""
+  M6R7:bin/glmark2-es2 $GM2DBG -s {SIZE} -b :duration={DURATION} >M6R7:results/1-glmark2.txt
+Else
+  M6R7:bin/glmark2-es2 $GM2DBG -s {SIZE} -b :duration={DURATION} -b {BENCH} >M6R7:results/1-glmark2.txt
+EndIf
+UnSet GM2DBG
+UnSetEnv OGLES2/Probe
+Echo "glmark2 done" >>M6R7:results/00-progress.txt
+
+CD M6R7:
+UnSetEnv OGLES2/LogFile
+Assign OGLES2Cache:
+Assign LIBS: M6R7:libs REMOVE
+If NOT EXISTS M6R7:results/notes.txt
+  Copy M6R7:notes-template.txt M6R7:results/notes.txt
+EndIf
+List M6R7:cache >M6R7:results/98-cache.txt
+List M6R7:results >M6R7:results/99-files.txt
+Echo "finished" >>M6R7:results/00-progress.txt
+Date >>M6R7:results/00-progress.txt
+Assign M6R7:
+Echo ""
+Echo "Done. Results are in results/."

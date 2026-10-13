@@ -1,0 +1,41 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086DC6A8
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 aglCreateContext2: probes "P" (ENV:OGLES2/Probe)
+    13 display: own window, 800x600, BGRA
+    14 device: context pools for 800x600, D32F, 19687296 bytes of GPU memory in use
+    15 aglCreateContext2: context 0x08FBF10C, 800x600
+    16 glLinkProgram: OGLES2Cache:55c04fa2a14a52f01dec1b3e.v3dp (5 variants, 984 bytes of code)
+    17 glLinkProgram: OGLES2Cache:3aeba203bcdfc0175396b765.v3dp (5 variants, 872 bytes of code)
+    18 glLinkProgram: OGLES2Cache:bbc4fad2b75d51aaa444c1e9.v3dp (5 variants, 1296 bytes of code)
+    19 framebuffer 1: tile pools of its own for 1600x1200
+    20 draw: program bbc4fad2b75d51aaa444c1e9: its 32-bit sampler variants (5)
+    21 periodic: frames to 256: 7805 us a frame, 768 jobs; per job 1233 us of CPU work, 76 us render list, 66 us cache, 1146 us render wait; 0 textures renamed; 28583520 bytes of GPU memory
+    22 periodic: per frame 3 draws, 1149 us in them, 4 us in glBuffer(Sub)Data, 45 us in glTex(Sub)Image2D
+    23 periodic: per frame in draws: 64 us checks, 478 shaders, 53 textures, 135 uniforms, 86 vertex data, 44 record, 2 indices, 271 binning list
+    24 periodic: frames to 512: 7907 us a frame, 768 jobs; per job 1093 us of CPU work, 57 us render list, 66 us cache, 1164 us render wait; 0 textures renamed; 28583520 bytes of GPU memory
+    25 periodic: per frame 3 draws, 1068 us in them, 0 us in glBuffer(Sub)Data, 0 us in glTex(Sub)Image2D
+    26 periodic: per frame in draws: 61 us checks, 405 shaders, 54 textures, 127 uniforms, 90 vertex data, 47 record, 2 indices, 265 binning list
+    27 periodic: frames to 768: 7843 us a frame, 768 jobs; per job 1086 us of CPU work, 59 us render list, 67 us cache, 1139 us render wait; 0 textures renamed; 28583520 bytes of GPU memory
+    28 periodic: per frame 3 draws, 1073 us in them, 0 us in glBuffer(Sub)Data, 0 us in glTex(Sub)Image2D
+    29 periodic: per frame in draws: 69 us checks, 428 shaders, 56 textures, 133 uniforms, 79 vertex data, 44 record, 5 indices, 244 binning list
+    30 periodic: frames to 1024: 7874 us a frame, 768 jobs; per job 1084 us of CPU work, 62 us render list, 67 us cache, 1141 us render wait; 0 textures renamed; 28583520 bytes of GPU memory
+    31 periodic: per frame 3 draws, 1062 us in them, 0 us in glBuffer(Sub)Data, 0 us in glTex(Sub)Image2D
+    32 periodic: per frame in draws: 76 us checks, 425 shaders, 51 textures, 117 uniforms, 86 vertex data, 54 record, 2 indices, 234 binning list
+    33 aglDestroyContext: context 0x08FBF10C: freeing
+    34 device: context freed, 0 bytes of GPU memory still in use
+    35 aglDestroyContext: context 0x08FBF10C (3657 frames, 0 dropped, 0 binning blocks added)
+    36 timing: 3657 jobs, each on average: 1118 us of CPU work before its flush, 88 us waiting for binning, 1148 us for the render
+    37 timing: and in each flush 63 us building the render list, 66 us for the CPU cache before the GPU, 39 us after
+    38 timing: 1219 swaps, 7869 us from one to the next on average, 1599 us of it presenting
+    39 timing: per frame 3 draws, 1082 us in them; in all 1 ms in glBuffer(Sub)Data, 11 ms in glTex(Sub)Image2D
+    40 timing: per frame in draws: 67 us checks, 429 shaders, 54 textures, 127 uniforms, 85 vertex data, 47 record, 3 indices, 254 binning list
+    41 timing: per draw 65 uniform stream words, 0 bytes of vertex data, 0 indices

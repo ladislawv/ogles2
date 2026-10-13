@@ -1,0 +1,4066 @@
+Info: =======================================================
+Info:     glmark2 2023.01-amiga
+Info: =======================================================
+Info:     OpenGL Information
+Info:     GL_VENDOR:      ogles2.library
+Info:     GL_RENDERER:    V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+Info:     GL_VERSION:     OpenGL ES 2.0 ogles2.library 1.2
+Info:     Surface Config: buf=32 r=8 g=8 b=8 a=8 depth=24 stencil=8 samples=0
+Info:     Surface Size:   800x600 windowed
+Info: =======================================================
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: const vec4 MaterialDiffuse = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Transform the normal to eye coordinates
+Debug:     vec3 N = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // The LightSourcePosition is actually its direction for directional light
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug: 
+Debug:     // Multiply the diffuse value by the vertex color (which is fixed in this case)
+Debug:     // to get the actual color that we will use to draw this vertex with
+Debug:     float diffuse = max(dot(N, L), 0.0);
+Debug:     Color = vec4(diffuse * MaterialDiffuse.rgb, MaterialDiffuse.a);
+Debug: 
+Debug:     // Set the texture coordinates as a varying
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_FragColor = Color;
+Debug: }
+Debug: Loading model from 3ds file 'PROGDIR:data/models/horse.3ds'
+Debug:     Object name: HORSE_L_Mate Vertex count: 3582 Face count: 7172
+Info: [build] use-vbo=false: FPS: 222 FrameTime: 4.515 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: const vec4 MaterialDiffuse = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Transform the normal to eye coordinates
+Debug:     vec3 N = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // The LightSourcePosition is actually its direction for directional light
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug: 
+Debug:     // Multiply the diffuse value by the vertex color (which is fixed in this case)
+Debug:     // to get the actual color that we will use to draw this vertex with
+Debug:     float diffuse = max(dot(N, L), 0.0);
+Debug:     Color = vec4(diffuse * MaterialDiffuse.rgb, MaterialDiffuse.a);
+Debug: 
+Debug:     // Set the texture coordinates as a varying
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_FragColor = Color;
+Debug: }
+Debug: Loading model from 3ds file 'PROGDIR:data/models/horse.3ds'
+Debug:     Object name: HORSE_L_Mate Vertex count: 3582 Face count: 7172
+Info: [build] use-vbo=true: FPS: 338 FrameTime: 2.963 ms
+Debug: Reading PNG file PROGDIR:data/textures/crate-base.png
+Debug:     Height: 512 Width: 512 Bpp: 3
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: const vec4 MaterialDiffuse = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Transform the normal to eye coordinates
+Debug:     vec3 N = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // The LightSourcePosition is actually its direction for directional light
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug: 
+Debug:     // Multiply the diffuse value by the vertex color (which is fixed in this case)
+Debug:     // to get the actual color that we will use to draw this vertex with
+Debug:     float diffuse = max(dot(N, L), 0.0);
+Debug:     Color = vec4(diffuse * MaterialDiffuse.rgb, MaterialDiffuse.a);
+Debug: 
+Debug:     // Set the texture coordinates as a varying
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform sampler2D MaterialTexture0;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 texel = texture2D(MaterialTexture0, TextureCoord);
+Debug:     gl_FragColor = texel * Color;
+Debug: }
+Debug: 
+Debug: Loading model from 3ds file 'PROGDIR:data/models/cube.3ds'
+Debug:     Object name: Cube Vertex count: 20 Face count: 12
+Info: [texture] texture-filter=nearest: FPS: 185 FrameTime: 5.405 ms
+Debug: Reading PNG file PROGDIR:data/textures/crate-base.png
+Debug:     Height: 512 Width: 512 Bpp: 3
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: const vec4 MaterialDiffuse = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Transform the normal to eye coordinates
+Debug:     vec3 N = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // The LightSourcePosition is actually its direction for directional light
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug: 
+Debug:     // Multiply the diffuse value by the vertex color (which is fixed in this case)
+Debug:     // to get the actual color that we will use to draw this vertex with
+Debug:     float diffuse = max(dot(N, L), 0.0);
+Debug:     Color = vec4(diffuse * MaterialDiffuse.rgb, MaterialDiffuse.a);
+Debug: 
+Debug:     // Set the texture coordinates as a varying
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform sampler2D MaterialTexture0;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 texel = texture2D(MaterialTexture0, TextureCoord);
+Debug:     gl_FragColor = texel * Color;
+Debug: }
+Debug: 
+Debug: Loading model from 3ds file 'PROGDIR:data/models/cube.3ds'
+Debug:     Object name: Cube Vertex count: 20 Face count: 12
+Info: [texture] texture-filter=linear: FPS: 304 FrameTime: 3.295 ms
+Debug: Reading PNG file PROGDIR:data/textures/crate-base.png
+Debug:     Height: 512 Width: 512 Bpp: 3
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: const vec4 MaterialDiffuse = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Transform the normal to eye coordinates
+Debug:     vec3 N = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // The LightSourcePosition is actually its direction for directional light
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug: 
+Debug:     // Multiply the diffuse value by the vertex color (which is fixed in this case)
+Debug:     // to get the actual color that we will use to draw this vertex with
+Debug:     float diffuse = max(dot(N, L), 0.0);
+Debug:     Color = vec4(diffuse * MaterialDiffuse.rgb, MaterialDiffuse.a);
+Debug: 
+Debug:     // Set the texture coordinates as a varying
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform sampler2D MaterialTexture0;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 texel = texture2D(MaterialTexture0, TextureCoord);
+Debug:     gl_FragColor = texel * Color;
+Debug: }
+Debug: 
+Debug: Loading model from 3ds file 'PROGDIR:data/models/cube.3ds'
+Debug:     Object name: Cube Vertex count: 20 Face count: 12
+Info: [texture] texture-filter=mipmap: FPS: 299 FrameTime: 3.350 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: const vec4 MaterialDiffuse = vec4(0.000000, 0.000000, 1.000000, 1.000000);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Transform the normal to eye coordinates
+Debug:     vec3 N = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // The LightSourcePosition is actually its direction for directional light
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug: 
+Debug:     // Multiply the diffuse value by the vertex color (which is fixed in this case)
+Debug:     // to get the actual color that we will use to draw this vertex with
+Debug:     float diffuse = max(dot(N, L), 0.0);
+Debug:     Color = vec4(diffuse * MaterialDiffuse.rgb, MaterialDiffuse.a);
+Debug: 
+Debug:     // Set the texture coordinates as a varying
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_FragColor = Color;
+Debug: }
+Debug: Loading model from 3ds file 'PROGDIR:data/models/cat.3ds'
+Debug:     Object name: Mesh1_Materi Vertex count: 7340 Face count: 14348
+Info: [shading] shading=gouraud: FPS: 300 FrameTime: 3.339 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec3 Normal;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Transform the normal to eye coordinates
+Debug:     Normal = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const vec3 LightSourceHalfVector = vec3(0.408248, 0.408248, 0.816497);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: varying vec3 Normal;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     const vec4 LightSourceAmbient = vec4(0.1, 0.1, 0.1, 1.0);
+Debug:     const vec4 LightSourceDiffuse = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 LightSourceSpecular = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 MaterialAmbient = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const vec4 MaterialDiffuse = vec4(0.0, 0.0, 1.0, 1.0);
+Debug:     const vec4 MaterialSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const float MaterialShininess = 100.0;
+Debug: 
+Debug:     vec3 N = normalize(Normal);
+Debug: 
+Debug:     // In the lighting model we are using here (Blinn-Phong with light at
+Debug:     // infinity, viewer at infinity), the light position/direction and the
+Debug:     // half vector is constant for the all the fragments.
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug:     vec3 H = normalize(LightSourceHalfVector);
+Debug: 
+Debug:     // Calculate the diffuse color according to Lambertian reflectance
+Debug:     vec4 diffuse = MaterialDiffuse * LightSourceDiffuse * max(dot(N, L), 0.0);
+Debug: 
+Debug:     // Calculate the ambient color
+Debug:     vec4 ambient = MaterialAmbient * LightSourceAmbient;
+Debug: 
+Debug:     // Calculate the specular color according to the Blinn-Phong model
+Debug:     vec4 specular = MaterialSpecular * LightSourceSpecular *
+Debug:                     pow(max(dot(N,H), 0.0), MaterialShininess);
+Debug: 
+Debug:     // Calculate the final color
+Debug:     gl_FragColor = vec4((ambient + specular + diffuse).xyz, 1.0);
+Debug: }
+Debug: Loading model from 3ds file 'PROGDIR:data/models/cat.3ds'
+Debug:     Object name: Mesh1_Materi Vertex count: 7340 Face count: 14348
+Info: [shading] shading=blinn-phong-inf: FPS: 280 FrameTime: 3.571 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: uniform mat4 ModelViewMatrix;
+Debug: 
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 current_position = vec4(position, 1.0);
+Debug: 
+Debug:     // Transform the normal to eye coordinates
+Debug:     vertex_normal = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // Transform the current position to eye coordinates
+Debug:     vertex_position = ModelViewMatrix * current_position;
+Debug: 
+Debug:     // Transform the current position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * current_position;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const vec4 MaterialDiffuse = vec4(0.000000, 0.000000, 1.000000, 1.000000);
+Debug: const vec4 LightColor0 = vec4(0.800000, 0.800000, 0.800000, 1.000000);
+Debug: const vec4 LightSourcePosition0 = vec4(0.000000, 1.000000, 0.000000, 1.000000);
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: 
+Debug: vec4
+Debug: compute_color(vec4 light_position, vec4 diffuse_light_color)
+Debug: {
+Debug:     const vec4 lightAmbient = vec4(0.1, 0.1, 0.1, 1.0);
+Debug:     const vec4 lightSpecular = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 matAmbient = vec4(0.2, 0.2, 0.2, 1.0);
+Debug:     const vec4 matSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const float matShininess = 100.0;
+Debug:     vec3 eye_direction = normalize(-vertex_position.xyz);
+Debug:     vec3 light_direction = normalize(light_position.xyz/light_position.w -
+Debug:                                      vertex_position.xyz/vertex_position.w);
+Debug:     vec3 normalized_normal = normalize(vertex_normal);
+Debug:     vec3 reflection = reflect(-light_direction, normalized_normal);
+Debug:     float specularTerm = pow(max(0.0, dot(reflection, eye_direction)), matShininess);
+Debug:     float diffuseTerm = max(0.0, dot(normalized_normal, light_direction));
+Debug:     vec4 specular = (lightSpecular * matSpecular);
+Debug:     vec4 ambient = (lightAmbient * matAmbient);
+Debug:     vec4 diffuse = (diffuse_light_color * MaterialDiffuse);
+Debug:     vec4 result = (specular * specularTerm) + ambient + (diffuse * diffuseTerm);
+Debug:     return result;
+Debug: }
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+Debug:     gl_FragColor += compute_color(LightSourcePosition0, LightColor0);
+Debug: 
+Debug: }
+Debug: Loading model from 3ds file 'PROGDIR:data/models/cat.3ds'
+Debug:     Object name: Mesh1_Materi Vertex count: 7340 Face count: 14348
+Info: [shading] shading=phong: FPS: 256 FrameTime: 3.906 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: uniform mat4 ModelViewMatrix;
+Debug: 
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 current_position = vec4(position, 1.0);
+Debug: 
+Debug:     // Transform the normal to eye coordinates
+Debug:     vertex_normal = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // Transform the current position to eye coordinates
+Debug:     vertex_position = ModelViewMatrix * current_position;
+Debug: 
+Debug:     // Transform the current position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * current_position;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     const vec4 OutlineColor = vec4(0.0, 0.0, 0.0, 1.0);
+Debug:     const vec2 OutlineThickness = vec2(0.1, 0.4);
+Debug:     const vec4 BaseColor = vec4(0.0, 0.3, 0.0, 1.0);
+Debug:     const vec4 LightColor = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const vec4 LightSourcePosition = vec4(4.0, 3.0, 1.0, 1.0);
+Debug:     const vec4 DiffuseColor = vec4(0.0, 0.6, 0.0, 1.0);
+Debug:     const vec4 SpecularColor = vec4(1.0, 1.0, 1.0, 0.7);
+Debug:     const float DiffuseThreshold = 0.1;
+Debug:     const float SpecularThreshold = 0.5;
+Debug:     const float Shininess = 10.0;
+Debug: 
+Debug:     // Initialize the fragment color with an unlit value.
+Debug:     vec4 fragColor = BaseColor;
+Debug: 
+Debug:     // Set up factors for computing diffuse illumination
+Debug:     vec3 vertex_light = LightSourcePosition.xyz - vertex_position.xyz;
+Debug:     vec3 N = normalize(vertex_normal);
+Debug:     vec3 L = normalize(vertex_light);
+Debug:     float NdotL = dot(N, L);
+Debug:     float maxNdotL = max(NdotL, 0.0);
+Debug:     float attenuation = length(LightSourcePosition) / length(vertex_light);
+Debug: 
+Debug:     // See if we have a diffuse contribution...
+Debug:     // This will only be true if the interpolated normal and the light
+Debug:     // are pointing in the "same" direction, and the attenuation due to
+Debug:     // distance allows enough light for diffuse reflection.
+Debug:     if (attenuation * maxNdotL >= DiffuseThreshold) {
+Debug:         fragColor = LightColor * DiffuseColor;
+Debug:     }
+Debug: 
+Debug:     // See if this fragment is part of the silhouette
+Debug:     // If it is facing away from the viewer enough not to get any
+Debug:     // diffuse illumination contribution, then it is close enough
+Debug:     // to the silouhette to be painted with the outline color rather
+Debug:     // than the unlit color.
+Debug:     vec3 V = normalize(-vertex_position.xyz);
+Debug:     if (dot(V, N) <
+Debug:         mix(OutlineThickness.x, OutlineThickness.y, maxNdotL)) {
+Debug:         fragColor = LightColor * OutlineColor;
+Debug:     }
+Debug: 
+Debug:     // See if we have a specular contribution...
+Debug:     // If the interpolated normal direction and the light direction
+Debug:     // are facing the "same" direction, and the attenuated specular
+Debug:     // intensity is strong enough, then we have a contribution.
+Debug:     vec3 R = reflect(-L, N);
+Debug:     float specularIntensity = pow(max(0.0, dot(R, V)), Shininess);
+Debug:     if (NdotL > 0.0 && attenuation * specularIntensity > SpecularThreshold) {
+Debug:         fragColor = SpecularColor.a * LightColor * SpecularColor +
+Debug:             (1.0 - SpecularColor.a) * fragColor;
+Debug:     }
+Debug: 
+Debug:     // Emit the final color
+Debug:     gl_FragColor = vec4(fragColor.xyz, 1.0);
+Debug: }
+Debug: Loading model from 3ds file 'PROGDIR:data/models/cat.3ds'
+Debug:     Object name: Mesh1_Materi Vertex count: 7340 Face count: 14348
+Info: [shading] shading=cel: FPS: 258 FrameTime: 3.883 ms
+Debug: Loading model from 3ds file 'PROGDIR:data/models/asteroid-high.3ds'
+Debug:     Object name: Icosphere.00 Vertex count: 24002 Face count: 48000
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec3 Normal;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Transform the normal to eye coordinates
+Debug:     Normal = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const vec3 LightSourceHalfVector = vec3(0.408248, 0.408248, 0.816497);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: varying vec3 Normal;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     const vec4 LightSourceAmbient = vec4(0.1, 0.1, 0.1, 1.0);
+Debug:     const vec4 LightSourceDiffuse = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 LightSourceSpecular = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 MaterialAmbient = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const vec4 MaterialDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const vec4 MaterialSpecular = vec4(0.2, 0.2, 0.2, 1.0);
+Debug:     const float MaterialShininess = 100.0;
+Debug: 
+Debug:     vec3 N = normalize(Normal);
+Debug: 
+Debug:     // In the lighting model we are using here (Blinn-Phong with light at
+Debug:     // infinity, viewer at infinity), the light position/direction and the
+Debug:     // half vector is constant for the all the fragments.
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug:     vec3 H = normalize(LightSourceHalfVector);
+Debug: 
+Debug:     // Calculate the diffuse color according to Lambertian reflectance
+Debug:     vec4 diffuse = MaterialDiffuse * LightSourceDiffuse * max(dot(N, L), 0.0);
+Debug: 
+Debug:     // Calculate the ambient color
+Debug:     vec4 ambient = MaterialAmbient * LightSourceAmbient;
+Debug: 
+Debug:     // Calculate the specular color according to the Blinn-Phong model
+Debug:     vec4 specular = MaterialSpecular * LightSourceSpecular *
+Debug:                     pow(max(dot(N,H), 0.0), MaterialShininess);
+Debug: 
+Debug:     // Calculate the final color
+Debug:     gl_FragColor = ambient + specular + diffuse;
+Debug: }
+Info: [bump] bump-render=high-poly: FPS: 168 FrameTime: 5.970 ms
+Debug: Loading model from 3ds file 'PROGDIR:data/models/asteroid-low.3ds'
+Debug:     Object name: Icosphere Vertex count: 262 Face count: 480
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const vec3 LightSourceHalfVector = vec3(0.408248, 0.408248, 0.816497);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: uniform sampler2D NormalMap;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     const vec4 LightSourceAmbient = vec4(0.1, 0.1, 0.1, 1.0);
+Debug:     const vec4 LightSourceDiffuse = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 LightSourceSpecular = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 MaterialAmbient = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const vec4 MaterialDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const vec4 MaterialSpecular = vec4(0.2, 0.2, 0.2, 1.0);
+Debug:     const float MaterialShininess = 100.0;
+Debug: 
+Debug:     // Get the raw normal XYZ data from the normal map
+Debug:     vec3 normal_raw = texture2D(NormalMap, TextureCoord).xyz;
+Debug:     // Map "color" range [0, 1.0] to normal range [-1.0, 1.0]
+Debug:     vec3 normal_scaled = normal_raw * 2.0 - 1.0;
+Debug: 
+Debug:     // Convert the normal to eye coordinates. Note that the normal map
+Debug:     // we are using is using object coordinates (not tangent!) for the
+Debug:     // normals, so we can multiply by the NormalMatrix as usual.
+Debug:     vec3 N = normalize(vec3(NormalMatrix * vec4(normal_scaled, 1.0)));
+Debug: 
+Debug:     // In the lighting model we are using here (Blinn-Phong with light at
+Debug:     // infinity, viewer at infinity), the light position/direction and the
+Debug:     // half vector is constant for the all the fragments.
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug:     vec3 H = normalize(LightSourceHalfVector);
+Debug: 
+Debug:     // Calculate the diffuse color according to Lambertian reflectance
+Debug:     vec4 diffuse = MaterialDiffuse * LightSourceDiffuse * max(dot(N, L), 0.0);
+Debug: 
+Debug:     // Calculate the ambient color
+Debug:     vec4 ambient = MaterialAmbient * LightSourceAmbient;
+Debug: 
+Debug:     // Calculate the specular color according to the Blinn-Phong model
+Debug:     vec4 specular = MaterialSpecular * LightSourceSpecular *
+Debug:                     pow(max(dot(N,H), 0.0), MaterialShininess);
+Debug: 
+Debug:     // Calculate the final color
+Debug:     gl_FragColor = ambient + specular + diffuse;
+Debug: }
+Debug: Reading PNG file PROGDIR:data/textures/asteroid-normal-map.png
+Debug:     Height: 1024 Width: 1024 Bpp: 3
+Info: [bump] bump-render=normals: FPS: 200 FrameTime: 5.000 ms
+Debug: Loading model from 3ds file 'PROGDIR:data/models/asteroid-low.3ds'
+Debug:     Object name: Icosphere Vertex count: 262 Face count: 480
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec2 texcoord;
+Debug: attribute vec3 normal;
+Debug: attribute vec3 tangent;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: varying vec3 NormalEye;
+Debug: varying vec3 TangentEye;
+Debug: varying vec3 BitangentEye;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform normal, tangent and bitangent to eye space, keeping
+Debug:     // all of them perpendicular to the Normal. That is why we use
+Debug:     // NormalMatrix, instead of ModelView, to transform the tangent and
+Debug:     // bitangent.
+Debug:     NormalEye = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug:     TangentEye = normalize(vec3(NormalMatrix * vec4(tangent, 1.0)));
+Debug:     BitangentEye = normalize(vec3(NormalMatrix * vec4(cross(normal, tangent), 1.0)));
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float TextureStepY = 0.000977;
+Debug: const float TextureStepX = 0.000977;
+Debug: const vec3 LightSourceHalfVector = vec3(0.408248, 0.408248, 0.816497);
+Debug: const vec4 LightSourcePosition = vec4(20.000000, 20.000000, 10.000000, 1.000000);
+Debug: uniform sampler2D HeightMap;
+Debug: 
+Debug: varying HIGHP_OR_DEFAULT vec2 TextureCoord;
+Debug: 
+Debug: varying vec3 NormalEye;
+Debug: varying vec3 TangentEye;
+Debug: varying vec3 BitangentEye;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     const vec4 LightSourceAmbient = vec4(0.1, 0.1, 0.1, 1.0);
+Debug:     const vec4 LightSourceDiffuse = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 LightSourceSpecular = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 MaterialAmbient = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const vec4 MaterialDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const vec4 MaterialSpecular = vec4(0.2, 0.2, 0.2, 1.0);
+Debug:     const float MaterialShininess = 100.0;
+Debug:     const float height_factor = 13.0;
+Debug: 
+Debug:     // Get the data from the height map
+Debug:     float height0 = texture2D(HeightMap, TextureCoord).x;
+Debug:     float heightX = texture2D(HeightMap, TextureCoord + vec2(TextureStepX, 0.0)).x;
+Debug:     float heightY = texture2D(HeightMap, TextureCoord + vec2(0.0, TextureStepY)).x;
+Debug:     vec2 dh = vec2(heightX - height0, heightY - height0);
+Debug: 
+Debug:     // Adjust the normal based on the height map data
+Debug:     vec3 N = NormalEye - height_factor * dh.x * TangentEye -
+Debug:                          height_factor * dh.y * BitangentEye;
+Debug:     N = normalize(N);
+Debug: 
+Debug:     // In the lighting model we are using here (Blinn-Phong with light at
+Debug:     // infinity, viewer at infinity), the light position/direction and the
+Debug:     // half vector is constant for the all the fragments.
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug:     vec3 H = normalize(LightSourceHalfVector);
+Debug: 
+Debug:     // Calculate the diffuse color according to Lambertian reflectance
+Debug:     vec4 diffuse = MaterialDiffuse * LightSourceDiffuse * max(dot(N, L), 0.0);
+Debug: 
+Debug:     // Calculate the ambient color
+Debug:     vec4 ambient = MaterialAmbient * LightSourceAmbient;
+Debug: 
+Debug:     // Calculate the specular color according to the Blinn-Phong model
+Debug:     vec4 specular = MaterialSpecular * LightSourceSpecular *
+Debug:                     pow(max(dot(N,H), 0.0), MaterialShininess);
+Debug: 
+Debug:     // Calculate the final color
+Debug:     gl_FragColor = ambient + specular + diffuse;
+Debug: 
+Debug:     //gl_FragColor = vec4(height_diff_raw.xy, 0.0, 1.0);
+Debug:     //gl_FragColor = vec4(height_diff_scaled.xy, 0.0, 1.0);
+Debug:     //gl_FragColor = vec4(Tangent, 1.0);
+Debug: }
+Debug: Reading PNG file PROGDIR:data/textures/asteroid-height-map.png
+Debug:     Height: 1024 Width: 1024 Bpp: 4
+Info: [bump] bump-render=height: FPS: 215 FrameTime: 4.673 ms
+Debug: Reading PNG file PROGDIR:data/textures/effect-2d.png
+Debug:     Height: 800 Width: 600 Bpp: 3
+Debug: Parsing kernel matrix:
+Debug: 0.000000 1.000000 0.000000 
+Debug: 1.000000 -4.000000 1.000000 
+Debug: 0.000000 1.000000 0.000000 
+Debug: Normalized kernel matrix:
+Debug: 0.000000 0.250000 0.000000 
+Debug: 0.250000 -1.000000 0.250000 
+Debug: 0.000000 0.250000 0.000000 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 1.0);
+Debug: 
+Debug:     TextureCoord = position.xy * 0.5 + 0.5;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float Kernel0 = 0.000000;
+Debug: const float Kernel1 = 0.250000;
+Debug: const float Kernel2 = 0.000000;
+Debug: const float Kernel3 = 0.250000;
+Debug: const float Kernel4 = -1.000000;
+Debug: const float Kernel5 = 0.250000;
+Debug: const float Kernel6 = 0.000000;
+Debug: const float Kernel7 = 0.250000;
+Debug: const float Kernel8 = 0.000000;
+Debug: const float TextureStepY = 0.001667;
+Debug: const float TextureStepX = 0.001250;
+Debug: uniform sampler2D Texture0;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel6 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel7 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel8;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Info: [effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 235 FrameTime: 4.255 ms
+Debug: Reading PNG file PROGDIR:data/textures/effect-2d.png
+Debug:     Height: 800 Width: 600 Bpp: 3
+Debug: Parsing kernel matrix:
+Debug: 1.000000 1.000000 1.000000 1.000000 1.000000 
+Debug: 1.000000 1.000000 1.000000 1.000000 1.000000 
+Debug: 1.000000 1.000000 1.000000 1.000000 1.000000 
+Debug: Normalized kernel matrix:
+Debug: 0.066667 0.066667 0.066667 0.066667 0.066667 
+Debug: 0.066667 0.066667 0.066667 0.066667 0.066667 
+Debug: 0.066667 0.066667 0.066667 0.066667 0.066667 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 1.0);
+Debug: 
+Debug:     TextureCoord = position.xy * 0.5 + 0.5;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float Kernel0 = 0.066667;
+Debug: const float Kernel1 = 0.066667;
+Debug: const float Kernel2 = 0.066667;
+Debug: const float Kernel3 = 0.066667;
+Debug: const float Kernel4 = 0.066667;
+Debug: const float Kernel5 = 0.066667;
+Debug: const float Kernel6 = 0.066667;
+Debug: const float Kernel7 = 0.066667;
+Debug: const float Kernel8 = 0.066667;
+Debug: const float Kernel9 = 0.066667;
+Debug: const float Kernel10 = 0.066667;
+Debug: const float Kernel11 = 0.066667;
+Debug: const float Kernel12 = 0.066667;
+Debug: const float Kernel13 = 0.066667;
+Debug: const float Kernel14 = 0.066667;
+Debug: const float TextureStepY = 0.001667;
+Debug: const float TextureStepX = 0.001250;
+Debug: uniform sampler2D Texture0;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = texture2D(Texture0, TextureCoord + vec2(-2.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(2.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-2.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel6 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel7 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel8 +
+Debug: texture2D(Texture0, TextureCoord + vec2(2.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel9 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-2.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel10 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel11 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel12 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel13 +
+Debug: texture2D(Texture0, TextureCoord + vec2(2.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel14;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Info: [effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 128 FrameTime: 7.843 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec4 vtxcolor;
+Debug: attribute vec2 texcoord;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     Color = vtxcolor;
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: 
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_FragColor = Color;
+Debug: }
+Info: [pulsar] light=false:quads=5:texture=false: FPS: 336 FrameTime: 2.981 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform sampler2D MaterialTexture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 texel = texture2D(MaterialTexture0, TextureCoord);
+Debug:     gl_FragColor = texel;
+Debug: }
+Debug: 
+Debug: Reading PNG file PROGDIR:data/textures/effect-2d.png
+Debug:     Height: 800 Width: 600 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/desktop-window.png
+Debug:     Height: 512 Width: 512 Bpp: 4
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float TextureStepX = 0.001250;
+Debug: const float Kernel5 = 0.002659;
+Debug: const float Kernel4 = 0.013437;
+Debug: const float Kernel3 = 0.047370;
+Debug: const float Kernel2 = 0.116512;
+Debug: const float Kernel1 = 0.199935;
+Debug: const float Kernel0 = 0.239365;
+Debug: uniform sampler2D Texture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = 
+Debug: texture2D(Texture0, TextureCoord + vec2(-5.0 * TextureStepX, 0.0)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-4.0 * TextureStepX, 0.0)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-3.0 * TextureStepX, 0.0)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-2.0 * TextureStepX, 0.0)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 0.0)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 0.0)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 0.0)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(2.0 * TextureStepX, 0.0)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(3.0 * TextureStepX, 0.0)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(4.0 * TextureStepX, 0.0)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(5.0 * TextureStepX, 0.0)) * Kernel5 +
+Debug: 0.0 ;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float TextureStepY = 0.001667;
+Debug: const float Kernel5 = 0.002659;
+Debug: const float Kernel4 = 0.013437;
+Debug: const float Kernel3 = 0.047370;
+Debug: const float Kernel2 = 0.116512;
+Debug: const float Kernel1 = 0.199935;
+Debug: const float Kernel0 = 0.239365;
+Debug: uniform sampler2D Texture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = 
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -5.0 * TextureStepY)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -4.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -3.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -2.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 0.0 * TextureStepY)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 2.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 3.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 4.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 5.0 * TextureStepY)) * Kernel5 +
+Debug: 0.0 ;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float TextureStepX = 0.001250;
+Debug: const float Kernel5 = 0.002659;
+Debug: const float Kernel4 = 0.013437;
+Debug: const float Kernel3 = 0.047370;
+Debug: const float Kernel2 = 0.116512;
+Debug: const float Kernel1 = 0.199935;
+Debug: const float Kernel0 = 0.239365;
+Debug: uniform sampler2D Texture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = 
+Debug: texture2D(Texture0, TextureCoord + vec2(-5.0 * TextureStepX, 0.0)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-4.0 * TextureStepX, 0.0)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-3.0 * TextureStepX, 0.0)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-2.0 * TextureStepX, 0.0)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 0.0)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 0.0)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 0.0)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(2.0 * TextureStepX, 0.0)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(3.0 * TextureStepX, 0.0)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(4.0 * TextureStepX, 0.0)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(5.0 * TextureStepX, 0.0)) * Kernel5 +
+Debug: 0.0 ;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float TextureStepY = 0.001667;
+Debug: const float Kernel5 = 0.002659;
+Debug: const float Kernel4 = 0.013437;
+Debug: const float Kernel3 = 0.047370;
+Debug: const float Kernel2 = 0.116512;
+Debug: const float Kernel1 = 0.199935;
+Debug: const float Kernel0 = 0.239365;
+Debug: uniform sampler2D Texture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = 
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -5.0 * TextureStepY)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -4.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -3.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -2.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 0.0 * TextureStepY)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 2.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 3.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 4.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 5.0 * TextureStepY)) * Kernel5 +
+Debug: 0.0 ;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float TextureStepX = 0.001250;
+Debug: const float Kernel5 = 0.002659;
+Debug: const float Kernel4 = 0.013437;
+Debug: const float Kernel3 = 0.047370;
+Debug: const float Kernel2 = 0.116512;
+Debug: const float Kernel1 = 0.199935;
+Debug: const float Kernel0 = 0.239365;
+Debug: uniform sampler2D Texture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = 
+Debug: texture2D(Texture0, TextureCoord + vec2(-5.0 * TextureStepX, 0.0)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-4.0 * TextureStepX, 0.0)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-3.0 * TextureStepX, 0.0)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-2.0 * TextureStepX, 0.0)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 0.0)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 0.0)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 0.0)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(2.0 * TextureStepX, 0.0)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(3.0 * TextureStepX, 0.0)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(4.0 * TextureStepX, 0.0)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(5.0 * TextureStepX, 0.0)) * Kernel5 +
+Debug: 0.0 ;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float TextureStepY = 0.001667;
+Debug: const float Kernel5 = 0.002659;
+Debug: const float Kernel4 = 0.013437;
+Debug: const float Kernel3 = 0.047370;
+Debug: const float Kernel2 = 0.116512;
+Debug: const float Kernel1 = 0.199935;
+Debug: const float Kernel0 = 0.239365;
+Debug: uniform sampler2D Texture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = 
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -5.0 * TextureStepY)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -4.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -3.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -2.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 0.0 * TextureStepY)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 2.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 3.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 4.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 5.0 * TextureStepY)) * Kernel5 +
+Debug: 0.0 ;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float TextureStepX = 0.001250;
+Debug: const float Kernel5 = 0.002659;
+Debug: const float Kernel4 = 0.013437;
+Debug: const float Kernel3 = 0.047370;
+Debug: const float Kernel2 = 0.116512;
+Debug: const float Kernel1 = 0.199935;
+Debug: const float Kernel0 = 0.239365;
+Debug: uniform sampler2D Texture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = 
+Debug: texture2D(Texture0, TextureCoord + vec2(-5.0 * TextureStepX, 0.0)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-4.0 * TextureStepX, 0.0)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-3.0 * TextureStepX, 0.0)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-2.0 * TextureStepX, 0.0)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 0.0)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 0.0)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 0.0)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(2.0 * TextureStepX, 0.0)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(3.0 * TextureStepX, 0.0)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(4.0 * TextureStepX, 0.0)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(5.0 * TextureStepX, 0.0)) * Kernel5 +
+Debug: 0.0 ;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float TextureStepY = 0.001667;
+Debug: const float Kernel5 = 0.002659;
+Debug: const float Kernel4 = 0.013437;
+Debug: const float Kernel3 = 0.047370;
+Debug: const float Kernel2 = 0.116512;
+Debug: const float Kernel1 = 0.199935;
+Debug: const float Kernel0 = 0.239365;
+Debug: uniform sampler2D Texture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = 
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -5.0 * TextureStepY)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -4.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -3.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -2.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, -1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 0.0 * TextureStepY)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 2.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 3.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 4.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0, 5.0 * TextureStepY)) * Kernel5 +
+Debug: 0.0 ;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Info: [desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 77 FrameTime: 13.072 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 0.0, 1.0);
+Debug: 
+Debug:     TextureCoord = texcoord;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform sampler2D MaterialTexture0;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 texel = texture2D(MaterialTexture0, TextureCoord);
+Debug:     gl_FragColor = texel;
+Debug: }
+Debug: 
+Debug: Reading PNG file PROGDIR:data/textures/effect-2d.png
+Debug:     Height: 800 Width: 600 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/desktop-shadow.png
+Debug:     Height: 64 Width: 64 Bpp: 4
+Debug: Reading PNG file PROGDIR:data/textures/desktop-shadow.png
+Debug:     Height: 64 Width: 64 Bpp: 4
+Debug: Reading PNG file PROGDIR:data/textures/desktop-shadow-corner.png
+Debug:     Height: 64 Width: 64 Bpp: 4
+Debug: Reading PNG file PROGDIR:data/textures/desktop-window.png
+Debug:     Height: 512 Width: 512 Bpp: 4
+Info: [desktop] effect=shadow:windows=4: FPS: 123 FrameTime: 8.163 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: // Wireframe shader based on:
+Debug: // J. A. Bærentzen, S. Munk-Lund, M. Gjøl, and B. D. Larsen,
+Debug: // “Two methods for antialiased wireframe drawing with hidden
+Debug: // line removal,” in Proceedings of the Spring Conference in
+Debug: // Computer Graphics, 2008.
+Debug: //
+Debug: // We are not using geometry shaders, though, as they are not
+Debug: // available in GLES 2.0.
+Debug: 
+Debug: attribute vec3 position;
+Debug: // Coordinates of the triangle vertices this vertex belongs to
+Debug: attribute vec3 tvertex0;
+Debug: attribute vec3 tvertex1;
+Debug: attribute vec3 tvertex2;
+Debug: 
+Debug: uniform vec2 Viewport;
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: varying vec4 dist;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Get the clip coordinates of all vertices
+Debug:     vec4 pos  = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug:     vec4 pos0 = ModelViewProjectionMatrix * vec4(tvertex0, 1.0);
+Debug:     vec4 pos1 = ModelViewProjectionMatrix * vec4(tvertex1, 1.0);
+Debug:     vec4 pos2 = ModelViewProjectionMatrix * vec4(tvertex2, 1.0);
+Debug: 
+Debug:     // Get the screen coordinates of all vertices
+Debug:     vec3 p  = vec3(0.5 * Viewport * (pos.xy / pos.w), 0.0);
+Debug:     vec3 p0 = vec3(0.5 * Viewport * (pos0.xy / pos0.w), 0.0);
+Debug:     vec3 p1 = vec3(0.5 * Viewport * (pos1.xy / pos1.w), 0.0);
+Debug:     vec3 p2 = vec3(0.5 * Viewport * (pos2.xy / pos2.w), 0.0);
+Debug: 
+Debug:     // Get the vectors representing the edges of the current
+Debug:     // triangle primitive. 'vN' is the edge opposite vertex N.
+Debug:     vec3 v0 = p2 - p1;
+Debug:     vec3 v1 = p2 - p0;
+Debug:     vec3 v2 = p1 - p0;
+Debug: 
+Debug:     // Calculate the distance of the current vertex from all
+Debug:     // the triangle edges. The distance of point p from line
+Debug:     // v is length(cross(p - p1, v)) / length(v), where
+Debug:     // p1 is any of the two edge points of v.
+Debug:     float d0 = length(cross(p - p1, v0)) / length(v0);
+Debug:     float d1 = length(cross(p - p2, v1)) / length(v1);
+Debug:     float d2 = length(cross(p - p0, v2)) / length(v2);
+Debug: 
+Debug:     // OpenGL(ES) performs perspective-correct interpolation
+Debug:     // (it divides by .w) but we want linear interpolation. To
+Debug:     // work around this, we premultiply by pos.w here and then
+Debug:     // multiple with the inverse (stored in dist.w) in the fragment
+Debug:     // shader to undo this operation.
+Debug:     dist = vec4(pos.w * d0, pos.w * d1, pos.w * d2, 1.0 / pos.w);
+Debug: 
+Debug:     gl_Position = pos;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dist;
+Debug: 
+Debug: const vec4 LINE_COLOR = vec4(1.0);
+Debug: const vec4 TRIANGLE_COLOR = vec4(0.0, 0.5, 0.8, 0.8);
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Get the minimum distance of this fragment from a triangle edge.
+Debug:     // We need to multiply with dist.w to undo the workaround we had
+Debug:     // to perform to get linear interpolation (instead of perspective correct).
+Debug:     float d = min(dist.x * dist.w, min(dist.y * dist.w, dist.z * dist.w));
+Debug: 
+Debug:     // Get the intensity of the wireframe line
+Debug:     float I = exp2(-2.0 * d * d);
+Debug: 
+Debug:     gl_FragColor = mix(TRIANGLE_COLOR, LINE_COLOR, I);
+Debug: }
+Info: [buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 157 FrameTime: 6.390 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: // Wireframe shader based on:
+Debug: // J. A. Bærentzen, S. Munk-Lund, M. Gjøl, and B. D. Larsen,
+Debug: // “Two methods for antialiased wireframe drawing with hidden
+Debug: // line removal,” in Proceedings of the Spring Conference in
+Debug: // Computer Graphics, 2008.
+Debug: //
+Debug: // We are not using geometry shaders, though, as they are not
+Debug: // available in GLES 2.0.
+Debug: 
+Debug: attribute vec3 position;
+Debug: // Coordinates of the triangle vertices this vertex belongs to
+Debug: attribute vec3 tvertex0;
+Debug: attribute vec3 tvertex1;
+Debug: attribute vec3 tvertex2;
+Debug: 
+Debug: uniform vec2 Viewport;
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: varying vec4 dist;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Get the clip coordinates of all vertices
+Debug:     vec4 pos  = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug:     vec4 pos0 = ModelViewProjectionMatrix * vec4(tvertex0, 1.0);
+Debug:     vec4 pos1 = ModelViewProjectionMatrix * vec4(tvertex1, 1.0);
+Debug:     vec4 pos2 = ModelViewProjectionMatrix * vec4(tvertex2, 1.0);
+Debug: 
+Debug:     // Get the screen coordinates of all vertices
+Debug:     vec3 p  = vec3(0.5 * Viewport * (pos.xy / pos.w), 0.0);
+Debug:     vec3 p0 = vec3(0.5 * Viewport * (pos0.xy / pos0.w), 0.0);
+Debug:     vec3 p1 = vec3(0.5 * Viewport * (pos1.xy / pos1.w), 0.0);
+Debug:     vec3 p2 = vec3(0.5 * Viewport * (pos2.xy / pos2.w), 0.0);
+Debug: 
+Debug:     // Get the vectors representing the edges of the current
+Debug:     // triangle primitive. 'vN' is the edge opposite vertex N.
+Debug:     vec3 v0 = p2 - p1;
+Debug:     vec3 v1 = p2 - p0;
+Debug:     vec3 v2 = p1 - p0;
+Debug: 
+Debug:     // Calculate the distance of the current vertex from all
+Debug:     // the triangle edges. The distance of point p from line
+Debug:     // v is length(cross(p - p1, v)) / length(v), where
+Debug:     // p1 is any of the two edge points of v.
+Debug:     float d0 = length(cross(p - p1, v0)) / length(v0);
+Debug:     float d1 = length(cross(p - p2, v1)) / length(v1);
+Debug:     float d2 = length(cross(p - p0, v2)) / length(v2);
+Debug: 
+Debug:     // OpenGL(ES) performs perspective-correct interpolation
+Debug:     // (it divides by .w) but we want linear interpolation. To
+Debug:     // work around this, we premultiply by pos.w here and then
+Debug:     // multiple with the inverse (stored in dist.w) in the fragment
+Debug:     // shader to undo this operation.
+Debug:     dist = vec4(pos.w * d0, pos.w * d1, pos.w * d2, 1.0 / pos.w);
+Debug: 
+Debug:     gl_Position = pos;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dist;
+Debug: 
+Debug: const vec4 LINE_COLOR = vec4(1.0);
+Debug: const vec4 TRIANGLE_COLOR = vec4(0.0, 0.5, 0.8, 0.8);
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Get the minimum distance of this fragment from a triangle edge.
+Debug:     // We need to multiply with dist.w to undo the workaround we had
+Debug:     // to perform to get linear interpolation (instead of perspective correct).
+Debug:     float d = min(dist.x * dist.w, min(dist.y * dist.w, dist.z * dist.w));
+Debug: 
+Debug:     // Get the intensity of the wireframe line
+Debug:     float I = exp2(-2.0 * d * d);
+Debug: 
+Debug:     gl_FragColor = mix(TRIANGLE_COLOR, LINE_COLOR, I);
+Debug: }
+Info: [buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 265 FrameTime: 3.781 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: // Wireframe shader based on:
+Debug: // J. A. Bærentzen, S. Munk-Lund, M. Gjøl, and B. D. Larsen,
+Debug: // “Two methods for antialiased wireframe drawing with hidden
+Debug: // line removal,” in Proceedings of the Spring Conference in
+Debug: // Computer Graphics, 2008.
+Debug: //
+Debug: // We are not using geometry shaders, though, as they are not
+Debug: // available in GLES 2.0.
+Debug: 
+Debug: attribute vec3 position;
+Debug: // Coordinates of the triangle vertices this vertex belongs to
+Debug: attribute vec3 tvertex0;
+Debug: attribute vec3 tvertex1;
+Debug: attribute vec3 tvertex2;
+Debug: 
+Debug: uniform vec2 Viewport;
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: varying vec4 dist;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Get the clip coordinates of all vertices
+Debug:     vec4 pos  = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug:     vec4 pos0 = ModelViewProjectionMatrix * vec4(tvertex0, 1.0);
+Debug:     vec4 pos1 = ModelViewProjectionMatrix * vec4(tvertex1, 1.0);
+Debug:     vec4 pos2 = ModelViewProjectionMatrix * vec4(tvertex2, 1.0);
+Debug: 
+Debug:     // Get the screen coordinates of all vertices
+Debug:     vec3 p  = vec3(0.5 * Viewport * (pos.xy / pos.w), 0.0);
+Debug:     vec3 p0 = vec3(0.5 * Viewport * (pos0.xy / pos0.w), 0.0);
+Debug:     vec3 p1 = vec3(0.5 * Viewport * (pos1.xy / pos1.w), 0.0);
+Debug:     vec3 p2 = vec3(0.5 * Viewport * (pos2.xy / pos2.w), 0.0);
+Debug: 
+Debug:     // Get the vectors representing the edges of the current
+Debug:     // triangle primitive. 'vN' is the edge opposite vertex N.
+Debug:     vec3 v0 = p2 - p1;
+Debug:     vec3 v1 = p2 - p0;
+Debug:     vec3 v2 = p1 - p0;
+Debug: 
+Debug:     // Calculate the distance of the current vertex from all
+Debug:     // the triangle edges. The distance of point p from line
+Debug:     // v is length(cross(p - p1, v)) / length(v), where
+Debug:     // p1 is any of the two edge points of v.
+Debug:     float d0 = length(cross(p - p1, v0)) / length(v0);
+Debug:     float d1 = length(cross(p - p2, v1)) / length(v1);
+Debug:     float d2 = length(cross(p - p0, v2)) / length(v2);
+Debug: 
+Debug:     // OpenGL(ES) performs perspective-correct interpolation
+Debug:     // (it divides by .w) but we want linear interpolation. To
+Debug:     // work around this, we premultiply by pos.w here and then
+Debug:     // multiple with the inverse (stored in dist.w) in the fragment
+Debug:     // shader to undo this operation.
+Debug:     dist = vec4(pos.w * d0, pos.w * d1, pos.w * d2, 1.0 / pos.w);
+Debug: 
+Debug:     gl_Position = pos;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dist;
+Debug: 
+Debug: const vec4 LINE_COLOR = vec4(1.0);
+Debug: const vec4 TRIANGLE_COLOR = vec4(0.0, 0.5, 0.8, 0.8);
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Get the minimum distance of this fragment from a triangle edge.
+Debug:     // We need to multiply with dist.w to undo the workaround we had
+Debug:     // to perform to get linear interpolation (instead of perspective correct).
+Debug:     float d = min(dist.x * dist.w, min(dist.y * dist.w, dist.z * dist.w));
+Debug: 
+Debug:     // Get the intensity of the wireframe line
+Debug:     float I = exp2(-2.0 * d * d);
+Debug: 
+Debug:     gl_FragColor = mix(TRIANGLE_COLOR, LINE_COLOR, I);
+Debug: }
+Info: [buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 141 FrameTime: 7.117 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: uniform mat4 projection;
+Debug: uniform mat4 modelview;
+Debug: uniform vec3 lightPosition;
+Debug: uniform vec3 logoDirection;
+Debug: uniform float currentTime;
+Debug: attribute vec3 vertex;
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 curVertex = vec4(vertex.x, vertex.y, vertex.z, 1.0);
+Debug:     gl_Position = projection * modelview * curVertex;
+Debug:     float referenceTime = 15.0;
+Debug:     vec3 lightDirection = normalize(lightPosition - vertex);    
+Debug:     float c = max(dot(lightDirection, logoDirection), 0.0);
+Debug:     c = c * c * c * lightDirection.y;
+Debug:     if ((currentTime > referenceTime - 5.0) && (currentTime < referenceTime - 3.0))
+Debug:     {
+Debug:         c *= 1.0 - (currentTime - (referenceTime - 5.0)) * 0.5;
+Debug:     }
+Debug:     color = vec4(c, c, c, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     gl_FragColor = color;
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: uniform mat4 projection;
+Debug: uniform mat4 modelview;
+Debug: uniform vec3 lightPosition;
+Debug: uniform vec3 logoDirection;
+Debug: uniform float currentTime;
+Debug: attribute vec3 vertex;
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 curVertex = vec4(vertex.x, vertex.y, vertex.z, 1.0);
+Debug:     gl_Position = projection * modelview * curVertex;
+Debug:     float referenceTime = 15.0;
+Debug:     vec3 lightDirection = normalize(lightPosition - vertex);    
+Debug:     float c = max(dot(lightDirection, logoDirection), 0.0);
+Debug:     c = c * c * c * lightDirection.y;
+Debug:     if ((currentTime > referenceTime - 5.0) && (currentTime < referenceTime - 3.0))
+Debug:     {
+Debug:         c *= 1.0 - (currentTime - (referenceTime - 5.0)) * 0.5;
+Debug:     }
+Debug:     color = vec4(c, c, (c * 0.78125), 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     gl_FragColor = color;
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: uniform mat4 projection;
+Debug: uniform mat4 modelview;
+Debug: uniform float currentTime;
+Debug: attribute vec2 vertex;
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 curVertex = vec4(vertex.x, vertex.y, 0.0, 1.0);
+Debug:     gl_Position = projection * modelview * curVertex;
+Debug:     float referenceTime = 15.0;
+Debug:     float c = 0.0;
+Debug:     if (currentTime > referenceTime * 1.0 - 5.0)
+Debug:     {
+Debug:         c = (currentTime - (referenceTime * 1.0 - 5.0)) / 2.0;
+Debug:     }
+Debug:     color = vec4(c, c, c, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     gl_FragColor = color;
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: uniform mat4 projection;
+Debug: uniform mat4 modelview;
+Debug: attribute vec3 vertex;
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 curVertex = vec4(vertex.x, vertex.y, vertex.z, 1.0);
+Debug:     gl_Position = projection * modelview * curVertex;
+Debug:     color = vec4(0.0, 0.0, 0.0, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     gl_FragColor = color;
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: uniform mat4 projection;
+Debug: uniform mat4 modelview;
+Debug: uniform mat3 normalMatrix;
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: varying vec3 eye_direction;
+Debug: attribute vec3 vertex;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: vec3 unitvec(vec4 v1, vec4 v2)
+Debug: {
+Debug:     if (v1.w == 0.0 && v2.w == 0.0)
+Debug:         return vec3(v2 - v1);
+Debug:     if (v1.w == 0.0)
+Debug:         return vec3(-v1);
+Debug:     if (v2.w == 0.0)
+Debug:         return vec3(v2);
+Debug:     return v2.xyz/v2.w - v1.xyz/v1.w;
+Debug: }
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 curVertex = vec4(vertex.x, vertex.y, vertex.z, 1.0);
+Debug:     gl_Position = projection * modelview * curVertex;
+Debug:     vertex_normal = normalMatrix * normal;
+Debug:     vertex_position = modelview * curVertex;
+Debug:     eye_direction = normalize(unitvec(vertex_position, vec4(0.0, 0.0, 0.0, 1.0)));
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform vec4 light0Position;
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: varying vec3 eye_direction;
+Debug: 
+Debug: vec3 unitvec(vec4 v1, vec4 v2)
+Debug: {
+Debug:     if (v1.w == 0.0 && v2.w == 0.0)
+Debug:         return vec3(v2 - v1);
+Debug:     if (v1.w == 0.0)
+Debug:         return vec3(-v1);
+Debug:     if (v2.w == 0.0)
+Debug:         return vec3(v2);
+Debug:     return v2.xyz/v2.w - v1.xyz/v1.w;
+Debug: }
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 lightAmbient = vec4(0.0, 0.0, 0.0, 1.0);
+Debug:     vec4 lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     vec4 lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     vec4 matAmbient = vec4(0.1, 0.1, 0.1, 1.0);
+Debug:     vec4 matDiffuse = vec4(0.5, 0.4, 0.7, 1.0);
+Debug:     vec4 matSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     float matShininess = 30.0;
+Debug:     vec3 light_direction = normalize(unitvec(vertex_position, light0Position));
+Debug:     vec3 normalized_normal = normalize(vertex_normal);
+Debug:     vec3 reflection = reflect(-light_direction, normalized_normal);
+Debug:     float specularTerm = pow(max(0.0, dot(reflection, eye_direction)), matShininess);
+Debug:     float diffuseTerm = max(0.0, dot(normalized_normal, light_direction));
+Debug:     vec4 specular = (lightSpecular * matSpecular);
+Debug:     vec4 ambient = (lightAmbient * matAmbient);
+Debug:     vec4 diffuse = (lightDiffuse * matDiffuse);
+Debug:     gl_FragColor = (specular * specularTerm) + ambient + (diffuse * diffuseTerm);
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: uniform mat4 projection;
+Debug: uniform mat4 modelview;
+Debug: attribute vec3 vertex;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 curVertex = vec4(vertex.x, vertex.y, vertex.z, 1.0);
+Debug:     gl_Position = projection * modelview * curVertex;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform vec4 logoColor;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     gl_FragColor = logoColor;
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: uniform mat4 projection;
+Debug: uniform mat4 modelview;
+Debug: attribute vec3 vertex;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 curVertex = vec4(vertex.x, vertex.y, vertex.z, 1.0);
+Debug:     gl_Position = projection * modelview * curVertex;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform sampler2D tex;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec2 curPos = gl_FragCoord.xy / 32.0;
+Debug:     vec4 color = texture2D(tex, curPos);
+Debug:     if (color.w < 0.5)
+Debug:         discard;
+Debug:     gl_FragColor = color;
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: uniform mat4 projection;
+Debug: uniform mat4 modelview;
+Debug: uniform mat3 normalMatrix;
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: varying vec3 eye_direction;
+Debug: attribute vec3 vertex;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: vec3 unitvec(vec4 v1, vec4 v2)
+Debug: {
+Debug:     if (v1.w == 0.0 && v2.w == 0.0)
+Debug:         return vec3(v2 - v1);
+Debug:     if (v1.w == 0.0)
+Debug:         return vec3(-v1);
+Debug:     if (v2.w == 0.0)
+Debug:         return vec3(v2);
+Debug:     return v2.xyz/v2.w - v1.xyz/v1.w;
+Debug: }
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 curVertex = vec4(vertex.x, vertex.y, vertex.z, 1.0);
+Debug:     gl_Position = projection * modelview * curVertex;
+Debug:     vertex_normal = normalMatrix * normal;
+Debug:     vertex_position = modelview * curVertex;
+Debug:     eye_direction = normalize(unitvec(vertex_position, vec4(0.0, 0.0, 0.0, 1.0)));
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: struct LightSourceParameters
+Debug: {
+Debug:     vec4 ambient;
+Debug:     vec4 diffuse;
+Debug:     vec4 specular;
+Debug:     vec4 position;
+Debug: };
+Debug: LightSourceParameters lightSource[3];
+Debug: uniform vec4 light0Position;
+Debug: uniform vec4 light1Position;
+Debug: uniform vec4 light2Position;
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: varying vec3 eye_direction;
+Debug: 
+Debug: vec3 unitvec(vec4 v1, vec4 v2)
+Debug: {
+Debug:     if (v1.w == 0.0 && v2.w == 0.0)
+Debug:         return vec3(v2 - v1);
+Debug:     if (v1.w == 0.0)
+Debug:         return vec3(-v1);
+Debug:     if (v2.w == 0.0)
+Debug:         return vec3(v2);
+Debug:     return v2.xyz/v2.w - v1.xyz/v1.w;
+Debug: }
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     lightSource[0] = LightSourceParameters(
+Debug:         vec4(0.0, 0.0, 0.0, 1.0),
+Debug:         vec4(1.0, 1.0, 1.0, 1.0),
+Debug:         vec4(1.0, 1.0, 1.0, 1.0),
+Debug:         vec4(0.0, 1.0, 0.0, 0.0)
+Debug:     );
+Debug:     lightSource[1] = LightSourceParameters(
+Debug:         vec4(0.0, 0.0, 0.0, 1.0),
+Debug:         vec4(0.3, 0.3, 0.5, 1.0),
+Debug:         vec4(0.3, 0.3, 0.5, 1.0),
+Debug:         vec4(-1.0, 0.0, 0.0, 0.0)
+Debug:     );
+Debug:     lightSource[2] = LightSourceParameters(
+Debug:         vec4(0.2, 0.2, 0.2, 1.0),
+Debug:         vec4(0.2, 0.2, 0.2, 1.0),
+Debug:         vec4(0.2, 0.2, 0.2, 1.0),
+Debug:         vec4(0.0, -1.0, 0.0, 0.0)
+Debug:     );
+Debug:     vec4 matAmbient = vec4(0.0, 0.0, 0.0, 1.0);
+Debug:     vec4 matDiffuse = vec4(1.0, 0.2, 0.2, 1.0);
+Debug:     vec4 matSpecular = vec4(0.5, 0.5, 0.5, 1.0);
+Debug:     float matShininess = 20.0;
+Debug:     vec4 diffuseSum = vec4(0.0, 0.0, 0.0, 0.0);
+Debug:     vec4 specularSum = vec4(0.0, 0.0, 0.0, 0.0);
+Debug:     vec4 ambientSum = vec4(0.0, 0.0, 0.0, 0.0);
+Debug:     vec3 normalized_normal = normalize(vertex_normal);
+Debug:     lightSource[0].position = light0Position;
+Debug:     lightSource[1].position = light1Position;
+Debug:     lightSource[2].position = light2Position;
+Debug:     for (int light = 0; light < 3; light++) {
+Debug:         vec4 light_position = lightSource[light].position;
+Debug:         vec3 light_direction = normalize(unitvec(vertex_position, light_position));
+Debug:         vec3 reflection = reflect(-light_direction, normalized_normal);
+Debug:         specularSum += pow(max(0.0, dot(reflection, eye_direction)), matShininess) * lightSource[light].specular;
+Debug:         diffuseSum += max(0.0, dot(normalized_normal, light_direction)) * lightSource[light].diffuse;
+Debug:         ambientSum += lightSource[light].ambient;
+Debug:     }
+Debug:     gl_FragColor = (matSpecular * specularSum) + (matAmbient * ambientSum) + (matDiffuse * diffuseSum);
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: uniform mat4 projection;
+Debug: uniform mat4 modelview;
+Debug: attribute vec3 vertex;
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 curVertex = vec4(vertex.x, vertex.y, vertex.z, 1.0);
+Debug:     gl_Position = projection * modelview * curVertex;
+Debug:     color = vec4(1.0, 1.0, 1.0, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     gl_FragColor = color;
+Debug: }
+Info: [ideas] speed=duration: FPS: 160 FrameTime: 6.270 ms
+Debug: Loading model from file 'PROGDIR:data/models/jellyfish.jobj'
+Debug: Object populated with 2808 vertices 2808 normals 2808 colors 2808 texcoords and 13200 indices.
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec2 position;
+Debug: attribute vec2 uvIn;
+Debug: 
+Debug: varying vec2 uv;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     uv = uvIn;
+Debug:     gl_Position = vec4(position, 1.0, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform vec3 color1;
+Debug: uniform vec3 color2;
+Debug: 
+Debug: varying vec2 uv;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec3 color = mix(color1, color2, uv.x * uv.y);
+Debug:     gl_FragColor = vec4(color, 1.0);
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 aVertexPosition;
+Debug: attribute vec3 aVertexNormal;
+Debug: attribute vec3 aVertexColor;
+Debug: attribute vec3 aTextureCoord;
+Debug: 
+Debug: uniform mat4 uWorld;
+Debug: uniform mat4 uWorldViewProj;
+Debug: uniform mat4 uWorldInvTranspose;
+Debug: uniform vec3 uLightPos;
+Debug: uniform float uLightRadius;
+Debug: uniform vec4 uLightCol;
+Debug: uniform vec4 uAmbientCol;
+Debug: uniform vec4 uFresnelCol;
+Debug: uniform float uFresnelPower;
+Debug: uniform float uCurrentTime;
+Debug: 
+Debug: varying vec2 vTextureCoord;
+Debug: varying vec4 vWorld;
+Debug: varying vec3 vDiffuse;
+Debug: varying vec3 vAmbient;
+Debug: varying vec3 vFresnel;
+Debug:   
+Debug: void main(void)
+Debug: { 
+Debug:     //Vertex Animation
+Debug:     float speed = uCurrentTime / 15.0;
+Debug:     float offset = smoothstep(0.0, 1.0, max(0.0, -aVertexPosition.y-0.8) / 10.0);
+Debug:     vec3 pos = aVertexPosition +
+Debug:         aVertexColor / 12.0 *
+Debug:         sin(speed * 15.0 + aVertexPosition.y / 2.0) * (1.0 - offset);
+Debug:     pos = pos + aVertexColor / 8.0 *
+Debug:         sin(speed * 30.0 + aVertexPosition.y / 0.5) * (1.0 - offset);
+Debug:     vec4 pos4 = vec4(pos, 1.0);
+Debug:     gl_Position = uWorldViewProj * pos4; 
+Debug: 
+Debug:     vWorld = uWorld * pos4;
+Debug:     vec3 vVertexNormal = normalize((uWorldInvTranspose * vec4(aVertexNormal, 1.0)).xyz);
+Debug: 
+Debug:     //diffuse
+Debug:     vec3 lightDir = normalize(uLightPos - vWorld.xyz);
+Debug:     float diffuseProduct = max(dot(normalize(vVertexNormal.xyz), lightDir), 0.0);
+Debug:     float lightFalloff = pow(max(1.0-(distance(uLightPos, vWorld.xyz)/uLightRadius), 0.0),2.0);
+Debug:     vDiffuse = uLightCol.rgb * vec3(diffuseProduct * lightFalloff * uLightCol.a);
+Debug: 
+Debug:     //ambient (top)
+Debug:     vAmbient = uAmbientCol.rgb * vec3(uAmbientCol.a) * vVertexNormal.y;
+Debug: 
+Debug:     //fresnel
+Debug:     vec4 worldPos = uWorld * pos4;
+Debug:     vec3 vWorldEyeVec = normalize(worldPos.xyz/worldPos.w); 
+Debug:     float fresnelProduct = pow(1.0 - max(abs(dot(vVertexNormal, -vWorldEyeVec)), 0.0), uFresnelPower);
+Debug:     vFresnel = uFresnelCol.rgb * vec3(uFresnelCol.a * fresnelProduct);
+Debug: 
+Debug:     // texcoord
+Debug:     vTextureCoord = aTextureCoord.xy;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: #ifdef GL_FRAGMENT_PRECISION_HIGH
+Debug: precision highp float;
+Debug: #else
+Debug: precision mediump float;
+Debug: #endif
+Debug: #endif
+Debug: uniform sampler2D uSampler;
+Debug: uniform sampler2D uSampler1;
+Debug: uniform float uCurrentTime;
+Debug:   
+Debug: varying vec2 vTextureCoord;
+Debug: varying vec4 vWorld;
+Debug: varying vec3 vDiffuse;
+Debug: varying vec3 vAmbient;
+Debug: varying vec3 vFresnel;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 caustics = texture2D(uSampler1, vec2(vWorld.x / 24.0 + uCurrentTime / 20.0, (vWorld.z - vWorld.y)/48.0 + uCurrentTime / 40.0));
+Debug:     vec4 colorMap = texture2D(uSampler, vTextureCoord);
+Debug:     float transparency = colorMap.a + pow(vFresnel.r, 2.0) - 0.3;
+Debug:     gl_FragColor = vec4(((vAmbient + vDiffuse + caustics.rgb) * colorMap.rgb), transparency);
+Debug: }
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish256.png
+Debug:     Height: 256 Width: 256 Bpp: 4
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-01.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-02.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-03.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-04.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-05.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-06.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-07.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-08.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-09.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-10.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-11.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-12.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-13.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-14.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-15.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-16.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-17.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-18.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-19.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-20.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-21.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-22.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-23.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-24.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-25.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-26.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-27.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-28.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-29.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-30.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-31.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Debug: Reading PNG file PROGDIR:data/textures/jellyfish-caustics-32.png
+Debug:     Height: 256 Width: 256 Bpp: 3
+Info: [jellyfish] <default>: FPS: 111 FrameTime: 9.050 ms
+Error: SceneTerrain requires Vertex Texture Fetch support, but GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS is 0
+Info: [terrain] <default>: Unsupported
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: const vec4 MaterialDiffuse = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+Debug: const vec4 LightSourcePosition = vec4(0.000000, 3.000000, 2.000000, 1.000000);
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: attribute vec2 texcoord;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // Transform the normal to eye coordinates
+Debug:     vec3 N = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // The LightSourcePosition is actually its direction for directional light
+Debug:     vec3 L = normalize(LightSourcePosition.xyz);
+Debug: 
+Debug:     // Multiply the diffuse value by the vertex color (which is fixed in this case)
+Debug:     // to get the actual color that we will use to draw this vertex with
+Debug:     float diffuse = max(dot(N, L), 0.0);
+Debug:     Color = vec4(diffuse * MaterialDiffuse.rgb, MaterialDiffuse.a);
+Debug: 
+Debug:     // Set the texture coordinates as a varying
+Debug:     TextureCoord = texcoord;
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 Color;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_FragColor = Color;
+Debug: }
+Debug: Loading model from 3ds file 'PROGDIR:data/models/horse.3ds'
+Debug:     Object name: HORSE_L_Mate Vertex count: 3582 Face count: 7172
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: varying vec3 Normal;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     Normal = normal;
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec3 Normal;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     gl_FragColor = vec4(Normal, 1.0);
+Debug: }
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: const vec4 MaterialDiffuse = vec4(0.300000, 0.300000, 0.300000, 1.000000);
+Debug: attribute vec2 position;
+Debug: 
+Debug: uniform mat4 LightMatrix;
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: varying vec4 ShadowCoord;
+Debug: varying vec4 Color;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     Color = MaterialDiffuse;
+Debug: 
+Debug:     vec4 pos4 = vec4(position, 0.0, 1.0);
+Debug:     ShadowCoord = LightMatrix * pos4;
+Debug:     gl_Position = ModelViewProjectionMatrix * pos4;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: uniform sampler2D ShadowMap;
+Debug: 
+Debug: varying vec4 Color;
+Debug: varying vec4 ShadowCoord;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     vec4 sc_perspective = ShadowCoord / ShadowCoord.w;
+Debug:     sc_perspective.z += 0.1505;
+Debug:     vec4 shadow_value = texture2D(ShadowMap, sc_perspective.st);
+Debug:     float light_distance = shadow_value.x;
+Debug:     float shadow = 1.0;
+Debug:     if (ShadowCoord.w > 0.0 && light_distance < sc_perspective.z) {
+Debug:         shadow = 0.5;
+Debug:     }
+Debug:     gl_FragColor = vec4(shadow * Color.rgb, 1.0);
+Debug: }
+Info: [shadow] <default>: FPS: 52 FrameTime: 19.231 ms
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform mat4 NormalMatrix;
+Debug: uniform mat4 ModelViewMatrix;
+Debug: uniform mat4 LightMatrix;
+Debug: 
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: varying vec4 MapCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 current_position = vec4(position, 1.0);
+Debug: 
+Debug:     // Transform the normal to eye coordinates
+Debug:     vertex_normal = normalize(vec3(NormalMatrix * vec4(normal, 1.0)));
+Debug: 
+Debug:     // Transform the current position to eye coordinates
+Debug:     vertex_position = ModelViewMatrix * current_position;
+Debug: 
+Debug:     // Transform the current position for use as texture coordinates
+Debug:     MapCoord = LightMatrix * current_position;
+Debug: 
+Debug:     // Transform the current position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * current_position;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float RefractiveIndex = 1.200000;
+Debug: const vec4 LightSourcePosition = vec4(1.000000, 1.000000, 2.000000, 1.000000);
+Debug: const vec4 LightColor = vec4(0.400000, 0.400000, 0.400000, 1.000000);
+Debug: uniform sampler2D DistanceMap;
+Debug: uniform sampler2D NormalMap;
+Debug: uniform sampler2D ImageMap;
+Debug: 
+Debug: varying vec3 vertex_normal;
+Debug: varying vec4 vertex_position;
+Debug: varying vec4 MapCoord;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     const vec4 lightSpecular = vec4(0.8, 0.8, 0.8, 1.0);
+Debug:     const vec4 matSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+Debug:     const float matShininess = 100.0;
+Debug:     const vec2 point_five = vec2(0.5);
+Debug:     // Need the normalized eye direction and surface normal vectors to
+Debug:     // compute the transmitted vector through the "front" surface of the object.
+Debug:     vec3 eye_direction = normalize(-vertex_position.xyz);
+Debug:     vec3 normalized_normal = normalize(vertex_normal);
+Debug:     vec3 front_refraction = refract(eye_direction, normalized_normal, RefractiveIndex);
+Debug:     // Find our best distance approximation through the object so we can
+Debug:     // project the transmitted vector to the back of the object to find
+Debug:     // the exit point.
+Debug:     vec3 mc_perspective = (MapCoord.xyz / MapCoord.w) + front_refraction;
+Debug:     vec2 dcoord = mc_perspective.st * point_five + point_five;
+Debug:     vec4 distance_value = texture2D(DistanceMap, dcoord);
+Debug:     vec3 back_position = vertex_position.xyz + front_refraction * distance_value.x;
+Debug:     // Use the exit point to index the map of back-side normals, and use the
+Debug:     // back-side position and normal to find the transmitted vector out of the
+Debug:     // object.
+Debug:     vec2 normcoord = back_position.st * point_five + point_five;
+Debug:     vec3 back_normal = texture2D(NormalMap, normcoord).xyz;
+Debug:     vec3 back_refraction = refract(back_position, back_normal, 1.0/RefractiveIndex);
+Debug:     // Use the transmitted vector from the exit point to determine where
+Debug:     // the vector would intersect the environment (in this case a background
+Debug:     // image.
+Debug:     vec2 imagecoord = back_refraction.st * point_five + point_five;
+Debug:     vec4 texel = texture2D(ImageMap, imagecoord);
+Debug:     // Add in specular reflection, and we have our fragment value.
+Debug:     vec3 light_direction = normalize(vertex_position.xyz/vertex_position.w -
+Debug:                                      LightSourcePosition.xyz/LightSourcePosition.w);
+Debug:     vec3 reflection = reflect(light_direction, normalized_normal);
+Debug:     float specularTerm = pow(max(0.0, dot(reflection, eye_direction)), matShininess);
+Debug:     vec4 specular = (lightSpecular * matSpecular);
+Debug:     gl_FragColor = (specular * specularTerm) + texel;
+Debug: }
+Debug: Reading PNG file PROGDIR:data/textures/nasa1.png
+Debug:     Height: 512 Width: 512 Bpp: 4
+Debug: Loading model from obj file 'PROGDIR:data/models/bunny.obj'
+Debug: Object name: (none) Vertex count: 34835 Face count: 69666
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: attribute vec3 normal;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: varying vec3 Normal;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     Normal = normal;
+Debug:     gl_Position = ModelViewProjectionMatrix * vec4(position, 1.0);
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec3 Normal;
+Debug: 
+Debug: void main()
+Debug: {
+Debug:     gl_FragColor = vec4(Normal, 1.0);
+Debug: }
+Info: [refract] <default>: FPS: 2 FrameTime: 666.667 ms
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: // Removing this varying causes an inexplicable performance regression
+Debug: // with r600g... Keeping it for now.
+Debug: varying vec4 dummy;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     dummy = vec4(1.0);
+Debug: 
+Debug:     float d = fract(position.x);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: 
+Debug: 
+Debug:     vec4 pos = vec4(position.x,
+Debug:                     position.y + 0.1 * d * fract(position.x),
+Debug:                     position.z, 1.0);
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * pos;
+Debug: }
+Debug: 
+Debug: 
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dummy;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // should be declared highp since the multiplication can overflow in
+Debug:     // mediump, particularly if mediump is implemented as fp16
+Debug:     HIGHP_OR_DEFAULT vec2 FragCoord = gl_FragCoord.xy;
+Debug:     float d = fract(FragCoord.x * FragCoord.y * 0.0001);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(d, d, d, 1.0);
+Debug: }
+Debug: 
+Info: [conditionals] fragment-steps=0:vertex-steps=0: FPS: 316 FrameTime: 3.170 ms
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: // Removing this varying causes an inexplicable performance regression
+Debug: // with r600g... Keeping it for now.
+Debug: varying vec4 dummy;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     dummy = vec4(1.0);
+Debug: 
+Debug:     float d = fract(position.x);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: 
+Debug: 
+Debug:     vec4 pos = vec4(position.x,
+Debug:                     position.y + 0.1 * d * fract(position.x),
+Debug:                     position.z, 1.0);
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * pos;
+Debug: }
+Debug: 
+Debug: 
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dummy;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // should be declared highp since the multiplication can overflow in
+Debug:     // mediump, particularly if mediump is implemented as fp16
+Debug:     HIGHP_OR_DEFAULT vec2 FragCoord = gl_FragCoord.xy;
+Debug:     float d = fract(FragCoord.x * FragCoord.y * 0.0001);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(d, d, d, 1.0);
+Debug: }
+Debug: 
+Info: [conditionals] fragment-steps=5:vertex-steps=0: FPS: 281 FrameTime: 3.559 ms
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: // Removing this varying causes an inexplicable performance regression
+Debug: // with r600g... Keeping it for now.
+Debug: varying vec4 dummy;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     dummy = vec4(1.0);
+Debug: 
+Debug:     float d = fract(position.x);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug:     if (d >= 0.5)
+Debug:         d = fract(2.0 * d);
+Debug:     else
+Debug:         d = fract(3.0 * d);
+Debug: 
+Debug: 
+Debug:     vec4 pos = vec4(position.x,
+Debug:                     position.y + 0.1 * d * fract(position.x),
+Debug:                     position.z, 1.0);
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * pos;
+Debug: }
+Debug: 
+Debug: 
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dummy;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // should be declared highp since the multiplication can overflow in
+Debug:     // mediump, particularly if mediump is implemented as fp16
+Debug:     HIGHP_OR_DEFAULT vec2 FragCoord = gl_FragCoord.xy;
+Debug:     float d = fract(FragCoord.x * FragCoord.y * 0.0001);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(d, d, d, 1.0);
+Debug: }
+Debug: 
+Info: [conditionals] fragment-steps=0:vertex-steps=5: FPS: 337 FrameTime: 2.967 ms
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: // Removing this varying causes an inexplicable performance regression
+Debug: // with r600g... Keeping it for now.
+Debug: varying vec4 dummy;
+Debug: 
+Debug: float process(float d)
+Debug: {
+Debug:         d = fract(3.0 * d);
+Debug: 
+Debug:     return d;
+Debug: }
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     dummy = vec4(1.0);
+Debug: 
+Debug:     float d = fract(position.x);
+Debug: 
+Debug:     #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     d = process(d);
+Debug: 
+Debug: 
+Debug:     vec4 pos = vec4(position.x,
+Debug:                     position.y + 0.1 * d * fract(position.x),
+Debug:                     position.z, 1.0);
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * pos;
+Debug: }
+Debug: 
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dummy;
+Debug: 
+Debug: float process(float d)
+Debug: {
+Debug:     d = fract(3.0 * d);
+Debug: 
+Debug:     return d;
+Debug: }
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // should be declared highp since the multiplication can overflow in
+Debug:     // mediump, particularly if mediump is implemented as fp16
+Debug:     HIGHP_OR_DEFAULT vec2 FragCoord = gl_FragCoord.xy;
+Debug:     float d = fract(FragCoord.x * FragCoord.y * 0.0001);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     d = process(d);
+Debug:     d = process(d);
+Debug:     d = process(d);
+Debug:     d = process(d);
+Debug:     d = process(d);
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(d, d, d, 1.0);
+Debug: }
+Info: [function] fragment-complexity=low:fragment-steps=5: FPS: 314 FrameTime: 3.185 ms
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: 
+Debug: // Removing this varying causes an inexplicable performance regression
+Debug: // with r600g... Keeping it for now.
+Debug: varying vec4 dummy;
+Debug: 
+Debug: float process(float d)
+Debug: {
+Debug:         d = fract(3.0 * d);
+Debug: 
+Debug:     return d;
+Debug: }
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     dummy = vec4(1.0);
+Debug: 
+Debug:     float d = fract(position.x);
+Debug: 
+Debug:     #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     d = process(d);
+Debug: 
+Debug: 
+Debug:     vec4 pos = vec4(position.x,
+Debug:                     position.y + 0.1 * d * fract(position.x),
+Debug:                     position.z, 1.0);
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * pos;
+Debug: }
+Debug: 
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dummy;
+Debug: 
+Debug: float process(float d)
+Debug: {
+Debug:     d = fract(3.0 * d) * fract(3.0 * d);
+Debug:     d = fract(sqrt(d));
+Debug: 
+Debug:     return d;
+Debug: }
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // should be declared highp since the multiplication can overflow in
+Debug:     // mediump, particularly if mediump is implemented as fp16
+Debug:     HIGHP_OR_DEFAULT vec2 FragCoord = gl_FragCoord.xy;
+Debug:     float d = fract(FragCoord.x * FragCoord.y * 0.0001);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     d = process(d);
+Debug:     d = process(d);
+Debug:     d = process(d);
+Debug:     d = process(d);
+Debug:     d = process(d);
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(d, d, d, 1.0);
+Debug: }
+Info: [function] fragment-complexity=medium:fragment-steps=5: FPS: 267 FrameTime: 3.745 ms
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform int VertexLoops;
+Debug: 
+Debug: // Removing this varying causes an inexplicable performance regression
+Debug: // with r600g... Keeping it for now.
+Debug: varying vec4 dummy;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     dummy = vec4(1.0);
+Debug: 
+Debug:     float d = fract(position.x);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     for (int i = 0; i < VertexLoops; i++)
+Debug:         d = fract(3.0 * d);
+Debug: 
+Debug: 
+Debug:     vec4 pos = vec4(position.x,
+Debug:                     position.y + 0.1 * d * fract(position.x),
+Debug:                     position.z, 1.0);
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * pos;
+Debug: }
+Debug: 
+Debug: 
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dummy;
+Debug: uniform int FragmentLoops;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // should be declared highp since the multiplication can overflow in
+Debug:     // mediump, particularly if mediump is implemented as fp16
+Debug:     HIGHP_OR_DEFAULT vec2 FragCoord = gl_FragCoord.xy;
+Debug:     float d = fract(FragCoord.x * FragCoord.y * 0.0001);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     d = fract(3.0 * d);
+Debug:     d = fract(3.0 * d);
+Debug:     d = fract(3.0 * d);
+Debug:     d = fract(3.0 * d);
+Debug:     d = fract(3.0 * d);
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(d, d, d, 1.0);
+Debug: }
+Debug: 
+Info: [loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 310 FrameTime: 3.226 ms
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform int VertexLoops;
+Debug: 
+Debug: // Removing this varying causes an inexplicable performance regression
+Debug: // with r600g... Keeping it for now.
+Debug: varying vec4 dummy;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     dummy = vec4(1.0);
+Debug: 
+Debug:     float d = fract(position.x);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     for (int i = 0; i < VertexLoops; i++)
+Debug:         d = fract(3.0 * d);
+Debug: 
+Debug: 
+Debug:     vec4 pos = vec4(position.x,
+Debug:                     position.y + 0.1 * d * fract(position.x),
+Debug:                     position.z, 1.0);
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * pos;
+Debug: }
+Debug: 
+Debug: 
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dummy;
+Debug: uniform int FragmentLoops;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // should be declared highp since the multiplication can overflow in
+Debug:     // mediump, particularly if mediump is implemented as fp16
+Debug:     HIGHP_OR_DEFAULT vec2 FragCoord = gl_FragCoord.xy;
+Debug:     float d = fract(FragCoord.x * FragCoord.y * 0.0001);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     for (int i = 0; i < 5; i++)
+Debug:         d = fract(3.0 * d);
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(d, d, d, 1.0);
+Debug: }
+Debug: 
+Info: [loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 311 FrameTime: 3.215 ms
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Cannot infer shader type from contents. Leaving it Unknown.
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: uniform mat4 ModelViewProjectionMatrix;
+Debug: uniform int VertexLoops;
+Debug: 
+Debug: // Removing this varying causes an inexplicable performance regression
+Debug: // with r600g... Keeping it for now.
+Debug: varying vec4 dummy;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     dummy = vec4(1.0);
+Debug: 
+Debug:     float d = fract(position.x);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     for (int i = 0; i < VertexLoops; i++)
+Debug:         d = fract(3.0 * d);
+Debug: 
+Debug: 
+Debug:     vec4 pos = vec4(position.x,
+Debug:                     position.y + 0.1 * d * fract(position.x),
+Debug:                     position.z, 1.0);
+Debug: 
+Debug:     // Transform the position to clip coordinates
+Debug:     gl_Position = ModelViewProjectionMatrix * pos;
+Debug: }
+Debug: 
+Debug: 
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: varying vec4 dummy;
+Debug: uniform int FragmentLoops;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     // should be declared highp since the multiplication can overflow in
+Debug:     // mediump, particularly if mediump is implemented as fp16
+Debug:     HIGHP_OR_DEFAULT vec2 FragCoord = gl_FragCoord.xy;
+Debug:     float d = fract(FragCoord.x * FragCoord.y * 0.0001);
+Debug: 
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug:     for (int i = 0; i < FragmentLoops; i++)
+Debug:         d = fract(3.0 * d);
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(d, d, d, 1.0);
+Debug: }
+Debug: 
+Info: [loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 263 FrameTime: 3.802 ms
+Info: =======================================================
+Info:                                   glmark2 Score: 224 
+Info: =======================================================

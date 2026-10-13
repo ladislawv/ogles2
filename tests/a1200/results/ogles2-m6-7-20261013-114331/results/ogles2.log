@@ -1,0 +1,51 @@
+     1 ogles2.library 1.2 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x086C8C20
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 800x600, BGRA
+    13 device: context pools for 800x600, D32F, 19687296 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08F5CFE4, 800x600
+    15 glLinkProgram: OGLES2Cache:64c88307fd3f2afca1fe7e17.v3dp (5 variants, 2504 bytes of code)
+    16 glLinkProgram: OGLES2Cache:0d4adb7b4b5975df175243a2.v3dp (5 variants, 904 bytes of code)
+    17 glLinkProgram: OGLES2Cache:35cdef1afc2dca40df27541d.v3dp (5 variants, 568 bytes of code)
+    18 texture 0 sampled while incomplete (it reads black): no GPU copy, level 0 0x0, min filter 0x2702, level 1 of 1 missing or inconsistent (logged once a texture)
+    19 framebuffer 2 is not complete (0x8CD7): nothing drawn or read (logged once)
+    20 texture 3 sampled while incomplete (it reads black): no GPU copy, level 0 0x0, min filter 0x2601, level 1 of 1 missing or inconsistent (logged once a texture)
+    21 job: depth and stencil kept across a mid-frame flush (logged once)
+    22 texture 3 sampled while incomplete (it reads black): no GPU copy, level 0 0x0, min filter 0x2601, level 1 of 1 missing or inconsistent (logged once a texture)
+    23 texture 4 sampled while incomplete (it reads black): no GPU copy, level 0 0x0, min filter 0x2601, level 1 of 1 missing or inconsistent (logged once a texture)
+    24 texture 6 sampled while incomplete (it reads black): no GPU copy, level 0 0x0, min filter 0x2601, level 1 of 1 missing or inconsistent (logged once a texture)
+    25 glLinkProgram: OGLES2Cache:5aeb39d3bd430cc6fa84123d.v3dp (5 variants, 1984 bytes of code)
+    26 glLinkProgram: OGLES2Cache:027b59d0ae9ac1f388206793.v3dp (5 variants, 1240 bytes of code)
+    27 glLinkProgram: OGLES2Cache:689dd5d1725f285aa8dd1fce.v3dp (5 variants, 1272 bytes of code)
+    28 glLinkProgram: OGLES2Cache:e810451fbf78ca98f4a60096.v3dp (5 variants, 1056 bytes of code)
+    29 glLinkProgram: OGLES2Cache:196cfaceefcae030d232f74b.v3dp (5 variants, 1120 bytes of code)
+    30 glLinkProgram: OGLES2Cache:bf15622b3f8f277bf8f9a0e4.v3dp (5 variants, 3088 bytes of code)
+    31 glLinkProgram: OGLES2Cache:534b0bf8f5780d4e109feef4.v3dp (5 variants, 1096 bytes of code)
+    32 glLinkProgram: OGLES2Cache:aa8c90cec4630c80e7dcf970.v3dp (5 variants, 1288 bytes of code)
+    33 glLinkProgram: OGLES2Cache:8122cdc1f8df8155893f5d0b.v3dp (5 variants, 6640 bytes of code)
+    34 glLinkProgram: OGLES2Cache:46e7582d55411fd9cdddfd75.v3dp (5 variants, 1072 bytes of code)
+    35 glLinkProgram: OGLES2Cache:823fc80f7c90e6a43b19b22f.v3dp (5 variants, 720 bytes of code)
+    36 glLinkProgram: OGLES2Cache:8c868e9e10cf1bab3d47b512.v3dp (5 variants, 2496 bytes of code)
+    37 glLinkProgram: OGLES2Cache:8cb3edf3c9cd8d261970f55b.v3dp (5 variants, 920 bytes of code)
+    38 glLinkProgram: OGLES2Cache:7bba56146b31dfb6307399f7.v3dp (5 variants, 1880 bytes of code)
+    39 glLinkProgram: OGLES2Cache:78debee6fd79da07f9ff66b6.v3dp (5 variants, 1480 bytes of code)
+    40 glLinkProgram: OGLES2Cache:cae6090db8ee55314eeead5a.v3dp (5 variants, 1328 bytes of code)
+    41 glLinkProgram: OGLES2Cache:84dee6d620c33535bf3e0aa0.v3dp (5 variants, 1928 bytes of code)
+    42 glLinkProgram: OGLES2Cache:250d1b7de6755275d7953463.v3dp (5 variants, 1472 bytes of code)
+    43 glLinkProgram: OGLES2Cache:4bf2ee1a3efe4968fe4e2476.v3dp (5 variants, 1472 bytes of code)
+    44 glLinkProgram: OGLES2Cache:9cce32e5b16b1cbe12e682bd.v3dp (5 variants, 1400 bytes of code)
+    45 aglDestroyContext: context 0x08F5CFE4: freeing
+    46 device: context freed, 0 bytes of GPU memory still in use
+    47 aglDestroyContext: context 0x08F5CFE4 (7658 frames, 0 dropped, 0 binning blocks added)
+    48 timing: 7658 jobs, each on average: 3012 us of CPU work before its flush, 61 us waiting for binning, 691 us for the render
+    49 timing: and in each flush 63 us building the render list, 80 us for the CPU cache before the GPU, 57 us after
+    50 timing: 7036 swaps, 5966 us from one to the next on average, 1617 us of it presenting
+    51 timing: per frame 14 draws, 293 us in them; in all 51 ms in glBuffer(Sub)Data, 6 ms in glTex(Sub)Image2D

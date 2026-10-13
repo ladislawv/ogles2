@@ -1,0 +1,29 @@
+diff --git a/src/libmatrix/log.cc b/src/libmatrix/log.cc
+index 9b5373b..314eed3 100644
+--- a/src/libmatrix/log.cc
++++ b/src/libmatrix/log.cc
+@@ -167,7 +167,12 @@ Log::error(const char *fmt, ...)
+ 
+ #ifndef ANDROID
+     static const string& errcolor(isatty(fileno(stderr)) ? terminal_color_red : empty);
++#if GLMARK2_USE_AMIGA
++    /* An AmigaOS Shell cannot redirect stderr. */
++    print_prefixed_message(std::cout, errcolor, errprefix, fmt, ap);
++#else
+     print_prefixed_message(std::cerr, errcolor, errprefix, fmt, ap);
++#endif
+ #else
+     android_vlog(ANDROID_LOG_ERROR, appname_.c_str(), fmt, ap);
+ #endif
+@@ -187,7 +192,11 @@ Log::warning(const char *fmt, ...)
+ 
+ #ifndef ANDROID
+     static const string& warncolor(isatty(fileno(stderr)) ? terminal_color_magenta : empty);
++#if GLMARK2_USE_AMIGA
++    print_prefixed_message(std::cout, warncolor, warnprefix, fmt, ap);
++#else
+     print_prefixed_message(std::cerr, warncolor, warnprefix, fmt, ap);
++#endif
+ #else
+     android_vlog(ANDROID_LOG_WARN, appname_.c_str(), fmt, ap);
+ #endif

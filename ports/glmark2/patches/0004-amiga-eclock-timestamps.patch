@@ -1,0 +1,27 @@
+diff --git a/src/libmatrix/util.cc b/src/libmatrix/util.cc
+index 76054c0..33dc82d 100644
+--- a/src/libmatrix/util.cc
++++ b/src/libmatrix/util.cc
+@@ -227,12 +227,22 @@ Util::split(const string& src, char delim, vector<string>& elementVec,
+     }
+ }
+ 
++#if GLMARK2_USE_AMIGA
++/* AmigaOS 3: the E-clock (src/amiga-compat.cpp). std::chrono's steady_clock
++ * there counts whole seconds. */
++extern "C" unsigned long long amiga_timestamp_us(void);
++#endif
++
+ uint64_t
+ Util::get_timestamp_us()
+ {
++#if GLMARK2_USE_AMIGA
++    return amiga_timestamp_us();
++#else
+     return
+         std::chrono::duration_cast<std::chrono::microseconds>(
+             std::chrono::steady_clock::now().time_since_epoch()).count();
++#endif
+ }
+ 
+ #ifndef ANDROID

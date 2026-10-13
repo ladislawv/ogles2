@@ -1,0 +1,40 @@
+diff --git a/src/main.cpp b/src/main.cpp
+index 3d6fff8..c936c71 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -49,6 +49,8 @@
+ #include "native-state-win32.h"
+ #elif GLMARK2_USE_NULL
+ #include "native-state-null.h"
++#elif GLMARK2_USE_AMIGA
++#include "native-state-amiga.h"
+ #endif
+ 
+ #if GLMARK2_USE_EGL
+@@ -57,6 +59,8 @@
+ #include "gl-state-glx.h"
+ #elif GLMARK2_USE_WGL
+ #include "gl-state-wgl.h"
++#elif GLMARK2_USE_OGLES2
++#include "gl-state-ogles2.h"
+ #endif
+ 
+ using std::vector;
+@@ -174,6 +178,8 @@ main(int argc, char *argv[])
+     NativeStateWin32 native_state;
+ #elif GLMARK2_USE_NULL
+     NativeStateNull native_state;
++#elif GLMARK2_USE_AMIGA
++    NativeStateAmiga native_state;
+ #endif
+ 
+     if (!Options::parse_args(argc, argv))
+@@ -223,6 +229,8 @@ main(int argc, char *argv[])
+     GLStateWGL gl_state;
+ #elif GLMARK2_USE_FBO
+     GLStateFBO gl_state;
++#elif GLMARK2_USE_OGLES2
++    GLStateOGLES2 gl_state;
+ #endif
+ 
+     CanvasGeneric canvas(native_state, gl_state, Options::size.first, Options::size.second);

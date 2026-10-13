@@ -1315,8 +1315,22 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
 - **Tests:** `m6_ext` (88 checks) in package `m6-6`, whose step 5 runs it without binaries so the A1200 compiles every program and its `.v3dw` (87 checks, without the memory check: the compiler starts in it). `m2_texture` now tests an invalid type with `GL_INT` (`GL_FLOAT` is valid).
 - **A1200 runs:** `ogles2-m6-6-20261013-105143` (`m6_ext` 88/88, every earlier test as before) and `-105228` (step 5: 87/87; all nine binaries compiled on the A1200, `.v3dw` included, byte-identical to the PC's; m2_link 27/27 once a stale cache file from a run with an old compiler was gone); `ogles2-m2-5-20261013-105342` the corpus 14/14; `ogles2-m6-5-20261013-105533` Quake III 80.6 fps; 0 bytes of GPU memory left everywhere. `compare_v3dp.sh` 7/7 (with the `.v3dw` files), `scan_asm.sh` 0 suspect functions.
 
+**Done (2026-10-13): glmark2-es2 runs (an M6 exit criterion).**
+- **Port:** `ports/glmark2` (README there). glmark2 2023.01 (pinned commit `22c527c`) needs C++17 with `std::filesystem`, so it is built with GCC 16.2 and libnix (`-mcpu=68020 -m68881`); `libogles2.a` from the GCC 6.5 build links unchanged (both write Amiga hunk objects, and the import library is plain C). Two new backends: `NativeStateAmiga` (the ogles2 context and its window) and `GLStateOGLES2` (glad over `aglGetProcAddress`). GCC 16.2 keeps `fintrz`, so no `-fbbb` is needed there.
+- **Traps found in GCC 16.2's libstdc++ and libnix** (the port works around each; any C++ port with this toolchain meets them):
+  - libnix starts every program in the system locale (decimal comma here), and `setlocale(LC_ALL, "C")` does not undo it, so glmark2's shader constants came out as `1,0`. The port defines a C-only `setlocale`/`localeconv`/`__locale_mb_cur_max`, so libnix's `setlocale.o` is never linked.
+  - `std::filesystem::directory_iterator` returns nothing, with no error. The port uses `opendir`/`readdir`.
+  - `std::chrono::steady_clock::now()` is `time()`: whole seconds (each scene moved once a second). libnix's `clock_gettime` and `gettimeofday` tick at 50 Hz. The port reads timer.device's E-clock.
+  - libnix's headers declare `getrusage` and `statvfs` without `extern "C"`, and libstdc++ needs `__xpg_strerror_r`.
+  - An AmigaOS 3 Shell cannot redirect stderr, so the port's errors go to stdout.
+- **Result:** 800x600 window, default list at 10 s a scene: **score 253**, 32 of 33 scenes, 0 frames dropped in 94,230, 0 bytes of GPU memory left. `terrain` is "Unsupported" (it needs vertex texture fetch; ogles2 has 0 vertex texture units).
+- **Slow scenes:** `refract` 3 fps (`glGenerateMipmap` on a 1600x1200 render target every frame: CPU readback, box filter and re-upload, about 500 ms; the TFU is the fix) and `buffer` 49–83 fps (half of a 200-column buffer rewritten every frame).
+- **Not explained:** the A1200 froze twice during runs before the fixes (in `effect2d`'s set-up with the listing broken, and once in `shadow`). It did not recur in three full runs after them, and `shadow` alone for 10 s is steady (122 fps, constant GPU memory).
+- **Test:** package `m6-7` (`Run-M1` keys `DURATION`, `SIZE`, `BENCH`, `DEBUG`, `PROBE`).
+- **A1200 runs:** `ogles2-m6-7-20261013-122715` (E-clock, score 253) and `-122144` (seconds clock, with the periodic probe). Diagnosis: `-114113` (the decimal comma), `-114757` (errors on stdout), `-120850` and `-120914` (debug, the listing fixed), `-121925` (`refract` alone: 501 ms of CPU work a frame) and `-122111` (`shadow` alone).
+
 **Next, in order (M6: ecosystem, sharing and performance, §9):**
-1. **glmark2-es2** (an M6 exit criterion), and the other M6 scope not started: presentation (double or triple buffering, vsync), the TFU for mipmaps and uploads, 4x MSAA; optional: native ETC1 sampling; the large-reply stall (`amictld`).
+1. **The rest of M6's scope not started:** the TFU for mipmaps and uploads (`refract` above), presentation (double or triple buffering, vsync), 4x MSAA; optional: native ETC1 sampling; the large-reply stall (`amictld`).
 2. **Postponed (2026-10-13, the developer's decision):** per-draw CPU time for gl4es programs (the gl4es build: 23.3 ms a frame against MiniGL's 16.4; ogles2's draw about 28 us, 32 us for renderergl2's), and minigl.library coexistence (D3: the shared submission component with PiStorm3D's maintainers; the turn across programs above is ogles2's half).
 
 ---

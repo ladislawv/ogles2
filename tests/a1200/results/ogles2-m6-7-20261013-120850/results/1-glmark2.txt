@@ -1,0 +1,104 @@
+Info: =======================================================
+Info:     glmark2 2023.01-amiga
+Info: =======================================================
+Info:     OpenGL Information
+Info:     GL_VENDOR:      ogles2.library
+Info:     GL_RENDERER:    V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+Info:     GL_VERSION:     OpenGL ES 2.0 ogles2.library 1.2
+Info:     Surface Config: buf=32 r=8 g=8 b=8 a=8 depth=24 stencil=8 samples=0
+Info:     Surface Size:   800x600 windowed
+Info: =======================================================
+Debug: Reading PNG file PROGDIR:data/textures/effect-2d.png
+Debug:     Height: 800 Width: 600 Bpp: 3
+Debug: Parsing kernel matrix:
+Debug: 0.000000 0.000000 0.000000 
+Debug: 0.000000 1.000000 0.000000 
+Debug: 0.000000 0.000000 0.000000 
+Debug: Normalized kernel matrix:
+Debug: 0.000000 0.000000 0.000000 
+Debug: 0.000000 1.000000 0.000000 
+Debug: 0.000000 0.000000 0.000000 
+Debug: Loading vertex shader from file None:
+Debug: #if defined(GL_ES)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: attribute vec3 position;
+Debug: 
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     gl_Position = vec4(position, 1.0);
+Debug: 
+Debug:     TextureCoord = position.xy * 0.5 + 0.5;
+Debug: }
+Debug: Loading fragment shader from file None:
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: #if defined(GL_ES) && defined(GL_FRAGMENT_PRECISION_HIGH)
+Debug: #define HIGHP_OR_DEFAULT highp
+Debug: #else
+Debug: #define HIGHP_OR_DEFAULT
+Debug: #endif
+Debug: #if defined(GL_ES)
+Debug: #define MEDIUMP_OR_DEFAULT mediump
+Debug: #else
+Debug: #define MEDIUMP_OR_DEFAULT
+Debug: #endif
+Debug: #ifdef GL_ES
+Debug: precision mediump float;
+Debug: #endif
+Debug: const float Kernel0 = 0.000000;
+Debug: const float Kernel1 = 0.000000;
+Debug: const float Kernel2 = 0.000000;
+Debug: const float Kernel3 = 0.000000;
+Debug: const float Kernel4 = 1.000000;
+Debug: const float Kernel5 = 0.000000;
+Debug: const float Kernel6 = 0.000000;
+Debug: const float Kernel7 = 0.000000;
+Debug: const float Kernel8 = 0.000000;
+Debug: const float TextureStepY = 0.001667;
+Debug: const float TextureStepX = 0.001250;
+Debug: uniform sampler2D Texture0;
+Debug: varying vec2 TextureCoord;
+Debug: 
+Debug: void main(void)
+Debug: {
+Debug:     vec4 result;
+Debug: 
+Debug:     result = texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel0 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel1 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 1.0 * TextureStepY)) * Kernel2 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel3 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel4 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, 0.0 * TextureStepY)) * Kernel5 +
+Debug: texture2D(Texture0, TextureCoord + vec2(-1.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel6 +
+Debug: texture2D(Texture0, TextureCoord + vec2(0.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel7 +
+Debug: texture2D(Texture0, TextureCoord + vec2(1.0 * TextureStepX, -1.0 * TextureStepY)) * Kernel8;
+Debug: 
+Debug: 
+Debug:     gl_FragColor = vec4(result.xyz, 1.0);
+Debug: }
+Debug: 
+Info: [effect2d] <default>: FPS: 244 FrameTime: 4.098 ms
+Info: =======================================================
+Info:                                   glmark2 Score: 244 
+Info: =======================================================

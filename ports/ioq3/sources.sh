@@ -27,6 +27,9 @@ clone_pinned() {
     git -C "$dir" -c advice.detachedHead=false checkout -q "$commit" || { echo "$dir: no commit $commit"; return 1; }
 }
 
+# `. sources.sh --functions-only`: clone_pinned for another port's sources.
+[ "${1:-}" != --functions-only ] || return 0
+
 if [ -z "${IOQ3_SRC:-}" ]; then
     IOQ3_SRC=$HOME/ioq3-amiga
     clone_pinned "$IOQ3_SRC" "$IOQ3_AMIGA_URL" "$IOQ3_AMIGA_COMMIT" || exit 1

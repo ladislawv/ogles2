@@ -1,0 +1,90 @@
+diff --git a/src/libmatrix/util.cc b/src/libmatrix/util.cc
+index c113a86..76054c0 100644
+--- a/src/libmatrix/util.cc
++++ b/src/libmatrix/util.cc
+@@ -13,6 +13,11 @@
+ #include <sstream>
+ #include <fstream>
+ #include <chrono>
++#include <cstdio>
++#if GLMARK2_USE_AMIGA
++#include <cstring>
++#include <dirent.h>
++#endif
+ #ifdef ANDROID
+ #include <android/asset_manager.h>
+ #endif
+@@ -235,15 +240,50 @@ Util::get_timestamp_us()
+ std::istream *
+ Util::get_resource(const std::filesystem::path &path)
+ {
++#if GLMARK2_USE_AMIGA
++    /* AmigaOS 3 (libnix): the whole file through stdio into memory. The
++     * loaders seek about (3ds chunks), which libstdc++'s file streams did
++     * not do reliably there, and one read is faster. A missing file gives a
++     * failed stream, as an ifstream would. */
++    std::istringstream *iss = new std::istringstream(std::ios::binary);
++    FILE *f = fopen(path.string().c_str(), "rb");
++    if (!f) {
++        iss->setstate(std::ios::failbit);
++        return iss;
++    }
++    std::string data;
++    char buf[16384];
++    size_t n;
++    while ((n = fread(buf, 1, sizeof(buf), f)) > 0)
++        data.append(buf, n);
++    fclose(f);
++    iss->str(data);
++    return iss;
++#else
+     std::ifstream *ifs = new std::ifstream(path, std::ios::binary);
+ 
+     return static_cast<std::istream *>(ifs);
++#endif
+ }
+ 
+ void
+ Util::list_files(const std::filesystem::path& dirName,
+                  std::vector<std::filesystem::path>& fileVec)
+ {
++#if GLMARK2_USE_AMIGA
++    /* AmigaOS 3: GCC 16.2's std::filesystem::directory_iterator finds
++     * nothing there (and reports no error), so libnix's opendir/readdir,
++     * which do list a directory. */
++    DIR *dir = opendir(dirName.string().c_str());
++    if (!dir)
++        return;
++    struct dirent *entry;
++    while ((entry = readdir(dir)) != nullptr) {
++        if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, ".."))
++            fileVec.push_back(dirName / entry->d_name);
++    }
++    closedir(dir);
++#else
+     try
+     {
+         for (const auto& entry : std::filesystem::directory_iterator{dirName})
+@@ -252,6 +292,7 @@ Util::list_files(const std::filesystem::path& dirName,
+     catch (...)
+     {
+     }
++#endif
+ }
+ 
+ #else
+diff --git a/src/model.cpp b/src/model.cpp
+index 2802edf..610dcae 100644
+--- a/src/model.cpp
++++ b/src/model.cpp
+@@ -393,7 +393,9 @@ Model::load_3ds(const std::filesystem::path &filename)
+         // Read the chunk header
+         read_from_file(input_file, &chunk_id, 1, 2);
+         if (input_file.gcount() == 0) {
+-            continue;
++            /* The end, or a stream that failed (a seek past its end): either
++             * way nothing more comes, and the loop would never see eof(). */
++            break;
+         }
+         else if (input_file.gcount() < 2) {
+             Log::error("%s: %d: Failed to read %zd bytes from 3ds file (read %zd)\n",
