@@ -1,6 +1,7 @@
 ; Play-Quake - Quake III Arena with the GLES2 renderer on ogles2 (no gl4es), to play (not timed).
 ;   CD to the ogles2-m6-5 directory, then:   Execute Play-Quake
 ;   With the game elsewhere:   Execute Play-Quake Q3DATA=<the directory with baseq3>
+;   Another size, e.g.:      Execute Play-Quake WIDTH=1280 HEIGHT=720
 ;   No tearing (vsync; at most the display's 60 fps, 30 when a frame takes
 ;   longer than a refresh):    Execute Play-Quake VSYNC=1
 ; Full screen 640x480 at first; the menu's System settings offer every 32-bit
@@ -11,8 +12,10 @@
 ; AHI (16 bit; the engine falls back to Paula if AHI does not start).
 ; The game's own files (config, logs) go to home/ here; nothing is written
 ; to the game's directory. Quit from the game's menu (Escape, Exit).
-.key Q3DATA/K,VSYNC/K
+.key Q3DATA/K,VSYNC/K,WIDTH/K,HEIGHT/K
 .def VSYNC 0
+.def WIDTH 0
+.def HEIGHT 0
 .def Q3DATA "Stuff:Quake3-68k-beta10/Quake3-68k-beta10"
 .bra {
 .ket }
@@ -36,7 +39,13 @@ Assign LIBS: M6R5:libs ADD
 Assign OGLES2Cache: M6R5:cache
 ; The modules load from the current directory.
 CD M6R5:bin
-M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 +set r_swapInterval {VSYNC} +set cg_drawFPS 1
+; A size of its own: ioquake3's custom mode (r_mode -1).
+Set Q3MODE "+set r_mode 3"
+If {WIDTH} GT 0 VAL
+  Set Q3MODE "+set r_mode -1 +set r_customwidth {WIDTH} +set r_customheight {HEIGHT}"
+EndIf
+M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 $Q3MODE +set r_swapInterval {VSYNC} +set cg_drawFPS 1
+UnSet Q3MODE
 CD M6R5:
 Assign OGLES2Cache:
 Assign LIBS: M6R5:libs REMOVE
