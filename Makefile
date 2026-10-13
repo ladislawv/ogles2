@@ -31,7 +31,7 @@ LIBLINK := $(CPU) -mcrt=clib2 -nostdlib -nostartfiles -nodefaultlibs -noixemul
 V3D_FLAGS := -std=c99 -O2 -fno-strict-aliasing -fno-builtin-cos -fno-builtin-sin -finline-functions \
              -DMGLV3D_NO_LOGGING $(CPU) -mcrt=clib2 -Iv3dcore/include
 V3D_SRC   := v3d_assembler v3d_clbuf v3d_commands v3d_context v3d_device v3d_frame v3d_hw \
-             v3d_mem_allocvec v3d_submit_timeout v3d_texture v3d_debug v3d_gpu_lock
+             v3d_mem_allocvec v3d_submit_timeout v3d_texture v3d_debug v3d_gpu_lock v3d_tfu
 V3D_OBJ   := $(V3D_SRC:%=$(B)/obj/v3dcore/%.o)
 V3D_HDR   := $(wildcard v3dcore/include/*.h v3dcore/hw/*.h)
 
@@ -54,7 +54,7 @@ CLIENT_OBJ := $(patsubst %.c,$(B)/obj/%.o,$(CLIENT_SRC)) $(B)/obj/client/lvo.o \
 .PHONY: all gen clean vbcc
 all: $(B)/fpcheck.ok $(B)/libv3dcore.a $(B)/ogles2.library $(B)/libogles2.a $(B)/tests/abi_layout $(B)/tests/smoke \
      $(B)/tests/abi_probe $(B)/tests/m1_clear $(B)/tests/m1_probe $(B)/tests/m1_draw $(B)/tests/m1_hwprobe $(B)/tests/m1_soak $(B)/tests/m2_link $(B)/tests/m2_texture $(B)/tests/m2_elements $(B)/tests/m2_buffers $(B)/tests/m4_stress $(B)/tests/m4_depth $(B)/tests/m4_setbitmap $(B)/tests/gears_gles2 $(B)/tests/cachetime $(B)/tests/emuspeed $(B)/tests/m5_fbo \
-     $(B)/tests/rtt_churn $(B)/tests/m6_share $(B)/tests/m6_tasks $(B)/tests/m6_ext $(B)/cmd/OGLES2Log $(B)/amictl/amictld
+     $(B)/tests/rtt_churn $(B)/tests/m6_share $(B)/tests/m6_tasks $(B)/tests/m6_ext $(B)/tests/m6_tfu $(B)/cmd/OGLES2Log $(B)/amictl/amictld
 
 # ---- generated code (plan section 6.6). Re-run when the inputs or the set of
 # implemented ogles2_* functions change.
@@ -175,6 +175,10 @@ $(B)/tests/m6_tasks: tests/m6_share/m6_tasks.c $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
 $(B)/tests/m6_ext: tests/m6_ext/m6_ext.c tests/common/ext_shaders.h $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m6_tfu: tests/m6_tfu/m6_tfu.c tests/common/smooth_shaders.h tests/common/tex_shaders.h \
+                   $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
 $(B)/tests/m4_setbitmap: tests/m4_setbitmap/m4_setbitmap.c $(B)/libogles2.a

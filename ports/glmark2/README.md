@@ -128,10 +128,15 @@ On the A1200 (Emu68 on a Raspberry Pi 4), on 2026-10-13, with an
 - `terrain` reports "Unsupported". It needs vertex texture fetch, and
   ogles2 has 0 vertex texture units.
 
-Three scenes are slow:
+Three scenes were slow at first:
 
 | Scene | FPS | Cause |
 |---|---|---|
-| `refract` | 3 | It calls `glGenerateMipmap` on a 1600x1200 render target every frame. ogles2's version is the CPU path: it reads back level 0, box-filters on the 68k and re-uploads the chain, about 500 ms. The TFU is the planned fix. |
-| `buffer` (map) | 49–83 | Each frame updates half of a 200-column buffer. |
-| `buffer` (subdata) | 49 | The same updates, through `glBufferSubData`. |
+| `refract` | 3, now 48 | It calls `glGenerateMipmap` on a 1600x1200 render target every frame. ogles2 did that on the CPU: it read back level 0, box-filtered on the 68k and re-uploaded the chain, about 500 ms. Since the same day the GPU's TFU makes the levels. |
+| `buffer` (map) | 50–83 | Each frame updates half of a 200-column buffer. |
+| `buffer` (subdata) | 50 | The same updates, through `glBufferSubData`. |
+
+With the TFU, the whole list at 10 s a scene scored **251**, with 0 frames
+dropped in 94,421. That is about the same as 253 before, because the score
+is the average over 32 scenes: one scene going from 3 to 48 fps adds about
+1.4 points, within the other scenes' run-to-run variation.

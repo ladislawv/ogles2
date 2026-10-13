@@ -72,6 +72,29 @@
 #define V3D_HUB_IDENT3 *(volatile uint32_t*)(V3D_HUB_BASE+0x00014) /* ogles2: revision in bits 15:8 (Mesa, Linux v3d_regs.h) */
 #define V3D_HUB_AXICFG *(volatile uint32_t*)(V3D_HUB_BASE)
 
+/* ogles2: the TFU (texture formatting unit), hub registers of V3D 4.x
+ * (Linux drivers/gpu/drm/v3d/v3d_regs.h, rpi-6.6.y: V3D_TFU_*; V3D 7.x
+ * moved them to 0x700). Written LE32 like every register here; ICFG last,
+ * which starts the job (the kernel's v3d_tfu_job_run). */
+#define V3D_TFU_CS     *(volatile uint32_t*)(V3D_HUB_BASE+0x00400)
+#define V3D_TFU_SU     *(volatile uint32_t*)(V3D_HUB_BASE+0x00404)
+#define V3D_TFU_ICFG   *(volatile uint32_t*)(V3D_HUB_BASE+0x00408)
+#define V3D_TFU_IIA    *(volatile uint32_t*)(V3D_HUB_BASE+0x0040c) /* input image address */
+#define V3D_TFU_ICA    *(volatile uint32_t*)(V3D_HUB_BASE+0x00410) /* input chroma address */
+#define V3D_TFU_IIS    *(volatile uint32_t*)(V3D_HUB_BASE+0x00414) /* input image stride */
+#define V3D_TFU_IUA    *(volatile uint32_t*)(V3D_HUB_BASE+0x00418) /* input U-plane address */
+#define V3D_TFU_IOA    *(volatile uint32_t*)(V3D_HUB_BASE+0x0041c) /* output image address */
+#define V3D_TFU_IOS    *(volatile uint32_t*)(V3D_HUB_BASE+0x00420) /* output size: height<<16 | width */
+#define V3D_TFU_COEF0  *(volatile uint32_t*)(V3D_HUB_BASE+0x00424) /* YUV coefficients (unused: 0) */
+#define V3D_TFU_COEF1  *(volatile uint32_t*)(V3D_HUB_BASE+0x00428)
+#define V3D_TFU_COEF2  *(volatile uint32_t*)(V3D_HUB_BASE+0x0042c)
+#define V3D_TFU_COEF3  *(volatile uint32_t*)(V3D_HUB_BASE+0x00430)
+/* V3D_TFU_CS, natural bit order (test the LE32-swapped word). */
+#define V3D_TFU_CS_TFURST      0x80000000 /* stops the current job, empties the input FIFO */
+#define V3D_TFU_CS_CVTCT_SHIFT 16         /* bits 23:16, conversions completed (wraps) */
+#define V3D_TFU_CS_CVTCT_MASK  0xFF
+#define V3D_TFU_CS_BUSY        0x00000001
+
 #define V3D_IDENT0	*(volatile uint32_t*)(V3D_BASE+0x00000)	// V3D Identification 0 (V3D block identity)
 #define V3D_IDENT1	*(volatile uint32_t*)(V3D_BASE+0x00004)	// V3D Identification 1 (V3D Configuration A)
 #define V3D_IDENT2	*(volatile uint32_t*)(V3D_BASE+0x00008)	// V3D Identification 2 (V3D Configuration B)

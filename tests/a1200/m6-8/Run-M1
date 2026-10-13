@@ -1,0 +1,64 @@
+; Run-M1 - ogles2 M6 run 8: glGenerateMipmap with the TFU. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m6-8 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M6R8: ""
+If NOT EXISTS M6R8:results
+  MakeDir M6R8:results
+EndIf
+Echo "ogles2 M6 run 8, starting at step {FROM}" >>M6R8:results/00-progress.txt
+Date >>M6R8:results/00-progress.txt
+Assign LIBS: M6R8:libs ADD
+; Expunge libraries nobody has open: an ogles2.library left in memory by an
+; earlier run would otherwise be used instead of this package's.
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M6R8:results/ogles2.log
+
+; Probe M: the CPU makes the levels, as before the TFU. The same checks, and
+; its timings to compare with step 2's.
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 3: mipmaps on the CPU, as before (nothing to see)"
+  SetEnv OGLES2/Probe M
+  M6R8:bin/m6_tfu >M6R8:results/1-tfu-cpu.txt
+  UnSetEnv OGLES2/Probe
+  Echo "step 1 done" >>M6R8:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 3: mipmaps with the TFU (nothing to see)"
+  M6R8:bin/m6_tfu >M6R8:results/2-tfu.txt
+  Echo "step 2 done" >>M6R8:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 3: textures and framebuffer objects, with the TFU (nothing to see)"
+  M6R8:bin/m2_texture BITMAP QUICK >M6R8:results/3-texture.txt
+  M6R8:bin/m5_fbo >M6R8:results/3-fbo.txt
+  Echo "step 3 done" >>M6R8:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M6R8:libs REMOVE
+Avail FLUSH >NIL:
+If NOT EXISTS M6R8:results/notes.txt
+  Copy M6R8:notes-template.txt M6R8:results/notes.txt
+EndIf
+List M6R8:results >M6R8:results/99-files.txt
+Echo "finished" >>M6R8:results/00-progress.txt
+Date >>M6R8:results/00-progress.txt
+Assign M6R8:
+Echo ""
+Echo "Done. Results are in results/."

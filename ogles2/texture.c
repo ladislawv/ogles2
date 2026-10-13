@@ -30,6 +30,8 @@
 #include "v3d_clbuf.h"
 #include "v3d_hw.h"
 #include "v3d_texture.h"
+#include "v3d_tfu.h"
+#include "v3d_gpu_lock.h"
 #include "etc1.h"
 
 extern v3d_u32 g_v3d_cl_generation; /* v3d_frame.c: bumped whenever a control list restarts */
@@ -95,6 +97,7 @@ struct OGLES2TexState
     struct OGLES2Texture fallback;  /* 1x1 (0,0,0,1): what an incomplete texture samples */
     UBYTE active;
     BOOL warned_flush;
+    BOOL logged_tfu;                /* glGenerateMipmap's first TFU job logged */
 };
 
 static void sync(struct OGLES2Texture *t);
@@ -1977,6 +1980,65 @@ static void box_down_float(const GLfloat *src, int sw, int sh, GLfloat *dst, int
         }
 }
 
+/* glGenerateMipmap on the GPU (plan 7.6's "later"): the TFU filters levels
+ * 1 .. n-1 from level 0 where it is, in the texture's GPU memory. The CPU
+ * path below filters the RAM copies and uploads the whole chain, after a
+ * read-back when the GPU drew level 0: glmark2's refract, a 1600x1200
+ * render target every frame, spent 500 ms a frame there. Only for a 2D
+ * texture whose GPU copy already has the chain, laid out by an earlier
+ * glGenerateMipmap or the levels given (the first call takes the CPU path),
+ * in a format the TFU filters. The levels it writes are newer on the GPU
+ * than their RAM copies, as a render target's are (read back when the CPU
+ * needs them, sync). Probe M keeps the CPU path. FALSE: the CPU path runs. */
+#define TFU_LOCK_TIMEOUT_MS 5000 /* job.c's GPU_LOCK_TIMEOUT_MS */
+static BOOL generate_tfu(struct OGLES2Context *ctx, struct OGLES2TexState *ts, struct OGLES2Texture *t, int n)
+{
+    struct OGLES2Face *f = &t->f[0];
+    struct OGLES2Context *m, *user;
+    ULONG made = ((1UL << n) - 1) & ~1UL; /* levels 1 .. n-1 */
+    int l, r;
+    if ((ctx->probe & OGLES2_PROBE_CPU_MIPMAP) || !ctx->v3d || faces(t) != 1 || n < 2 || !t->gpu ||
+        !t->gpu->texture_mem.hostptr || t->gpu->num_levels < n || !v3d_tfu_supports_mipmaps(t->hw_type))
+        return FALSE;
+    for (l = 1; l < n; l++) {
+        int w = f->w[l - 1] > 1 ? f->w[l - 1] / 2 : 1, h = f->h[l - 1] > 1 ? f->h[l - 1] / 2 : 1;
+        if (!(f->defined & (1UL << l)) || !f->shadow[l] || f->w[l] != w || f->h[l] != h ||
+            f->format[l] != f->format[0] || f->type[l] != f->type[0])
+            return FALSE;
+    }
+    /* The job that draws level 0 rendered first (any member's)... */
+    for (m = ctx->share->first; m; m = m->share_next)
+        ogles2_fbo_texture_changing(m, t);
+    /* ...and one that samples the texture and has not rendered yet: it must
+     * see the old levels, which the TFU writes over in place (renaming, as
+     * before_change does, would need the levels in RAM: the read-back this
+     * path is for). Usually rendered already: the next job's start waits
+     * for the one before. */
+    if (t->used_serial && (user = ogles2_job_user(ctx, t->used_serial)) != 0 && user->v3d) {
+        ogles2_job_flush(user, FALSE);
+        ogles2_job_finish(user);
+    }
+    CacheClearE(0, ~0UL, CACRF_ClearD); /* the CPU's writes to level 0 in memory */
+    if (!v3d_gpu_lock(ogles2_device_gpu_lock(), TFU_LOCK_TIMEOUT_MS))
+        return FALSE;
+    r = v3d_tfu_generate_mipmaps(ogles2_device(), t->gpu, t->hw_type, (v3d_u8)(n - 1));
+    v3d_gpu_unlock(ogles2_device_gpu_lock());
+    if (r) {
+        if (r == -2)
+            ogles2_log("glGenerateMipmap: the TFU did not finish (texture %ld, %ldx%ld): "
+                       "the CPU makes the levels", (ULONG)t->name, (ULONG)f->w[0], (ULONG)f->h[0]);
+        return FALSE;
+    }
+    f->rendered |= made;
+    f->blank &= ~made;
+    if (!ts->logged_tfu) {
+        ts->logged_tfu = TRUE;
+        ogles2_log("glGenerateMipmap: the TFU (texture %ld, %ldx%ld, %ld levels; logged once)",
+                   (ULONG)t->name, (ULONG)f->w[0], (ULONG)f->h[0], (ULONG)n);
+    }
+    return TRUE;
+}
+
 void ogles2_glGenerateMipmap(struct OGLES2Context *ctx, GLenum target)
 {
     struct OGLES2TexState *ts;
@@ -2003,8 +2065,10 @@ void ogles2_glGenerateMipmap(struct OGLES2Context *ctx, GLenum target)
         ogles2_error(ctx, GL_INVALID_OPERATION);
         return;
     }
-    before_change(ctx, ts, t);
     n = level_count(t->f[0].w[0], t->f[0].h[0]);
+    if (generate_tfu(ctx, ts, t, n))
+        return;
+    before_change(ctx, ts, t);
     for (k = 0; k < faces(t); k++) {
         struct OGLES2Face *f = &t->f[k];
         for (l = 1; l < n; l++) {

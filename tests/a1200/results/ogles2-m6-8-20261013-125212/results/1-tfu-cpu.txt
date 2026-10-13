@@ -1,0 +1,15 @@
+ogles2 M6: glGenerateMipmap with the TFU
+PASS: smooth and tex1: link
+PASS: upload, first glGenerateMipmap: 8 levels against a 2x2 box filter, largest difference 0 (level -1)
+PASS: upload, new level 0, glGenerateMipmap again: 8 levels against a 2x2 box filter, largest difference 0 (level -1)
+PASS: upload: glGenerateMipmap of 256x256 took 3989 us
+PASS: npot 200x120, first: 7 levels against a 2x2 box filter, largest difference 0 (level -1)
+PASS: npot 200x120, again: 7 levels against a 2x2 box filter, largest difference 0 (level -1)
+PASS: target: 512x512 complete
+PASS: target: drawn, mipmapped: each level's four quadrants (levels 2..8)
+PASS: target: 20 frames of a 512x512 draw and glGenerateMipmap, 46185 us each
+PASS: RGB565: level 3 a5a252 (a5a252, each within 8)
+PASS: RGBA4: level 3 33cc66 (33cc66, each within 17)
+PASS: no GL error left over
+PASS: destroy returns the memory (-264 bytes difference)
+ALL PASSED: 13 of 13 checks passed

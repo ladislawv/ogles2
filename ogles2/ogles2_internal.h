@@ -496,6 +496,7 @@ struct OGLES2Context
 /* M6 diagnosis (a program that hangs or slows down): */
 #define OGLES2_PROBE_TRACE     64UL  /* T: log every glDelete* call and each step of aglDestroyContext */
 #define OGLES2_PROBE_PERIODIC 128UL  /* P: every 256 swaps, the timing, GPU memory and renames since the last */
+#define OGLES2_PROBE_CPU_MIPMAP 256UL /* M: glGenerateMipmap on the CPU, not the TFU (texture.c) */
 
 void ogles2_state_init(struct OGLES2Context *ctx);
 BOOL ogles2_state_dither(struct OGLES2Context *ctx); /* GL_DITHER enabled */

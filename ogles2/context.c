@@ -105,6 +105,8 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
                     ctx->probe |= OGLES2_PROBE_PERIODIC;
                 else if (*p == 'A')
                     ctx->probe |= OGLES2_PROBE_ADDR;
+                else if (*p == 'M')
+                    ctx->probe |= OGLES2_PROBE_CPU_MIPMAP;
             }
             ogles2_log("aglCreateContext2: probes \"%s\" (ENV:OGLES2/Probe)", var);
             if ((ctx->probe & OGLES2_PROBE_ADDR) &&
