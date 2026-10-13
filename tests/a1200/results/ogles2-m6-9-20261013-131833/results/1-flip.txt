@@ -1,0 +1,7 @@
+ogles2 M6: presentation on the RTG screen (watch the white bar)
+screen mode 0x50031300
+1 single buffer, no wait: 5448 frames in 3 s, 1816 fps
+2 single buffer, WaitTOF: 150 frames in 3 s, 50 fps
+3 ChangeScreenBuffer, safe message: 173 frames in 3 s, 57 fps, 0 flips refused
+4 ChangeScreenBuffer, safe and displayed messages: 171 frames in 3 s, 57 fps, 0 flips refused
+done

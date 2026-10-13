@@ -1,0 +1,12 @@
+task priority 10 (was 0)
+ogles2 M6: presentation on the RTG screen (watch the white bar)
+screen mode 0x50031300
+3 ChangeScreenBuffer, safe message: 601 frames in 10 s, 60 fps, 0 flips refused
+  between safe messages: 599 intervals, 11779-21557 us, mean 16666 us; most 17 ms; 0 longer than 1.5x that
+   ms:count 12:1 17:597 22:1
+4 ChangeScreenBuffer, safe and displayed messages: 599 frames in 10 s, 59 fps, 0 flips refused
+  between safe messages: 597 intervals, 11506-33398 us, mean 16722 us; most 17 ms; 2 longer than 1.5x that
+   ms:count 12:1 16:1 17:591 18:1 22:1 33:2
+  between displayed messages: 597 intervals, 11488-33438 us, mean 16722 us; most 17 ms; 2 longer than 1.5x that
+   ms:count 11:1 16:2 17:590 18:1 22:1 33:2
+done

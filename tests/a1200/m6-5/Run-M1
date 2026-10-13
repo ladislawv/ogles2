@@ -6,14 +6,16 @@
 ;   With sound (AHI):              Execute Run-M1 SOUND=1
 ;   GL calls timed per function:   Execute Run-M1 PROFILE=1 (results/1-timedemo.txt)
 ;   Quake's own split per frame:   Execute Run-M1 SPEEDS=1 (results/qconsole.log)
+;   Vsync (r_swapInterval 1):      Execute Run-M1 VSYNC=1
 ; Nothing is installed and nothing is written to the game's directory: the
 ; game's own files (config, logs, screenshots) go to home/ here. Output goes
 ; to results/.
-.key Q3DATA/K,FRAMES/K,SOUND/K,PROFILE/K,SPEEDS/K
+.key Q3DATA/K,FRAMES/K,SOUND/K,PROFILE/K,SPEEDS/K,VSYNC/K
 .def FRAMES 400
 .def SOUND 0
 .def PROFILE 0
 .def SPEEDS 0
+.def VSYNC 0
 .def Q3DATA "Stuff:Quake3-68k-beta10/Quake3-68k-beta10"
 .bra {
 .ket }
@@ -69,13 +71,13 @@ If {SPEEDS} EQ 1 VAL
   Set Q3LOG "+set logfile 1 +set com_speeds 1"
 EndIf
 If {FRAMES} EQ 0 VAL
-  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 $Q3SND $Q3LOG +set nextdemo quit +timedemo 1 +demo four >M6R5:results/1-timedemo.txt
+  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 +set r_swapInterval {VSYNC} $Q3SND $Q3LOG +set nextdemo quit +timedemo 1 +demo four >M6R5:results/1-timedemo.txt
 Else
   ; The game takes a screenshot after {FRAMES} frames ("wait N" holds the
   ; rest of the command line that many frames; loading takes about 230 of
   ; them) and quits.
   Echo "  It stops after {FRAMES} frames."
-  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 $Q3SND $Q3LOG +set nextdemo quit +timedemo 1 +demo four +wait {FRAMES} +screenshot +wait 5 +quit >M6R5:results/1-timedemo.txt
+  M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 +set r_swapInterval {VSYNC} $Q3SND $Q3LOG +set nextdemo quit +timedemo 1 +demo four +wait {FRAMES} +screenshot +wait 5 +quit >M6R5:results/1-timedemo.txt
 EndIf
 UnSetEnv OGLES2/Probe
 UnSet Q3SND

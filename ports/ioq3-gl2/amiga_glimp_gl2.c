@@ -340,9 +340,12 @@ static qboolean GLimp_SetMode(int mode, qboolean fullscreen)
 			ri.Printf(PRINT_ALL, "...no BGRA32/RGBA32 screen mode of %dx%d\n", glConfig.vidWidth, glConfig.vidHeight);
 			return qfalse;
 		}
+		/* r_swapInterval 1 (latched, as upstream's): ogles2 flips two screen
+		 * buffers at the display's refresh, no tearing (plan 7.2). */
 		glcontext = aglCreateContextTags2(&err, OGLES2_CCT_MODEID, id, OGLES2_CCT_PISTORM_WIDTH, glConfig.vidWidth,
 		                                  OGLES2_CCT_PISTORM_HEIGHT, glConfig.vidHeight, OGLES2_CCT_DEPTH, 24,
-		                                  OGLES2_CCT_STENCIL, 8, OGLES2_CCT_VSYNC, FALSE, TAG_DONE);
+		                                  OGLES2_CCT_STENCIL, 8, OGLES2_CCT_VSYNC,
+		                                  (ULONG)(r_swapInterval->integer ? TRUE : FALSE), TAG_DONE);
 	}
 	else
 	{

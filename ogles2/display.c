@@ -287,9 +287,128 @@ void ogles2_display_drop(struct OGLES2Display *d)
     d->bitmap = 0;
 }
 
+/* ---- vsync on a screen of our own (plan 7.2) ----
+ * Two screen buffers: the GPU renders into the hidden one, which
+ * ChangeScreenBuffer shows at the display's next refresh, and draws into the
+ * other only after its safe message (RKRM's protocol). On the PiStorm's RTG
+ * (M6 run 9, m6_flip) this shows no tearing and follows the HDMI refresh
+ * (57-58 flips a second at 640x480), where WaitTOF waits for the chipset's
+ * 50 Hz and the single buffer tears. The display messages are not asked for
+ * (no reply port): the safe message is what the next frame needs. */
+/* From the wait for the safe message to the next flip, the task runs at
+ * priority 10 at least (its own again after ChangeScreenBuffer): at
+ * priority 0, behind a busy task of the same priority, the next flip
+ * missed about 2 refreshes a second, a visible stutter (M6 run 9, m6_flip:
+ * 20-23 of 600 flips late at 0, 0-2 at 10). Raising only the wait was not
+ * enough with GL (m6_vsync: 17-20 of 400 late): the render the flip waits
+ * for and the flip itself must follow at once. The program's work before
+ * its frame's first flush keeps its own priority. */
+#define FLIP_WAIT_PRI 10
+static void boost_end(struct OGLES2Display *d)
+{
+    if (d->boosted) {
+        SetTaskPri(d->boosted, d->boost_pri);
+        d->boosted = 0;
+    }
+}
+
+static void flip_wait_safe(struct OGLES2Display *d)
+{
+    struct Task *me;
+    if (!d->safe_wait)
+        return;
+    me = FindTask(0);
+    if (!d->boosted && me->tc_Node.ln_Pri < FLIP_WAIT_PRI) {
+        d->boost_pri = me->tc_Node.ln_Pri;
+        d->boosted = me;
+        SetTaskPri(me, FLIP_WAIT_PRI);
+    }
+    while (!GetMsg(d->safe_port))
+        Wait(1UL << d->safe_port->mp_SigBit);
+    d->safe_wait = FALSE;
+    {
+        /* A missed refresh at 60 Hz (or a frame slower than one): logged at the end. */
+        ULONG now = ogles2_clock_us();
+        if (d->t_safe && now - d->t_safe > 25000)
+            d->flips_late++;
+        d->t_safe = now;
+    }
+}
+
+static void flip_stop(struct OGLES2Display *d)
+{
+    if (!d->flip)
+        return;
+    flip_wait_safe(d);
+    boost_end(d);
+    ogles2_log("display: vsync: %lu flips, %lu of them over 25 ms after the one before", d->flips,
+               d->flips_late);
+    /* The screen's own bitmap shown again before the buffers go. */
+    if (d->back == 0 && ChangeScreenBuffer(d->screen, d->sb[0])) {
+        d->safe_wait = TRUE;
+        flip_wait_safe(d);
+        boost_end(d);
+    }
+    FreeScreenBuffer(d->screen, d->sb[1]);
+    FreeScreenBuffer(d->screen, d->sb[0]);
+    DeleteMsgPort(d->safe_port);
+    d->sb[0] = d->sb[1] = 0;
+    d->safe_port = 0;
+    d->flip = FALSE;
+    d->bitmap = d->screen->RastPort.BitMap;
+}
+
+static BOOL flip_start(struct OGLES2Display *d)
+{
+    int i;
+    if (d->flip || !d->own_screen)
+        return d->flip;
+    d->sb[0] = AllocScreenBuffer(d->screen, 0, SB_SCREEN_BITMAP);
+    d->sb[1] = AllocScreenBuffer(d->screen, 0, SB_COPY_BITMAP);
+    d->safe_port = CreateMsgPort();
+    if (!d->sb[0] || !d->sb[1] || !d->safe_port) {
+        if (d->sb[1])
+            FreeScreenBuffer(d->screen, d->sb[1]);
+        if (d->sb[0])
+            FreeScreenBuffer(d->screen, d->sb[0]);
+        if (d->safe_port)
+            DeleteMsgPort(d->safe_port);
+        d->sb[0] = d->sb[1] = 0;
+        d->safe_port = 0;
+        ogles2_log("display: no second screen buffer: vsync waits for the vertical blank (WaitTOF)");
+        return FALSE;
+    }
+    for (i = 0; i < 2; i++) {
+        d->sb[i]->sb_DBufInfo->dbi_SafeMessage.mn_ReplyPort = d->safe_port;
+        d->sb[i]->sb_DBufInfo->dbi_DispMessage.mn_ReplyPort = 0;
+    }
+    d->back = 1;
+    d->bitmap = d->sb[1]->sb_BitMap;
+    d->safe_wait = FALSE;
+    d->flips = d->flips_late = d->t_safe = 0;
+    d->flip = TRUE;
+    ogles2_log("display: vsync: two screen buffers (ChangeScreenBuffer)");
+    return TRUE;
+}
+
+/* aglSetParams2's VSYNC (the caller has finished the context's jobs: no
+ * render is writing either buffer). */
+void ogles2_display_set_vsync(struct OGLES2Display *d, BOOL on)
+{
+    d->vsync = on;
+    if (!d->own_screen)
+        return;
+    if (on)
+        flip_start(d);
+    else
+        flip_stop(d);
+}
+
 void ogles2_display_close(struct OGLES2Display *d)
 {
     ogles2_display_unlock(d);
+    if (d->flip)
+        flip_stop(d);
     if (d->own_bitmap && d->bitmap)
         FreeBitMap(d->bitmap);
     if (d->input_window) {
@@ -352,6 +471,8 @@ BOOL ogles2_display_open(struct OGLES2Display *d, struct TagItem *tags, ULONG *w
                                                 window ? "application window" :
                                                 d->own_screen ? "fullscreen" : "own window"),
                (ULONG)d->width, (ULONG)d->height, (ULONG)(d->rb_swap ? "BGRA" : "RGBA"));
+    if (d->own_screen && d->vsync)
+        flip_start(d);
     *why = OGLES2_CCE_OK;
     return TRUE;
 }
@@ -360,6 +481,7 @@ BOOL ogles2_display_lock(struct OGLES2Display *d)
 {
     if (d->lock)
         return TRUE;
+    flip_wait_safe(d); /* the hidden buffer no longer shown */
     d->lock = LockBitMapTags(d->bitmap, LBMI_BYTESPERROW, (ULONG)&d->bprow, LBMI_BASEADDRESS,
                              (ULONG)&d->base, TAG_DONE);
     return d->lock != 0;
@@ -416,6 +538,21 @@ void ogles2_display_read(struct OGLES2Display *d, UWORD x, UWORD y, UWORD w, UWO
 void ogles2_display_present(struct OGLES2Display *d)
 {
     struct Window *w = d->window;
+    if (d->flip) {
+        /* The hidden buffer shown at the next refresh; the next frame goes
+         * into the other once it is safe (ogles2_display_lock). */
+        if (ChangeScreenBuffer(d->screen, d->sb[d->back])) {
+            d->back ^= 1;
+            d->bitmap = d->sb[d->back]->sb_BitMap;
+            d->safe_wait = TRUE;
+            d->flips++;
+        } else if (!d->flip_refused) {
+            d->flip_refused = TRUE;
+            ogles2_log("display: ChangeScreenBuffer refused a flip (logged once): that frame is not shown");
+        }
+        boost_end(d);
+        return;
+    }
     if (d->vsync)
         WaitTOF();
     if (!w || !d->own_bitmap)

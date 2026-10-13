@@ -355,6 +355,17 @@ struct OGLES2Display
     int rb_swap;                    /* 1: BGRA32 target, 0: RGBA32 */
     APTR lock;                      /* cybergraphics bitmap lock, one frame long */
     ULONG bprow, base;              /* valid while locked */
+    /* Vsync on a screen of our own (display.c): two screen buffers, frames
+     * rendered into the hidden one and shown by ChangeScreenBuffer. */
+    struct ScreenBuffer *sb[2];
+    struct MsgPort *safe_port;      /* the buffers' safe messages */
+    UBYTE back;                     /* the hidden buffer, rendered into */
+    BOOL flip;                      /* flipping (sb[] valid) */
+    BOOL safe_wait;                 /* a flip's safe message is still to come */
+    BOOL flip_refused;              /* ChangeScreenBuffer refused a flip (logged once) */
+    ULONG flips, flips_late, t_safe; /* flips; safe messages over 25 ms apart; the last one's time */
+    struct Task *boosted;           /* raised from the safe message to the next flip (display.c) */
+    BYTE boost_pri;                 /* its own priority, given back at the flip */
 };
 
 struct V3DContext; /* v3dcore */
@@ -516,6 +527,9 @@ void ogles2_display_dma(struct OGLES2Display *d, BOOL after);
 BOOL ogles2_display_lock(struct OGLES2Display *d);
 void ogles2_display_unlock(struct OGLES2Display *d);
 void ogles2_display_present(struct OGLES2Display *d);
+/* aglSetParams2's VSYNC: on a screen of our own, the two screen buffers made
+ * or freed (the context's jobs finished first). */
+void ogles2_display_set_vsync(struct OGLES2Display *d, BOOL on);
 /* glReadPixels: w x h pixels from (x, y) (GL's origin, the bottom-left),
  * clipped by the caller, as RGBA bytes, bottom row first, `stride` apart. */
 void ogles2_display_read(struct OGLES2Display *d, UWORD x, UWORD y, UWORD w, UWORD h, UBYTE *dst,
