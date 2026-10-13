@@ -464,6 +464,7 @@ The swizzles and format pairs match Mesa's `v3dx_format_table.c`.
   - **FBOs:** every attachment is stored unless the application invalidates it with `EXT_discard_framebuffer`, because a later pass may read it.
 - **Dithering:** `GL_DITHER` (on by default in GLES2) selects the store's dither mode, as PiStorm3D's default-framebuffer store already does. It matters for 16-bit targets (RGB565, RGBA4, RGB5A1).
 - **MSAA:** 4× on the tile buffer later (M6+); the hardware supports it at low cost.
+  - **As built (M6):** `OGLES2_CCT_PISTORM_MSAA` 4 (or `ENV:OGLES2/MSAA` 4 without the tag) gives the default framebuffer 4× MSAA; framebuffer objects stay single-sampled. Its jobs bin and render with `multisample_mode_4x` in 32×32 tiles (Mesa's `v3d_choose_tile_size` for one 32-bpp target; the context's tile pools are sized for them), the rasterizer oversamples (`CFG_BITS`), the colour is stored resolved (`DECIMATE_MODE_4X`) and loaded into every sample, and depth kept across a mid-frame flush is stored and loaded with all four samples (twice the width and height). `glSampleCoverage` sets `SAMPLE_STATE`'s mask (round(value×4) samples, inverted on request). The shaders need no variant: under GLES2 the fragment key's `msaa` changes no code (Mesa's compiler uses it for per-sample shading, interpolation at a sample, framebuffer fetch and software blending). Alpha to coverage is not done.
 - **As built (M5, `fbo.c`, `job.c`):**
   - jobs v1 as above: a job belongs to one framebuffer (`ctx->job_fb`); drawing into another renders it first, lazily (binding alone costs nothing); the default framebuffer's depth and stencil are kept across such a switch as at any mid-frame flush (§7.2);
   - an object's job follows Mesa's `v3dx_rcl.c`: colour loaded unless cleared and always stored, in the image's own layout (texture levels as `v3d_texture.c` laid them out, cube faces at their face stride, the `Clear Colors Part3` UIF pad when the image is 15 or more UIF blocks taller than the job); depth and stencil renderbuffers in UIF without XOR, loaded and stored every job (`EXT_discard_framebuffer` drops either); tile pools of its own only when it has more tiles than the default framebuffer;
@@ -550,7 +551,7 @@ None of these steps does any per-vertex CPU work on the VBO path. That is the ma
 | `MAX_VIEWPORT_DIMS` | 4096 × 4096 | |
 | `ALIASED_POINT_SIZE_RANGE` | 1–512 | `V3D_MAX_POINT_SIZE` |
 | `ALIASED_LINE_WIDTH_RANGE` | 1–32 | `V3D_MAX_LINE_WIDTH` |
-| `SAMPLE_BUFFERS` / `SAMPLES` | 0 / 0 (4× later) | `V3D_MAX_SAMPLES` 4 |
+| `SAMPLE_BUFFERS` / `SAMPLES` | 0 / 0; 1 / 4 with `OGLES2_CCT_PISTORM_MSAA` | `V3D_MAX_SAMPLES` 4 |
 | `SHADER_COMPILER` | TRUE in S1 and S2 (§7.8) | FALSE would forbid `glShaderSource`/`glCompileShader` |
 | `NUM_SHADER_BINARY_FORMATS`, `NUM_PROGRAM_BINARY_FORMATS_OES` | 1 (`GL_V3D42_PISTORM_BINARY`, private token) | |
 | `IMPLEMENTATION_COLOR_READ_FORMAT` / `_TYPE` | Default framebuffer: `GL_BGRA_EXT` / `GL_UNSIGNED_BYTE` (`EXT_read_format_bgra`). FBOs: the attachment's own format | GLES2 requires RGBA/UNSIGNED_BYTE plus one implementation-chosen pair, which may depend on the bound framebuffer. BGRA is the RTG screen's native order, so those reads need no reorder |
@@ -1352,8 +1353,13 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
 
 **Done (2026-10-13): three screen buffers for vsync (§7.2).** `display.c` keeps up to three (two if the third does not fit), tracks which each flip took off the screen, and raises the priority for the whole swap. `m6_vsync` 59 fps; Quake III with `r_swapInterval 1` 49 fps (47 with two), tear-free; why not more in §7.2.
 
+**Done (2026-10-13): 4× MSAA on the default framebuffer (§7.6's MSAA note).**
+- `OGLES2_CCT_PISTORM_MSAA` (`include/libraries/ogles2.h`), `ENV:OGLES2/MSAA`; v3dcore's `g_v3d_requested_msaa`/`V3DContext.msaa` and `v3d_frame_compute_pool_sizes`'s tile size; `job.c` (tiles, configuration packets, decimate modes, depth across a flush), `draw.c` (`CFG_BITS` oversample, `SAMPLE_STATE` mask), `GL_SAMPLE_BUFFERS`/`GL_SAMPLES`. `glSampleCoverage` now bumps the state version (it changed nothing before MSAA).
+- **Test:** `tests/m6_msaa` (9 checks: the queries, antialiased edges, coverage and its inverse, depth across a mid-frame flush, a framebuffer object in an MSAA context), package `m6-10`, which also runs `m1_draw`, `m2_texture` and `m5_fbo` as before and with `ENV:OGLES2/MSAA` 4.
+- **A1200:** `ogles2-m6-10-20261013-135758`: every check passes (`m6_msaa` 9/9; the earlier tests the same with every context multisampled). Quake III (`m6-5`'s `MSAA=1`, `ogles2-m6-5-20261013-135929`): 81 fps, the same as without (the game is CPU-bound), the edges smoothed.
+
 **Next, in order (M6: ecosystem, sharing and performance, §9):**
-1. **The rest of M6's scope not started:** 4x MSAA; optional: deferred flips for vsync (§7.2), vsync for windows (SDL's full screen is a window: still `WaitTOF`); optional: native ETC1 sampling; the large-reply stall (`amictld`). glmark2's `buffer` scenes (49–83 fps: half of a 200-column buffer rewritten every frame) are a candidate for the buffer path.
+1. **The rest of M6's scope:** optional: deferred flips for vsync (§7.2), vsync for windows (SDL's full screen is a window: still `WaitTOF`), MSAA alpha to coverage; optional: native ETC1 sampling; the large-reply stall (`amictld`). glmark2's `buffer` scenes (49–83 fps: half of a 200-column buffer rewritten every frame) are a candidate for the buffer path.
 2. **Postponed (2026-10-13, the developer's decision):** per-draw CPU time for gl4es programs (the gl4es build: 23.3 ms a frame against MiniGL's 16.4; ogles2's draw about 28 us, 32 us for renderergl2's), and minigl.library coexistence (D3: the shared submission component with PiStorm3D's maintainers; the turn across programs above is ogles2's half).
 
 ---

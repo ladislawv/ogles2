@@ -1,0 +1,65 @@
+; Run-M1 - ogles2 M6 run 10: 4x antialiasing (MSAA). See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m6-10 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M6R10: ""
+If NOT EXISTS M6R10:results
+  MakeDir M6R10:results
+EndIf
+Echo "ogles2 M6 run 10, starting at step {FROM}" >>M6R10:results/00-progress.txt
+Date >>M6R10:results/00-progress.txt
+Assign LIBS: M6R10:libs ADD
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M6R10:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 3: 4x MSAA (nothing to see)"
+  M6R10:bin/m6_msaa >M6R10:results/1-msaa.txt
+  Echo "step 1 done" >>M6R10:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 3: triangles, textures, framebuffer objects as before (nothing to see)"
+  M6R10:bin/m1_draw BITMAP QUICK >M6R10:results/2-draw.txt
+  M6R10:bin/m2_texture BITMAP QUICK >M6R10:results/2-texture.txt
+  M6R10:bin/m5_fbo >M6R10:results/2-fbo.txt
+  Echo "step 2 done" >>M6R10:results/00-progress.txt
+EndIf
+
+; ENV:OGLES2/MSAA=4: every context these tests make is multisampled. Exact
+; pixel checks on edges may differ there (antialiased); the rest must pass.
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 3: the same with every context multisampled (nothing to see)"
+  SetEnv OGLES2/MSAA 4
+  M6R10:bin/m1_draw BITMAP QUICK >M6R10:results/3-draw-msaa.txt
+  M6R10:bin/m2_texture BITMAP QUICK >M6R10:results/3-texture-msaa.txt
+  M6R10:bin/m5_fbo >M6R10:results/3-fbo-msaa.txt
+  UnSetEnv OGLES2/MSAA
+  Echo "step 3 done" >>M6R10:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M6R10:libs REMOVE
+Avail FLUSH >NIL:
+If NOT EXISTS M6R10:results/notes.txt
+  Copy M6R10:notes-template.txt M6R10:results/notes.txt
+EndIf
+List M6R10:results >M6R10:results/99-files.txt
+Echo "finished" >>M6R10:results/00-progress.txt
+Date >>M6R10:results/00-progress.txt
+Assign M6R10:
+Echo ""
+Echo "Done. Results are in results/."

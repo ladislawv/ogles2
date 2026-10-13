@@ -200,6 +200,7 @@ void ogles2_glSampleCoverage(struct OGLES2Context *ctx, GLfloat value, GLboolean
         return;
     ctx->state.sample_coverage_value = clamp01(value);
     ctx->state.sample_coverage_invert = invert ? GL_TRUE : GL_FALSE;
+    ctx->state_ver++; /* the sample mask with 4x MSAA (draw.c) */
 }
 
 /* ---- current vertex attributes ---- */
@@ -646,6 +647,11 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
         else
             v->i[0] = pname == GL_DEPTH_BITS ? ctx->depth_bits
                     : pname == GL_STENCIL_BITS ? ctx->stencil_bits : ctx->v3d ? 8 : 0;
+        return 1;
+    case GL_SAMPLE_BUFFERS: /* 4x MSAA on the default framebuffer only (plan 7.2) */
+    case GL_SAMPLES:
+        v->kind = K_INT; v->n = 1;
+        v->i[0] = ctx->draw_fb || !ctx->msaa ? 0 : pname == GL_SAMPLES ? 4 : 1;
         return 1;
     case GL_CULL_FACE_MODE:
         v->kind = K_INT; v->n = 1; v->i[0] = (GLint)s->cull_face_mode;

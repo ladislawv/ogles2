@@ -276,17 +276,19 @@ V3DDevice *ogles2_device(void)
     return &device;
 }
 
-V3DContext *ogles2_device_context_new(UWORD w, UWORD h, int depth_bits)
+V3DContext *ogles2_device_context_new(UWORD w, UWORD h, int depth_bits, BOOL msaa)
 {
     V3DContext *v = AllocVec(sizeof(*v), MEMF_ANY | MEMF_CLEAR);
     int ret;
     if (!v)
         return 0;
-    /* v3d_context_init reads the depth format from a global (it is a
-     * MiniGL-era setting): set and use it under the library lock. */
+    /* v3d_context_init reads the depth format and MSAA from globals (a
+     * MiniGL-era setting): set and use them under the library lock. */
     ObtainSemaphore(&OGLES2LibBase->lock);
     g_v3d_requested_zbuffer_bits = depth_bits == 16 ? 16 : 32;
+    g_v3d_requested_msaa = msaa ? 1 : 0;
     ret = v3d_context_init(v, &device, w, h);
+    g_v3d_requested_msaa = 0;
     ReleaseSemaphore(&OGLES2LibBase->lock);
     if (ret != 0) {
         ogles2_log("device: v3d_context_init(%ldx%ld) failed (%ld): out of memory", (ULONG)w,
@@ -294,9 +296,9 @@ V3DContext *ogles2_device_context_new(UWORD w, UWORD h, int depth_bits)
         FreeVec(v);
         return 0;
     }
-    ogles2_log("device: context pools for %ldx%ld, D%ld%s, %lu bytes of GPU memory in use", (ULONG)w,
+    ogles2_log("device: context pools for %ldx%ld, D%ld%s%s, %lu bytes of GPU memory in use", (ULONG)w,
                (ULONG)h, (LONG)v->zbuffer_bits, (ULONG)(v->zbuffer_bits == 32 ? "F" : ""),
-               (ULONG)device.BytesAllocated);
+               (ULONG)(v->msaa ? ", 4x MSAA (32x32 tiles)" : ""), (ULONG)device.BytesAllocated);
     return v;
 }
 

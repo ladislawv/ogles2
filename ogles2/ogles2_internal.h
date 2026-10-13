@@ -415,6 +415,7 @@ struct OGLES2Context
     struct V3DContext *v3d;         /* GPU pools and control lists; NULL state-only */
     UBYTE depth_bits, stencil_bits; /* of the default framebuffer */
     UBYTE depth_format;             /* OGLES2_DEPTH_*: the tile buffer's depth type */
+    BOOL msaa;                      /* 4x MSAA on the default framebuffer (OGLES2_CCT_PISTORM_MSAA) */
     UBYTE job_clear_stencil;        /* the open job's stencil clear value (job.c) */
     GLint viewport[4];              /* x, y, width, height */
     GLint scissor[4];
@@ -468,6 +469,7 @@ struct OGLES2Context
     struct OGLES2FboState *fbo;     /* fbo.c's, NULL until first used */
     struct OGLES2Framebuffer *draw_fb; /* GL_FRAMEBUFFER binding; NULL: the default */
     struct OGLES2Framebuffer *job_fb;  /* what the open job renders into */
+    BOOL job_msaa;                  /* the open job is 4x MSAA (the default framebuffer's, job.c) */
     UWORD fb_w, fb_h;
     BOOL fb_flip;                   /* the default framebuffer: drawn upside down (plan 7.11) */
     UBYTE fb_depth_bits, fb_stencil_bits, fb_depth_format;
@@ -706,7 +708,7 @@ void ogles2_device_reset(const char *why); /* the GPU did not finish a job: rese
 struct V3DDevice *ogles2_device(void);
 /* Allocates a context's GPU pools and control lists for a w x h default
  * framebuffer with depth_bits 16 (D16) or 32 (D32F); NULL if out of memory. */
-struct V3DContext *ogles2_device_context_new(UWORD w, UWORD h, int depth_bits);
+struct V3DContext *ogles2_device_context_new(UWORD w, UWORD h, int depth_bits, BOOL msaa);
 void ogles2_device_context_free(struct V3DContext *v);
 /* Sizes the pools for a new w x h (no frame open); FALSE if out of memory,
  * the old size kept where it can be. */

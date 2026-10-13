@@ -7,15 +7,17 @@
 ;   GL calls timed per function:   Execute Run-M1 PROFILE=1 (results/1-timedemo.txt)
 ;   Quake's own split per frame:   Execute Run-M1 SPEEDS=1 (results/qconsole.log)
 ;   Vsync (r_swapInterval 1):      Execute Run-M1 VSYNC=1
+;   4x antialiasing:               Execute Run-M1 MSAA=1
 ; Nothing is installed and nothing is written to the game's directory: the
 ; game's own files (config, logs, screenshots) go to home/ here. Output goes
 ; to results/.
-.key Q3DATA/K,FRAMES/K,SOUND/K,PROFILE/K,SPEEDS/K,VSYNC/K
+.key Q3DATA/K,FRAMES/K,SOUND/K,PROFILE/K,SPEEDS/K,VSYNC/K,MSAA/K
 .def FRAMES 400
 .def SOUND 0
 .def PROFILE 0
 .def SPEEDS 0
 .def VSYNC 0
+.def MSAA 0
 .def Q3DATA "Stuff:Quake3-68k-beta10/Quake3-68k-beta10"
 .bra {
 .ket }
@@ -70,6 +72,10 @@ Set Q3LOG "+set logfile 2"
 If {SPEEDS} EQ 1 VAL
   Set Q3LOG "+set logfile 1 +set com_speeds 1"
 EndIf
+; 4x antialiasing: ogles2.library's, for the game (ENV:OGLES2/MSAA).
+If {MSAA} EQ 1 VAL
+  SetEnv OGLES2/MSAA 4
+EndIf
 If {FRAMES} EQ 0 VAL
   M6R5:bin/quake3-gl2 +set fs_basepath "{Q3DATA}" +set fs_homepath M6R5:home +set r_fullscreen 1 +set r_mode 3 +set r_swapInterval {VSYNC} $Q3SND $Q3LOG +set nextdemo quit +timedemo 1 +demo four >M6R5:results/1-timedemo.txt
 Else
@@ -83,6 +89,7 @@ UnSetEnv OGLES2/Probe
 UnSet Q3SND
 UnSet Q3LOG
 UnSetEnv QUAKE3_GL_PROFILE
+UnSetEnv OGLES2/MSAA
 Echo "timedemo done" >>M6R5:results/00-progress.txt
 
 CD M6R5:

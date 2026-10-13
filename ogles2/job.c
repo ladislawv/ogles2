@@ -49,7 +49,7 @@
 
 extern v3d_u32 g_v3d_cl_generation; /* v3d_frame.c: bumped whenever a CL slot is reset */
 
-static void supertiles(V3DContext *v, ULONG w, ULONG h, ULONG sw, ULONG sh);
+static void supertiles(V3DContext *v, ULONG w, ULONG h, ULONG sw, ULONG sh, ULONG tile);
 
 /* ---- the binning list grows (plan section 9, M4) ----
  * Its block is fixed (V3D_INITIAL_CL_BUFFER_SIZE, 4 MB), and a frame with
@@ -114,6 +114,7 @@ struct zs_save
     v3d_mem mem;
     ULONG base;            /* 4096-aligned within mem */
     ULONG w, h;            /* the framebuffer it was made for */
+    BOOL msaa;             /* all four samples: twice the width and height (Mesa's msaa_scale) */
     ULONG height_in_ub;    /* padded height in UIF blocks */
     UBYTE buffer, format;  /* v3d_ZSTENCIL/v3d_Z, V3D_OUTPUT_IMAGE_FORMAT_* */
 };
@@ -125,7 +126,7 @@ static struct zs_save *zs_get(struct OGLES2Context *ctx)
     ULONG cpp, ub_w, ub_h, pw, ph;
     if (!ctx->depth_bits && !ctx->stencil_bits)
         return 0;
-    if (z && z->w == v->width && z->h == v->height)
+    if (z && z->w == v->width && z->h == v->height && z->msaa == ctx->msaa)
         return z;
     if (z) {
         v3d_mem_free(ogles2_device(), &z->mem);
@@ -137,8 +138,8 @@ static struct zs_save *zs_get(struct OGLES2Context *ctx)
     cpp = ctx->depth_format == OGLES2_DEPTH_16 ? 2 : 4;
     ub_w = 2 * v3d_utile_width((int)cpp);
     ub_h = 2 * v3d_utile_height((int)cpp);
-    pw = (v->width + 4 * ub_w - 1) / (4 * ub_w) * (4 * ub_w);
-    ph = (v->height + ub_h - 1) / ub_h * ub_h;
+    pw = ((ULONG)v->width * (ctx->msaa ? 2 : 1) + 4 * ub_w - 1) / (4 * ub_w) * (4 * ub_w);
+    ph = ((ULONG)v->height * (ctx->msaa ? 2 : 1) + ub_h - 1) / ub_h * ub_h;
     if (v3d_mem_alloc(ogles2_device(), &z->mem, pw * ph * cpp + 4096) < 0) {
         FreeVec(z);
         return 0;
@@ -146,6 +147,7 @@ static struct zs_save *zs_get(struct OGLES2Context *ctx)
     z->base = ((ULONG)z->mem.hostptr + 4095) & ~4095UL;
     z->w = v->width;
     z->h = v->height;
+    z->msaa = ctx->msaa;
     z->height_in_ub = ph / ub_h;
     z->buffer = ctx->depth_format == OGLES2_DEPTH_24 ? v3d_ZSTENCIL : v3d_Z;
     z->format = ctx->depth_format == OGLES2_DEPTH_16 ? V3D_OUTPUT_IMAGE_FORMAT_D16
@@ -192,11 +194,15 @@ void ogles2_job_begin(struct OGLES2Context *ctx)
         }
     }
     ctx->job_fb = ctx->draw_fb;
+    /* 4x MSAA on the default framebuffer only (plan 7.2): 32x32 tiles, Mesa's
+     * v3d_choose_tile_size for one 32-bpp target; the hardware derives the
+     * same from the configuration packets. */
+    ctx->job_msaa = !ctx->draw_fb && ctx->msaa;
     ctx->t_job_begin = ogles2_clock_us();
     ctx->job_discard = 0;
     ctx->job_noload = ctx->draw_fb ? ogles2_fbo_take_discarded(ctx->draw_fb) : 0;
-    v->frame.tilesX = (w + 63) / 64;
-    v->frame.tilesY = (h + 63) / 64;
+    v->frame.tilesX = (w + (ctx->job_msaa ? 31 : 63)) / (ctx->job_msaa ? 32 : 64);
+    v->frame.tilesY = (h + (ctx->job_msaa ? 31 : 63)) / (ctx->job_msaa ? 32 : 64);
     s = v->build_slot;
     v3d_cl_reset(&v->tile_list_mem[s], &v->tile_list_buf[s]);
     v3d_cl_reset(&v->binning_mem[s], &v->binning_buf[s]);
@@ -214,7 +220,7 @@ void ogles2_job_begin(struct OGLES2Context *ctx)
     /* As Mesa's v3d_start_binning (v3dx_draw.c). */
     NumberOfLayers(v, 1);
     TileBinningModeCfg(v, v3d_TILE_ALLOCATION_INITIAL_BLOCK_SIZE_64B,
-                       v3d_TILE_ALLOCATION_BLOCK_SIZE_64B, 1, V3D_INTERNAL_BPP_32, FALSE, FALSE, w, h);
+                       v3d_TILE_ALLOCATION_BLOCK_SIZE_64B, 1, V3D_INTERNAL_BPP_32, ctx->job_msaa, FALSE, w, h);
     DoCommand(v, v3d_OP_FLUSH_VCD_CACHE);
     OcclusionQueryCounter(v, 0);
     DoCommand(v, v3d_OP_START_TILE_BINNING);
@@ -278,6 +284,11 @@ static void build_render(struct OGLES2Context *ctx, struct zs_save *store_zs)
                                                             : V3D_INTERNAL_TYPE_DEPTH32F;
     ULONG argb, abgr;
     UBYTE flip_y = (ctx->probe & OGLES2_PROBE_FLIP_Y) ? TRUE : FALSE;
+    /* 4x MSAA: the colour stored resolved (the four samples averaged), the
+     * colour loaded into every sample; depth kept across a flush with all
+     * four (Mesa v3dx_rcl.c's decimate modes). */
+    UBYTE msaa = ctx->msaa;
+    UBYTE zs_decimate = msaa ? V3D_DECIMATE_MODE_ALL_SAMPLES : V3D_DECIMATE_MODE_SAMPLE_0;
     /* Depth and stencil from the frame's previous job, unless this one
      * clears them anyway. */
     struct zs_save *load_zs = ctx->zs_saved && !v->pending_clear_depth ? zs_get(ctx) : 0;
@@ -311,7 +322,7 @@ static void build_render(struct OGLES2Context *ctx, struct zs_save *store_zs)
                               d->rb_swap, d->bprow, flip_y ? height : 0, d->base);
     if (load_zs)
         LoadTileBufferGeneral(v, load_zs->buffer, V3D_MEMORY_FORMAT_UIF_NO_XOR, FALSE,
-                              V3D_DECIMATE_MODE_SAMPLE_0, load_zs->format, FALSE, FALSE, FALSE,
+                              zs_decimate, load_zs->format, FALSE, FALSE, FALSE,
                               load_zs->height_in_ub, 0, load_zs->base);
     DoCommand(v, v3d_OP_END_OF_LOADS);
     PrimListFormat(v, v3d_LIST_TRIANGLES, FALSE);
@@ -326,11 +337,12 @@ static void build_render(struct OGLES2Context *ctx, struct zs_save *store_zs)
      * Dithering matters for 16-bit targets (plan 7.7), which come later. */
     StoreTileBufferGeneral(v, v3d_RENDER_TARGET_0, V3D_MEMORY_FORMAT_RASTER, flip_y,
                            (ctx->probe & OGLES2_PROBE_STORE_DITHER) ? V3D_DITHER_MODE_RGBA : V3D_DITHER_MODE_NONE,
-                           V3D_DECIMATE_MODE_SAMPLE_0, V3D_OUTPUT_IMAGE_FORMAT_RGBA8, FALSE, FALSE,
+                           msaa ? V3D_DECIMATE_MODE_4X : V3D_DECIMATE_MODE_SAMPLE_0,
+                           V3D_OUTPUT_IMAGE_FORMAT_RGBA8, FALSE, FALSE,
                            d->rb_swap, d->bprow, flip_y ? height : 0, d->base);
     if (store_zs)
         StoreTileBufferGeneral(v, store_zs->buffer, V3D_MEMORY_FORMAT_UIF_NO_XOR, FALSE,
-                               V3D_DITHER_MODE_NONE, V3D_DECIMATE_MODE_SAMPLE_0, store_zs->format,
+                               V3D_DITHER_MODE_NONE, zs_decimate, store_zs->format,
                                FALSE, FALSE, FALSE, store_zs->height_in_ub, 0, store_zs->base);
     /* Mesa v3dx_rcl.c, GFXH-1461/GFXH-1689: on 4.2 the per-store clear bit is
      * broken for Z/S, so clear with this packet, RTs bit set; Z/S bit clear
@@ -346,7 +358,7 @@ static void build_render(struct OGLES2Context *ctx, struct zs_save *store_zs)
     SetBuffer(v, &v->render_buf[s]);
     if (ctx->probe & OGLES2_PROBE_SEMAPHORE)
         DoCommand(v, v3d_OP_WAIT_ON_SEMAPHORE);
-    TileRenderingModeCFGCommon(v, 1, width, height, v3d_RENDER_TARGET_MAXIMUM_32BPP, FALSE, FALSE,
+    TileRenderingModeCFGCommon(v, 1, width, height, v3d_RENDER_TARGET_MAXIMUM_32BPP, msaa, FALSE,
                                ez == V3D_EZ_GT_GE ? v3d_EARLY_Z_DIRECTION_GT_GE
                                                   : v3d_EARLY_Z_DIRECTION_LT_LE,
                                ez_off, depth_type,
@@ -393,7 +405,7 @@ static void build_render(struct OGLES2Context *ctx, struct zs_save *store_zs)
     DoCommand(v, v3d_OP_FLUSH_VCD_CACHE);
 
     StartAddressOfGenericTileList(v, start, end);
-    supertiles(v, width, height, sw, sh);
+    supertiles(v, width, height, sw, sh, msaa ? 32 : 64);
     DoCommand(v, v3d_OP_END_OF_RENDERING);
 }
 
@@ -401,9 +413,9 @@ static void build_render(struct OGLES2Context *ctx, struct zs_save *store_zs)
  * each, row by row: three bytes each (opcode, column, row), written in one
  * claim (up to 255 packets; v3dcore's writer took one claim and clear loop
  * a packet). */
-static void supertiles(V3DContext *v, ULONG w, ULONG h, ULONG sw, ULONG sh)
+static void supertiles(V3DContext *v, ULONG w, ULONG h, ULONG sw, ULONG sh, ULONG tile)
 {
-    ULONG nx = (w - 1) / (64 * sw) + 1, ny = (h - 1) / (64 * sh) + 1, sx, sy;
+    ULONG nx = (w - 1) / (tile * sw) + 1, ny = (h - 1) / (tile * sh) + 1, sx, sy;
     UBYTE *b = v3d_buffer_claim_memory(v->current_buf, 3 * nx * ny);
     if (!b)
         return; /* the list overflowed: the flush drops the job (any_overflow) */
@@ -547,7 +559,7 @@ static void build_render_fbo(struct OGLES2Context *ctx, const struct OGLES2Targe
     DoCommand(v, v3d_OP_FLUSH_VCD_CACHE);
 
     StartAddressOfGenericTileList(v, start, end);
-    supertiles(v, width, height, sw, sh);
+    supertiles(v, width, height, sw, sh, 64);
     DoCommand(v, v3d_OP_END_OF_RENDERING);
 }
 

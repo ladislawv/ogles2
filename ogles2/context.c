@@ -35,6 +35,7 @@ static BOOL known_tag(Tag t)
     case OGLES2_CCT_PISTORM_WIDTH:
     case OGLES2_CCT_PISTORM_HEIGHT:
     case OGLES2_CCT_PISTORM_GET_WINDOW:
+    case OGLES2_CCT_PISTORM_MSAA:
     case OGLES2_CCT_DEBUG_SHADER_LOG:
     case OGLES2_CCT_SHARE_WITH:
         return TRUE;
@@ -152,7 +153,12 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
             ctx->depth_format = OGLES2_DEPTH_32F;
             v3d_depth = 32;
         }
-        ctx->v3d = ogles2_device_context_new((UWORD)ctx->width, (UWORD)ctx->height, v3d_depth);
+        /* 4x MSAA (plan 7.2): the tag, else ENV:OGLES2/MSAA. */
+        if ((t = FindTagItem(OGLES2_CCT_PISTORM_MSAA, tags)) != 0)
+            ctx->msaa = t->ti_Data >= 2;
+        else if (GetVar((STRPTR) "OGLES2/MSAA", (STRPTR)var, sizeof(var), GVF_GLOBAL_ONLY) > 0)
+            ctx->msaa = var[0] >= '2' && var[0] <= '9';
+        ctx->v3d = ogles2_device_context_new((UWORD)ctx->width, (UWORD)ctx->height, v3d_depth, ctx->msaa);
         if (!ctx->v3d) {
             ogles2_display_close(&ctx->display);
             why = OGLES2_CCE_NOMEM;

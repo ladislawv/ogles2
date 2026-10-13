@@ -20,6 +20,8 @@ static ULONG divRoundUp(ULONG a, ULONG b)
  * pre-context global and why it is named Z-BUFFER depth, not screen depth. */
 int g_v3d_requested_zbuffer_bits = 32;
 
+int g_v3d_requested_msaa = 0;
+
 /* Monotonic CL-restart counter. Bumped at EVERY build_slot flip
  * (gl_FramePresent and the doing_intermediate_pass path, context.c) and used
  * as the invalidation key for every cache that holds addresses into a CL
@@ -41,15 +43,15 @@ int g_v3d_requested_zbuffer_bits = 32;
 v3d_u32 g_v3d_cl_generation = 0;
 
 void v3d_frame_compute_pool_sizes(v3d_u16 width, v3d_u16 height,
-                                   int zbuffer_bits,
+                                   int zbuffer_bits, int msaa,
                                    v3d_u32* zbuffer_size,
                                    v3d_u32* tile_state_size,
                                    v3d_u32* tile_alloc_size,
                                    v3d_u32* tilesX,
                                    v3d_u32* tilesY)
 {
-    const v3d_u32 tile_width = 64;
-    const v3d_u32 tile_height = 64;
+    const v3d_u32 tile_width = msaa ? 32 : 64;  /* ogles2: 4x MSAA, one 32-bpp target */
+    const v3d_u32 tile_height = msaa ? 32 : 64;
     const v3d_u32 layer_count = 1;         /* no layered rendering yet */
     const v3d_u32 tsda_per_tile_size = 256; /* 64 on V3D ver < 40; this project targets V3D 4.2 */
     v3d_u32 size;

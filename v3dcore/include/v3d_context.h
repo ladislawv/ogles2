@@ -154,6 +154,11 @@ struct V3DContext {
      * that distinction is called out explicitly on this platform. */
     int     zbuffer_bits;
 
+    /* ogles2: 4x MSAA on the tile buffer (0/1), latched from
+     * g_v3d_requested_msaa at context init: the tile pools are sized for its
+     * 32x32 tiles. */
+    int     msaa;
+
     /* persistent GPU memory pools -- sized once at context-create/resize, not per draw call like the earlier library's CL_Draw_Triangle did */
     v3d_mem zbuffer_mem;
     v3d_mem tile_state_mem;

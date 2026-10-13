@@ -836,7 +836,7 @@ static BOOL pools(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, struc
         if (fb->pool_state.hostptr)
             v3d_mem_free(ogles2_device(), &fb->pool_state);
         fb->pool_tiles = 0;
-        v3d_frame_compute_pool_sizes(t->w, t->h, 16, &zs, &ts, &ta, &tx, &ty);
+        v3d_frame_compute_pool_sizes(t->w, t->h, 16, 0, &zs, &ts, &ta, &tx, &ty);
         if (v3d_mem_alloc(ogles2_device(), &fb->pool_alloc, ta + 4096) < 0)
             return FALSE;
         if (v3d_mem_alloc(ogles2_device(), &fb->pool_state, ts + 4096) < 0) {

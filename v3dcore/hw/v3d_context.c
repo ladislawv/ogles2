@@ -104,8 +104,9 @@ int v3d_context_init(V3DContext* context, V3DDevice* device, v3d_u16 width, v3d_
      * gets the safe, higher-precision format rather than an undersized
      * zbuffer -- an undersized one would be a GPU write past the allocation. */
     context->zbuffer_bits = (g_v3d_requested_zbuffer_bits == 16) ? 16 : 32;
+    context->msaa = g_v3d_requested_msaa ? 1 : 0;
 
-    v3d_frame_compute_pool_sizes(width, height, context->zbuffer_bits,
+    v3d_frame_compute_pool_sizes(width, height, context->zbuffer_bits, context->msaa,
                                   &zbuffer_size, &tile_state_size,
                                   &tile_alloc_size, &tilesX, &tilesY);
 
@@ -384,7 +385,7 @@ int v3d_context_resize(V3DContext* context, V3DDevice* device, v3d_u16 width, v3
     if (g_v3d_render_timeout_iterations < V3D_TIMEOUT_ITERATIONS_RENDER)
         g_v3d_render_timeout_iterations = V3D_TIMEOUT_ITERATIONS_RENDER;
 
-    v3d_frame_compute_pool_sizes(width, height, context->zbuffer_bits,
+    v3d_frame_compute_pool_sizes(width, height, context->zbuffer_bits, context->msaa,
                                   &zbuffer_size, &tile_state_size,
                                   &tile_alloc_size, &tilesX, &tilesY);
 

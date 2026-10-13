@@ -98,10 +98,17 @@ extern v3d_u32 g_mglv3d_retire_leaks;    /* blocks not tracked because the retir
  * v3d_frame_compute_pool_sizes). D32F is the default. */
 extern int g_v3d_requested_zbuffer_bits;
 
+/* ogles2: 4x MSAA on the tile buffer for the next context (0 or 1), latched
+ * into V3DContext.msaa by v3d_context_init like the Z format above: its
+ * tiles are 32x32 (Mesa's v3d_choose_tile_size for one 32-bpp target), so
+ * the pools hold four times as many. */
+extern int g_v3d_requested_msaa;
+
 /* Computes zbuffer/tile_state/tile_alloc sizes and tile counts for a width x
- * height draw region. zbuffer_bits selects the Z format (16 or 32). */
+ * height draw region. zbuffer_bits selects the Z format (16 or 32); msaa the
+ * tile size (32x32, else 64x64). */
 void v3d_frame_compute_pool_sizes(v3d_u16 width, v3d_u16 height,
-                                   int zbuffer_bits,
+                                   int zbuffer_bits, int msaa,
                                    v3d_u32* zbuffer_size,
                                    v3d_u32* tile_state_size,
                                    v3d_u32* tile_alloc_size,

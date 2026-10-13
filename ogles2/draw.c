@@ -41,7 +41,8 @@ struct dedup
     UBYTE fb_depth_bits, fb_stencil_bits;
     const struct OGLES2Variant *fs;
     BOOL cfg, cw, vp, blend, cwm, lw, st;
-    UBYTE effp, erfp, cp, edo, dtf, zue, eze, ezue, be, se, wf, pf, pv;
+    UBYTE effp, erfp, cp, edo, dtf, zue, eze, ezue, be, se, wf, pf, pv, rom;
+    UBYTE smask;          /* the SAMPLE_STATE mask last sent (4x MSAA) */
     UBYTE stencil[2][5];  /* the STENCIL_CFG bytes last sent, front and back */
     UWORD cw_l, cw_t, cw_w, cw_h;
     UWORD vp_w, vp_h, vp_cx2, vp_cy2;
@@ -978,7 +979,7 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     BOOL depth_on = (s->caps & OGLES2_CAP_DEPTH_TEST) && ctx->fb_depth_bits;
     BOOL stencil_on = (s->caps & OGLES2_CAP_STENCIL_TEST) && ctx->fb_stencil_bits;
     BOOL flip = ctx->fb_flip;
-    UBYTE effp, erfp, cp, edo, dtf, zue, eze, ezue, be, se, wf, pf, pv;
+    UBYTE effp, erfp, cp, edo, dtf, zue, eze, ezue, be, se, wf, pf, pv, rom, smask;
     LONG fh = (LONG)ctx->fb_h;
     LONG vx = ctx->viewport[0], vy = ctx->viewport[1], vw = ctx->viewport[2], vh = ctx->viewport[3];
     LONG l, t, r, b;
@@ -1061,15 +1062,27 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     wf = s->polygon_mode != GL_FILL;
     pf = s->polygon_mode == GL_POINT;
     pv = s->provoking_vertex == GL_FIRST_VERTEX_CONVENTION;
+    /* 4x MSAA (the default framebuffer's job): the rasterizer samples four
+     * points a pixel (Mesa v3dx_emit.c), and glSampleCoverage's mask, as
+     * Mesa's state tracker makes one: round(value x 4) samples, inverted on
+     * request. */
+    rom = ctx->job_msaa ? 1 : 0;
+    smask = 0xF;
+    if (ctx->job_msaa && (s->caps & OGLES2_CAP_SAMPLE_COVERAGE)) {
+        int n = (int)(s->sample_coverage_value * 4.0f + 0.5f);
+        smask = (UBYTE)((1U << n) - 1);
+        if (s->sample_coverage_invert)
+            smask = (UBYTE)(~smask & 0xF);
+    }
     if (!dd->cfg || dd->effp != effp || dd->erfp != erfp || dd->cp != cp || dd->edo != edo ||
         dd->dtf != dtf || dd->zue != zue || dd->eze != eze || dd->ezue != ezue || dd->be != be ||
-        dd->se != se || dd->wf != wf || dd->pf != pf || dd->pv != pv) {
-        CfgBits(v, effp, erfp, cp, edo, V3D_LINE_RASTERIZATION_DIAMOND_EXIT, 0, wf, dtf, zue, eze,
+        dd->se != se || dd->wf != wf || dd->pf != pf || dd->pv != pv || dd->rom != rom) {
+        CfgBits(v, effp, erfp, cp, edo, V3D_LINE_RASTERIZATION_DIAMOND_EXIT, rom, wf, dtf, zue, eze,
                 ezue, se, be, pf, pv);
         dd->cfg = TRUE;
         dd->effp = effp; dd->erfp = erfp; dd->cp = cp; dd->edo = edo; dd->dtf = dtf;
         dd->zue = zue; dd->eze = eze; dd->ezue = ezue; dd->be = be; dd->se = se;
-        dd->wf = wf; dd->pf = pf; dd->pv = pv;
+        dd->wf = wf; dd->pf = pf; dd->pv = pv; dd->rom = rom;
     }
     /* STENCIL_CFG, front and back, while the test is on (Mesa v3dx_emit.c). */
     if (stencil_on) {
@@ -1161,12 +1174,19 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
         DoCommand(v, v3d_OP_ZERO_ALL_CENTROID_FLAGS);
         TransformFeedbackSpecs(v, FALSE, 0);
         OcclusionQueryCounter(v, 0);
-        SampleState(v, 1, 0xF); /* coverage 1.0 (the emitter converts it to a float) */
+        SampleState(v, 1, smask); /* coverage 1.0 (the emitter converts it to a float) */
+        dd->smask = smask;
         v->draw_state_configured = TRUE;
         dd->prim = prim;
-    } else if (dd->prim != prim) { /* Mesa: on every primitive-type change */
-        TransformFeedbackSpecs(v, FALSE, 0);
-        dd->prim = prim;
+    } else {
+        if (dd->prim != prim) { /* Mesa: on every primitive-type change */
+            TransformFeedbackSpecs(v, FALSE, 0);
+            dd->prim = prim;
+        }
+        if (dd->smask != smask) { /* glSampleCoverage changed within the pass */
+            SampleState(v, 1, smask);
+            dd->smask = smask;
+        }
     }
 }
 

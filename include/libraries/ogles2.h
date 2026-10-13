@@ -60,6 +60,12 @@ extern "C" {
  * fullscreen, the backdrop window on ogles2's screen (its WScreen is the
  * screen); NULL for an application bitmap. */
 #define OGLES2_CCT_PISTORM_GET_WINDOW       (OGLES2_CCT_PISTORM_MIN + 4)
+/* ULONG: samples per pixel of the default framebuffer, 0 (default) or 4:
+ * 4x multisample antialiasing in the GPU's tile buffer, resolved as each
+ * frame is stored (GL_SAMPLE_BUFFERS 1, GL_SAMPLES 4). Without the tag,
+ * the environment variable OGLES2/MSAA (4 or 0) decides, so a program can
+ * be given it from the Shell. Framebuffer objects are not multisampled. */
+#define OGLES2_CCT_PISTORM_MSAA             (OGLES2_CCT_PISTORM_MIN + 5)
 
 /* Error codes written to aglCreateContext2's *errcode. */
 #define OGLES2_CCE_OK              0
