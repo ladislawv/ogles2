@@ -769,7 +769,11 @@ BOOL ogles2_job_flush(struct OGLES2Context *ctx, BOOL frame_end)
     t0 = t1 = t2 = t3 = ogles2_clock_us();
     ctx->sum_build += (double)(ULONG)(t0 - ctx->t_job_begin);
     ctx->n_jobs++;
-    if (!fb && !frame_end && v->draw_state_configured &&
+    /* Depth and stencil outlive a mid-frame flush when the job drew, and
+     * also when it only loaded them or only cleared them: a job with nothing
+     * but a colour clear between two read-backs must hand them on (dEQP-GLES2
+     * multisample.stencil lost its stencil there). */
+    if (!fb && !frame_end && (v->draw_state_configured || ctx->zs_saved || v->pending_clear_depth) &&
         !(ctx->job_discard & (OGLES2_DISCARD_DEPTH | OGLES2_DISCARD_STENCIL)))
         store_zs = zs_get(ctx); /* NULL without depth and stencil, or memory */
     if (v->frame_corrupted) {

@@ -193,6 +193,15 @@ variants may be missing (`v3dglslc` captures what the driver compiles for those 
 offline compiler writes it next to the `.v3dp`; the on-target compiler writes it on request
 (`V3DGLSL_LINK32`, `v3dp/v3dglsl_port.h`), when a draw first needs it.
 
+**`.v3da`: the alpha-to-coverage variants** (2026-10-15; the format is unchanged). Every
+program can have a third file of the same format, `<24 hex digits>.v3da`: the same draws with
+the fragment key's `msaa` and `sample_alpha_to_coverage` set (`tools/v3dglslc/patches/0014`;
+V3D has no fixed-function alpha to coverage, so the fragment shader turns alpha into the
+sample mask). `ogles2.library` uses its fragment variants for draws into a 4x MSAA default
+framebuffer with `GL_SAMPLE_ALPHA_TO_COVERAGE` enabled. Only the on-target compiler writes it,
+on request (`V3DGLSL_LINK_A2C`), when a draw first needs it; it is looked for in `PROGDIR:`
+and the cache first, as the `.v3dw` is.
+
 ### Common key and prog data (all stages)
 
 Key (`struct v3d_key`): `u32 sampler_is_32b`, then `u8` each: `is_last_geometry_stage`,

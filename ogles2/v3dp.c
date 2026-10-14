@@ -547,6 +547,7 @@ void ogles2_image_free(struct OGLES2Image *im, struct OGLES2Context *ctx)
     if (im->binary)
         FreeVec(im->binary);
     ogles2_image_free(im->wide, ctx); /* its code: deferred the same way */
+    ogles2_image_free(im->a2c, ctx);
     if (im->vs_src)
         FreeVec(im->vs_src);
     if (im->fs_src)

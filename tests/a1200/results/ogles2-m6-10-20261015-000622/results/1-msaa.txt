@@ -1,0 +1,12 @@
+ogles2 M6: 4x MSAA on the default framebuffer
+PASS: no MSAA: GL_SAMPLE_BUFFERS 0, GL_SAMPLES 0 (0, 0)
+PASS: no MSAA: the slanted edge has 0 mixed pixels (0)
+PASS: MSAA: GL_SAMPLE_BUFFERS 1, GL_SAMPLES 4 (1, 4)
+PASS: MSAA: the slanted edge has 401 mixed pixels (some), inside 255 (255), outside 0 (0)
+PASS: coverage 0.5: grey 127 (about 128); inverted red 127 and plain blue 127 (about 128 each)
+PASS: split: red 255 before (255), red 255 behind the green after (255), 401 mixed edge pixels
+FAIL: stencil across two flushes: cleared to 0 (0), 12325 pixels lit, 12611 differ (0)
+PASS: fbo: GL_SAMPLE_BUFFERS 0 there (0), its centre red 255 (255), sampled on the screen 255 (255)
+PASS: no GL error left over
+PASS: destroy returns the memory (0 bytes difference)
+FAILED: 9 of 10 checks passed

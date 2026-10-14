@@ -30,6 +30,10 @@
 #define V3DGLSL_LINK32  4 /* as LINK, but write the variants for samplers returning 32 bits (float
                            * and depth textures): the program's .v3dw file. A compiler older than
                            * this answers 3 (bad request). */
+#define V3DGLSL_LINK_A2C 6 /* as LINK32, but the alpha-to-coverage fragment variants (Mesa's key
+                            * msaa and sample_alpha_to_coverage, patch 0014): the program's .v3da
+                            * file, for a 4x MSAA context with GL_SAMPLE_ALPHA_TO_COVERAGE. A
+                            * compiler older than this answers 3. */
 #define V3DGLSL_LINK_BOUND 5 /* as LINK, glBindAttribLocation's `bindings` applied before the link
                               * (GLES 2.0 2.10.4: aliased attributes, two names bound to one
                               * location, which Mesa's linker must know of); they are part of the

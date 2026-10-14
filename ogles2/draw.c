@@ -1465,6 +1465,15 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
         if (w)
             fim = w;
     }
+    /* A 4x MSAA default framebuffer with GL_SAMPLE_ALPHA_TO_COVERAGE: the
+     * program's alpha-to-coverage variants (the .v3da; Mesa turns alpha into
+     * the sample mask in the fragment shader). Not with 32-bit samplers at
+     * the same time: no file holds both, and those keep their variants. */
+    if (ctx->msaa && !ctx->draw_fb && (ctx->state.caps & OGLES2_CAP_SAMPLE_ALPHA_TO_COVERAGE) && fim == im) {
+        const struct OGLES2Image *a = ogles2_image_a2c((struct OGLES2Image *)im);
+        if (a)
+            fim = a;
+    }
     if (p->var_ok && p->var_mode == mode && p->var_fsmode == fsmode && p->var_fim == fim &&
         p->var_nrt == ctx->fb_nrt) {
         cs = p->var[0];

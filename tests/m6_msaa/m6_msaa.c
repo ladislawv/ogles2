@@ -10,6 +10,9 @@
  *             the other half (both together white)
  *   split     glReadPixels between two depth-tested triangles: the frame
  *             goes on in a second job with its depth (all four samples)
+ *   stencil   stencil drawn, read back, a colour-only clear read back: the
+ *             job between the two flushes draws nothing, yet the stencil
+ *             outlives both (dEQP-GLES2 multisample.stencil)
  *   fbo       a framebuffer object in an MSAA context: single-sampled, drawn
  *             and sampled as before
  */
@@ -229,6 +232,41 @@ int main(void)
     sprintf(msg, "split: red %d before (255), red %d behind the green after (255), %d mixed edge pixels",
             a, b, c);
     check(a == 255 && b == 255 && c > 50, msg);
+
+    /* Stencil across flushes, as dEQP-GLES2 multisample.stencil: a pattern
+     * writes stencil 1 (read back: a flush), a colour-only clear (read back:
+     * another), then a full quad with GL_EQUAL 1 must give the same picture. */
+    {
+        GLubyte *p1 = malloc(W * H * 4), *p2 = malloc(W * H * 4);
+        int k, diff = 0, lit = 0;
+        if (p1 && p2) {
+            glClearColor(0, 0, 0, 1);
+            glClearStencil(0);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            glEnable(GL_STENCIL_TEST);
+            glStencilFunc(GL_ALWAYS, 1, 1);
+            glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+            tri(slant, 0, 1, 1, 1);
+            glReadPixels(0, 0, W, H, GL_RGBA, GL_UNSIGNED_BYTE, p1);
+            glClear(GL_COLOR_BUFFER_BIT);
+            a = red(W / 2, H / 2);
+            glStencilFunc(GL_EQUAL, 1, 1);
+            glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+            full(0, 1, 1, 1);
+            glReadPixels(0, 0, W, H, GL_RGBA, GL_UNSIGNED_BYTE, p2);
+            glDisable(GL_STENCIL_TEST);
+            for (k = 0; k < W * H; k++) {
+                if (p1[k * 4] > 128)
+                    lit++;
+                if (p1[k * 4] != p2[k * 4])
+                    diff++;
+            }
+        }
+        free(p1);
+        free(p2);
+        sprintf(msg, "stencil across two flushes: cleared to %d (0), %d pixels lit, %d differ (0)", a, lit, diff);
+        check(a == 0 && lit > 1000 && diff == 0, msg);
+    }
 
     /* An FBO in the MSAA context: single-sampled, drawn, then sampled. */
     {

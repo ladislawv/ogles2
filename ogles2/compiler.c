@@ -269,6 +269,15 @@ BOOL ogles2_compile_program_wide(const char *vs, const char *fs, const char *pat
     return request(V3DGLSL_LINK32, vs, fs, 0, path, log, log_size, &result) && result == 0;
 }
 
+/* The alpha-to-coverage variants (the program's .v3da). A compiler older
+ * than V3DGLSL_LINK_A2C refuses the request (result 3). */
+BOOL ogles2_compile_program_a2c(const char *vs, const char *fs, const char *path, char *log,
+                                ULONG log_size)
+{
+    LONG result;
+    return request(V3DGLSL_LINK_A2C, vs, fs, 0, path, log, log_size, &result) && result == 0;
+}
+
 int ogles2_compile_shader(BOOL fragment, const char *src, char *log, ULONG log_size)
 {
     LONG result;

@@ -110,7 +110,9 @@ static GLuint mrt_fbo[3];
 #define WRITE_BOTH 0
 #define WRITE_PLAIN 1
 #define WRITE_WIDE 2
+#define WRITE_A2C 3 /* the alpha-to-coverage fragment variants: a .v3da (server only) */
 static int write_mode = WRITE_BOTH;
+extern bool v3d_force_alpha_to_coverage; /* Mesa patch 0014 */
 
 static int make_target(void)
 {
@@ -384,6 +386,18 @@ static int write_program(GLuint p, const char *path, const char *vs_src, const c
     sources[0] = vs_src;
     sources[1] = fs_src;
     sources[2] = link_bindings;
+    /* The alpha-to-coverage variants: the same draws with the fragment key's
+     * msaa and sample_alpha_to_coverage set (patch 0014). Only the fragment
+     * shaders compile again, so the file holds fragment variants only; the
+     * runtime takes only those from it. */
+    if (write_mode == WRITE_A2C) {
+        v3dp_capture_begin();
+        v3d_force_alpha_to_coverage = true;
+        drawn = draw_key_states(p, 0);
+        v3d_force_alpha_to_coverage = false;
+        v3dp_capture_end();
+        return drawn && v3dp_write(path, prog, nsrc, stages, sources) == 0;
+    }
     if (write_mode != WRITE_WIDE) {
         v3dp_capture_begin();
         drawn = draw_key_states(p, 0);
@@ -459,8 +473,9 @@ static int serve(void)
                 r->log[0] = 0;
             if (r->version != V3DGLSL_VERSION ||
                 (r->op != V3DGLSL_LINK && r->op != V3DGLSL_QUIT && r->op != V3DGLSL_COMPILE &&
-                 r->op != V3DGLSL_LINK32 && r->op != V3DGLSL_LINK_BOUND) ||
-                ((r->op == V3DGLSL_LINK || r->op == V3DGLSL_LINK32 || r->op == V3DGLSL_LINK_BOUND) &&
+                 r->op != V3DGLSL_LINK32 && r->op != V3DGLSL_LINK_BOUND && r->op != V3DGLSL_LINK_A2C) ||
+                ((r->op == V3DGLSL_LINK || r->op == V3DGLSL_LINK32 || r->op == V3DGLSL_LINK_BOUND ||
+                  r->op == V3DGLSL_LINK_A2C) &&
                  (!r->vs || !r->fs || !r->out_path)) ||
                 (r->op == V3DGLSL_LINK_BOUND && !r->bindings) ||
                 (r->op == V3DGLSL_COMPILE && !r->vs == !r->fs)) {
@@ -482,7 +497,8 @@ static int serve(void)
                 glDeleteShader(s);
                 r->result = ok ? 0 : 1;
             } else {
-                write_mode = r->op == V3DGLSL_LINK32 ? WRITE_WIDE : WRITE_PLAIN;
+                write_mode = r->op == V3DGLSL_LINK32 ? WRITE_WIDE : r->op == V3DGLSL_LINK_A2C ? WRITE_A2C
+                                                                                  : WRITE_PLAIN;
                 link_bindings = r->op == V3DGLSL_LINK_BOUND ? r->bindings : NULL;
                 r->result = link_pair("vertex shader", "fragment shader", r->vs, r->fs, r->out_path,
                                       r->log, r->log_size) ? 0 : 1;

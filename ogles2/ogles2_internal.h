@@ -284,6 +284,11 @@ struct OGLES2Image
      * from glProgramBinaryOES, which can only find a .v3dw). */
     struct OGLES2Image *wide;
     BOOL wide_tried;
+    /* The alpha-to-coverage variants (Mesa's fragment key msaa and
+     * sample_alpha_to_coverage): the program's .v3da, the same way, for a
+     * draw into a 4x MSAA default framebuffer with GL_SAMPLE_ALPHA_TO_COVERAGE. */
+    struct OGLES2Image *a2c;
+    BOOL a2c_tried;
     char *vs_src, *fs_src;
     struct OGLES2Image *next;             /* the context's program cache (program.c) */
 };
@@ -373,6 +378,8 @@ const struct OGLES2Variant *ogles2_image_variant(const struct OGLES2Image *im, U
 /* program.c: the image's 32-bit-sampler variants (im->wide), found or
  * compiled the first time; NULL if there are none (logged once). */
 const struct OGLES2Image *ogles2_image_wide(struct OGLES2Image *im);
+/* program.c: its alpha-to-coverage variants (im->a2c), the same way. */
+const struct OGLES2Image *ogles2_image_a2c(struct OGLES2Image *im);
 
 /* The default framebuffer's surface (display.c). */
 struct OGLES2Display
@@ -654,6 +661,8 @@ BOOL ogles2_compile_program_bound(const char *vs, const char *fs, const char *bi
                                   char *log, ULONG log_size);
 BOOL ogles2_compile_program_wide(const char *vs, const char *fs, const char *path, char *log,
                                  ULONG log_size);
+BOOL ogles2_compile_program_a2c(const char *vs, const char *fs, const char *path, char *log,
+                                ULONG log_size);
 /* One shader through the front end: 1 compiled, 0 GLSL errors (in log),
  * -1 the compiler could not be run. */
 int ogles2_compile_shader(BOOL fragment, const char *src, char *log, ULONG log_size);

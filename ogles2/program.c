@@ -958,15 +958,21 @@ static struct OGLES2Image *try_wide(const UBYTE *hash, const char *path)
  * Once per image: at the first draw that needs them, which waits for the
  * compile (about a second on the A1200). NULL if there are none: such draws
  * then use the 16-bit variants, which read those textures wrongly (logged). */
-const struct OGLES2Image *ogles2_image_wide(struct OGLES2Image *im)
+/* A second file of a program's variants (.v3dw, .v3da): beside the .v3dp
+ * (PROGDIR:, the disk cache), or compiled now by the on-target compiler into
+ * the cache. Once per image: at the first draw that needs them, which waits
+ * for the compile (about a second on the A1200). */
+static struct OGLES2Image *extra_image(struct OGLES2Image *im, struct OGLES2Image **slot, BOOL *tried,
+                                       const char *ext, const char *what,
+                                       BOOL (*compile)(const char *, const char *, const char *, char *, ULONG))
 {
     static const char digits[] = "0123456789abcdef";
     char hex[FILE_HASH_DIGITS + 1], path[96];
     const char *dirs[2];
     int d, k;
-    if (im->wide || im->wide_tried)
-        return im->wide;
-    im->wide_tried = TRUE;
+    if (*slot || *tried)
+        return *slot;
+    *tried = TRUE;
     for (k = 0; k < FILE_HASH_DIGITS / 2; k++) {
         hex[2 * k] = digits[im->hash[k] >> 4];
         hex[2 * k + 1] = digits[im->hash[k] & 15];
@@ -974,28 +980,45 @@ const struct OGLES2Image *ogles2_image_wide(struct OGLES2Image *im)
     hex[FILE_HASH_DIGITS] = 0;
     dirs[0] = "PROGDIR:";
     dirs[1] = ogles2_cache_dir();
-    for (d = 0; d < 2 && !im->wide; d++) {
+    for (d = 0; d < 2 && !*slot; d++) {
         strcpy(path, dirs[d]);
         strcat(path, hex);
-        strcat(path, ".v3dw");
-        im->wide = try_wide(im->hash, path);
+        strcat(path, ext);
+        *slot = try_wide(im->hash, path);
     }
-    if (!im->wide && im->vs_src && im->fs_src && ogles2_compiler_installed()) {
+    if (!*slot && im->vs_src && im->fs_src && ogles2_compiler_installed()) {
         char *log = AllocVec(1024, MEMF_ANY | MEMF_CLEAR);
-        if (log && ogles2_compile_program_wide(im->vs_src, im->fs_src, path, log, 1024))
-            im->wide = try_wide(im->hash, path);
+        if (log && compile(im->vs_src, im->fs_src, path, log, 1024))
+            *slot = try_wide(im->hash, path);
         else
-            ogles2_log("draw: the compiler made no 32-bit sampler variants for program %s: %s", (ULONG)hex,
+            ogles2_log("draw: the compiler made no %s for program %s: %s", (ULONG)what, (ULONG)hex,
                        (ULONG)(log ? log : "out of memory"));
         if (log)
             FreeVec(log);
     }
-    if (im->wide)
-        ogles2_log("draw: program %s: its 32-bit sampler variants (%ld)", (ULONG)hex, (LONG)im->wide->nvariants);
+    if (*slot)
+        ogles2_log("draw: program %s: its %s (%ld)", (ULONG)hex, (ULONG)what, (LONG)(*slot)->nvariants);
     else
-        ogles2_log("draw: program %s samples a float or depth texture but has no 32-bit sampler variants "
-                   "(no %s.v3dw): its colours from that texture are wrong", (ULONG)hex, (ULONG)hex);
-    return im->wide;
+        ogles2_log("draw: program %s has no %s (no %s%s): drawn with its plain variants", (ULONG)hex,
+                   (ULONG)what, (ULONG)hex, (ULONG)ext);
+    return *slot;
+}
+
+/* The program's variants for samplers that return 32 bits (a float or
+ * depth texture bound, draw.c): its .v3dw. NULL if there are none: such
+ * draws then use the 16-bit variants, which read those textures wrongly. */
+const struct OGLES2Image *ogles2_image_wide(struct OGLES2Image *im)
+{
+    return extra_image(im, &im->wide, &im->wide_tried, ".v3dw", "32-bit sampler variants",
+                       ogles2_compile_program_wide);
+}
+
+/* Its alpha-to-coverage variants: its .v3da. NULL if there are none: such
+ * draws then cover every sample, as without GL_SAMPLE_ALPHA_TO_COVERAGE. */
+const struct OGLES2Image *ogles2_image_a2c(struct OGLES2Image *im)
+{
+    return extra_image(im, &im->a2c, &im->a2c_tried, ".v3da", "alpha-to-coverage variants",
+                       ogles2_compile_program_a2c);
 }
 
 /* After an image is set: attribute locations, uniform locations, constant
