@@ -1854,6 +1854,49 @@ void ogles2_texture_hidden_free(struct OGLES2Context *ctx, struct OGLES2Texture 
 static void set_level(struct OGLES2Context *ctx, struct OGLES2Texture *t, int k, GLint level, UBYTE *img,
                       GLsizei width, GLsizei height, GLenum format, GLenum type, BOOL given);
 
+/* OES_required_internalformat: a sized colour format's base format (0 for
+ * any other value). */
+static GLenum sized_color_base(GLenum ifmt)
+{
+    switch (ifmt) {
+    case GL_RGBA8_OES: case GL_RGBA4: case GL_RGB5_A1: return GL_RGBA;
+    case GL_RGB8_OES: case GL_RGB565:                  return GL_RGB;
+    case GL_ALPHA8_OES:                                return GL_ALPHA;
+    case GL_LUMINANCE8_OES:                            return GL_LUMINANCE;
+    case GL_LUMINANCE8_ALPHA8_OES:                     return GL_LUMINANCE_ALPHA;
+    default:                                           return 0;
+    }
+}
+
+/* OES_required_internalformat in glTexImage2D: a sized internal format
+ * stands for the base format, given a format and type that fill it with at
+ * least its precision (the image keeps the type's, as an unsized one: GLES
+ * lets an implementation store more). The value as given if it is not a
+ * sized format; NOT_FILLED for one that format and type cannot fill
+ * (GL_INVALID_OPERATION). */
+#define NOT_FILLED 0xFFFFFFFFUL /* no GL value: 0 is an internal format to refuse too */
+static GLenum sized_base(GLenum ifmt, GLenum format, GLenum type)
+{
+    GLenum base = sized_color_base(ifmt);
+    BOOL ok;
+    switch (ifmt) {
+    case GL_RGBA4:   ok = type == GL_UNSIGNED_BYTE || type == GL_UNSIGNED_SHORT_4_4_4_4; break;
+    case GL_RGB5_A1: ok = type == GL_UNSIGNED_BYTE || type == GL_UNSIGNED_SHORT_5_5_5_1; break;
+    case GL_RGB565:  ok = type == GL_UNSIGNED_BYTE || type == GL_UNSIGNED_SHORT_5_6_5; break;
+    case GL_DEPTH_COMPONENT16:
+        return format == GL_DEPTH_COMPONENT && (type == GL_UNSIGNED_SHORT || type == GL_UNSIGNED_INT)
+                   ? GL_DEPTH_COMPONENT : NOT_FILLED;
+    case GL_DEPTH24_STENCIL8_OES:
+        return format == GL_DEPTH_STENCIL_OES && type == GL_UNSIGNED_INT_24_8_OES ? GL_DEPTH_STENCIL_OES : NOT_FILLED;
+    default:
+        if (!base)
+            return ifmt;
+        ok = type == GL_UNSIGNED_BYTE;
+        break;
+    }
+    return ok && format == base ? base : NOT_FILLED;
+}
+
 static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLint internalformat,
                          GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type,
                          const void *pixels)
@@ -1884,13 +1927,13 @@ static void tex_image(struct OGLES2Context *ctx, GLenum target, GLint level, GLi
      * the same image as BGRA_EXT. */
     if ((GLenum)internalformat == GL_BGRA8_EXT && format == GL_BGRA_EXT)
         internalformat = GL_BGRA_EXT;
-    /* The 8-bit sized formats (OES_rgb8_rgba8's names) for the image they
-     * store, as OES_required_internalformat takes them: GLES 3 programs and
-     * dEQP's clip_control cases pass them (GLES 2.0 alone: GL_INVALID_VALUE). */
-    if (((GLenum)internalformat == GL_RGBA8_OES && format == GL_RGBA) ||
-        ((GLenum)internalformat == GL_RGB8_OES && format == GL_RGB))
-        if (type == GL_UNSIGNED_BYTE)
-            internalformat = (GLint)format;
+    /* OES_required_internalformat (GLES 3 programs and dEQP's clip_control
+     * cases pass GL_RGBA8). */
+    if (sized_base((GLenum)internalformat, format, type) == NOT_FILLED) {
+        ogles2_error(ctx, GL_INVALID_OPERATION);
+        return;
+    }
+    internalformat = (GLint)sized_base((GLenum)internalformat, format, type);
     if ((GLenum)internalformat != format) {
         ogles2_error(ctx, internalformat == GL_RGBA || internalformat == GL_RGB ||
                           internalformat == GL_LUMINANCE || internalformat == GL_ALPHA ||
@@ -2095,6 +2138,8 @@ void ogles2_glCopyTexImage2D(struct OGLES2Context *ctx, GLenum target, GLint lev
         ogles2_error(ctx, GL_INVALID_ENUM);
         return;
     }
+    if (sized_color_base(internalformat)) /* OES_required_internalformat */
+        internalformat = sized_color_base(internalformat);
     if (!base_components(internalformat)) {
         ogles2_error(ctx, GL_INVALID_ENUM);
         return;

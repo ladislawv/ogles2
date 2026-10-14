@@ -62,13 +62,14 @@ static const ULONG smooth_rdata[20] = {0, 0, 0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10,
 static const struct OGLES2Variant smooth_variants[3] = {
     {OGLES2_VARIANT_CS, 4, 1, 0, 0, 4, 0, 0, 0, {3}, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
      {0}, {0}, {0}, 0, builtin_coordinate, sizeof(builtin_coordinate), 0, 20, smooth_rtype,
-     smooth_rdata, 0, 0, 0, 0, 0},
+     smooth_rdata, 0, 0, 0, 0, 0, 0},
     {OGLES2_VARIANT_VS, 4, 1, 0, 0, 4, 0, 0, 0, {3, 4}, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
      {0}, {0}, {0}, 0, builtin_vertex_smooth, sizeof(builtin_vertex_smooth),
-     sizeof(builtin_coordinate), 20, smooth_rtype, smooth_rdata, 0, 0, 0, 0, 0},
+     sizeof(builtin_coordinate), 20, smooth_rtype, smooth_rdata, 0, 0, 0, 0, 0, 0},
     {OGLES2_VARIANT_FS, 4, 0, 0, 0, 0, 0, 0, 0, {0}, 0, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 0,
      {0}, {0}, {0}, 0, builtin_fragment_smooth, sizeof(builtin_fragment_smooth),
-     sizeof(builtin_coordinate) + sizeof(builtin_vertex_smooth), 0, 0, 0, 0, 0, 0, 0, 0},
+     sizeof(builtin_coordinate) + sizeof(builtin_vertex_smooth), 0, 0, 0, 0, 0, 0, 0, 0,
+     1 /* render target 0 */},
 };
 
 static const struct OGLES2Image builtin_smooth = {
@@ -1174,17 +1175,23 @@ static void describe_variants(struct OGLES2Program *p, const struct OGLES2Image 
     FreeVec(t);
 }
 
-/* A program on the built-in image (draw.c's clears). */
-BOOL ogles2_program_builtin(struct OGLES2Program *p)
+/* A program on an image the library carries (draw.c's clears): the
+ * built-in one, or one loaded from the library's own data. */
+BOOL ogles2_program_image(struct OGLES2Program *p, const struct OGLES2Image *im)
 {
     memset(p, 0, sizeof(*p));
     p->kind = OGLES2_OBJ_PROGRAM;
-    if (!bind_image(p, &builtin_smooth)) {
+    if (!bind_image(p, im)) {
         ogles2_program_builtin_free(p);
         return FALSE;
     }
     p->linked = GL_TRUE;
     return TRUE;
+}
+
+BOOL ogles2_program_builtin(struct OGLES2Program *p)
+{
+    return ogles2_program_image(p, &builtin_smooth);
 }
 
 void ogles2_program_builtin_free(struct OGLES2Program *p)

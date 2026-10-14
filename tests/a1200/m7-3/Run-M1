@@ -33,9 +33,10 @@ If NOT {FROM} GT 1 VAL
   Echo "step 1 done" >>M7R3:results/00-progress.txt
 EndIf
 
-; m7_clip's program has no binary in bin/: the compiler in libs/ compiles
+; m7_clip's program has no binary in bin/: the compiler in compiler/ compiles
 ; it into cache/, emptied first (a .v3dp there is used whatever compiler
-; made it). Last: the compiler stays in memory a while after.
+; made it). The compiler is in LIBS: for this step only: step 1's tests
+; would start it and count its memory. Last: it stays in memory a while.
 If NOT {FROM} GT 2 VAL
   Echo "Step 2 of 2: clip control, the Z planes probe first (nothing to see)"
   If NOT EXISTS M7R3:cache
@@ -43,7 +44,9 @@ If NOT {FROM} GT 2 VAL
   EndIf
   Delete M7R3:cache/#? QUIET >NIL:
   Assign OGLES2Cache: M7R3:cache
+  Assign LIBS: M7R3:compiler ADD
   M7R3:bin/m7_clip >M7R3:results/2-clip.txt
+  Assign LIBS: M7R3:compiler REMOVE
   Assign OGLES2Cache:
   Echo "step 2 done" >>M7R3:results/00-progress.txt
 EndIf

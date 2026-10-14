@@ -69,7 +69,9 @@ void MulticoreRenderingSupertileCFG(V3DContext* context, UBYTE supertile_w, UBYT
                                     UBYTE frame_w_supertile, UBYTE frame_h_supertile, UBYTE nobtl,
                                     UBYTE sro, UBYTE me, ULONG tilesY, ULONG tilesX);
 void TileRenderingModeCFGClearColorsPart1(V3DContext* context, UBYTE target, ULONG color);
-void TileRenderingModeCFGColor(V3DContext* context, UBYTE bpp, UBYTE type, UBYTE clamp);
+/* ogles2: render targets 0 .. targets-1, all of one internal bpp, type and
+ * clamp (EXT_draw_buffers: up to 4). */
+void TileRenderingModeCFGColor(V3DContext* context, UBYTE targets, UBYTE bpp, UBYTE type, UBYTE clamp);
 void glShaderStateAttributeRecord(V3DContext* context, APTR address, UBYTE raiu, UBYTE nit,
                                   UBYTE sit, UBYTE vsize, UBYTE vtype, UBYTE novrbvs, UBYTE novrbcs,
                                   UWORD divisor, ULONG stride, ULONG maxindex);

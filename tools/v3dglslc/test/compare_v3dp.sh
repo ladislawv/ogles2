@@ -13,7 +13,7 @@ cp "$T"/shaders/*.vert "$T"/shaders/*.frag . || exit 1
 # The source hash covers the exact text: LF line ends, as in the repository
 # and the A1200 packages (a Windows checkout must not turn them into CRLF).
 sed -i 's/\r$//' *.vert *.frag
-PAIRS="tex.vert tex.frag light.vert light.frag skin.vert skin.frag tex.vert proc.frag state.vert state.frag"
+PAIRS="tex.vert tex.frag light.vert light.frag skin.vert skin.frag tex.vert proc.frag state.vert state.frag mrt.vert mrt.frag"
 
 $OUT/host/v3dglslc -o host $PAIRS > host.txt 2>&1
 echo "host v3dglslc rc=$?"

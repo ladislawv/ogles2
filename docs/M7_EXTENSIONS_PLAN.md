@@ -327,6 +327,60 @@ only because the runs had no multisampled default framebuffer. Package
 - **Risk:** the biggest step. The job code's single-target assumptions are
   scattered: loads, stores, clears, tile size, the depth save across a
   mid-frame flush. This goes last, after steps 1-4 are done and committed.
+- **Done (2026-10-14):** as designed, with these details and deviations:
+  - Strings: `GL_EXT_draw_buffers` and `GL_NV_fbo_color_attachments` (the
+    attachment points alone; dEQP-GLES2's `attachment_combinations` cases
+    ask for this one, not `EXT_draw_buffers`). 164 dispatch entries.
+  - `fbo.c`: attachment points `COLOR_ATTACHMENT0..3`, depth, stencil; each
+    framebuffer's draw buffers (initially `COLOR_ATTACHMENT0`); the default
+    framebuffer's `GL_BACK` or `GL_NONE` (a `GL_NONE` one writes and clears
+    no colour). `ogles2_fb_update` gives the drawn mask and the render
+    target count (the highest drawn + 1); a change renders the open job.
+  - `job.c`: an object's job with n targets: `TILE_BINNING_MODE_CFG` and
+    `TILE_RENDERING_MODE_CFG_COMMON` say n, Mesa's tile sizes (64x32 for 2,
+    32x32 for 3 and 4), the tile pools sized for them, a load, a store and a
+    clear colour per drawn target; v3dcore's `TileRenderingModeCFGColor`
+    configures 1-4 targets. Write masks: GLES2's one mask on every drawn
+    target, the others masked off.
+  - Partial clears (scissor, write masks, after draws) draw the rectangle
+    with a program that writes the colour to all four outputs:
+    `tools/clear_mrt` (GLSL), compiled by `make_header.sh` into
+    `ogles2/clear_mrt_v3dp.h`, loaded from the library's own data. Run it
+    again when the compiler changes.
+  - Compiler: `MaxDrawBuffers` 4. A program whose fragment shader writes
+    `gl_FragData[1]` or up is drawn again into 2, 3 and 4 RGBA8 targets, so
+    the `.v3dp` has fragment variants for `cbufs` 0x3, 0x7, 0xF; the runtime
+    chooses by the target count (`OGLES2Variant.cbufs`).
+  - **Deviation:** `gl_FragColor` is broadcast to every draw buffer by the
+    extension; a program that writes it has only `cbufs` 1 variants (nine
+    more fragment compiles for every program otherwise, Quake III's 109
+    included), so it draws into the first target only (logged once).
+  - With 4 draw buffers, `shaders.fragdata.invalid_assign_to_1` is "not
+    supported" (it requires exactly one): Mesa's front end sizes
+    `gl_FragData` by the limit whether or not the directive is there, as on
+    Mesa itself; no parser patch.
+  - `OES_required_internalformat` (also new): sized internal formats in
+    `glTexImage2D` and `glCopyTexImage2D` (RGBA8, RGB8, RGBA4, RGB5_A1,
+    RGB565, ALPHA8, LUMINANCE8(_ALPHA8), DEPTH_COMPONENT16,
+    DEPTH24_STENCIL8), each with a format and type that fill it, else
+    `GL_INVALID_OPERATION`. It replaces step 4's narrower RGBA8/RGB8
+    acceptance, which dEQP's `fbo.completeness` tables count as invalid
+    without this extension.
+  - Test `tests/m7_mrt` (29 checks), package `m7-4` (the plan said `m7-2`,
+    which became S3TC's) with `m1_draw`, `m2_texture`, `m5_fbo`: four
+    colours into four textures in one draw (100x70, so partial tiles of
+    32x32), two and three targets (64x32 tiles, also 300x200), depth, whole
+    and scissored clears, blending, `GL_NONE` draw buffers, the default
+    framebuffer's `GL_NONE`, the API and its errors. A1200
+    `ogles2-m7-4-20261014-120805`: all pass. `compare_v3dp.sh` 8/8 (a
+    multi-target program added). `m7-3` and `m7-4` now add the compiler to
+    `LIBS:` for their compiling step only: `m1_draw` started it and counted
+    its 27 MB as a leak.
+  - dEQP: `fbo` 709/709 (the 54 `attachment_combinations` cases among them),
+    `negative_api` 246/246, `shaders.fragdata` 6 + 1 not supported,
+    `shaders.builtin_variable` 22/22 (`gl_MaxDrawBuffers` 4),
+    `state_query`, `implementation_limits`, `clip_control` all pass;
+    `texture` as before (`ogles2-m7-1-20261014-1150*` to `-120534`).
 
 ## Order and checkpoints
 

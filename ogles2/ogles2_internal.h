@@ -203,6 +203,8 @@ struct OGLES2Variant
     const UWORD *special;
     UWORD nspecial;
     UBYTE no_textures;            /* no TMU or UBO entries: its stream depends on no texture */
+    UBYTE cbufs;                  /* fragment key: the render targets it writes (bit i: target i;
+                                   * 0 in the built-in image: target 0) */
 };
 
 struct OGLES2ImageAttrib
@@ -336,6 +338,7 @@ struct OGLES2Program
     BOOL var_ok;
     GLenum var_mode, var_fsmode;      /* the draw's primitive, the fragment shader's (glPolygonMode) */
     const struct OGLES2Image *var_fim; /* the fragment shader's image: the program's, or its .v3dw */
+    UBYTE var_nrt;                    /* the render targets drawn into (EXT_draw_buffers) */
     const struct OGLES2Variant *var[3];
     ULONG var_code[3];
     UBYTE nsamplers;
@@ -358,13 +361,14 @@ void ogles2_cbuf_set(struct OGLES2Program *p, int stage, ULONG at, ULONG w);
 /* program.c: a program on the built-in image, outside the name table
  * (draw.c's clears); its storage freed with ogles2_program_builtin_free. */
 BOOL ogles2_program_builtin(struct OGLES2Program *p);
+BOOL ogles2_program_image(struct OGLES2Program *p, const struct OGLES2Image *im);
 void ogles2_program_builtin_free(struct OGLES2Program *p);
 
 /* v3dp.c: a .v3dp file's image, or NULL with the reason in why[]. */
 struct OGLES2Image *ogles2_v3dp_load(const UBYTE *file, ULONG len, char *why, ULONG whylen);
 void ogles2_image_free(struct OGLES2Image *im, struct OGLES2Context *ctx);
 /* The image's variant for `stage` and a draw of primitive `mode` (GL_POINTS ...). */
-const struct OGLES2Variant *ogles2_image_variant(const struct OGLES2Image *im, UBYTE stage,
+const struct OGLES2Variant *ogles2_image_variant(const struct OGLES2Image *im, UBYTE stage, UBYTE cbufs,
                                                  GLenum mode);
 /* program.c: the image's 32-bit-sampler variants (im->wide), found or
  * compiled the first time; NULL if there are none (logged once). */
@@ -406,15 +410,20 @@ struct OGLES2Surface
 
 /* What a framebuffer object's job renders into (ogles2_fbo_target). */
 struct OGLES2Texture;
+/* EXT_draw_buffers (M7 step 5): colour attachments 0..3, each a render
+ * target of the tile buffer. */
+#define OGLES2_MAX_DRAW_BUFFERS 4
+
 struct OGLES2Target
 {
     UWORD w, h;
-    BOOL has_color, has_z, has_s, packed_zs; /* packed: one D24S8 image for both */
-    struct OGLES2Surface color, z, s;
+    UBYTE colors;          /* bit i: colour attachment i is drawn (a draw buffer) and has an image */
+    UBYTE nrt;             /* the tile buffer's render targets: the highest drawn + 1 (1 with none) */
+    UBYTE tile_w, tile_h;  /* the tile size nrt gives (Mesa's v3d_choose_tile_size) */
+    BOOL has_z, has_s, packed_zs; /* packed: one D24S8 image for both */
+    struct OGLES2Surface color[OGLES2_MAX_DRAW_BUFFERS], z, s;
     UBYTE depth_type;      /* V3D_INTERNAL_TYPE_DEPTH* for the tile buffer */
     ULONG ta_addr, ta_size, ts_addr; /* own tile pools, 4096-aligned; 0: the context's fit */
-    struct OGLES2Texture *tex; /* the colour image's texture (a renderbuffer's too) */
-    UBYTE face, level;
 };
 
 struct OGLES2Context
@@ -489,6 +498,9 @@ struct OGLES2Context
     UWORD fb_w, fb_h;
     BOOL fb_flip;                   /* the default framebuffer: drawn upside down (plan 7.11) */
     UBYTE fb_depth_bits, fb_stencil_bits, fb_depth_format;
+    UBYTE fb_draw_mask;             /* EXT_draw_buffers: bit i, output i is drawn into an image */
+    UBYTE fb_nrt;                   /* the tile buffer's render targets for it: 1 to 4 */
+    GLenum default_draw_buffer;     /* glDrawBuffersEXT on the default framebuffer: GL_BACK, GL_NONE */
     /* M6 overlap (job.c): a render submitted and not waited for yet. The
      * submission lock went at the submission; the next submitter waits for
      * the render on the GPU (take_gpu) and, from another task, marks it
@@ -622,6 +634,7 @@ BOOL ogles2_fbo_read(struct OGLES2Context *ctx, int x, int y, int w, int h, UBYT
 void ogles2_fbo_texture_changing(struct OGLES2Context *ctx, struct OGLES2Texture *t);
 void ogles2_fbo_texture_deleted(struct OGLES2Context *ctx, struct OGLES2Texture *t);
 BOOL ogles2_fbo_query(struct OGLES2Context *ctx, GLenum pname, GLint *v);
+GLenum ogles2_fbo_draw_buffer(struct OGLES2Context *ctx, int i); /* GL_DRAW_BUFFERi_EXT */
 void ogles2_fbo_free(struct OGLES2Context *ctx);
 BOOL ogles2_texture_query(struct OGLES2Context *ctx, GLenum pname, GLint *v);
 /* The texture and sampler state of texture unit `unit` (its binding of

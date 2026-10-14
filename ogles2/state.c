@@ -660,6 +660,12 @@ static int lookup(struct OGLES2Context *ctx, GLenum pname, struct value *v)
     case GL_IMPLEMENTATION_COLOR_READ_TYPE:
         v->kind = K_INT; v->n = 1; v->i[0] = GL_UNSIGNED_BYTE;
         return 1;
+    case GL_DRAW_BUFFER0_EXT: /* EXT_draw_buffers */
+    case GL_DRAW_BUFFER1_EXT:
+    case GL_DRAW_BUFFER2_EXT:
+    case GL_DRAW_BUFFER3_EXT:
+        v->kind = K_INT; v->n = 1; v->i[0] = (GLint)ogles2_fbo_draw_buffer(ctx, (int)(pname - GL_DRAW_BUFFER0_EXT));
+        return 1;
     case GL_CLIP_ORIGIN_EXT:
         v->kind = K_INT; v->n = 1; v->i[0] = (GLint)s->clip_origin;
         return 1;

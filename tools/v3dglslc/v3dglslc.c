@@ -98,6 +98,9 @@ static void base_name(char *out, const char *path)
  * 16-bit depth buffer, created once; and the textures the samplers get:
  * RGBA8, or RGBA32F for the variants that sample 32-bit returns. */
 static GLuint draw_fbo, tex_2d, tex_cube, tex_2d32, tex_cube32, tex_rect, tex_rect32;
+/* EXT_draw_buffers: targets with 2, 3 and 4 RGBA8 colour images, all drawn
+ * into (the fragment key's cbufs 0x3, 0x7, 0xF). */
+static GLuint mrt_fbo[3];
 
 /* What write_program writes (v3dp/FORMAT.md): the variants of the default
  * key states (.v3dp); and, for a program with samplers, those of the same
@@ -130,6 +133,32 @@ static int make_target(void)
     if (status != GL_FRAMEBUFFER_COMPLETE) {
         fprintf(stderr, "v3dglslc: draw target incomplete (0x%04x)\n", (unsigned)status);
         return 0;
+    }
+    {
+        static const GLenum bufs[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2,
+                                        GL_COLOR_ATTACHMENT3 };
+        int n, i;
+        for (n = 2; n <= 4; n++) {
+            _mesa_GenFramebuffers(1, &mrt_fbo[n - 2]);
+            _mesa_BindFramebuffer(GL_FRAMEBUFFER, mrt_fbo[n - 2]);
+            for (i = 0; i < n; i++) {
+                GLuint t;
+                _mesa_GenTextures(1, &t);
+                _mesa_BindTexture(GL_TEXTURE_2D, t);
+                _mesa_TexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+                _mesa_TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+                _mesa_FramebufferTexture2D(GL_FRAMEBUFFER, bufs[i], GL_TEXTURE_2D, t, 0);
+            }
+            _mesa_BindTexture(GL_TEXTURE_2D, 0);
+            _mesa_FramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth);
+            _mesa_DrawBuffers(n, bufs);
+            status = _mesa_CheckFramebufferStatus(GL_FRAMEBUFFER);
+            if (status != GL_FRAMEBUFFER_COMPLETE) {
+                fprintf(stderr, "v3dglslc: %d-target draw target incomplete (0x%04x)\n", n, (unsigned)status);
+                return 0;
+            }
+        }
+        _mesa_BindFramebuffer(GL_FRAMEBUFFER, draw_fbo);
     }
     _mesa_Viewport(0, 0, 64, 64);
     _mesa_Enable(GL_DEPTH_TEST);
@@ -293,6 +322,26 @@ static int draw_key_states(GLuint p, int wide)
     }
     for (m = 0; m < ARRAY_SIZE(modes); m++)
         _mesa_DrawArrays(modes[m], 0, 3);
+    /* EXT_draw_buffers: a fragment shader that writes gl_FragData[1] or up
+     * is also drawn into 2, 3 and 4 targets. gl_FragColor would be broadcast
+     * to them too, but every program would then compile nine more fragment
+     * shaders: ogles2 draws such a program into the first target only. */
+    {
+        GET_CURRENT_CONTEXT(ctx);
+        struct gl_shader_program *sp = _mesa_lookup_shader_program(ctx, p);
+        struct gl_linked_shader *fsh = sp ? sp->_LinkedShaders[MESA_SHADER_FRAGMENT] : NULL;
+        const uint64_t more = BITFIELD64_BIT(FRAG_RESULT_DATA1) | BITFIELD64_BIT(FRAG_RESULT_DATA2) |
+                              BITFIELD64_BIT(FRAG_RESULT_DATA3);
+        if (fsh && fsh->Program && (fsh->Program->info.outputs_written & more)) {
+            int n;
+            for (n = 0; n < 3; n++) {
+                _mesa_BindFramebuffer(GL_FRAMEBUFFER, mrt_fbo[n]);
+                for (m = 0; m < ARRAY_SIZE(modes); m++)
+                    _mesa_DrawArrays(modes[m], 0, 3);
+            }
+            _mesa_BindFramebuffer(GL_FRAMEBUFFER, draw_fbo);
+        }
+    }
     /* Submit the job (a no-op on the fake device) so jobs do not pile up.
      * Not glFinish: its fence needs a sync file the fake device cannot give. */
     _mesa_Flush();
@@ -531,14 +580,14 @@ int main(int argc, char **argv)
         return 20;
     }
     /* ogles2.library's limits, which its GL queries report too (GLSL's
-     * gl_Max* constants must equal them: dEQP-GLES2 builtin_variable): one
-     * draw buffer (no EXT_draw_buffers: gl_FragData[1] does not compile), 16
+     * gl_Max* constants must equal them: dEQP-GLES2 builtin_variable): four
+     * draw buffers (EXT_draw_buffers, M7 step 5; OGLES2_MAX_DRAW_BUFFERS), 16
      * texture units in each stage (OGLES2_MAX_STAGE_SAMPLERS; the driver
      * offers 24) and 32 in all (OGLES2_MAX_TEXTURE_UNITS, M7 step 2; the
      * driver offers 96). */
     {
         GET_CURRENT_CONTEXT(ctx);
-        ctx->Const.MaxDrawBuffers = 1;
+        ctx->Const.MaxDrawBuffers = 4;
         ctx->Const.Program[MESA_SHADER_VERTEX].MaxTextureImageUnits = 16;
         ctx->Const.Program[MESA_SHADER_FRAGMENT].MaxTextureImageUnits = 16;
         ctx->Const.MaxCombinedTextureImageUnits = 32;

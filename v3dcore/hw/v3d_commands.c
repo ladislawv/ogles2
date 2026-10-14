@@ -830,19 +830,28 @@ void TileRenderingModeCFGClearColorsPart1(V3DContext* context, UBYTE target, ULO
 
 //***************************************************************************
 
-void TileRenderingModeCFGColor(V3DContext* context, UBYTE bpp, UBYTE type, UBYTE clamp) //fixed to target0 atm
+void TileRenderingModeCFGColor(V3DContext* context, UBYTE targets, UBYTE bpp, UBYTE type, UBYTE clamp)
 {
-    ULONG temp;
+    ULONG lo = 1, hi = 0; /* sub-id 1; bits 32-63 */
+    UBYTE rt;
 
     v3d_static_buffer* buffer = context->current_buf;
 
     V3D_BUFFER_ALLOC_OPERATION(buffer, v3d_OP_TILE_RENDERING_MODE_CFG_COLOR,
                                v3d_tile_rendering_mode_cfg_color, tilerenderingmodecfgColor);
 
-    temp = 1 | bpp << 4 | type << 6 | clamp << 10;
+    /* ogles2: each render target's 8 bits from bit 4 + 8 x rt (Mesa's
+     * v3d_packet.xml, V3D 4.2): bpp 2, type 4, clamp 2; target 3's clamp
+     * crosses into the high word. */
+    for (rt = 0; rt < targets && rt < 4; rt++) {
+        ULONG field = (ULONG)bpp | (ULONG)type << 2 | (ULONG)clamp << 6, shift = 4 + 8UL * rt;
+        lo |= field << shift;
+        if (shift + 8 > 32)
+            hi |= field >> (32 - shift);
+    }
 
-    tilerenderingmodecfgColor->fake1 = LE32(temp); //subid 1, bpp 0 (32), type 2 (8), clamp 0 (none) gives 0x81000000
-    tilerenderingmodecfgColor->fake2 = 0; //target 1, 2 and 3 not used
+    tilerenderingmodecfgColor->fake1 = LE32(lo); //subid 1, bpp 0 (32), type 2 (8), clamp 0 (none) gives 0x81000000
+    tilerenderingmodecfgColor->fake2 = LE32(hi);
 }
 
 //***************************************************************************

@@ -61,10 +61,15 @@ struct OGLES2Draw
     v3d_mem builtin_code;          /* the built-in image's code, uploaded at first use */
     struct OGLES2Program quad;     /* clears drawn as rectangles (built-in image) */
     BOOL quad_ready;
+    /* and into several render targets (EXT_draw_buffers): clear_mrt_v3dp.h */
+    struct OGLES2Program mrt_quad;
+    struct OGLES2Image *mrt_image;
+    BOOL mrt_ready, mrt_failed;
     struct dedup dd;
     v3d_u32 defattr_gen;           /* the default attribute block of this control list */
     ULONG defattr;
     const struct OGLES2Image *missed; /* the last image a variant miss was logged for */
+    const struct OGLES2Image *missed_rt; /* and a render-target miss (EXT_draw_buffers) */
     v3d_mem spill;                 /* register spilling's scratch area (spill_area) */
     ULONG spill_size;              /* bytes a thread has in it */
 };
@@ -220,6 +225,10 @@ void ogles2_draw_free(struct OGLES2Context *ctx)
         v3d_mem_free(ogles2_device(), &d->spill);
     if (d->quad_ready)
         ogles2_program_builtin_free(&d->quad);
+    if (d->mrt_ready)
+        ogles2_program_builtin_free(&d->mrt_quad);
+    if (d->mrt_image)
+        ogles2_image_free(d->mrt_image, ctx);
     FreeVec(d);
     ctx->draw = 0;
 }
@@ -1262,9 +1271,17 @@ static void emit_state(struct OGLES2Context *ctx, struct dedup *dd, int prim,
     dd->blend = TRUE;
     dd->be = be;
 
-    /* COLOR_WRITE_MASKS: a set bit disables a channel (R, G, B, A = bits 0-3). */
-    cwm = (s->color_mask[0] ? 0 : 1) | (s->color_mask[1] ? 0 : 2) |
-          (s->color_mask[2] ? 0 : 4) | (s->color_mask[3] ? 0 : 8);
+    /* COLOR_WRITE_MASKS: a set bit disables a channel (R, G, B, A = bits
+     * 0-3), four bits a render target. GLES2's one mask for every draw
+     * buffer; a target no draw buffer names (EXT_draw_buffers' GL_NONE, a
+     * missing attachment) is not written at all. */
+    {
+        ULONG m = (s->color_mask[0] ? 0 : 1) | (s->color_mask[1] ? 0 : 2) |
+                  (s->color_mask[2] ? 0 : 4) | (s->color_mask[3] ? 0 : 8);
+        cwm = 0;
+        for (k = 0; k < OGLES2_MAX_DRAW_BUFFERS; k++)
+            cwm |= ((ctx->fb_draw_mask & (1 << k)) ? m : 0xF) << (4 * k);
+    }
     if (!dd->cwm || dd->cwm_mask != cwm) {
         ColorWriteMasks(v, cwm);
         dd->cwm = TRUE;
@@ -1448,7 +1465,8 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
         if (w)
             fim = w;
     }
-    if (p->var_ok && p->var_mode == mode && p->var_fsmode == fsmode && p->var_fim == fim) {
+    if (p->var_ok && p->var_mode == mode && p->var_fsmode == fsmode && p->var_fim == fim &&
+        p->var_nrt == ctx->fb_nrt) {
         cs = p->var[0];
         vs = p->var[1];
         fs = p->var[2];
@@ -1456,9 +1474,10 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
         code[1] = p->var_code[1];
         code[2] = p->var_code[2];
     } else {
-        cs = ogles2_image_variant(im, OGLES2_VARIANT_CS, mode);
-        vs = ogles2_image_variant(im, OGLES2_VARIANT_VS, mode);
-        fs = ogles2_image_variant(fim, OGLES2_VARIANT_FS, fsmode);
+        UBYTE cbufs = (UBYTE)((1 << ctx->fb_nrt) - 1);
+        cs = ogles2_image_variant(im, OGLES2_VARIANT_CS, 0, mode);
+        vs = ogles2_image_variant(im, OGLES2_VARIANT_VS, 0, mode);
+        fs = ogles2_image_variant(fim, OGLES2_VARIANT_FS, cbufs, fsmode);
         if (!cs || !vs || !fs) {
             ogles2_log("glDrawArrays: the program has no shader for this primitive; nothing drawn");
             return;
@@ -1469,6 +1488,11 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
             d->missed = im; /* plan 7.8: the closest variant is used; logged once per program */
             ogles2_log("glDrawArrays: no fragment shader variant for primitive %ld; using the closest",
                        (ULONG)mode);
+        }
+        if (d->missed_rt != im && (fs->cbufs ? fs->cbufs : 1) != cbufs) {
+            d->missed_rt = im; /* logged once per program */
+            ogles2_log("glDrawArrays: no fragment shader variant for %ld render targets "
+                       "(EXT_draw_buffers): the program draws into the first only", (ULONG)ctx->fb_nrt);
         }
         code[0] = code_address(d, im, cs);
         code[1] = code_address(d, im, vs);
@@ -1486,6 +1510,7 @@ static void draw_arrays(struct OGLES2Context *ctx, struct OGLES2Program *p, GLen
         p->var_mode = mode;
         p->var_fsmode = fsmode;
         p->var_fim = fim;
+        p->var_nrt = ctx->fb_nrt;
         p->var_ok = TRUE;
     }
 
@@ -1838,6 +1863,35 @@ void ogles2_glDrawRangeElements(struct OGLES2Context *ctx, GLenum mode, GLuint s
     draw_elements(ctx, mode, count, type, indices, 0, range, "glDrawRangeElements");
 }
 
+#include "clear_mrt_v3dp.h"
+
+/* The program a clear draws into several render targets with: the clear
+ * colour (the last generic attribute, constant) in every output, position
+ * from the last but one; tools/clear_mrt. 0: none (logged once), and the
+ * built-in one clears the first target only. */
+static struct OGLES2Program *mrt_program(struct OGLES2Draw *d)
+{
+    struct OGLES2Program *p = &d->mrt_quad;
+    UWORD a;
+    if (!d->mrt_ready && !d->mrt_failed) {
+        char why[96];
+        if (!(d->mrt_image = ogles2_v3dp_load(clear_mrt_v3dp, sizeof(clear_mrt_v3dp), why, sizeof(why))) ||
+            !ogles2_program_image(p, d->mrt_image)) {
+            d->mrt_failed = TRUE;
+            ogles2_log("glClear: no program for several render targets (%s): the first is cleared only",
+                       (ULONG)(d->mrt_image ? "out of memory" : why));
+            return 0;
+        }
+        d->mrt_ready = TRUE;
+    }
+    if (!d->mrt_ready)
+        return 0;
+    for (a = 0; a < d->mrt_image->nattribs; a++)
+        p->attrib_index[a] = d->mrt_image->attribs[a].name[2] == 'p' /* a_position */
+                                 ? OGLES2_MAX_VERTEX_ATTRIBS - 2 : OGLES2_MAX_VERTEX_ATTRIBS - 1;
+    return p;
+}
+
 /* ---- clears that the tile buffer cannot do ----
  * A clear confined by the scissor box or by write masks, or one after draws
  * in the same job (the tile buffer clears before any of them), is drawn as a
@@ -1879,6 +1933,12 @@ void ogles2_draw_clear(struct OGLES2Context *ctx, GLbitfield mask)
     quad = &d->quad;
     quad->attrib_index[0] = OGLES2_MAX_VERTEX_ATTRIBS - 2;
     quad->attrib_index[1] = OGLES2_MAX_VERTEX_ATTRIBS - 1;
+    /* EXT_draw_buffers: GLES2 clears every draw buffer. */
+    if (ctx->fb_nrt > 1 && (mask & GL_COLOR_BUFFER_BIT)) {
+        struct OGLES2Program *m = mrt_program(d);
+        if (m)
+            quad = m;
+    }
 
     z = s->clear_depth * 2.0f - 1.0f; /* lands on clear_depth with the range [0, 1] */
     pos[0] = -1; pos[1] = -1;  pos[3] = 1; pos[4] = -1;
