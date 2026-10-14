@@ -92,6 +92,9 @@ typedef struct V3DTexture {
 
     v3d_u16 width, height;
     v3d_u8  cpp;                 /* ogles2: bytes per texel of the stored format; 0 means 4 (RGBA8) */
+    v3d_u8  block;               /* ogles2: texels a side of one stored "texel": 4 for the BC
+                                    (S3TC) formats, whose 8- or 16-byte blocks are laid out as
+                                    texels of that size (Mesa's v3d_setup_slices); 0 or 1 else */
     v3d_u8  format;              /* backend-local format id (V3D_SRCFMT_*) */
     v3d_u8  mipmap_count;
 
@@ -240,6 +243,13 @@ int v3d_texture_alloc(V3DDevice* device, V3DTexture* tex, v3d_u16 width, v3d_u16
  * R8, RG8 and the 16-bit formats, RGBA8); the mip chain follows it. */
 int v3d_texture_alloc_cpp(V3DDevice* device, V3DTexture* tex, v3d_u16 width, v3d_u16 height,
                           v3d_u8 cpp);
+
+/* ogles2: the same for a block-compressed format: width x height texels,
+ * stored as blocks of block x block texels, `cpp` bytes each (BC1: 4, 8;
+ * BC2/BC3: 4, 16). Every level is laid out as an image of its blocks; its
+ * levels[] dimensions and v3d_texture_store's boxes are in blocks. */
+int v3d_texture_alloc_blocks(V3DDevice* device, V3DTexture* tex, v3d_u16 width, v3d_u16 height,
+                             v3d_u8 cpp, v3d_u8 block);
 
 /* ogles2: stores a box of `level` from src (`srcStride` bytes a row, texels
  * of tex->cpp bytes in the GPU's byte order), with Mesa's convention: the

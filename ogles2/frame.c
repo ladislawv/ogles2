@@ -210,6 +210,11 @@ void ogles2_glClear(struct OGLES2Context *ctx, GLbitfield mask)
     }
     if (!ctx->v3d || !mask || !ogles2_fb_ready(ctx))
         return;
+    /* EXT_draw_buffers: colour clears the draw buffers, none with GL_NONE. */
+    if (!ctx->fb_draw_mask)
+        mask &= ~(GLbitfield)GL_COLOR_BUFFER_BIT;
+    if (!mask)
+        return;
     s = &ctx->state;
     /* The tile buffer clears whole buffers at the start of the job's render,
      * before any draw: a clear confined by the scissor box or by write

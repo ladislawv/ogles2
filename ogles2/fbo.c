@@ -47,9 +47,12 @@
 #define GL_DEPTH24_STENCIL8_OES 0x88F0 /* OES_packed_depth_stencil */
 #endif
 
+/* Attachment points: colour 0..3 (EXT_draw_buffers, NV_fbo_color_attachments),
+ * then depth and stencil. */
 #define ATT_COLOR   0
-#define ATT_DEPTH   1
-#define ATT_STENCIL 2
+#define ATT_DEPTH   OGLES2_MAX_DRAW_BUFFERS
+#define ATT_STENCIL (OGLES2_MAX_DRAW_BUFFERS + 1)
+#define NATT        (OGLES2_MAX_DRAW_BUFFERS + 2)
 
 struct OGLES2Renderbuffer
 {
@@ -78,7 +81,8 @@ struct OGLES2Framebuffer
     GLuint name;
     BOOL bound_once;
     UBYTE discarded;            /* OGLES2_DISCARD_*: undefined, the next job need not load them */
-    struct OGLES2Attachment att[3];
+    struct OGLES2Attachment att[NATT];
+    GLenum draw_buf[OGLES2_MAX_DRAW_BUFFERS]; /* glDrawBuffersEXT: COLOR_ATTACHMENTi or NONE */
     v3d_mem pool_alloc, pool_state; /* tile pools of its own when bigger than the context's */
     ULONG pool_tiles;
 };
@@ -200,7 +204,7 @@ static void before_rb_change(struct OGLES2Context *ctx, struct OGLES2Renderbuffe
         ogles2_job_finish(ctx);
     if (!ctx->v3d || !ctx->v3d->frame_active || !fb)
         return;
-    for (a = 0; a < 3; a++)
+    for (a = 0; a < NATT; a++)
         if (fb->att[a].type == GL_RENDERBUFFER && fb->att[a].rb == rb) {
             ogles2_job_flush(ctx, FALSE);
             ogles2_job_finish(ctx);
@@ -208,15 +212,18 @@ static void before_rb_change(struct OGLES2Context *ctx, struct OGLES2Renderbuffe
         }
 }
 
-/* fb draws into texture t: its colour image (a renderbuffer's own
+/* fb draws into texture t: a colour image (a renderbuffer's own
  * included), or a depth texture. */
 static BOOL draws_into(const struct OGLES2Framebuffer *fb, const struct OGLES2Texture *t)
 {
-    return fb && ((fb->att[ATT_COLOR].type == GL_TEXTURE && fb->att[ATT_COLOR].tex == t) ||
-                  (fb->att[ATT_DEPTH].type == GL_TEXTURE && fb->att[ATT_DEPTH].tex == t) ||
-                  (fb->att[ATT_STENCIL].type == GL_TEXTURE && fb->att[ATT_STENCIL].tex == t) ||
-                  (fb->att[ATT_COLOR].type == GL_RENDERBUFFER && fb->att[ATT_COLOR].rb &&
-                   fb->att[ATT_COLOR].rb->color == t));
+    int a;
+    if (!fb)
+        return FALSE;
+    for (a = 0; a < NATT; a++)
+        if ((fb->att[a].type == GL_TEXTURE && fb->att[a].tex == t) ||
+            (a < ATT_DEPTH && fb->att[a].type == GL_RENDERBUFFER && fb->att[a].rb && fb->att[a].rb->color == t))
+            return TRUE;
+    return FALSE;
 }
 
 void ogles2_fbo_texture_changing(struct OGLES2Context *ctx, struct OGLES2Texture *t)
@@ -264,7 +271,7 @@ void ogles2_fbo_texture_deleted(struct OGLES2Context *ctx, struct OGLES2Texture 
     ogles2_fbo_texture_changing(ctx, t);
     if (!fb)
         return;
-    for (a = 0; a < 3; a++)
+    for (a = 0; a < NATT; a++)
         if (fb->att[a].type == GL_TEXTURE && fb->att[a].tex == t) {
             before_fb_change(ctx, fb);
             att_clear(ctx, &fb->att[a], FALSE);
@@ -299,6 +306,7 @@ void ogles2_glGenFramebuffers(struct OGLES2Context *ctx, GLsizei n, GLuint *fram
             return;
         }
         fb->name = i;
+        fb->draw_buf[0] = GL_COLOR_ATTACHMENT0;
         fs->fbs[i] = fb;
         if (framebuffers)
             framebuffers[k] = i;
@@ -371,6 +379,7 @@ void ogles2_glBindFramebuffer(struct OGLES2Context *ctx, GLenum target, GLuint f
                 return;
             }
             fb->name = framebuffer;
+            fb->draw_buf[0] = GL_COLOR_ATTACHMENT0;
             fs->fbs[slot] = fb;
         }
         fb->bound_once = TRUE;
@@ -437,7 +446,7 @@ void ogles2_glDeleteFramebuffers(struct OGLES2Context *ctx, GLsizei n, const GLu
             ctx->draw_fb = 0;
             ogles2_fb_update(ctx);
         }
-        for (a = 0; a < 3; a++)
+        for (a = 0; a < NATT; a++)
             att_clear(ctx, &fb->att[a], FALSE);
         fs->fbs[ogles2_name_slot(&fs->far_fb, fb->name, FALSE)] = 0;
         ogles2_name_forget(&fs->far_fb, fb->name);
@@ -471,7 +480,7 @@ void ogles2_glDeleteRenderbuffers(struct OGLES2Context *ctx, GLsizei n, const GL
             if (m->fbo && m->fbo->rb_bound == rb)
                 m->fbo->rb_bound = 0;
         if ((fb = ctx->draw_fb))
-            for (a = 0; a < 3; a++)
+            for (a = 0; a < NATT; a++)
                 if (fb->att[a].type == GL_RENDERBUFFER && fb->att[a].rb == rb) {
                     before_fb_change(ctx, fb);
                     att_clear(ctx, &fb->att[a], FALSE);
@@ -558,8 +567,9 @@ void ogles2_glRenderbufferStorage(struct OGLES2Context *ctx, GLenum target, GLen
 
 static int attachment_index(GLenum attachment)
 {
-    return attachment == GL_COLOR_ATTACHMENT0 ? ATT_COLOR
-         : attachment == GL_DEPTH_ATTACHMENT  ? ATT_DEPTH
+    if (attachment >= GL_COLOR_ATTACHMENT0 && attachment < GL_COLOR_ATTACHMENT0 + OGLES2_MAX_DRAW_BUFFERS)
+        return ATT_COLOR + (int)(attachment - GL_COLOR_ATTACHMENT0);
+    return attachment == GL_DEPTH_ATTACHMENT  ? ATT_DEPTH
          : attachment == GL_STENCIL_ATTACHMENT ? ATT_STENCIL : -1;
 }
 
@@ -663,7 +673,8 @@ void ogles2_glDiscardFramebufferEXT(struct OGLES2Context *ctx, GLenum target, GL
     }
     for (k = 0; k < numAttachments && attachments; k++) {
         GLenum a = attachments[k];
-        if (ctx->draw_fb ? a == GL_COLOR_ATTACHMENT0 : a == 0x1800 /* GL_COLOR_EXT */)
+        if (ctx->draw_fb ? a >= GL_COLOR_ATTACHMENT0 && a < GL_COLOR_ATTACHMENT0 + OGLES2_MAX_DRAW_BUFFERS
+                         : a == 0x1800 /* GL_COLOR_EXT */)
             bits |= OGLES2_DISCARD_COLOR;
         else if (ctx->draw_fb ? a == GL_DEPTH_ATTACHMENT : a == 0x1801 /* GL_DEPTH_EXT */)
             bits |= OGLES2_DISCARD_DEPTH;
@@ -686,6 +697,63 @@ void ogles2_glDiscardFramebufferEXT(struct OGLES2Context *ctx, GLenum target, GL
     if (ctx->v3d && ctx->v3d->frame_active && ctx->job_fb == ctx->draw_fb)
         ctx->job_discard |= bits;
     ctx->draw_fb->discarded |= bits;
+}
+
+/* ---- EXT_draw_buffers ----
+ * Fragment output i goes to colour attachment i or nowhere (GL_NONE); the
+ * default framebuffer takes GL_BACK or GL_NONE for output 0. The state is
+ * the framebuffer's own. A change renders the open job (its render targets
+ * are set when it starts). */
+void ogles2_glDrawBuffersEXT(struct OGLES2Context *ctx, GLsizei n, const GLenum *bufs)
+{
+    struct OGLES2Framebuffer *fb = ctx ? ctx->draw_fb : 0;
+    GLsizei i;
+    if (!ogles2_context_valid(ctx))
+        return;
+    if (n < 0 || n > OGLES2_MAX_DRAW_BUFFERS) {
+        ogles2_error(ctx, GL_INVALID_VALUE);
+        return;
+    }
+    if (n && !bufs)
+        return;
+    for (i = 0; i < n; i++) {
+        GLenum b = bufs[i];
+        if (b != GL_NONE && b != GL_BACK &&
+            !(b >= GL_COLOR_ATTACHMENT0 && b < GL_COLOR_ATTACHMENT0 + 16)) { /* the extension's 16 names */
+            ogles2_error(ctx, GL_INVALID_ENUM);
+            return;
+        }
+        if (fb ? b != GL_NONE && b != GL_COLOR_ATTACHMENT0 + (GLenum)i : b != GL_NONE && b != GL_BACK) {
+            ogles2_error(ctx, GL_INVALID_OPERATION);
+            return;
+        }
+    }
+    if (!fb) {
+        if (n != 1) {
+            ogles2_error(ctx, GL_INVALID_OPERATION);
+            return;
+        }
+        if (ctx->v3d && ctx->v3d->frame_active && !ctx->job_fb && bufs[0] != ctx->default_draw_buffer)
+            ctx->state_ver++; /* the write masks follow it (draw.c) */
+        ctx->default_draw_buffer = bufs[0];
+        ogles2_fb_update(ctx);
+        return;
+    }
+    before_fb_change(ctx, fb);
+    for (i = 0; i < OGLES2_MAX_DRAW_BUFFERS; i++)
+        fb->draw_buf[i] = i < n ? bufs[i] : GL_NONE;
+    ctx->state_ver++;
+    ogles2_fb_update(ctx);
+}
+
+/* GL_DRAW_BUFFERi_EXT of the bound framebuffer (state.c). */
+GLenum ogles2_fbo_draw_buffer(struct OGLES2Context *ctx, int i)
+{
+    if (i < 0 || i >= OGLES2_MAX_DRAW_BUFFERS)
+        return GL_NONE;
+    if (!ctx->draw_fb)
+        return i == 0 ? ctx->default_draw_buffer : GL_NONE;
+    return ctx->draw_fb->draw_buf[i];
 }
 
 /* job.c, at a job's start: what it need not load. */
@@ -729,11 +797,10 @@ static BOOL same_image(const struct OGLES2Attachment *a, const struct OGLES2Atta
 
 static GLenum status_of(struct OGLES2Framebuffer *fb)
 {
-    const struct OGLES2Attachment *c = &fb->att[ATT_COLOR], *d = &fb->att[ATT_DEPTH],
-                                  *s = &fb->att[ATT_STENCIL];
+    const struct OGLES2Attachment *d = &fb->att[ATT_DEPTH], *s = &fb->att[ATT_STENCIL];
     UWORD w0 = 0, h0 = 0, w, h;
     int a, n = 0;
-    for (a = 0; a < 3; a++) {
+    for (a = 0; a < NATT; a++) {
         const struct OGLES2Attachment *at = &fb->att[a];
         if (at->type == GL_NONE)
             continue;
@@ -741,10 +808,10 @@ static GLenum status_of(struct OGLES2Framebuffer *fb)
             return GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT;
         if (at->type == GL_RENDERBUFFER) {
             GLenum f = at->rb->format;
-            if ((a == ATT_COLOR && !is_color(f)) || (a == ATT_DEPTH && !is_depth(f)) ||
+            if ((a < ATT_DEPTH && !is_color(f)) || (a == ATT_DEPTH && !is_depth(f)) ||
                 (a == ATT_STENCIL && !is_stencil(f)))
                 return GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT;
-        } else if (a == ATT_COLOR) {
+        } else if (a < ATT_DEPTH) {
             if (!ogles2_texture_renderable(at->tex, at->face, at->level))
                 return GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT;
         } else {
@@ -768,7 +835,6 @@ static GLenum status_of(struct OGLES2Framebuffer *fb)
      * packed one (D16 or a depth texture, and S8). */
     if (d->type != GL_NONE && s->type != GL_NONE && (packed(d) || packed(s)) && !same_image(d, s))
         return GL_FRAMEBUFFER_UNSUPPORTED;
-    (void)c;
     return GL_FRAMEBUFFER_COMPLETE;
 }
 
@@ -800,13 +866,24 @@ void ogles2_fb_update(struct OGLES2Context *ctx)
         ctx->fb_depth_bits = ctx->depth_bits;
         ctx->fb_stencil_bits = ctx->stencil_bits;
         ctx->fb_depth_format = ctx->depth_format;
+        ctx->fb_draw_mask = ctx->default_draw_buffer == GL_NONE ? 0 : 1;
+        ctx->fb_nrt = 1;
         return;
     }
+    /* EXT_draw_buffers: the colour attachments drawn into, and the tile
+     * buffer's render targets (output i goes to target i). */
+    ctx->fb_draw_mask = 0;
+    ctx->fb_nrt = 1;
+    for (a = 0; a < OGLES2_MAX_DRAW_BUFFERS; a++)
+        if (fb->draw_buf[a] != GL_NONE && fb->att[ATT_COLOR + a].type != GL_NONE) {
+            ctx->fb_draw_mask |= (UBYTE)(1 << a);
+            ctx->fb_nrt = (UBYTE)(a + 1);
+        }
     ctx->fb_w = ctx->fb_h = 0;
     ctx->fb_flip = FALSE;
     ctx->fb_depth_bits = ctx->fb_stencil_bits = 0;
     ctx->fb_depth_format = OGLES2_DEPTH_16;
-    for (a = 0; a < 3; a++) {
+    for (a = 0; a < NATT; a++) {
         UWORD w, h;
         if (fb->att[a].type != GL_NONE && !ctx->fb_w && att_size(&fb->att[a], &w, &h)) {
             ctx->fb_w = w;
@@ -879,8 +956,10 @@ static BOOL pools(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, struc
 {
     V3DContext *v = ctx->v3d;
     v3d_u32 zs, ts, ta, tx, ty;
-    ULONG tiles = (ULONG)((t->w + 63) / 64) * ((t->h + 63) / 64);
-    ULONG mine = (ULONG)((v->width + 63) / 64) * ((v->height + 63) / 64);
+    /* The job's tiles (smaller with several render targets), and as many
+     * as the context's pools were made for (32x32 with 4x MSAA). */
+    ULONG tiles = (ULONG)((t->w + t->tile_w - 1) / t->tile_w) * ((t->h + t->tile_h - 1) / t->tile_h);
+    ULONG ct = ctx->msaa ? 32 : 64, mine = (ULONG)((v->width + ct - 1) / ct) * ((v->height + ct - 1) / ct);
     t->ta_addr = t->ta_size = t->ts_addr = 0;
     if (tiles <= mine)
         return TRUE;
@@ -891,7 +970,8 @@ static BOOL pools(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, struc
         if (fb->pool_state.hostptr)
             v3d_mem_free(ogles2_device(), &fb->pool_state);
         fb->pool_tiles = 0;
-        v3d_frame_compute_pool_sizes(t->w, t->h, 16, 0, &zs, &ts, &ta, &tx, &ty);
+        /* sized for 32x32 tiles when the job's are smaller than 64x64 */
+        v3d_frame_compute_pool_sizes(t->w, t->h, 16, t->tile_w < 64 || t->tile_h < 64, &zs, &ts, &ta, &tx, &ty);
         if (v3d_mem_alloc(ogles2_device(), &fb->pool_alloc, ta + 4096) < 0)
             return FALSE;
         if (v3d_mem_alloc(ogles2_device(), &fb->pool_state, ts + 4096) < 0) {
@@ -917,9 +997,10 @@ static BOOL pools(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, struc
 BOOL ogles2_fbo_target(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, BOOL surfaces,
                        struct OGLES2Target *t)
 {
-    const struct OGLES2Attachment *c = &fb->att[ATT_COLOR], *d = &fb->att[ATT_DEPTH],
-                                  *s = &fb->att[ATT_STENCIL];
+    const struct OGLES2Attachment *d = &fb->att[ATT_DEPTH], *s = &fb->att[ATT_STENCIL];
     struct OGLES2Framebuffer *saved = ctx->draw_fb;
+    UBYTE drawn;
+    int i;
     memset(t, 0, sizeof(*t));
     ctx->draw_fb = fb; /* the sizes and formats of fb, whatever is bound now */
     ogles2_fb_update(ctx);
@@ -927,24 +1008,31 @@ BOOL ogles2_fbo_target(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, 
     t->h = ctx->fb_h;
     t->depth_type = ctx->fb_depth_format == OGLES2_DEPTH_24 ? V3D_INTERNAL_TYPE_DEPTH24
                                                              : V3D_INTERNAL_TYPE_DEPTH16;
+    drawn = ctx->fb_draw_mask;
+    t->nrt = ctx->fb_nrt;
     ctx->draw_fb = saved;
     ogles2_fb_update(ctx);
+    /* Mesa's v3d_choose_tile_size for V3D 4.x, 32-bit targets: 64x64 for
+     * one, 64x32 for two, 32x32 for three or four (the hardware derives the
+     * same from the configuration packets). */
+    t->tile_w = t->nrt > 2 ? 32 : 64;
+    t->tile_h = t->nrt > 1 ? 32 : 64;
     if (!t->w || !t->h || !pools(ctx, fb, t))
         return FALSE;
     if (!surfaces)
         return TRUE;
-    if (c->type == GL_TEXTURE) {
-        if (!ogles2_texture_surface(ctx, c->tex, c->face, c->level, &t->color))
-            return FALSE;
-        t->has_color = TRUE;
-        t->tex = c->tex;
-        t->face = c->face;
-        t->level = c->level;
-    } else if (c->type == GL_RENDERBUFFER) {
-        if (!c->rb->color || !ogles2_texture_surface(ctx, c->rb->color, 0, 0, &t->color))
-            return FALSE;
-        t->has_color = TRUE;
-        t->tex = c->rb->color;
+    for (i = 0; i < OGLES2_MAX_DRAW_BUFFERS; i++) {
+        const struct OGLES2Attachment *c = &fb->att[ATT_COLOR + i];
+        if (!(drawn & (1 << i)))
+            continue;
+        if (c->type == GL_TEXTURE) {
+            if (!ogles2_texture_surface(ctx, c->tex, c->face, c->level, &t->color[i]))
+                return FALSE;
+        } else if (c->type == GL_RENDERBUFFER) {
+            if (!c->rb->color || !ogles2_texture_surface(ctx, c->rb->color, 0, 0, &t->color[i]))
+                return FALSE;
+        }
+        t->colors |= (UBYTE)(1 << i);
     }
     if (d->type == GL_RENDERBUFFER && d->rb->base) {
         t->has_z = TRUE;
@@ -980,13 +1068,15 @@ BOOL ogles2_fbo_target(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, 
 
 void ogles2_fbo_rendered(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb)
 {
-    const struct OGLES2Attachment *c = &fb->att[ATT_COLOR];
     int a;
     (void)ctx;
-    if (c->type == GL_TEXTURE)
-        ogles2_texture_rendered(c->tex, c->face, c->level);
-    else if (c->type == GL_RENDERBUFFER && c->rb->color)
-        ogles2_texture_rendered(c->rb->color, 0, 0);
+    for (a = ATT_COLOR; a < ATT_DEPTH; a++) {
+        const struct OGLES2Attachment *c = &fb->att[a];
+        if (c->type == GL_TEXTURE)
+            ogles2_texture_rendered(c->tex, c->face, c->level);
+        else if (c->type == GL_RENDERBUFFER && c->rb->color)
+            ogles2_texture_rendered(c->rb->color, 0, 0);
+    }
     for (a = ATT_DEPTH; a <= ATT_STENCIL; a++) /* depth textures (OES_depth_texture) */
         if (fb->att[a].type == GL_TEXTURE)
             ogles2_texture_rendered(fb->att[a].tex, 0, fb->att[a].level);
@@ -1118,6 +1208,8 @@ BOOL ogles2_fbo_query(struct OGLES2Context *ctx, GLenum pname, GLint *v)
     case GL_FRAMEBUFFER_BINDING:  *v = fb ? (GLint)fb->name : 0; return TRUE;
     case GL_RENDERBUFFER_BINDING: *v = ctx->fbo && ctx->fbo->rb_bound ? (GLint)ctx->fbo->rb_bound->name : 0; return TRUE;
     case GL_MAX_RENDERBUFFER_SIZE: *v = OGLES2_MAX_VIEWPORT; return TRUE;
+    case GL_MAX_DRAW_BUFFERS_EXT:
+    case GL_MAX_COLOR_ATTACHMENTS_EXT: *v = OGLES2_MAX_DRAW_BUFFERS; return TRUE;
     case GL_RED_BITS: case GL_GREEN_BITS: case GL_BLUE_BITS: case GL_ALPHA_BITS:
         if (fb) {
             const struct OGLES2Attachment *c = &fb->att[ATT_COLOR];
@@ -1148,7 +1240,7 @@ void ogles2_fbo_free(struct OGLES2Context *ctx)
     if (fs)
         for (i = 1; i < fs->nfbs; i++)
             if (fs->fbs[i])
-                for (a = 0; a < 3; a++)
+                for (a = 0; a < NATT; a++)
                     att_clear(ctx, &fs->fbs[i]->att[a], TRUE);
     if (sh && sh->members == 1) {
         for (i = 1; i < sh->nrbs; i++)

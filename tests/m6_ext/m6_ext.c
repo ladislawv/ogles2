@@ -22,6 +22,7 @@
  *               (OES_packed_depth_stencil) for both, the stencil test in it
  *   rect        ARB_texture_rectangle: sampler2DRect in texels, its rules and
  *               errors, a float one, one drawn into
+ *   markers     EXT_debug_marker
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -130,7 +131,8 @@ static void test_strings(void)
         "GL_EXT_texture_lod_bias", "GL_SGIS_texture_lod", "GL_ARB_texture_mirror_clamp_to_edge",
         "GL_OES_standard_derivatives", "GL_OES_get_program_binary", "GL_OES_texture_float",
         "GL_OES_texture_half_float", "GL_OES_texture_half_float_linear", "GL_OES_depth_texture",
-        "GL_ARB_texture_rectangle"};
+        "GL_ARB_texture_rectangle", "GL_EXT_debug_marker", "GL_EXT_texture_compression_dxt1",
+        "GL_EXT_texture_compression_s3tc", "GL_ANGLE_texture_compression_dxt3", "GL_ANGLE_texture_compression_dxt5"};
     const char *e = (const char *)glGetString(GL_EXTENSIONS), *v = (const char *)glGetString(GL_VERSION);
     unsigned k;
     char msg[160];
@@ -138,8 +140,8 @@ static void test_strings(void)
         sprintf(msg, "GL_EXTENSIONS has %s", want[k]);
         check(e && strstr(e, want[k]) != 0, msg);
     }
-    sprintf(msg, "GL_VERSION \"%s\" (1.2)", v ? v : "(null)");
-    check(v && strstr(v, "1.2") != 0, msg);
+    sprintf(msg, "GL_VERSION \"%s\" (1.3)", v ? v : "(null)");
+    check(v && strstr(v, "1.3") != 0, msg);
 }
 
 /* OES_texture_npot: REPEAT and a mipmapping filter on 100x60. Left half
@@ -802,6 +804,27 @@ static void test_depth(void)
     glViewport(0, 0, W, H);
 }
 
+/* EXT_debug_marker: accepted in every form, a pop too many ignored, groups
+ * deeper than the library keeps (64). With ENV:OGLES2/Probe T they are in
+ * the log, indented. */
+static void test_markers(void)
+{
+    int k;
+    glInsertEventMarkerEXT(0, "m6_ext: an event marker");
+    glPushGroupMarkerEXT(0, "m6_ext: a group");
+    glInsertEventMarkerEXT(7, "inside the group, 7 characters of it");
+    glPushGroupMarkerEXT(6, "nested, 6 characters");
+    glPopGroupMarkerEXT();
+    glPopGroupMarkerEXT();
+    glPopGroupMarkerEXT(); /* none left: ignored */
+    for (k = 0; k < 70; k++)
+        glPushGroupMarkerEXT(0, "deep");
+    for (k = 0; k < 71; k++)
+        glPopGroupMarkerEXT();
+    glInsertEventMarkerEXT(0, 0);
+    check(glGetError() == GL_NO_ERROR, "debug markers: events, groups, a pop too many, 70 deep: no GL error");
+}
+
 /* The viewport drawn with the rect program and rectangle texture t. */
 static void rect_draw(GLuint t)
 {
@@ -957,6 +980,7 @@ int main(int argc, char **argv)
     test_float();
     test_depth();
     test_rect();
+    test_markers();
 
     glUseProgram(0);
     glDeleteProgram(smooth);

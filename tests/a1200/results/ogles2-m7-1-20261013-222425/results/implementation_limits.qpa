@@ -1,0 +1,189 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/implementation_limits.txt --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/implementation_limits.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.subpixel_bits
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.subpixel_bits" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 4</Text>
+ <Text>Minimum required: 4</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2811</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_texture_size
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_texture_size" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 4096</Text>
+ <Text>Minimum required: 64</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2342</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_cube_map_texture_size
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_cube_map_texture_size" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 4096</Text>
+ <Text>Minimum required: 16</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2029</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.aliased_point_size_range
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.aliased_point_size_range" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 1, 512</Text>
+ <Text>Minimum required: 1, 1</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">3355</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.aliased_line_width_range
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.aliased_line_width_range" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 1, 32</Text>
+ <Text>Minimum required: 1, 1</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2148</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.num_compressed_texture_formats
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.num_compressed_texture_formats" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 5</Text>
+ <Text>Minimum required: 0</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2014</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.num_shader_binary_formats
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.num_shader_binary_formats" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 0</Text>
+ <Text>Minimum required: 0</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1992</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.shader_compiler
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.shader_compiler" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: GL_TRUE</Text>
+ <Text>Minimum required: GL_FALSE</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2714</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_vertex_attribs
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_vertex_attribs" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 16</Text>
+ <Text>Minimum required: 8</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1990</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_vertex_uniform_vectors
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_vertex_uniform_vectors" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 4088</Text>
+ <Text>Minimum required: 128</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2038</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_varying_vectors
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_varying_vectors" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 16</Text>
+ <Text>Minimum required: 8</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2012</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_combined_texture_image_units
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_combined_texture_image_units" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 32</Text>
+ <Text>Minimum required: 8</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2377</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_vertex_texture_image_units
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_vertex_texture_image_units" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 16</Text>
+ <Text>Minimum required: 0</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2010</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_texture_image_units
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_texture_image_units" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 16</Text>
+ <Text>Minimum required: 8</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1995</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_fragment_uniform_vectors
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_fragment_uniform_vectors" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 4095</Text>
+ <Text>Minimum required: 16</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2013</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.implementation_limits.max_renderbuffer_size
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.implementation_limits.max_renderbuffer_size" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Reported: 4096</Text>
+ <Text>Minimum required: 1</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2759</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 0.16 seconds
+
+#endSession

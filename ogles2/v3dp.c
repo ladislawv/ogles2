@@ -141,7 +141,7 @@ static BOOL recipe_ok(ULONG t)
            t == OGLES2_U_UBO_ADDR ||
            t == OGLES2_U_LINE_WIDTH || t == OGLES2_U_AA_LINE_WIDTH ||
            t == OGLES2_U_SPILL_OFFSET || t == OGLES2_U_SPILL_SIZE_PER_THREAD ||
-           (t >= OGLES2_U_BLEND_CONSTANT_R && t <= OGLES2_U_BLEND_CONSTANT_R + 3);
+           (t >= OGLES2_U_BLEND_CONSTANT_R && t <= OGLES2_U_BLEND_CONSTANT_R + 3) || t == OGLES2_U_CLIP_Z_COEFF;
 }
 
 /* The common prog data (FORMAT.md "Common key and prog data"), 28 bytes. */
@@ -377,7 +377,9 @@ struct OGLES2Image *ogles2_v3dp_load(const UBYTE *file, ULONG len, char *why, UL
                 skip(&s, COMMON_KEY_BYTES);
                 v->is_points = u8(&s);
                 v->is_lines = u8(&s);
-                skip(&s, 15 + 3);                 /* the other key bytes, pad */
+                skip(&s, 8);                      /* line_smoothing .. ignore_sample_mask */
+                v->cbufs = u8(&s);
+                skip(&s, 6 + 3);                  /* the other key bytes, pad */
                 skip(&s, 8 * 8 + 8 * 24 + 4 + 4); /* colour formats, blend, logicop, sprite mask */
                 read_common_prog_data(&s, v);
                 v->uses_pid = u8(&s);
@@ -418,6 +420,8 @@ struct OGLES2Image *ogles2_v3dp_load(const UBYTE *file, ULONG len, char *why, UL
                     FAIL("a uniform block other than the default one", 0, rd2[j] >> 24);
                 if (rt[j] == OGLES2_U_UBO_ADDR)
                     v->uses_ubo = 1;
+                if (rt[j] == OGLES2_U_CLIP_Z_COEFF)
+                    im->clip_z_coeff = TRUE;
             }
             v->nrecipe = (UWORD)n;
             v->rtype = rt;
@@ -552,12 +556,15 @@ void ogles2_image_free(struct OGLES2Image *im, struct OGLES2Context *ctx)
 }
 
 /* The variant for a draw: the stage's variant whose primitive key matches
- * (fragment: points, lines or triangles; vertex and binning: a point size
- * written per vertex, for points, when the program has such a variant). */
-const struct OGLES2Variant *ogles2_image_variant(const struct OGLES2Image *im, UBYTE stage,
+ * (fragment: points, lines or triangles, and the render targets it writes,
+ * `cbufs`; vertex and binning: a point size written per vertex, for points,
+ * when the program has such a variant). A fragment shader with no variant
+ * for those targets: the one for target 0 (EXT_draw_buffers: v3dglslc
+ * makes the others only for programs that write gl_FragData[1] or up). */
+const struct OGLES2Variant *ogles2_image_variant(const struct OGLES2Image *im, UBYTE stage, UBYTE cbufs,
                                                  GLenum mode)
 {
-    const struct OGLES2Variant *v, *any = 0;
+    const struct OGLES2Variant *v, *any = 0, *rt0 = 0;
     BOOL points = mode == GL_POINTS;
     BOOL lines = mode == GL_LINES || mode == GL_LINE_LOOP || mode == GL_LINE_STRIP;
     UWORD i;
@@ -566,8 +573,13 @@ const struct OGLES2Variant *ogles2_image_variant(const struct OGLES2Image *im, U
         if (v->stage != stage)
             continue;
         if (stage == OGLES2_VARIANT_FS) {
-            if (v->is_points == points && v->is_lines == lines)
-                return v;
+            if (v->is_points == points && v->is_lines == lines) {
+                UBYTE vc = v->cbufs ? v->cbufs : 1;
+                if (vc == cbufs)
+                    return v;
+                if (vc == 1 && !rt0)
+                    rt0 = v;
+            }
         } else {
             if (v->per_vertex_point_size == (points ? 1 : 0))
                 return v;
@@ -575,5 +587,5 @@ const struct OGLES2Variant *ogles2_image_variant(const struct OGLES2Image *im, U
         if (!any)
             any = v;
     }
-    return any; /* a miss: the closest there is (plan 7.8); draw.c logs it */
+    return rt0 ? rt0 : any; /* a miss: the closest there is (plan 7.8); draw.c logs it */
 }

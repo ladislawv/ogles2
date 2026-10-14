@@ -1,0 +1,51 @@
+; Run-M1 - ogles2 M7 run 2: S3TC textures. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m7-2 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M7R2: ""
+If NOT EXISTS M7R2:results
+  MakeDir M7R2:results
+EndIf
+Echo "ogles2 M7 run 2, starting at step {FROM}" >>M7R2:results/00-progress.txt
+Date >>M7R2:results/00-progress.txt
+Assign LIBS: M7R2:libs ADD
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M7R2:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 2: S3TC textures (nothing to see)"
+  M7R2:bin/m7_s3tc >M7R2:results/1-s3tc.txt
+  Echo "step 1 done" >>M7R2:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 2: textures as before (nothing to see)"
+  M7R2:bin/m2_texture BITMAP QUICK >M7R2:results/2-texture.txt
+  Echo "step 2 done" >>M7R2:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M7R2:libs REMOVE
+Avail FLUSH >NIL:
+If NOT EXISTS M7R2:results/notes.txt
+  Copy M7R2:notes-template.txt M7R2:results/notes.txt
+EndIf
+List M7R2:results >M7R2:results/99-files.txt
+Echo "finished" >>M7R2:results/00-progress.txt
+Date >>M7R2:results/00-progress.txt
+Assign M7R2:
+Echo ""
+Echo "Done. Results are in results/."

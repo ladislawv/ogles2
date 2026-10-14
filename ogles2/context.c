@@ -168,6 +168,7 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
         OGLES2LibBase->contexts++;
         ReleaseSemaphore(&OGLES2LibBase->lock);
     }
+    ctx->default_draw_buffer = GL_BACK; /* EXT_draw_buffers */
     ogles2_fb_update(ctx); /* the default framebuffer is drawn into */
     ctx->viewport[2] = ctx->scissor[2] = (GLint)ctx->width;
     ctx->viewport[3] = ctx->scissor[3] = (GLint)ctx->height;
@@ -301,7 +302,7 @@ const GLubyte *ogles2_glGetString(struct OGLES2Context *ctx, GLenum name)
     case GL_RENDERER:
         return (const GLubyte *)ogles2_device_renderer();
     case GL_VERSION: /* must begin "OpenGL ES 2.0" (plan section 7.10) */
-        return (const GLubyte *)"OpenGL ES 2.0 ogles2.library 1.2";
+        return (const GLubyte *)"OpenGL ES 2.0 ogles2.library 1.3";
     case GL_SHADING_LANGUAGE_VERSION: /* must begin "OpenGL ES GLSL ES 1.00" */
         return (const GLubyte *)"OpenGL ES GLSL ES 1.00";
     case GL_EXTENSIONS:
@@ -312,7 +313,10 @@ const GLubyte *ogles2_glGetString(struct OGLES2Context *ctx, GLenum name)
                                  "GL_EXT_texture_filter_anisotropic GL_EXT_texture_lod_bias GL_SGIS_texture_lod "
                                  "GL_ARB_texture_mirror_clamp_to_edge GL_OES_standard_derivatives "
                                  "GL_OES_get_program_binary GL_OES_texture_float GL_OES_texture_half_float "
-                                 "GL_OES_texture_half_float_linear GL_OES_depth_texture GL_ARB_texture_rectangle";
+                                 "GL_OES_texture_half_float_linear GL_OES_depth_texture GL_ARB_texture_rectangle "
+                                 "GL_EXT_debug_marker GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_s3tc "
+                                 "GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_EXT_clip_control "
+                                 "GL_EXT_draw_buffers GL_NV_fbo_color_attachments GL_OES_required_internalformat";
     default:
         ogles2_error(ctx, GL_INVALID_ENUM);
         return 0;

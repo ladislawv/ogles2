@@ -1,0 +1,385 @@
+     1 ogles2.library 1.3 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838AA40
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 aglCreateContext2: probes "T" (ENV:OGLES2/Probe)
+    13 display: application bitmap, 256x128, BGRA
+    14 device: context pools for 256x128, D32F, 17645952 bytes of GPU memory in use
+    15 aglCreateContext2: context 0x08F5B10C, 256x128
+    16 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+    17 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+    18 glLinkProgram: PROGDIR:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+    19 glLinkProgram: PROGDIR:20eb75f38febbc45b4acb470.v3dp (5 variants, 680 bytes of code)
+    20 glLinkProgram: PROGDIR:82b090295244c1a5b86feecf.v3dp (5 variants, 608 bytes of code)
+    21 job: depth and stencil kept across a mid-frame flush (logged once)
+    22 trace: glDeleteTextures #1: 1 names from 1
+    23 trace: glDeleteTextures #2: 1 names from 1
+    24 texture 1 sampled while incomplete (it reads black): mip chain, level 0 4x4, min filter 0x2600, level 1 of 1 missing or inconsistent (logged once a texture)
+    25 trace: glDeleteTextures #3: 1 names from 1
+    26 trace: glDeleteTextures #4: 1 names from 1
+    27 glLinkProgram: PROGDIR:d539b785b0d8a841564cc9c5.v3dp (5 variants, 664 bytes of code)
+    28 trace: glDeleteTextures #5: 1 names from 1
+    29 trace: glDeleteBuffers #6: 1 names from 1
+    30 glProgramBinaryOES: refused: CRC mismatch (damaged file)
+    31 trace: glDeleteTextures #7: 1 names from 1
+    32 draw: program 20eb75f38febbc45b4acb470: its 32-bit sampler variants (5)
+    33 draw: program fefb2ddbea600443ecbddbd7: its 32-bit sampler variants (5)
+    34 texture 1: 32-bit float or depth texels are sampled nearest (no linear filtering for them; logged once a texture)
+    35 trace: glDeleteTextures #8: 1 names from 1
+    36 trace: glDeleteTextures #9: 1 names from 2
+    37 trace: glDeleteTextures #10: 1 names from 1
+    38 trace: glDeleteTextures #11: 1 names from 1
+    39 trace: glDeleteTextures #12: 1 names from 1
+    40 trace: glDeleteTextures #13: 1 names from 1
+    41 trace: glDeleteTextures #14: 1 names from 2
+    42 trace: glDeleteTextures #15: 1 names from 1
+    43 trace: glDeleteTextures #16: 1 names from 2
+    44 trace: glDeleteTextures #17: 1 names from 1
+    45 trace: glDeleteTextures #18: 1 names from 2
+    46 trace: glDeleteTextures #19: 1 names from 1
+    47 draw: program 82b090295244c1a5b86feecf: its 32-bit sampler variants (5)
+    48 trace: glDeleteTextures #20: 1 names from 2
+    49 trace: glDeleteTextures #21: 1 names from 1
+    50 marker: event "m6_ext: an event marker"
+    51 marker: group "m6_ext: a group"
+    52 marker:   event "inside "
+    53 marker:   group "nested"
+    54 marker:   end of group ""
+    55 marker: end of group ""
+    56 marker: group "deep"
+    57 marker:   group "deep"
+    58 marker:     group "deep"
+    59 marker:       group "deep"
+    60 marker:         group "deep"
+    61 marker:           group "deep"
+    62 marker:             group "deep"
+    63 marker:               group "deep"
+    64 marker:                 group "deep"
+    65 marker:                   group "deep"
+    66 marker:                     group "deep"
+    67 marker:                       group "deep"
+    68 marker:                         group "deep"
+    69 marker:                           group "deep"
+    70 marker:                             group "deep"
+    71 marker:                               group "deep"
+    72 marker:                                 group "deep"
+    73 marker:                                   group "deep"
+    74 marker:                                     group "deep"
+    75 marker:                                       group "deep"
+    76 marker:                                         group "deep"
+    77 marker:                                           group "deep"
+    78 marker:                                             group "deep"
+    79 marker:                                               group "deep"
+    80 marker:                                                 group "deep"
+    81 marker:                                                   group "deep"
+    82 marker:                                                     group "deep"
+    83 marker:                                                       group "deep"
+    84 marker:                                                         group "deep"
+    85 marker:                                                           group "deep"
+    86 marker:                                                             group "deep"
+    87 marker:                                                               group "deep"
+    88 marker:                                                                 group "deep"
+    89 marker:                                                                 group "deep"
+    90 marker:                                                                 group "deep"
+    91 marker:                                                                 group "deep"
+    92 marker:                                                                 group "deep"
+    93 marker:                                                                 group "deep"
+    94 marker:                                                                 group "deep"
+    95 marker:                                                                 group "deep"
+    96 marker:                                                                 group "deep"
+    97 marker:                                                                 group "deep"
+    98 marker:                                                                 group "deep"
+    99 marker:                                                                 group "deep"
+   100 marker:                                                                 group "deep"
+   101 marker:                                                                 group "deep"
+   102 marker:                                                                 group "deep"
+   103 marker:                                                                 group "deep"
+   104 marker:                                                                 group "deep"
+   105 marker:                                                                 group "deep"
+   106 marker:                                                                 group "deep"
+   107 marker:                                                                 group "deep"
+   108 marker:                                                                 group "deep"
+   109 marker:                                                                 group "deep"
+   110 marker:                                                                 group "deep"
+   111 marker:                                                                 group "deep"
+   112 marker:                                                                 group "deep"
+   113 marker:                                                                 group "deep"
+   114 marker:                                                                 group "deep"
+   115 marker:                                                                 group "deep"
+   116 marker:                                                                 group "deep"
+   117 marker:                                                                 group "deep"
+   118 marker:                                                                 group "deep"
+   119 marker:                                                                 group "deep"
+   120 marker:                                                                 group "deep"
+   121 marker:                                                                 group "deep"
+   122 marker:                                                                 group "deep"
+   123 marker:                                                                 group "deep"
+   124 marker:                                                                 group "deep"
+   125 marker:                                                                 group "deep"
+   126 marker:                                                                 end of group ""
+   127 marker:                                                                 end of group ""
+   128 marker:                                                                 end of group ""
+   129 marker:                                                                 end of group ""
+   130 marker:                                                                 end of group ""
+   131 marker:                                                                 end of group ""
+   132 marker:                                                                 end of group ""
+   133 marker:                                                                 end of group ""
+   134 marker:                                                                 end of group ""
+   135 marker:                                                                 end of group ""
+   136 marker:                                                                 end of group ""
+   137 marker:                                                                 end of group ""
+   138 marker:                                                                 end of group ""
+   139 marker:                                                                 end of group ""
+   140 marker:                                                                 end of group ""
+   141 marker:                                                                 end of group ""
+   142 marker:                                                                 end of group ""
+   143 marker:                                                                 end of group ""
+   144 marker:                                                                 end of group ""
+   145 marker:                                                                 end of group ""
+   146 marker:                                                                 end of group ""
+   147 marker:                                                                 end of group ""
+   148 marker:                                                                 end of group ""
+   149 marker:                                                                 end of group ""
+   150 marker:                                                                 end of group ""
+   151 marker:                                                                 end of group ""
+   152 marker:                                                                 end of group ""
+   153 marker:                                                                 end of group ""
+   154 marker:                                                                 end of group ""
+   155 marker:                                                                 end of group ""
+   156 marker:                                                                 end of group ""
+   157 marker:                                                                 end of group ""
+   158 marker:                                                               end of group ""
+   159 marker:                                                             end of group ""
+   160 marker:                                                           end of group ""
+   161 marker:                                                         end of group ""
+   162 marker:                                                       end of group ""
+   163 marker:                                                     end of group ""
+   164 marker:                                                   end of group ""
+   165 marker:                                                 end of group ""
+   166 marker:                                               end of group ""
+   167 marker:                                             end of group ""
+   168 marker:                                           end of group ""
+   169 marker:                                         end of group ""
+   170 marker:                                       end of group ""
+   171 marker:                                     end of group ""
+   172 marker:                                   end of group ""
+   173 marker:                                 end of group ""
+   174 marker:                               end of group ""
+   175 marker:                             end of group ""
+   176 marker:                           end of group ""
+   177 marker:                         end of group ""
+   178 marker:                       end of group ""
+   179 marker:                     end of group ""
+   180 marker:                   end of group ""
+   181 marker:                 end of group ""
+   182 marker:               end of group ""
+   183 marker:             end of group ""
+   184 marker:           end of group ""
+   185 marker:         end of group ""
+   186 marker:       end of group ""
+   187 marker:     end of group ""
+   188 marker:   end of group ""
+   189 marker: end of group ""
+   190 marker: event ""
+   191 aglDestroyContext: context 0x08F5B10C: freeing
+   192 trace: aglDestroyContext: the job finished
+   193 trace: aglDestroyContext: draw and job state freed
+   194 trace: aglDestroyContext: programs and shaders freed
+   195 trace: aglDestroyContext: framebuffers and textures freed
+   196 trace: aglDestroyContext: buffers freed
+   197 device: context freed, 0 bytes of GPU memory still in use
+   198 aglDestroyContext: context 0x08F5B10C (48 frames, 0 dropped, 0 binning blocks added)
+   199 timing: 48 jobs, each on average: 630 us of CPU work before its flush, 10 us waiting for binning, 95 us for the render
+   200 timing: and in each flush 137 us building the render list, 78 us for the CPU cache before the GPU, 50 us after
+   201 close (count 0)
+   202 open (count 1)
+   203 display: application bitmap, 256x128, BGRA
+   204 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+   205 aglCreateContext2: context 0x08FC5BC4, 256x128
+   206 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+   207 glLinkProgram: PROGDIR:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+   208 texture 1 sampled while incomplete (it reads black): mip chain, level 0 4x4, min filter 0x2703, level 1 of 3 missing or inconsistent (logged once a texture)
+   209 texture 1 changed after a draw used it in the same frame: renamed (logged once)
+   210 job: depth and stencil kept across a mid-frame flush (logged once)
+   211 aglDestroyContext: context 0x08FC5BC4: freeing
+   212 device: context freed, 0 bytes of GPU memory still in use
+   213 aglDestroyContext: context 0x08FC5BC4 (29 frames, 0 dropped, 0 binning blocks added)
+   214 timing: 29 jobs, each on average: 417 us of CPU work before its flush, 7 us waiting for binning, 67 us for the render
+   215 timing: and in each flush 115 us building the render list, 78 us for the CPU cache before the GPU, 55 us after
+   216 timing: 27 swaps, 1588 us from one to the next on average, 2 us of it presenting
+   217 timing: per frame 1 draws, 292 us in them; in all 0 ms in glBuffer(Sub)Data, 4 ms in glTex(Sub)Image2D
+   218 close (count 0)
+   219 open (count 1)
+   220 display: application bitmap, 320x240, BGRA
+   221 device: context pools for 320x240, D16, 17683840 bytes of GPU memory in use
+   222 aglCreateContext2: context 0x08FC5BC4, 320x240
+   223 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   224 aglDestroyContext: context 0x08FC5BC4: freeing
+   225 device: context freed, 0 bytes of GPU memory still in use
+   226 aglDestroyContext: context 0x08FC5BC4 (118 frames, 0 dropped, 0 binning blocks added)
+   227 timing: 118 jobs, each on average: 122 us of CPU work before its flush, 9 us waiting for binning, 114 us for the render
+   228 timing: and in each flush 51 us building the render list, 55 us for the CPU cache before the GPU, 54 us after
+   229 timing: 118 swaps, 495 us from one to the next on average, 1 us of it presenting
+   230 timing: per frame 1 draws, 90 us in them; in all 0 ms in glBuffer(Sub)Data, 0 ms in glTex(Sub)Image2D
+   231 close (count 0)
+   232 open (count 1)
+   233 display: application bitmap, 256x128, BGRA
+   234 device: context pools for 256x128, D32F, 17645952 bytes of GPU memory in use
+   235 aglCreateContext2: context 0x08FC5BC4, 256x128
+   236 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   237 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+   238 framebuffer 1 is not complete (0x8CD7): nothing drawn or read (logged once)
+   239 job: depth and stencil kept across a mid-frame flush (logged once)
+   240 framebuffer 1: tile pools of its own for 512x512
+   241 aglDestroyContext: context 0x08FC5BC4: freeing
+   242 device: context freed, 0 bytes of GPU memory still in use
+   243 aglDestroyContext: context 0x08FC5BC4 (102 frames, 0 dropped, 0 binning blocks added)
+   244 timing: 102 jobs, each on average: 170 us of CPU work before its flush, 7 us waiting for binning, 33 us for the render
+   245 timing: and in each flush 113 us building the render list, 63 us for the CPU cache before the GPU, 24 us after
+   246 timing: 43 swaps, 2022 us from one to the next on average, 1 us of it presenting
+   247 timing: per frame 2 draws, 286 us in them; in all 0 ms in glBuffer(Sub)Data, 3 ms in glTex(Sub)Image2D
+   248 close (count 0)
+   249 open (count 1)
+   250 display: application bitmap, 256x128, BGRA
+   251 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+   252 aglCreateContext2: context 0x08FC5BC4, 256x128
+   253 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   254 job: depth and stencil kept across a mid-frame flush (logged once)
+   255 aglDestroyContext: context 0x08FC5BC4: freeing
+   256 device: context freed, 0 bytes of GPU memory still in use
+   257 aglDestroyContext: context 0x08FC5BC4 (3 frames, 0 dropped, 0 binning blocks added)
+   258 timing: 3 jobs, each on average: 166 us of CPU work before its flush, 8 us waiting for binning, 77 us for the render
+   259 timing: and in each flush 516 us building the render list, 91 us for the CPU cache before the GPU, 55 us after
+   260 timing: 2 swaps, 1603 us from one to the next on average, 2 us of it presenting
+   261 timing: per frame 1 draws, 181 us in them; in all 0 ms in glBuffer(Sub)Data, 0 ms in glTex(Sub)Image2D
+   262 display: application bitmap, 256x128, BGRA
+   263 device: context pools for 256x128, D32F, 17645952 bytes of GPU memory in use
+   264 aglCreateContext2: context 0x08FC5BC4, 256x128
+   265 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   266 job: depth and stencil kept across a mid-frame flush (logged once)
+   267 aglDestroyContext: context 0x08FC5BC4: freeing
+   268 device: context freed, 0 bytes of GPU memory still in use
+   269 aglDestroyContext: context 0x08FC5BC4 (7 frames, 0 dropped, 0 binning blocks added)
+   270 timing: 7 jobs, each on average: 169 us of CPU work before its flush, 7 us waiting for binning, 117 us for the render
+   271 timing: and in each flush 252 us building the render list, 64 us for the CPU cache before the GPU, 55 us after
+   272 timing: 4 swaps, 1278 us from one to the next on average, 1 us of it presenting
+   273 timing: per frame 1 draws, 159 us in them; in all 0 ms in glBuffer(Sub)Data, 0 ms in glTex(Sub)Image2D
+   274 close (count 0)
+   275 open (count 1)
+   276 aglCreateContext2: context 0x08F5B48C, 0x0, state only
+   277 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   278 glLinkProgram: program b5dddc8cd309fdea4d334b4b: 5 variants
+  fragment, triangles: 9 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 46 instructions, 4 threads, 0 spill bytes, 33 uniforms
+  binning: 40 instructions, 4 threads, 
+   279 glLinkProgram: PROGDIR:d59c497ea5e22752b642e93f.v3dp (5 variants, 1528 bytes of code)
+   280 glLinkProgram: program d59c497ea5e22752b642e93f: 5 variants
+  fragment, triangles: 8 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 127 instructions, 4 threads, 0 spill bytes, 76 uniforms
+  binning: 40 instructions, 4 threads,
+   281 glLinkProgram: PROGDIR:979ada9f17d3d1821c3b45bb.v3dp (5 variants, 3120 bytes of code)
+   282 glLinkProgram: program 979ada9f17d3d1821c3b45bb: 5 variants
+  fragment, triangles: 6 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 186 instructions, 4 threads, 0 spill bytes, 67 uniforms
+  binning: 186 instructions, 4 threads
+   283 glLinkProgram: program b5dddc8cd309fdea4d334b4b: 5 variants
+  fragment, triangles: 9 instructions, 4 threads, 0 spill bytes, 0 uniforms
+  vertex: 46 instructions, 4 threads, 0 spill bytes, 33 uniforms
+  binning: 40 instructions, 4 threads, 
+   284 glLinkProgram: PROGDIR:ac1ecb1e7ef3afc88d3666c9.v3dp (7 variants, 2656 bytes of code)
+   285 glLinkProgram: program ac1ecb1e7ef3afc88d3666c9: 7 variants
+  fragment, triangles: 36 instructions, 4 threads, 0 spill bytes, 11 uniforms
+  vertex: 66 instructions, 4 threads, 0 spill bytes, 51 uniforms
+  binning: 45 instructions, 4 threads
+   286 glLinkProgram: PROGDIR:645f9567abe1c3a6e41839b9.v3dp (5 variants, 1176 bytes of code)
+   287 glLinkProgram: program 645f9567abe1c3a6e41839b9: 5 variants
+  fragment, triangles: 21 instructions, 4 threads, 0 spill bytes, 8 uniforms
+  vertex: 44 instructions, 4 threads, 0 spill bytes, 30 uniforms
+  binning: 40 instructions, 4 threads,
+   288 glLinkProgram: program 645f9567abe1c3a6e41839b9: 5 variants
+  fragment, triangles: 21 instructions, 4 threads, 0 spill bytes, 8 uniforms
+  vertex: 44 instructions, 4 threads, 0 spill bytes, 30 uniforms
+  binning: 40 instructions, 4 threads,
+   289 glLinkProgram: no binary for program 6525c1a37d1f1d6e8cf661b41e0f00d750e0262e59c8e751a37cc6a1d42bde99 (sources in T:ogles2_missing_shaders.txt)
+   290 aglDestroyContext: context 0x08F5B48C: freeing
+   291 aglDestroyContext: context 0x08F5B48C (0 frames, 0 dropped, 0 binning blocks added)
+   292 close (count 0)
+   293 open (count 1)
+   294 display: application bitmap, 256x128, BGRA
+   295 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+   296 aglCreateContext2: context 0x08FC5BC4, 256x128
+   297 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   298 glLinkProgram: PROGDIR:979ada9f17d3d1821c3b45bb.v3dp (5 variants, 3120 bytes of code)
+   299 aglDestroyContext: context 0x08FC5BC4: freeing
+   300 device: context freed, 0 bytes of GPU memory still in use
+   301 aglDestroyContext: context 0x08FC5BC4 (15 frames, 0 dropped, 0 binning blocks added)
+   302 timing: 15 jobs, each on average: 194 us of CPU work before its flush, 8 us waiting for binning, 53 us for the render
+   303 timing: and in each flush 58 us building the render list, 79 us for the CPU cache before the GPU, 54 us after
+   304 timing: 15 swaps, 2286 us from one to the next on average, 1 us of it presenting
+   305 timing: per frame 1 draws, 154 us in them; in all 0 ms in glBuffer(Sub)Data, 0 ms in glTex(Sub)Image2D
+   306 close (count 0)
+   307 open (count 1)
+   308 display: application bitmap, 256x128, BGRA
+   309 device: context pools for 256x128, D16, 17580416 bytes of GPU memory in use
+   310 aglCreateContext2: context 0x08FC5BC4, 256x128
+   311 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   312 glDrawElements: the indices lie outside the element buffer; nothing drawn
+   313 glDrawArrays: attribute 0 reads past the end of buffer 1; nothing drawn
+   314 glDrawArrays: attribute 0 is enabled without an array; nothing drawn
+   315 aglDestroyContext: context 0x08FC5BC4: freeing
+   316 device: context freed, 0 bytes of GPU memory still in use
+   317 aglDestroyContext: context 0x08FC5BC4 (48 frames, 0 dropped, 0 binning blocks added)
+   318 timing: 48 jobs, each on average: 234 us of CPU work before its flush, 6 us waiting for binning, 48 us for the render
+   319 timing: and in each flush 49 us building the render list, 60 us for the CPU cache before the GPU, 52 us after
+   320 timing: 48 swaps, 643 us from one to the next on average, 1 us of it presenting
+   321 timing: per frame 1 draws, 91 us in them; in all 0 ms in glBuffer(Sub)Data, 0 ms in glTex(Sub)Image2D
+   322 close (count 0)
+   323 open (count 1)
+   324 display: application bitmap, 256x128, BGRA
+   325 device: context pools for 256x128, D32F, 17645952 bytes of GPU memory in use
+   326 aglCreateContext2: context 0x08FC5BC4, 256x128
+   327 compiler: LIBS:v3dglslc, 19006808 bytes, id F778D578
+   328 compiler: started (0 s)
+   329 compiler: shader compiled in 1260 ms
+   330 compiler: shader compiled in 40 ms
+   331 compiler: program compiled in 320 ms, OGLES2Cache:b5dddc8cd309fdea4d334b4b.v3dp
+   332 glLinkProgram: OGLES2Cache:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   333 compiler: shader compiled in 40 ms
+   334 compiler: shader compiled in 40 ms
+   335 compiler: program compiled in 160 ms, OGLES2Cache:1656c863a995438bf1702079.v3dp
+   336 glLinkProgram: OGLES2Cache:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+   337 compiler: shader compiled in 40 ms
+   338 compiler: program compiled in 160 ms, OGLES2Cache:fefb2ddbea600443ecbddbd7.v3dp
+   339 glLinkProgram: OGLES2Cache:fefb2ddbea600443ecbddbd7.v3dp (5 variants, 752 bytes of code)
+   340 compiler: shader compiled in 40 ms
+   341 compiler: program compiled in 160 ms, OGLES2Cache:20eb75f38febbc45b4acb470.v3dp
+   342 glLinkProgram: OGLES2Cache:20eb75f38febbc45b4acb470.v3dp (5 variants, 680 bytes of code)
+   343 compiler: shader compiled in 40 ms
+   344 compiler: program compiled in 160 ms, OGLES2Cache:82b090295244c1a5b86feecf.v3dp
+   345 glLinkProgram: OGLES2Cache:82b090295244c1a5b86feecf.v3dp (5 variants, 608 bytes of code)
+   346 job: depth and stencil kept across a mid-frame flush (logged once)
+   347 texture 1 sampled while incomplete (it reads black): mip chain, level 0 4x4, min filter 0x2600, level 1 of 1 missing or inconsistent (logged once a texture)
+   348 compiler: shader compiled in 40 ms
+   349 compiler: shader compiled in 40 ms
+   350 compiler: program compiled in 160 ms, OGLES2Cache:d539b785b0d8a841564cc9c5.v3dp
+   351 glLinkProgram: OGLES2Cache:d539b785b0d8a841564cc9c5.v3dp (5 variants, 664 bytes of code)
+   352 glProgramBinaryOES: refused: CRC mismatch (damaged file)
+   353 compiler: program compiled in 160 ms, OGLES2Cache:20eb75f38febbc45b4acb470.v3dw
+   354 draw: program 20eb75f38febbc45b4acb470: its 32-bit sampler variants (5)
+   355 compiler: program compiled in 160 ms, OGLES2Cache:fefb2ddbea600443ecbddbd7.v3dw
+   356 draw: program fefb2ddbea600443ecbddbd7: its 32-bit sampler variants (5)
+   357 texture 1: 32-bit float or depth texels are sampled nearest (no linear filtering for them; logged once a texture)
+   358 compiler: program compiled in 160 ms, OGLES2Cache:82b090295244c1a5b86feecf.v3dw
+   359 draw: program 82b090295244c1a5b86feecf: its 32-bit sampler variants (5)
+   360 aglDestroyContext: context 0x08FC5BC4: freeing
+   361 device: context freed, 0 bytes of GPU memory still in use
+   362 aglDestroyContext: context 0x08FC5BC4 (48 frames, 0 dropped, 0 binning blocks added)
+   363 timing: 48 jobs, each on average: 10539 us of CPU work before its flush, 7 us waiting for binning, 97 us for the render
+   364 timing: and in each flush 112 us building the render list, 68 us for the CPU cache before the GPU, 49 us after

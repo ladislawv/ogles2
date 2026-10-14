@@ -21,6 +21,14 @@ cc = json.load(open(os.path.join(replay.MESA_BUILD, "compile_commands.json")))
 ref = next(e for e in cc if e["file"].endswith("state_tracker/st_manager.c"))
 commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=replay.MESA_SRC,
                         capture_output=True, text=True).stdout.strip()[:12]
+# The build stamp ogles2.library tells compilers apart by (ogles2_compiler_id):
+# the time, this repository's commit (+ if changed) and Mesa's.
+import time
+ours = subprocess.run(["git", "rev-parse", "--short=12", "HEAD"], cwd=h,
+                      capture_output=True, text=True).stdout.strip()
+dirty = subprocess.run(["git", "diff", "--quiet", "HEAD"], cwd=h).returncode != 0
+stamp = "%s %s%s mesa %s" % (time.strftime("%Y%m%d-%H%M%S", time.gmtime()), ours,
+                             "+" if dirty else "", commit)
 rc = 0
 for src in (os.path.join(h, "v3dglslc.c"), os.path.join(v, "v3dp_writer.c")):
     cmd, obj, rel = replay.rewrite(ref, out, [])
@@ -31,9 +39,11 @@ for src in (os.path.join(h, "v3dglslc.c"), os.path.join(v, "v3dp_writer.c")):
                 "-I" + os.path.join(replay.MESA_SRC, "src/gallium/auxiliary/pipe-loader"),
                 "-I" + os.path.join(replay.MESA_SRC, "src/broadcom"),
                 "-I" + os.path.join(replay.MESA_BUILD, "src/broadcom"),
-                "-I" + h, "-I" + v, '-DV3DP_MESA_COMMIT="%s"' % commit]
+                "-I" + h, "-I" + v, '-DV3DP_MESA_COMMIT="%s"' % commit,
+                '-DV3DGLSLC_STAMP="%s"' % stamp]
     p = subprocess.run(cmd, cwd=replay.MESA_BUILD, capture_output=True, text=True)
-    print("%s compile rc=%d" % (os.path.basename(src), p.returncode))
+    print("%s compile rc=%d%s" % (os.path.basename(src), p.returncode,
+                                  " (stamp %s)" % stamp if src.endswith("v3dglslc.c") else ""))
     print("\n".join(l for l in p.stderr.splitlines() if "error" in l or "warning" in l)[:3000])
     rc = rc or p.returncode
 sys.exit(rc)

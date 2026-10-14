@@ -57,20 +57,48 @@ const char *ogles2_cache_dir(void)
     return ogles2_cache_assigned() ? "OGLES2Cache:" : "T:";
 }
 
-/* The installed compiler: its size, hashed (never 0), or 0 when there is
- * none. A shader record of a failed compile carries it, so another
- * compiler compiles that shader again (program.c). Not the file's date:
- * copying the same compiler again (as every A1200 test package does)
- * changes it. Found once while the library is open. */
+/* The installed compiler: its size and build stamp, hashed (never 0), or 0
+ * when there is none. A shader record of a failed compile carries it, so
+ * another compiler compiles that shader again (program.c). Not the file's
+ * date: copying the same compiler again (as every A1200 test package does)
+ * changes it. The size alone matched two different builds in M7 (19,538,220
+ * bytes twice): the stamp ("$V3DGLSLC-STAMP:...$", build_m68k.sh) is in the
+ * compiler's data hunk, which comes after its code, so the last 64 KB of
+ * the file hold it. A compiler without one is known by its size. Found once
+ * while the library is open. */
 static ULONG compiler_id;
+
+#define STAMP_TAIL 65536UL
+
+/* FNV-1a over the stamp's text, from the file's tail; 0 if there is none. */
+static ULONG stamp_hash(BPTR fh, ULONG size)
+{
+    static const char tag[] = "$V3DGLSLC-STAMP:";
+    ULONG n = size < STAMP_TAIL ? size : STAMP_TAIL, i, k, h = 0;
+    UBYTE *buf;
+    LONG got;
+    if (!n || !(buf = AllocVec(n, MEMF_ANY)))
+        return 0;
+    if (Seek(fh, -(LONG)n, OFFSET_END) >= 0 && (got = Read(fh, buf, (LONG)n)) > 0) {
+        for (i = 0; i + sizeof(tag) - 1 < (ULONG)got && !h; i++) {
+            if (memcmp(buf + i, tag, sizeof(tag) - 1))
+                continue;
+            h = 2166136261UL;
+            for (k = i + sizeof(tag) - 1; k < (ULONG)got && buf[k] != '$'; k++)
+                h = (h ^ buf[k]) * 16777619UL;
+        }
+    }
+    FreeVec(buf);
+    return h;
+}
 
 ULONG ogles2_compiler_id(void)
 {
     struct Process *me = (struct Process *)FindTask(0);
     struct FileInfoBlock *fib;
     APTR win = 0;
-    BPTR lock;
-    ULONG id = 0;
+    BPTR lock, fh;
+    ULONG id = 0, size = 0;
     if (compiler_id)
         return compiler_id;
     /* LIBS: always exists; no requester either way, but be safe. */
@@ -84,12 +112,21 @@ ULONG ogles2_compiler_id(void)
     if (!lock)
         return 0;
     if ((fib = AllocDosObject(DOS_FIB, 0))) {
-        if (Examine(lock, fib))
-            id = (ULONG)fib->fib_Size * 2654435761UL;
+        if (Examine(lock, fib)) {
+            size = (ULONG)fib->fib_Size;
+            id = size * 2654435761UL;
+        }
         FreeDosObject(DOS_FIB, fib);
     }
-    UnLock(lock);
+    if (size && (fh = OpenFromLock(lock))) {
+        lock = 0; /* the file handle has it now */
+        id ^= stamp_hash(fh, size);
+        Close(fh);
+    }
+    if (lock)
+        UnLock(lock);
     compiler_id = id ? id : 1;
+    ogles2_log("compiler: %s, %lu bytes, id %08lx", (ULONG)COMPILER_PATH, size, compiler_id);
     return compiler_id;
 }
 

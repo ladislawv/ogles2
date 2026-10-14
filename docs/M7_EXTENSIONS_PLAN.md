@@ -35,13 +35,23 @@ only because the runs had no multisampled default framebuffer. Package
   - the package caches (cleared);
   - Quake III's shipped cache, compiled again on the A1200.
 
-  Step 4 changes the compiler only if its hardware probe fails.
+  Step 4 changes the compiler only if its hardware probe fails. **It did**
+  (below): Mesa patch 0013 changes every vertex and binning shader. The
+  caches are cleared after step 5's rebuild. A `.v3dp` in a cache is used
+  whatever compiler made it; one from before patch 0013 still draws, without
+  clip control's `ZERO_TO_ONE` clipping.
 - **Compiler id.** The library recognises a compiler by its file size
   (`ogles2_compiler_id`). Two builds of the same size share an id, and then
   stale compile records (`.v3ds`) are accepted. This happened during M7
   (19,538,220 bytes twice). Before this work the id becomes the size plus a
   build stamp, a version string compiled into `v3dglslc` and read from the
   file's tail. This is done first, because every later step relies on it.
+  **Done (2026-10-13):** `build_m68k.sh` compiles the stamp `"<UTC time>
+  <ogles2 commit>[+] mesa <commit>"` into `v3dglslc` as
+  `$V3DGLSLC-STAMP:...$` (in its data hunk, about 18 KB from the end of the
+  stripped file); `ogles2_compiler_id` hashes it (FNV-1a, found in the last
+  64 KB) with the size, and logs `compiler: LIBS:v3dglslc, <size> bytes, id
+  <id>`. `v3dglslc`'s server banner prints the stamp.
 - **Extensions string and Appendix B.3:** each step adds its extension to
   `GL_EXTENSIONS` and to the appendix's table when it is done.
 - **Tests:** each step has an ogles2 test (package `m6-6` grows, or a new
@@ -62,6 +72,15 @@ only because the runs had no multisampled default framebuffer. Package
   small `debug.c`), and the extensions string.
 - **Done when:** dEQP `debug_marker` (3 cases) passes, and markers appear
   in a traced log.
+- **Done (2026-10-13):** `ogles2/debug.c`; the log lines are `marker:
+  <indent>event|group|end of group "<text>"` with probe `T` (at most 127
+  characters of the text); 162 dispatch entries, library 1.3. `m6_ext`
+  checks the calls and the version (package `m6-6` step 1 runs it with probe
+  `T`); A1200 `ogles2-m6-6-20261013-213823`. dEQP `debug_marker` 3/3
+  (`ogles2-m7-1-20261013-221831`) once the dEQP port loaded extension
+  functions at all: its platform called only `glw::initES20`, so every
+  extension entry point was a null pointer (`random` jumped to address 0);
+  `tcuAmigaPlatform.cpp` now also calls `glu::initExtensionFunctions`.
 
 ## 2. 32 combined texture units
 
@@ -85,6 +104,9 @@ only because the runs had no multisampled default framebuffer. Package
   `draw.c`, `tools/v3dglslc/v3dglslc.c`.
 - **Done when:** the 8 `uniform_api` cases pass, `builtin_variable` still
   passes, and `m2_texture` is unchanged.
+- **Done (2026-10-13):** as designed. dEQP `uniform_api` 1,267/1,267
+  (`ogles2-m7-1-20261013-221845`), `shaders.builtin_variable` 22/22,
+  `implementation_limits` and `state_query` all pass; `m2_texture` 33/33.
 
 ## 3. S3TC (BC1-BC3)
 
@@ -135,6 +157,33 @@ only because the runs had no multisampled default framebuffer. Package
     specification gives (exact for DXT1; DXT3/5 alpha to within 1);
   - optional: Quake III's `r_ext_compressed_textures`. In GLES2 it needs
     pre-compressed data, so it may stay unused.
+- **Done (2026-10-13):** as designed, with these details:
+  - v3dcore: `V3DTexture.block` and `v3d_texture_alloc_blocks` lay every
+    level out on its size in blocks (rounded up, as Mesa's
+    `v3d_setup_slices`), the mip chain too; the CPU stores whole blocks
+    (`v3d_texture_store` with 8 or 16 bytes a "pixel"; the TFU takes no BC
+    format).
+  - A framebuffer object with such a texture is incomplete
+    (`ogles2_texture_renderable`): GLES2's `glFramebufferTexture2D` has no
+    error for a format, so not `GL_INVALID_OPERATION` there.
+    `glCopyTexImage2D` with a DXT format is `GL_INVALID_ENUM` (the
+    extensions take these formats in `glCompressedTex*` only).
+  - `glCompressedTexSubImage2D` checks in dEQP's order: values, the level's
+    existence, bounds and size, then format and block bounds.
+  - `GL_COMPRESSED_TEXTURE_FORMATS`: ETC1 first (dEQP's negative cases take
+    the first), then the four DXT formats; queries return up to 8 values.
+  - Test `tests/m7_s3tc` (33 checks), package `m7-2` with `m2_texture`:
+    every texel of 16x8 DXT1 RGB/RGBA, DXT3 and DXT5 images (hand-made blocks
+    in each colour and alpha mode with every code, and random blocks) as the
+    specification decodes them: end points and DXT3 alpha exact, the
+    interpolated values within 0.67 of the exact ones (rounding of thirds,
+    sevenths and fifths); a 6x5 image; an 8x8 chain to 1x1; sub-image
+    updates before and after a draw; the refused calls. A1200
+    `ogles2-m7-2-20261013-221749`: 33/33, `m2_texture` 33/33 (its ETC1 check
+    read the format list into one integer: fixed).
+  - dEQP `negative_api` 246/246 (`ogles2-m7-1-20261013-221927`), `texture`
+    783/807: the 24 cube cases of the seamless-filtering deviation, as
+    before.
 
 ## 4. `GL_EXT_clip_control`
 
@@ -175,6 +224,49 @@ only because the runs had no multisampled default framebuffer. Package
   - dEQP `clip_control` (8 cases) passes;
   - `m4_depth` and `m1_draw` are unchanged;
   - Quake III renders as before (it never calls the function).
+- **The probe (2026-10-13):** the planes clamp. With design A, a quad from
+  clip-space z -1 to 1 in `ZERO_TO_ONE` was drawn whole, its z < 0 half at
+  depth 0, with and without a depth test (`tests/m7_clip`, package `m7-3`,
+  A1200 `ogles2-m7-3-20261013-222635`). So design B.
+- **Done (2026-10-13), design B:**
+  - Mesa patch 0013 (`tools/v3dglslc/patches`): the vertex and binning
+    shaders lerp the position's z towards w by a new uniform,
+    `QUNIFORM_CLIP_Z_COEFF` (46; Mesa's `load_clip_z_coeff` intrinsic, the
+    form of `nir_lower_clip_halfz_dynamic`): 0 leaves z, -1 gives 2z - w,
+    which the hardware clips and maps as -w..w. One uniform and three
+    instructions in every vertex and binning shader (an fmul and an fadd:
+    `v3d_nir_lower_io` runs after ffma is lowered); NIR's divergence
+    analysis learns the intrinsic. Host and m68k `v3dglslc` identical
+    (`compare_v3dp.sh` 7/7). Apply it in `~/mesa-build/mesa` on an existing
+    build machine, then `build_host.sh`, `replay.py`, `build_m68k.sh`.
+  - Runtime: `glClipControlEXT` (163 dispatch entries), the two queries;
+    `draw.c` writes -1 in `ZERO_TO_ONE` and keeps GL's viewport mapping. A
+    program without the uniform (compiled before patch 0013) gets design A's
+    mapping instead: its depth is right, but it is not clipped at z = 0.
+  - Upper-left origin: the vertex shader's Y scale negated (with the default
+    framebuffer's own flip: `y_down` in `draw.c`) and the winding flag
+    turned with it, so a triangle's facing does not depend on the origin
+    (dEQP `face_culling` expects exactly that); `gl_FragCoord`, `dFdy` and
+    `gl_PointCoord` are window-space and unchanged, as in Mesa.
+  - Found on the way: the clipper's Y scale (`CLIPPER_XY_SCALING`) was always
+    negative, PiStorm3D's top-down picture, while a framebuffer object's
+    vertex shader scales y positively: v3dcore's `ClipperXYScaling` now takes
+    the direction, as Mesa's `v3dx_emit.c`. `m7_clip` checks a quad cut by
+    the near plane in both framebuffers and both origins.
+  - Test `tests/m7_clip` (26 checks), package `m7-3` with `m1_draw`,
+    `m4_depth` and `m5_fbo` (unchanged): A1200 `ogles2-m7-3-20261013-224401`,
+    all pass.
+  - dEQP `clip_control` 8/8 (`ogles2-m7-1-20261013-230105`), after two
+    fixes for what the cases assume of a context: they bind vertex array
+    objects without checking for `OES_vertex_array_object` (ogles2 has none:
+    a null call that froze the A1200; the port's patch 0004 draws with the
+    default vertex state then), and their `glTexImage2D` takes `GL_RGBA8`
+    (GLES 2.0: `GL_INVALID_VALUE`; ogles2 now takes `GL_RGBA8_OES` and
+    `GL_RGB8_OES` with their unsized format and `UNSIGNED_BYTE`, as
+    `OES_required_internalformat` does). `clipping` 602/602, `depth_range`,
+    `polygon_offset` all pass, `rasterization` as before (3 quality
+    warnings); `negative_api` 246/246. `m6-6` all pass
+    (`ogles2-m6-6-20261013-230234`, `m6_ext` 94/94).
 
 ## 5. `GL_EXT_draw_buffers`
 
@@ -235,6 +327,60 @@ only because the runs had no multisampled default framebuffer. Package
 - **Risk:** the biggest step. The job code's single-target assumptions are
   scattered: loads, stores, clears, tile size, the depth save across a
   mid-frame flush. This goes last, after steps 1-4 are done and committed.
+- **Done (2026-10-14):** as designed, with these details and deviations:
+  - Strings: `GL_EXT_draw_buffers` and `GL_NV_fbo_color_attachments` (the
+    attachment points alone; dEQP-GLES2's `attachment_combinations` cases
+    ask for this one, not `EXT_draw_buffers`). 164 dispatch entries.
+  - `fbo.c`: attachment points `COLOR_ATTACHMENT0..3`, depth, stencil; each
+    framebuffer's draw buffers (initially `COLOR_ATTACHMENT0`); the default
+    framebuffer's `GL_BACK` or `GL_NONE` (a `GL_NONE` one writes and clears
+    no colour). `ogles2_fb_update` gives the drawn mask and the render
+    target count (the highest drawn + 1); a change renders the open job.
+  - `job.c`: an object's job with n targets: `TILE_BINNING_MODE_CFG` and
+    `TILE_RENDERING_MODE_CFG_COMMON` say n, Mesa's tile sizes (64x32 for 2,
+    32x32 for 3 and 4), the tile pools sized for them, a load, a store and a
+    clear colour per drawn target; v3dcore's `TileRenderingModeCFGColor`
+    configures 1-4 targets. Write masks: GLES2's one mask on every drawn
+    target, the others masked off.
+  - Partial clears (scissor, write masks, after draws) draw the rectangle
+    with a program that writes the colour to all four outputs:
+    `tools/clear_mrt` (GLSL), compiled by `make_header.sh` into
+    `ogles2/clear_mrt_v3dp.h`, loaded from the library's own data. Run it
+    again when the compiler changes.
+  - Compiler: `MaxDrawBuffers` 4. A program whose fragment shader writes
+    `gl_FragData[1]` or up is drawn again into 2, 3 and 4 RGBA8 targets, so
+    the `.v3dp` has fragment variants for `cbufs` 0x3, 0x7, 0xF; the runtime
+    chooses by the target count (`OGLES2Variant.cbufs`).
+  - **Deviation:** `gl_FragColor` is broadcast to every draw buffer by the
+    extension; a program that writes it has only `cbufs` 1 variants (nine
+    more fragment compiles for every program otherwise, Quake III's 109
+    included), so it draws into the first target only (logged once).
+  - With 4 draw buffers, `shaders.fragdata.invalid_assign_to_1` is "not
+    supported" (it requires exactly one): Mesa's front end sizes
+    `gl_FragData` by the limit whether or not the directive is there, as on
+    Mesa itself; no parser patch.
+  - `OES_required_internalformat` (also new): sized internal formats in
+    `glTexImage2D` and `glCopyTexImage2D` (RGBA8, RGB8, RGBA4, RGB5_A1,
+    RGB565, ALPHA8, LUMINANCE8(_ALPHA8), DEPTH_COMPONENT16,
+    DEPTH24_STENCIL8), each with a format and type that fill it, else
+    `GL_INVALID_OPERATION`. It replaces step 4's narrower RGBA8/RGB8
+    acceptance, which dEQP's `fbo.completeness` tables count as invalid
+    without this extension.
+  - Test `tests/m7_mrt` (29 checks), package `m7-4` (the plan said `m7-2`,
+    which became S3TC's) with `m1_draw`, `m2_texture`, `m5_fbo`: four
+    colours into four textures in one draw (100x70, so partial tiles of
+    32x32), two and three targets (64x32 tiles, also 300x200), depth, whole
+    and scissored clears, blending, `GL_NONE` draw buffers, the default
+    framebuffer's `GL_NONE`, the API and its errors. A1200
+    `ogles2-m7-4-20261014-120805`: all pass. `compare_v3dp.sh` 8/8 (a
+    multi-target program added). `m7-3` and `m7-4` now add the compiler to
+    `LIBS:` for their compiling step only: `m1_draw` started it and counted
+    its 27 MB as a leak.
+  - dEQP: `fbo` 709/709 (the 54 `attachment_combinations` cases among them),
+    `negative_api` 246/246, `shaders.fragdata` 6 + 1 not supported,
+    `shaders.builtin_variable` 22/22 (`gl_MaxDrawBuffers` 4),
+    `state_query`, `implementation_limits`, `clip_control` all pass;
+    `texture` as before (`ogles2-m7-1-20261014-1150*` to `-120534`).
 
 ## Order and checkpoints
 

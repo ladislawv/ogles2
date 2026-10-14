@@ -1,0 +1,89 @@
+dEQP-GLES2 clip_control: the cases bind a vertex array object without
+checking for OES_vertex_array_object, which a GLES2 context need not offer
+(ogles2 does not): the entry points are null there, and the first case that
+draws jumped to address 0. Without the extension they draw with the default
+vertex array state, as GLES2 does.
+
+diff --git a/modules/gles2/functional/es2fClipControlTests.cpp b/modules/gles2/functional/es2fClipControlTests.cpp
+--- a/modules/gles2/functional/es2fClipControlTests.cpp
++++ b/modules/gles2/functional/es2fClipControlTests.cpp
+@@ -446,8 +446,11 @@
+             TCU_FAIL("Program compilation failed");
+         }
+ 
+-        gl.genVertexArrays(1, &m_vao);
+-        gl.bindVertexArray(m_vao);
++        if (gl.genVertexArrays) // ogles2: OES_vertex_array_object is optional in GLES2
++        {
++            gl.genVertexArrays(1, &m_vao);
++            gl.bindVertexArray(m_vao);
++        }
+ 
+         gl.genBuffers(1, &m_vbo);
+ 
+@@ -645,8 +648,11 @@
+             TCU_FAIL("Program compilation failed");
+         }
+ 
+-        gl.genVertexArrays(1, &m_vao);
+-        gl.bindVertexArray(m_vao);
++        if (gl.genVertexArrays) // ogles2: OES_vertex_array_object is optional in GLES2
++        {
++            gl.genVertexArrays(1, &m_vao);
++            gl.bindVertexArray(m_vao);
++        }
+ 
+         gl.genBuffers(1, &m_vbo);
+ 
+@@ -856,8 +862,11 @@
+         {
+             TCU_FAIL("Program compilation failed");
+         }
+-        gl.genVertexArrays(1, &m_vao);
+-        gl.bindVertexArray(m_vao);
++        if (gl.genVertexArrays) // ogles2: OES_vertex_array_object is optional in GLES2
++        {
++            gl.genVertexArrays(1, &m_vao);
++            gl.bindVertexArray(m_vao);
++        }
+ 
+         gl.genBuffers(1, &m_vbo);
+ 
+@@ -1107,7 +1116,8 @@
+ 
+         const int texLoc = gl.getUniformLocation(program.getProgram(), "tex");
+ 
+-        gl.bindVertexArray(0);
++        if (gl.bindVertexArray) // ogles2: OES_vertex_array_object is optional in GLES2
++            gl.bindVertexArray(0);
+         gl.bindBuffer(GL_ARRAY_BUFFER, 0);
+ 
+         gl.bindTexture(GL_TEXTURE_2D, getDepthTexture());
+@@ -1208,8 +1218,11 @@
+             TCU_FAIL("Program compilation failed");
+         }
+ 
+-        gl.genVertexArrays(1, &m_vao);
+-        gl.bindVertexArray(m_vao);
++        if (gl.genVertexArrays) // ogles2: OES_vertex_array_object is optional in GLES2
++        {
++            gl.genVertexArrays(1, &m_vao);
++            gl.bindVertexArray(m_vao);
++        }
+ 
+         gl.genBuffers(1, &m_vbo);
+ 
+@@ -1398,8 +1411,11 @@
+             TCU_FAIL("Program compilation failed");
+         }
+ 
+-        gl.genVertexArrays(1, &m_vao);
+-        gl.bindVertexArray(m_vao);
++        if (gl.genVertexArrays) // ogles2: OES_vertex_array_object is optional in GLES2
++        {
++            gl.genVertexArrays(1, &m_vao);
++            gl.bindVertexArray(m_vao);
++        }
+ 
+         gl.genBuffers(1, &m_vbo);
+ 

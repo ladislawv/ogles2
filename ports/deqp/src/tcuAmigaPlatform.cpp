@@ -3,9 +3,10 @@
  * an ogles2 context with its window on the Workbench screen (whatever the
  * surface type asked for: ogles2 has no pbuffers), RGBA8 with depth 24 and
  * stencil 8, 4x multisampled when the configuration asks for samples
- * (--deqp-gl-config-name=rgba8888d24s8ms4), no vsync. The GL functions are
- * aglGetProcAddress's thunks, which call the current context through the
- * library's dispatch table. Ctrl-C stops the run between tests.
+ * (--deqp-gl-config-name=rgba8888d24s8ms4), no vsync. The GL functions,
+ * core and extensions, are aglGetProcAddress's thunks, which call the
+ * current context through the library's dispatch table. Ctrl-C stops the
+ * run between tests.
  */
 #include "tcuPlatform.hpp"
 #include "tcuDefs.hpp"
@@ -119,8 +120,12 @@ RenderContext::RenderContext(const glu::RenderConfig &config) : m_type(config.ty
         throw tcu::ResourceError("aglCreateContextTags2 failed, error " + de::toString((unsigned long)err));
     aglMakeCurrent(m_ctx);
 
+    /* The core functions, then those of the extensions GL_EXTENSIONS lists
+     * (as the other platforms' glu::initFunctions): a test of an extension's
+     * entry points calls them through m_gl (debug_marker). */
     FunctionLoader loader;
     glw::initES20(&m_gl, &loader);
+    glu::initExtensionFunctions(&m_gl, &loader, m_type.getAPI());
 
     ULONG w = 0, h = 0;
     aglSetParamsTags2(OGLES2_CCT_GET_WIDTH, (ULONG)&w, OGLES2_CCT_GET_HEIGHT, (ULONG)&h, TAG_DONE);

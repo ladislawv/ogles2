@@ -1,0 +1,77 @@
+   132 close (count 2)
+   133 open (count 3)
+   134 display: application bitmap, 32x32, BGRA
+   135 device: context pools for 32x32, D16, 52573440 bytes of GPU memory in use
+   136 aglCreateContext2: context 0x08FC682C, 32x32
+   137 compiler: LIBS:v3dglslc, 19006812 bytes, id 900F788C
+   138 compiler: started (0 s)
+   139 compiler: shader compiled in 1260 ms
+   140 compiler: shader compiled in 40 ms
+   141 compiler: program compiled in 240 ms, OGLES2Cache:319bd6a73dd9f9584e9bf5a5.v3dp
+   142 glLinkProgram: OGLES2Cache:319bd6a73dd9f9584e9bf5a5.v3dp (5 variants, 560 bytes of code)
+   143 job: depth and stencil kept across a mid-frame flush (logged once)
+   144 aglDestroyContext: context 0x08FC682C: freeing
+   145 device: context freed, 35046656 bytes of GPU memory still in use
+   146 aglDestroyContext: context 0x08FC682C (18 frames, 0 dropped, 0 binning blocks added)
+   147 timing: 18 jobs, each on average: 146 us of CPU work before its flush, 6 us waiting for binning, 5 us for the render
+   148 timing: and in each flush 144 us building the render list, 74 us for the CPU cache before the GPU, 18 us after
+   149 close (count 2)
+   150 open (count 3)
+   151 display: application bitmap, 320x240, BGRA
+   152 device: context pools for 320x240, D16, 52732416 bytes of GPU memory in use
+   153 aglCreateContext2: context 0x08FC682C, 320x240
+   154 compiler: shader compiled in 40 ms
+   155 compiler: shader compiled in 40 ms
+   156 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   157 aglDestroyContext: context 0x08FC682C: freeing
+   158 device: context freed, 35046656 bytes of GPU memory still in use
+   159 aglDestroyContext: context 0x08FC682C (118 frames, 0 dropped, 0 binning blocks added)
+   160 timing: 118 jobs, each on average: 113 us of CPU work before its flush, 11 us waiting for binning, 119 us for the render
+   161 timing: and in each flush 48 us building the render list, 56 us for the CPU cache before the GPU, 56 us after
+   162 timing: 118 swaps, 499 us from one to the next on average, 1 us of it presenting
+   163 timing: per frame 1 draws, 84 us in them; in all 0 ms in glBuffer(Sub)Data, 0 ms in glTex(Sub)Image2D
+   164 close (count 2)
+   165 open (count 3)
+   166 display: application bitmap, 256x128, BGRA
+   167 device: context pools for 256x128, D16, 52628992 bytes of GPU memory in use
+   168 aglCreateContext2: context 0x08FC682C, 256x128
+   169 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   170 job: depth and stencil kept across a mid-frame flush (logged once)
+   171 aglDestroyContext: context 0x08FC682C: freeing
+   172 device: context freed, 35046656 bytes of GPU memory still in use
+   173 aglDestroyContext: context 0x08FC682C (3 frames, 0 dropped, 0 binning blocks added)
+   174 timing: 3 jobs, each on average: 181 us of CPU work before its flush, 9 us waiting for binning, 79 us for the render
+   175 timing: and in each flush 880 us building the render list, 83 us for the CPU cache before the GPU, 55 us after
+   176 timing: 2 swaps, 1573 us from one to the next on average, 2 us of it presenting
+   177 timing: per frame 1 draws, 196 us in them; in all 0 ms in glBuffer(Sub)Data, 0 ms in glTex(Sub)Image2D
+   178 display: application bitmap, 256x128, BGRA
+   179 device: context pools for 256x128, D32F, 52694528 bytes of GPU memory in use
+   180 aglCreateContext2: context 0x08FC682C, 256x128
+   181 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   182 job: depth and stencil kept across a mid-frame flush (logged once)
+   183 aglDestroyContext: context 0x08FC682C: freeing
+   184 device: context freed, 35046656 bytes of GPU memory still in use
+   185 aglDestroyContext: context 0x08FC682C (7 frames, 0 dropped, 0 binning blocks added)
+   186 timing: 7 jobs, each on average: 165 us of CPU work before its flush, 8 us waiting for binning, 93 us for the render
+   187 timing: and in each flush 459 us building the render list, 62 us for the CPU cache before the GPU, 53 us after
+   188 timing: 4 swaps, 1187 us from one to the next on average, 1 us of it presenting
+   189 timing: per frame 1 draws, 159 us in them; in all 0 ms in glBuffer(Sub)Data, 0 ms in glTex(Sub)Image2D
+   190 close (count 2)
+   191 open (count 3)
+   192 display: application bitmap, 256x128, BGRA
+   193 device: context pools for 256x128, D32F, 52694528 bytes of GPU memory in use
+   194 aglCreateContext2: context 0x08FC682C, 256x128
+   195 glLinkProgram: PROGDIR:b5dddc8cd309fdea4d334b4b.v3dp (5 variants, 904 bytes of code)
+   196 compiler: shader compiled in 40 ms
+   197 compiler: shader compiled in 40 ms
+   198 glLinkProgram: PROGDIR:1656c863a995438bf1702079.v3dp (5 variants, 584 bytes of code)
+   199 framebuffer 1 is not complete (0x8CD7): nothing drawn or read (logged once)
+   200 job: depth and stencil kept across a mid-frame flush (logged once)
+   201 framebuffer 1: tile pools of its own for 512x512
+   202 aglDestroyContext: context 0x08FC682C: freeing
+   203 device: context freed, 35046656 bytes of GPU memory still in use
+   204 aglDestroyContext: context 0x08FC682C (102 frames, 0 dropped, 0 binning blocks added)
+   205 timing: 102 jobs, each on average: 171 us of CPU work before its flush, 7 us waiting for binning, 33 us for the render
+   206 timing: and in each flush 109 us building the render list, 63 us for the CPU cache before the GPU, 24 us after
+   207 timing: 43 swaps, 2020 us from one to the next on average, 1 us of it presenting
+   208 timing: per frame 2 draws, 282 us in them; in all 0 ms in glBuffer(Sub)Data, 3 ms in glTex(Sub)Image2D
