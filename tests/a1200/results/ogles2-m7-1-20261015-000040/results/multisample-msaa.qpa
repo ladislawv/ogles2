@@ -1,0 +1,440 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/multisample.txt --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/multisample-msaa.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms4"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.num_samples_polygon
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.num_samples_polygon" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Number of distinct colors detected so far: at least 5</Text>
+ <Text>Success: The number of distinct colors detected is at least GL_SAMPLES+1</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2304547</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.num_samples_line
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.num_samples_line" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Number of distinct colors detected so far: at least 5</Text>
+ <Text>Success: The number of distinct colors detected is at least GL_SAMPLES+1</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">906359</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.common_edge_small_quads
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.common_edge_small_quads" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Additive blending enabled in order to detect (erroneously) overlapping samples</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Success: All quad interiors seem unicolored (no common-edge artifacts)</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">974785</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.common_edge_big_quad
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.common_edge_big_quad" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Additive blending enabled in order to detect (erroneously) overlapping samples</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Success: All quad interiors seem unicolored (no common-edge artifacts)</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1031618</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.common_edge_viewport_quad
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.common_edge_viewport_quad" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Additive blending enabled in order to detect (erroneously) overlapping samples</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Quads seem OK - moving on to next pattern</Text>
+ <Text>Success: All quad interiors seem unicolored (no common-edge artifacts)</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">916965</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.depth
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.depth" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Depth test enabled, depth func is GL_LESS</Text>
+ <Text>Drawing several bigger-than-viewport black or white polygons intersecting each other</Text>
+ <Text>Number of distinct colors detected so far: at least 5</Text>
+ <Text>Success: The number of distinct colors detected is at least GL_SAMPLES+1</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">906205</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.stencil
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.stencil" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Drawing a pattern with glStencilFunc(GL_ALWAYS, 1, 1) and glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE)</Text>
+ <Text>Clearing color buffer to black</Text>
+ <Text>Checking that color buffer was actually cleared to black</Text>
+ <Text>Drawing a viewport-sized quad with glStencilFunc(GL_EQUAL, 1, 1) and glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP) - should result in same image as the first</Text>
+ <Text>Image comparison failed: max difference = (255, 255, 255, 0), threshold = (0, 0, 0, 0)</Text>
+ <ImageSet Name="ImageCompare" Description="Image comparison" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">978607</Number>
+ <Result StatusCode="Fail">Failed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.sample_coverage_invert
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.sample_coverage_invert" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Additive blending enabled in order to detect (erroneously) overlapping samples</Text>
+ <Text>Clearing color to all-zeros</Text>
+ <Text>Drawing the pattern with GL_SAMPLE_COVERAGE disabled</Text>
+ <Text>Clearing color to all-zeros</Text>
+ <Text>Drawing the pattern with GL_SAMPLE_COVERAGE enabled, using non-inverted masks</Text>
+ <Text>Drawing the pattern with GL_SAMPLE_COVERAGE enabled, using same sample coverage values but inverted masks</Text>
+ <Text>Success: The two images rendered are identical</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">973445</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.proportionality_alpha_to_coverage
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.proportionality_alpha_to_coverage" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>GL_SAMPLE_ALPHA_TO_COVERAGE is enabled</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Using color mask TRUE, TRUE, TRUE, FALSE</Text>
+ <Text>Drawing a red quad using alpha value 0.00</Text>
+ <Text>Average red color component: 1.00</Text>
+ <Text>Failure: Image should be completely black</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">912883</Number>
+ <Result StatusCode="Fail">Failed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.proportionality_sample_coverage
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.proportionality_sample_coverage" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>GL_SAMPLE_COVERAGE is enabled</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.00</Text>
+ <Text>Average red color component: 0.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.05</Text>
+ <Text>Average red color component: 0.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.11</Text>
+ <Text>Average red color component: 0.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.16</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.21</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.26</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.32</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.37</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.42</Text>
+ <Text>Average red color component: 0.50</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.47</Text>
+ <Text>Average red color component: 0.50</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.53</Text>
+ <Text>Average red color component: 0.50</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.58</Text>
+ <Text>Average red color component: 0.50</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.63</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.68</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.74</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.79</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.84</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.89</Text>
+ <Text>Average red color component: 1.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.95</Text>
+ <Text>Average red color component: 1.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 1.00</Text>
+ <Text>Average red color component: 1.00</Text>
+ <Text>Success: Number of coverage mask bits set appears to be, on average, proportional to sample coverage value</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">955541</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.proportionality_sample_coverage_inverted
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.proportionality_sample_coverage_inverted" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>GL_SAMPLE_COVERAGE is enabled</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 1.00 (inverted)</Text>
+ <Text>Average red color component: 0.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.95 (inverted)</Text>
+ <Text>Average red color component: 0.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.89 (inverted)</Text>
+ <Text>Average red color component: 0.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.84 (inverted)</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.79 (inverted)</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.74 (inverted)</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.68 (inverted)</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.63 (inverted)</Text>
+ <Text>Average red color component: 0.25</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.58 (inverted)</Text>
+ <Text>Average red color component: 0.50</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.53 (inverted)</Text>
+ <Text>Average red color component: 0.50</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.47 (inverted)</Text>
+ <Text>Average red color component: 0.50</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.42 (inverted)</Text>
+ <Text>Average red color component: 0.50</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.37 (inverted)</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.32 (inverted)</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.26 (inverted)</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.21 (inverted)</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.16 (inverted)</Text>
+ <Text>Average red color component: 0.75</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.11 (inverted)</Text>
+ <Text>Average red color component: 1.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.05 (inverted)</Text>
+ <Text>Average red color component: 1.00</Text>
+ <Text>Clearing color to black</Text>
+ <Text>Drawing a red quad using sample coverage value 0.00 (inverted)</Text>
+ <Text>Average red color component: 1.00</Text>
+ <Text>Success: Number of coverage mask bits set appears to be, on average, proportional to inverted sample coverage value</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">959535</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.constancy_alpha_to_coverage
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.constancy_alpha_to_coverage" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Clearing color to black</Text>
+ <Text>GL_SAMPLE_ALPHA_TO_COVERAGE is enabled</Text>
+ <Text>Color mask is TRUE, TRUE, TRUE, FALSE</Text>
+ <Text>Drawing several green quads, each fully overlapped by a red quad with the same alpha values</Text>
+ <Text>Success: Coverage mask appears to be constant at a given pixel coordinate with a given alpha</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">920204</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.constancy_sample_coverage
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.constancy_sample_coverage" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Clearing color to black</Text>
+ <Text>GL_SAMPLE_COVERAGE is enabled</Text>
+ <Text>Drawing several green quads, each fully overlapped by a red quad with the same sample coverage values</Text>
+ <Text>Success: Coverage mask appears to be constant at a given pixel coordinate with a given coverage value</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">916078</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.constancy_sample_coverage_inverted
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.constancy_sample_coverage_inverted" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Clearing color to black</Text>
+ <Text>GL_SAMPLE_COVERAGE is enabled</Text>
+ <Text>Drawing several green quads, each fully overlapped by a red quad with the same inverted sample coverage values</Text>
+ <Text>Success: Coverage mask appears to be constant at a given pixel coordinate with a given coverage value</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">918370</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.constancy_both
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.constancy_both" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Clearing color to black</Text>
+ <Text>GL_SAMPLE_ALPHA_TO_COVERAGE is enabled</Text>
+ <Text>Color mask is TRUE, TRUE, TRUE, FALSE</Text>
+ <Text>GL_SAMPLE_COVERAGE is enabled</Text>
+ <Text>Drawing several green quads, each fully overlapped by a red quad with the same alpha and sample coverage values</Text>
+ <Text>Success: Coverage mask appears to be constant at a given pixel coordinate with a given alpha and coverage value</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">933040</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.multisample.constancy_both_inverted
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.multisample.constancy_both_inverted" Version="0.3.4" CaseType="SelfValidate">
+ <Text>GL_SAMPLES = 4</Text>
+ <Text>Clearing color to black</Text>
+ <Text>GL_SAMPLE_ALPHA_TO_COVERAGE is enabled</Text>
+ <Text>Color mask is TRUE, TRUE, TRUE, FALSE</Text>
+ <Text>GL_SAMPLE_COVERAGE is enabled</Text>
+ <Text>Drawing several green quads, each fully overlapped by a red quad with the same alpha and inverted sample coverage values</Text>
+ <Text>Success: Coverage mask appears to be constant at a given pixel coordinate with a given alpha and coverage value</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">919379</Number>
+ <Result StatusCode="Pass">Passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 16.62 seconds
+
+#endSession

@@ -1,0 +1,28 @@
+     1 ogles2.library 1.3 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838C620
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x084E08A4, 256x256
+    15 compiler: LIBS:v3dglslc, 19007620 bytes, id D9245FC7
+    16 compiler: started (0 s)
+    17 compiler: shader compiled in 1260 ms
+    18 compiler: shader compiled in 40 ms
+    19 compiler: program compiled in 260 ms, OGLES2Cache:d49b2011a1216f16b1564565.v3dp
+    20 glLinkProgram: OGLES2Cache:d49b2011a1216f16b1564565.v3dp (5 variants, 544 bytes of code)
+    21 job: depth and stencil kept across a mid-frame flush (logged once)
+    22 aglDestroyContext: context 0x084E08A4: freeing
+    23 device: context freed, 0 bytes of GPU memory still in use
+    24 aglDestroyContext: context 0x084E08A4 (44 frames, 0 dropped, 0 binning blocks added)
+    25 timing: 44 jobs, each on average: 1000 us of CPU work before its flush, 24 us waiting for binning, 1794 us for the render
+    26 timing: and in each flush 122 us building the render list, 82 us for the CPU cache before the GPU, 57 us after
+    27 timing: 44 swaps, 224817 us from one to the next on average, 422 us of it presenting
+    28 timing: per frame 43 draws, 412 us in them; in all 0 ms in glBuffer(Sub)Data, 3 ms in glTex(Sub)Image2D

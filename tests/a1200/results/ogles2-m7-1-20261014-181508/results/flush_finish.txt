@@ -1,0 +1,27 @@
+Writing test log into M7R1:results/flush_finish.qpa
+dEQP Core unknown (0xcafebabe) starting..
+  target implementation = 'AmigaOS3'
+
+Test case 'dEQP-GLES2.functional.flush_finish.wait'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.flush_finish.flush'..
+  CompatibilityWarning (Suspicious performance behavior)
+
+Test case 'dEQP-GLES2.functional.flush_finish.flush_wait'..
+  Pass (Pass)
+
+Test case 'dEQP-GLES2.functional.flush_finish.finish'..
+  CompatibilityWarning (Suspicious performance behavior)
+
+Test case 'dEQP-GLES2.functional.flush_finish.finish_wait'..
+  CompatibilityWarning (Suspicious performance behavior)
+
+DONE!
+
+Test run totals:
+  Passed:        2/5 (40.0%)
+  Failed:        0/5 (0.0%)
+  Not supported: 0/5 (0.0%)
+  Warnings:      3/5 (60.0%)
+  Waived:        0/5 (0.0%)

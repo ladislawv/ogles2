@@ -1,0 +1,28 @@
+     1 ogles2.library 1.3 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838C620
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x084387AC, 256x256
+    15 compiler: LIBS:v3dglslc, 19007620 bytes, id D9245FC7
+    16 compiler: started (0 s)
+    17 compiler: shader compiled in 1260 ms
+    18 compiler: shader compiled in 40 ms
+    19 compiler: program compiled in 240 ms, OGLES2Cache:8269eb809b0463ae1db6bbe3.v3dp
+    20 glLinkProgram: OGLES2Cache:8269eb809b0463ae1db6bbe3.v3dp (5 variants, 488 bytes of code)
+    21 job: depth and stencil kept across a mid-frame flush (logged once)
+    22 aglDestroyContext: context 0x084387AC: freeing
+    23 device: context freed, 0 bytes of GPU memory still in use
+    24 aglDestroyContext: context 0x084387AC (8 frames, 0 dropped, 0 binning blocks added)
+    25 timing: 8 jobs, each on average: 201527 us of CPU work before its flush, 30 us waiting for binning, 115 us for the render
+    26 timing: and in each flush 388 us building the render list, 93 us for the CPU cache before the GPU, 88 us after
+    27 timing: 8 swaps, 10207 us from one to the next on average, 357 us of it presenting
+    28 timing: per frame 1 draws, 450 us in them; in all 0 ms in glBuffer(Sub)Data, 2 ms in glTex(Sub)Image2D

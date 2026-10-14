@@ -1,0 +1,31 @@
+ogles2 M7: EXT_draw_buffers (several render targets)
+PASS: GL_EXTENSIONS has GL_EXT_draw_buffers and GL_NV_fbo_color_attachments
+PASS: GL_MAX_DRAW_BUFFERS_EXT and GL_MAX_COLOR_ATTACHMENTS_EXT are 4
+PASS: the default framebuffer: GL_DRAW_BUFFER0 GL_BACK, GL_DRAW_BUFFER1 GL_NONE
+PASS: the default framebuffer takes one draw buffer
+PASS: the default framebuffer takes GL_BACK or GL_NONE only
+PASS: a framebuffer object: GL_DRAW_BUFFER0 COLOR_ATTACHMENT0, GL_DRAW_BUFFER3 GL_NONE
+PASS: more than 4 draw buffers: GL_INVALID_VALUE
+PASS: COLOR_ATTACHMENT1 in position 0: GL_INVALID_OPERATION
+PASS: GL_BACK in an object: GL_INVALID_OPERATION
+PASS: a value that names no buffer: GL_INVALID_ENUM
+PASS: four draw buffers read back
+PASS: colour attachments of two sizes: GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS
+PASS: COLOR_ATTACHMENT3's object reads back
+PASS: no GL error left over
+PASS: four targets 100x70: complete
+PASS: four targets 100x70: each target its own colour, the nearer quad in front
+PASS: three targets 100x70: complete
+PASS: three targets 100x70: each target its own colour, the nearer quad in front
+PASS: two targets 100x70: complete
+PASS: two targets 100x70: each target its own colour, the nearer quad in front
+PASS: two targets 300x200: complete
+PASS: two targets 300x200: each target its own colour, the nearer quad in front
+PASS: four targets: a whole clear reaches every draw buffer
+PASS: four targets: a scissored clear after a draw reaches every draw buffer, its half only
+PASS: four targets: blending in each
+PASS: GL_NONE draw buffers: outputs 0 and 2 drawn, 1 and 3 kept
+PASS: the default framebuffer with GL_NONE: a clear writes nothing
+PASS: and with GL_BACK again it clears
+PASS: no GL error left over
+ALL PASSED: 29 of 29 checks passed

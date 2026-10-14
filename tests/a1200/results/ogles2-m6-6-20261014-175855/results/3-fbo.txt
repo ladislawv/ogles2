@@ -1,0 +1,46 @@
+ogles2 M5: framebuffer objects
+PASS: smooth and tex1: link
+PASS: glGenFramebuffers: a name, not a framebuffer until bound
+PASS: bound: glIsFramebuffer, GL_FRAMEBUFFER_BINDING
+PASS: no attachments: status 0x8cd7 (8cd7 INCOMPLETE_MISSING_ATTACHMENT)
+PASS: attachment type GL_NONE
+PASS: glClear on it: GL_INVALID_FRAMEBUFFER_OPERATION
+PASS: the default framebuffer's attachments: GL_INVALID_OPERATION
+PASS: the default framebuffer: complete
+PASS: deleted
+PASS: RGBA8 texture 64x32: complete
+PASS: bits r8 a8 d0 (8 8 0), attachment type 0x1702 name 1
+PASS: read from the object: (40,4) ff0000 red, (40,28) 0000ff blue, (4,28) 00ff00 green
+PASS: sampled on the screen: bottom ff0000 red, top 0000ff blue, left 00ff00 00ff00 green
+PASS: an object's pass mid-frame: screen left 00ff00 (00ff00, depth kept), right ff0000 (ff0000)
+PASS: and the object holds its yellow
+PASS: texture + DEPTH_COMPONENT16 renderbuffer: complete, 16 depth bits
+PASS: depth kept across the object's jobs: left ff0000 (ff0000), right 00ff00 (00ff00)
+PASS: glDiscardFramebufferEXT(GL_DEPTH_ATTACHMENT): in GL_EXTENSIONS, no error
+PASS: the colour is still stored: ffff00 (ffff00)
+PASS: GL_DEPTH_EXT on an object: GL_INVALID_ENUM
+PASS: DEPTH24_STENCIL8 as depth and stencil: complete, 24 and 8 bits
+PASS: D24S8: stencil across glFinish: left 00ff00 (00ff00), right 000000 (000000)
+PASS: D16 + S8 apart: complete
+PASS: D16 + S8: stencil across glFinish: left 00ff00 (00ff00), right 000000 (000000)
+PASS: RGB565 renderbuffer (width 40, format 0x8d62, green 6 bits): red ff0000, grey 838183
+PASS: RGBA4 renderbuffer (width 40, format 0x8056, green 4 bits): red ff0000, grey 888888
+PASS: RGB5_A1 renderbuffer (width 40, format 0x8057, green 5 bits): red ff0000, grey 838383
+PASS: RGBA8_OES renderbuffer (width 40, format 0x8058, green 8 bits): red ff0000, grey 808080
+PASS: level 1 (level query 1): left 00ffff (00ffff), right ff0000 (ff0000)
+PASS: cube face -Y (face query 0x8518): ff00ff (ff00ff)
+PASS: after rendering: glTexSubImage2D corner 00ff00 (00ff00), rest ff0000 (ff0000), top 0000ff (0000ff)
+PASS: glGenerateMipmap from the rendered image: level 4 bottom ff0000, top 0000ff (red, blue)
+PASS: glCopyTexImage2D from the object, sampled: bottom ff0000 (ff0000), top 0000ff (0000ff)
+PASS: 512x512 (its own tile pools): (0,0) 0000ff blue, (511,511) ffffff white, (300,300) ffffff white
+PASS: a LUMINANCE texture: 0x8cd6 (8cd6 INCOMPLETE_ATTACHMENT)
+PASS: drawing into it: GL_INVALID_FRAMEBUFFER_OPERATION
+PASS: 32x32 colour, 16x16 depth: 0x8cd9 (8cd9 INCOMPLETE_DIMENSIONS)
+PASS: a renderbuffer name never bound: GL_INVALID_OPERATION
+PASS: a renderbuffer without storage: 0x8cd6 (8cd6)
+PASS: glRenderbufferStorage(GL_RGBA): GL_INVALID_ENUM
+PASS: a deleted texture is detached from the bound object
+PASS: 40 objects made, drawn into, sampled and deleted: 0 wrong
+PASS: no GL error left over
+PASS: destroy returns the memory (0 bytes difference)
+ALL PASSED: 44 of 44 checks passed

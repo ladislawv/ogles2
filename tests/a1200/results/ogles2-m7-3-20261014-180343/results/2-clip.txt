@@ -1,0 +1,30 @@
+ogles2 M7: EXT_clip_control, and the Z planes probe
+PASS: GL_EXTENSIONS has GL_EXT_clip_control
+PASS: a 32x32 RGBA8 + depth object
+PASS: initially LOWER_LEFT, NEGATIVE_ONE_TO_ONE
+PASS: glClipControlEXT(UPPER_LEFT, ZERO_TO_ONE) reads back
+PASS: a wrong origin is GL_INVALID_ENUM
+PASS: a wrong depth mode is GL_INVALID_ENUM
+PASS: an error leaves the state as it was
+PROBE: probe, depth test off: first column drawn 16 (16 if z < 0 is clipped); its depth 8/255; column 0 not drawn, depth 0/255; column 31 depth 247/255 (247)
+PASS: ZERO_TO_ONE: what has clip-space z < 0 is clipped
+PROBE: probe, depth test on (ALWAYS): first column drawn 16 (16 if z < 0 is clipped); its depth 8/255; column 0 not drawn, depth 0/255; column 31 depth 247/255 (247)
+PASS: ZERO_TO_ONE: what has clip-space z < 0 is clipped
+PASS: NEGATIVE_ONE_TO_ONE, depth range 0..1: window depth as specified (largest difference 0/255)
+PASS: NEGATIVE_ONE_TO_ONE, depth range 0.25..0.75: window depth as specified (largest difference 0/255)
+PASS: ZERO_TO_ONE, depth range 0..1: window depth as specified (largest difference 0/255)
+PASS: ZERO_TO_ONE, depth range 0.25..0.75: window depth as specified (largest difference 0/255)
+PASS: object, LOWER_LEFT: the lower left quarter drawn at the lower left (lower 1, upper 0)
+PASS: object, LOWER_LEFT: a counter-clockwise triangle with back faces culled is drawn
+PASS: object, UPPER_LEFT: the lower left quarter drawn at the upper left (lower 0, upper 1)
+PASS: object, UPPER_LEFT: a counter-clockwise triangle with back faces culled is drawn
+PASS: object, LOWER_LEFT: a quad cut by the near plane covers rows 0..10 (0..10)
+PASS: object, UPPER_LEFT: a quad cut by the near plane covers rows 21..31 (21..31)
+PASS: default framebuffer, LOWER_LEFT: the lower left quarter drawn at the lower left (lower 1, upper 0)
+PASS: default framebuffer, LOWER_LEFT: a counter-clockwise triangle with back faces culled is drawn
+PASS: default framebuffer, UPPER_LEFT: the lower left quarter drawn at the upper left (lower 0, upper 1)
+PASS: default framebuffer, UPPER_LEFT: a counter-clockwise triangle with back faces culled is drawn
+PASS: default framebuffer, LOWER_LEFT: a quad cut by the near plane covers rows 0..10 (0..10)
+PASS: default framebuffer, UPPER_LEFT: a quad cut by the near plane covers rows 21..31 (21..31)
+PASS: no GL error left over
+ALL PASSED: 26 of 26 checks passed

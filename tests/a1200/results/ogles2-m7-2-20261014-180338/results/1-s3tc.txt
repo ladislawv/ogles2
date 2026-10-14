@@ -1,0 +1,35 @@
+ogles2 M7: S3TC textures (DXT1, DXT3, DXT5)
+PASS: a 16x8 RGBA8 framebuffer object
+PASS: the four extension strings
+PASS: GL_COMPRESSED_TEXTURE_FORMATS: ETC1 and the four DXT formats
+PASS: DXT1 RGB
+PASS: DXT1 RGB: 16x8 as the specification decodes it (largest difference 67/100, exact texels 0/100)
+PASS: DXT1 RGBA
+PASS: DXT1 RGBA: 16x8 as the specification decodes it (largest difference 67/100, exact texels 0/100)
+PASS: DXT3
+PASS: DXT3: 16x8 as the specification decodes it (largest difference 67/100, exact texels 0/100)
+PASS: DXT5
+PASS: DXT5: 16x8 as the specification decodes it (largest difference 67/100, exact texels 0/100)
+PASS: a 6x5 DXT5 image: 2x2 blocks
+PASS: 6x5 DXT5: 6x5 as the specification decodes it (largest difference 67/100, exact texels 0/100)
+PASS: an 8x8 DXT1 chain down to 1x1 (levels of one block)
+PASS: level 0 drawn 8x8: 255 0 0 255
+PASS: level 1 drawn 4x4: 0 255 0 255
+PASS: level 2 drawn 2x2: 0 0 255 255
+PASS: level 3 drawn 1x1: 255 255 0 255
+PASS: glCompressedTexSubImage2D of a block
+PASS: a block replaced before the first draw: 16x8 as the specification decodes it (largest difference 67/100, exact texels 0/100)
+PASS: glCompressedTexSubImage2D of two blocks after a draw
+PASS: two blocks replaced after a draw: 16x8 as the specification decodes it (largest difference 67/100, exact texels 0/100)
+PASS: glCompressedTexImage2D: a wrong imageSize is GL_INVALID_VALUE
+PASS: a 16x8 DXT1 image
+PASS: glTexSubImage2D on it: GL_INVALID_OPERATION
+PASS: glGenerateMipmap on it: GL_INVALID_OPERATION
+PASS: glCopyTexSubImage2D on it: GL_INVALID_OPERATION
+PASS: glCompressedTexSubImage2D off the block grid: GL_INVALID_OPERATION
+PASS: glCompressedTexSubImage2D of part of a block: GL_INVALID_OPERATION
+PASS: glCompressedTexSubImage2D in another format: GL_INVALID_OPERATION
+PASS: glCompressedTexSubImage2D: a wrong imageSize is GL_INVALID_VALUE
+PASS: a framebuffer object with it as its colour is not complete
+PASS: no GL error left over
+ALL PASSED: 33 of 33 checks passed

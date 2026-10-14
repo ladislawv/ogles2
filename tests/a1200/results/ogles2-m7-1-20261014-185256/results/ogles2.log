@@ -1,0 +1,40 @@
+     1 ogles2.library 1.3 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838C620
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x084E182C, 256x256
+    15 compiler: LIBS:v3dglslc, 19007620 bytes, id D9245FC7
+    16 compiler: started (0 s)
+    17 compiler: shader compiled in 1240 ms
+    18 compiler: shader compiled in 40 ms
+    19 compiler: program compiled in 280 ms, OGLES2Cache:a16ba1770fc76b45fc17a34a.v3dp
+    20 glLinkProgram: OGLES2Cache:a16ba1770fc76b45fc17a34a.v3dp (5 variants, 648 bytes of code)
+    21 job: depth and stencil kept across a mid-frame flush (logged once)
+    22 compiler: shader compiled in 40 ms
+    23 compiler: program compiled in 560 ms, OGLES2Cache:6ade19c508e860fc005e59fb.v3dp
+    24 glLinkProgram: OGLES2Cache:6ade19c508e860fc005e59fb.v3dp (14 variants, 6168 bytes of code)
+    25 draw: a shader spills registers: a 33024-byte area (1024 bytes a thread)
+    26 compiler: shader compiled in 40 ms
+    27 compiler: program compiled in 560 ms, OGLES2Cache:4f4b1e746dfab78bd535ffba.v3dp
+    28 glLinkProgram: OGLES2Cache:4f4b1e746dfab78bd535ffba.v3dp (14 variants, 6472 bytes of code)
+    29 glGetIntegerv: pname 0x821B not supported yet
+    30 compiler: shader compiled in 20 ms
+    31 compiler: shader failed in 40 ms
+    32 compiler: shader failed in 20 ms
+    33 compiler: shader failed in 20 ms
+    34 aglDestroyContext: context 0x084E182C: freeing
+    35 device: context freed, 0 bytes of GPU memory still in use
+    36 aglDestroyContext: context 0x084E182C (6 frames, 0 dropped, 0 binning blocks added)
+    37 timing: 6 jobs, each on average: 496424 us of CPU work before its flush, 37 us waiting for binning, 149 us for the render
+    38 timing: and in each flush 535 us building the render list, 100 us for the CPU cache before the GPU, 68 us after
+    39 timing: 6 swaps, 280923 us from one to the next on average, 361 us of it presenting
+    40 timing: per frame 0 draws, 886 us in them; in all 0 ms in glBuffer(Sub)Data, 2 ms in glTex(Sub)Image2D

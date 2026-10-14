@@ -1,0 +1,41 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/debug_marker.txt --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/debug_marker.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.debug_marker.supported
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.debug_marker.supported" Version="0.3.4" CaseType="SelfValidate">
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">4184</Number>
+ <Result StatusCode="Pass">GL_EXT_debug_marker is supported</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.debug_marker.random
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.debug_marker.random" Version="0.3.4" CaseType="SelfValidate">
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2587782</Number>
+ <Result StatusCode="Pass">All calls passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.debug_marker.invalid
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.debug_marker.invalid" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Note: GL_EXT_debug_marker calls must not report an error even if invalid arguments are supplied.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">2281</Number>
+ <Result StatusCode="Pass">All calls passed</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 2.70 seconds
+
+#endSession

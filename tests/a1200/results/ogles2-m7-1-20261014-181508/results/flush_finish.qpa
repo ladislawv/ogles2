@@ -1,0 +1,341 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/flush_finish.txt --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/flush_finish.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.flush_finish.wait
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.flush_finish.wait" Version="0.3.4" CaseType="SelfValidate">
+ <Text>1200 ms busy wait</Text>
+ <Section Name="CalibrationInfo" Description="Calibration info">
+  <Text>Calibrating maximum draw call count, target duration = 1000000 us</Text>
+  <Text>Duration with 1 draw calls = 1073 us</Text>
+  <Text>Duration with 2 draw calls = 1194 us</Text>
+  <Text>Duration with 4 draw calls = 1562 us</Text>
+  <Text>Duration with 8 draw calls = 2626 us</Text>
+  <Text>Duration with 16 draw calls = 4786 us</Text>
+  <Text>Duration with 32 draw calls = 9084 us</Text>
+  <Text>Duration with 64 draw calls = 17669 us</Text>
+  <Text>Duration with 128 draw calls = 34845 us</Text>
+  <Text>Duration with 256 draw calls = 69201 us</Text>
+  <Text>Duration with 512 draw calls = 137923 us</Text>
+  <Text>Duration with 1024 draw calls = 275623 us</Text>
+  <Text>Duration with 2048 draw calls = 394717 us</Text>
+  <Text>Duration with 4096 draw calls = 397636 us</Text>
+  <Text>Duration with 8192 draw calls = 422633 us</Text>
+  <Text>Duration with 16384 draw calls = 458086 us</Text>
+  <Text>Duration with 32768 draw calls = 583226 us</Text>
+  <Text>Duration with 65536 draw calls = 785407 us</Text>
+  <Text>Duration with 131072 draw calls = 1177465 us</Text>
+  <Number Name="MaxDrawCalls" Description="Maximum number of draw calls" Unit="">101407</Number>
+</Section>
+ <Section Name="Samples" Description="Samples">
+  <Text>11046 calls:	1200055 us wait,	75482 us read</Text>
+  <Text>23607 calls:	1200050 us wait,	73341 us read</Text>
+  <Text>24121 calls:	1200048 us wait,	388805 us read</Text>
+  <Text>25567 calls:	1200056 us wait,	82298 us read</Text>
+  <Text>30227 calls:	1200045 us wait,	75293 us read</Text>
+  <Text>31692 calls:	1200062 us wait,	386978 us read</Text>
+  <Text>34227 calls:	1200056 us wait,	75550 us read</Text>
+  <Text>35607 calls:	1200056 us wait,	73009 us read</Text>
+  <Text>41879 calls:	1200059 us wait,	79143 us read</Text>
+  <Text>43713 calls:	1200048 us wait,	80313 us read</Text>
+  <Text>44253 calls:	1200053 us wait,	396451 us read</Text>
+  <Text>46956 calls:	1200065 us wait,	86907 us read</Text>
+  <Text>53846 calls:	1200092 us wait,	388977 us read</Text>
+  <Text>54040 calls:	1200063 us wait,	389480 us read</Text>
+  <Text>63138 calls:	1200051 us wait,	69279 us read</Text>
+  <Text>66712 calls:	1200060 us wait,	80602 us read</Text>
+  <Text>67061 calls:	1200047 us wait,	86929 us read</Text>
+  <Text>85931 calls:	1200051 us wait,	68763 us read</Text>
+  <Text>86861 calls:	1200052 us wait,	87966 us read</Text>
+  <Text>87767 calls:	1200051 us wait,	83037 us read</Text>
+  <Text>89175 calls:	1200053 us wait,	81890 us read</Text>
+  <Text>91337 calls:	1200063 us wait,	87227 us read</Text>
+  <Text>92582 calls:	1200056 us wait,	70347 us read</Text>
+  <Text>100218 calls:	1200061 us wait,	70610 us read</Text>
+  <Text>100884 calls:	1200051 us wait,	76315 us read</Text>
+</Section>
+ <Number Name="WaitCoefficient" Description="Wait coefficient" Unit="">0.000031</Number>
+ <Number Name="ReadCoefficient" Description="Read coefficient" Unit="">-0.031657</Number>
+ <Number Name="NormalizedWaitCoefficient" Description="Normalized wait coefficient" Unit="">0.000003</Number>
+ <Number Name="NormalizedReadCoefficient" Description="Normalized read coefficient" Unit="">-0.003210</Number>
+ <Text>Wait time is NOT correlated to rendering workload size.</Text>
+ <Text>Read time is NOT correlated to rendering workload size.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">48011876</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.flush_finish.flush
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.flush_finish.flush" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Single call to glFlush()</Text>
+ <Section Name="CalibrationInfo" Description="Calibration info">
+  <Text>Calibrating maximum draw call count, target duration = 1000000 us</Text>
+  <Text>Duration with 1 draw calls = 768 us</Text>
+  <Text>Duration with 2 draw calls = 1028 us</Text>
+  <Text>Duration with 4 draw calls = 1560 us</Text>
+  <Text>Duration with 8 draw calls = 2640 us</Text>
+  <Text>Duration with 16 draw calls = 5551 us</Text>
+  <Text>Duration with 32 draw calls = 9084 us</Text>
+  <Text>Duration with 64 draw calls = 17681 us</Text>
+  <Text>Duration with 128 draw calls = 34888 us</Text>
+  <Text>Duration with 256 draw calls = 69247 us</Text>
+  <Text>Duration with 512 draw calls = 137999 us</Text>
+  <Text>Duration with 1024 draw calls = 276356 us</Text>
+  <Text>Duration with 2048 draw calls = 398787 us</Text>
+  <Text>Duration with 4096 draw calls = 396892 us</Text>
+  <Text>Duration with 8192 draw calls = 418058 us</Text>
+  <Text>Duration with 16384 draw calls = 463566 us</Text>
+  <Text>Duration with 32768 draw calls = 557394 us</Text>
+  <Text>Duration with 65536 draw calls = 763667 us</Text>
+  <Text>Duration with 131072 draw calls = 1197912 us</Text>
+  <Number Name="MaxDrawCalls" Description="Maximum number of draw calls" Unit="">101203</Number>
+</Section>
+ <Section Name="Samples" Description="Samples">
+  <Text>419 calls:	110945 us wait,	79 us read</Text>
+  <Text>6119 calls:	366644 us wait,	73 us read</Text>
+  <Text>9011 calls:	67269 us wait,	76 us read</Text>
+  <Text>10313 calls:	384299 us wait,	76 us read</Text>
+  <Text>11028 calls:	380733 us wait,	82 us read</Text>
+  <Text>11674 calls:	69453 us wait,	75 us read</Text>
+  <Text>20624 calls:	76582 us wait,	76 us read</Text>
+  <Text>27602 calls:	69780 us wait,	74 us read</Text>
+  <Text>27750 calls:	69551 us wait,	73 us read</Text>
+  <Text>38310 calls:	67957 us wait,	72 us read</Text>
+  <Text>40591 calls:	79683 us wait,	75 us read</Text>
+  <Text>45743 calls:	73950 us wait,	74 us read</Text>
+  <Text>50457 calls:	84358 us wait,	76 us read</Text>
+  <Text>51409 calls:	69789 us wait,	76 us read</Text>
+  <Text>53684 calls:	89618 us wait,	76 us read</Text>
+  <Text>61978 calls:	79669 us wait,	79 us read</Text>
+  <Text>66129 calls:	399159 us wait,	76 us read</Text>
+  <Text>68268 calls:	409045 us wait,	74 us read</Text>
+  <Text>71317 calls:	72691 us wait,	74 us read</Text>
+  <Text>76676 calls:	89184 us wait,	76 us read</Text>
+  <Text>85692 calls:	72380 us wait,	76 us read</Text>
+  <Text>88510 calls:	88621 us wait,	73 us read</Text>
+  <Text>90611 calls:	82503 us wait,	74 us read</Text>
+  <Text>99795 calls:	99369 us wait,	75 us read</Text>
+  <Text>100730 calls:	85014 us wait,	75 us read</Text>
+</Section>
+ <Number Name="WaitCoefficient" Description="Wait coefficient" Unit="">0.087833</Number>
+ <Number Name="ReadCoefficient" Description="Read coefficient" Unit="">0.000000</Number>
+ <Number Name="NormalizedWaitCoefficient" Description="Normalized wait coefficient" Unit="">0.008889</Number>
+ <Number Name="NormalizedReadCoefficient" Description="Normalized read coefficient" Unit="">0.000000</Number>
+ <Text>Wait time is NOT correlated to rendering workload size.</Text>
+ <Text>Read time is NOT correlated to rendering workload size.</Text>
+ <Text>ERROR: Expected read coefficient to be greater than 0.5</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">15217408</Number>
+ <Result StatusCode="CompatibilityWarning">Suspicious performance behavior</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.flush_finish.flush_wait
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.flush_finish.flush_wait" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glFlush() followed by 1200 ms busy wait</Text>
+ <Section Name="CalibrationInfo" Description="Calibration info">
+  <Text>Calibrating maximum draw call count, target duration = 1000000 us</Text>
+  <Text>Duration with 1 draw calls = 763 us</Text>
+  <Text>Duration with 2 draw calls = 1028 us</Text>
+  <Text>Duration with 4 draw calls = 1560 us</Text>
+  <Text>Duration with 8 draw calls = 2643 us</Text>
+  <Text>Duration with 16 draw calls = 4780 us</Text>
+  <Text>Duration with 32 draw calls = 9086 us</Text>
+  <Text>Duration with 64 draw calls = 17677 us</Text>
+  <Text>Duration with 128 draw calls = 34868 us</Text>
+  <Text>Duration with 256 draw calls = 69256 us</Text>
+  <Text>Duration with 512 draw calls = 138328 us</Text>
+  <Text>Duration with 1024 draw calls = 275749 us</Text>
+  <Text>Duration with 2048 draw calls = 394987 us</Text>
+  <Text>Duration with 4096 draw calls = 398316 us</Text>
+  <Text>Duration with 8192 draw calls = 417953 us</Text>
+  <Text>Duration with 16384 draw calls = 463404 us</Text>
+  <Text>Duration with 32768 draw calls = 557765 us</Text>
+  <Text>Duration with 65536 draw calls = 763599 us</Text>
+  <Text>Duration with 131072 draw calls = 1165965 us</Text>
+  <Number Name="MaxDrawCalls" Description="Maximum number of draw calls" Unit="">104040</Number>
+</Section>
+ <Section Name="Samples" Description="Samples">
+  <Text>4768 calls:	1571755 us wait,	76 us read</Text>
+  <Text>6383 calls:	1568024 us wait,	74 us read</Text>
+  <Text>11182 calls:	1277255 us wait,	75 us read</Text>
+  <Text>13538 calls:	1282154 us wait,	75 us read</Text>
+  <Text>13604 calls:	1286148 us wait,	76 us read</Text>
+  <Text>17743 calls:	1288438 us wait,	77 us read</Text>
+  <Text>26463 calls:	1280117 us wait,	74 us read</Text>
+  <Text>39011 calls:	1281593 us wait,	74 us read</Text>
+  <Text>40520 calls:	1275952 us wait,	76 us read</Text>
+  <Text>43905 calls:	1283874 us wait,	74 us read</Text>
+  <Text>58045 calls:	1280389 us wait,	78 us read</Text>
+  <Text>60911 calls:	1288942 us wait,	70 us read</Text>
+  <Text>63086 calls:	1273537 us wait,	74 us read</Text>
+  <Text>64285 calls:	1278153 us wait,	74 us read</Text>
+  <Text>66156 calls:	1298498 us wait,	76 us read</Text>
+  <Text>68314 calls:	1285076 us wait,	76 us read</Text>
+  <Text>69479 calls:	1279915 us wait,	72 us read</Text>
+  <Text>70811 calls:	1282716 us wait,	72 us read</Text>
+  <Text>72413 calls:	1269537 us wait,	62 us read</Text>
+  <Text>72623 calls:	1281314 us wait,	74 us read</Text>
+  <Text>76704 calls:	1273228 us wait,	69 us read</Text>
+  <Text>79035 calls:	1280840 us wait,	62 us read</Text>
+  <Text>79673 calls:	1613110 us wait,	69 us read</Text>
+  <Text>81295 calls:	1610734 us wait,	75 us read</Text>
+  <Text>89820 calls:	1279123 us wait,	75 us read</Text>
+</Section>
+ <Number Name="WaitCoefficient" Description="Wait coefficient" Unit="">-0.053501</Number>
+ <Number Name="ReadCoefficient" Description="Read coefficient" Unit="">-0.000041</Number>
+ <Number Name="NormalizedWaitCoefficient" Description="Normalized wait coefficient" Unit="">-0.005566</Number>
+ <Number Name="NormalizedReadCoefficient" Description="Normalized read coefficient" Unit="">-0.000004</Number>
+ <Text>Wait time is NOT correlated to rendering workload size.</Text>
+ <Text>Read time is NOT correlated to rendering workload size.</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">45362016</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.flush_finish.finish
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.flush_finish.finish" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Single call to glFinish()</Text>
+ <Section Name="CalibrationInfo" Description="Calibration info">
+  <Text>Calibrating maximum draw call count, target duration = 1000000 us</Text>
+  <Text>Duration with 1 draw calls = 762 us</Text>
+  <Text>Duration with 2 draw calls = 1020 us</Text>
+  <Text>Duration with 4 draw calls = 1568 us</Text>
+  <Text>Duration with 8 draw calls = 2635 us</Text>
+  <Text>Duration with 16 draw calls = 5566 us</Text>
+  <Text>Duration with 32 draw calls = 9080 us</Text>
+  <Text>Duration with 64 draw calls = 17670 us</Text>
+  <Text>Duration with 128 draw calls = 34852 us</Text>
+  <Text>Duration with 256 draw calls = 69250 us</Text>
+  <Text>Duration with 512 draw calls = 138248 us</Text>
+  <Text>Duration with 1024 draw calls = 275462 us</Text>
+  <Text>Duration with 2048 draw calls = 398769 us</Text>
+  <Text>Duration with 4096 draw calls = 394023 us</Text>
+  <Text>Duration with 8192 draw calls = 422884 us</Text>
+  <Text>Duration with 16384 draw calls = 458092 us</Text>
+  <Text>Duration with 32768 draw calls = 566933 us</Text>
+  <Text>Duration with 65536 draw calls = 756944 us</Text>
+  <Text>Duration with 131072 draw calls = 1142408 us</Text>
+  <Number Name="MaxDrawCalls" Description="Maximum number of draw calls" Unit="">106860</Number>
+</Section>
+ <Section Name="Samples" Description="Samples">
+  <Text>3551 calls:	376219 us wait,	75 us read</Text>
+  <Text>4843 calls:	371573 us wait,	69 us read</Text>
+  <Text>7894 calls:	77685 us wait,	72 us read</Text>
+  <Text>10282 calls:	85354 us wait,	75 us read</Text>
+  <Text>15071 calls:	80721 us wait,	71 us read</Text>
+  <Text>16620 calls:	74761 us wait,	75 us read</Text>
+  <Text>20424 calls:	83914 us wait,	75 us read</Text>
+  <Text>22046 calls:	79325 us wait,	74 us read</Text>
+  <Text>26519 calls:	76412 us wait,	74 us read</Text>
+  <Text>29480 calls:	72708 us wait,	73 us read</Text>
+  <Text>32905 calls:	74669 us wait,	75 us read</Text>
+  <Text>38376 calls:	95499 us wait,	73 us read</Text>
+  <Text>39363 calls:	81962 us wait,	75 us read</Text>
+  <Text>43468 calls:	87952 us wait,	73 us read</Text>
+  <Text>44005 calls:	79890 us wait,	73 us read</Text>
+  <Text>44663 calls:	70318 us wait,	193 us read</Text>
+  <Text>48071 calls:	79686 us wait,	72 us read</Text>
+  <Text>49255 calls:	391527 us wait,	69 us read</Text>
+  <Text>52643 calls:	392502 us wait,	72 us read</Text>
+  <Text>77445 calls:	83118 us wait,	91 us read</Text>
+  <Text>85778 calls:	72391 us wait,	74 us read</Text>
+  <Text>93824 calls:	79753 us wait,	73 us read</Text>
+  <Text>94073 calls:	407968 us wait,	73 us read</Text>
+  <Text>100073 calls:	73927 us wait,	73 us read</Text>
+  <Text>100575 calls:	77181 us wait,	74 us read</Text>
+</Section>
+ <Number Name="WaitCoefficient" Description="Wait coefficient" Unit="">-0.037415</Number>
+ <Number Name="ReadCoefficient" Description="Read coefficient" Unit="">0.000000</Number>
+ <Number Name="NormalizedWaitCoefficient" Description="Normalized wait coefficient" Unit="">-0.003998</Number>
+ <Number Name="NormalizedReadCoefficient" Description="Normalized read coefficient" Unit="">0.000000</Number>
+ <Text>Wait time is NOT correlated to rendering workload size.</Text>
+ <Text>Read time is NOT correlated to rendering workload size.</Text>
+ <Text>ERROR: Expected wait coefficient to be greater than 0.5</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">14429718</Number>
+ <Result StatusCode="CompatibilityWarning">Suspicious performance behavior</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.flush_finish.finish_wait
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.flush_finish.finish_wait" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glFinish() followed by 1200 ms busy wait</Text>
+ <Section Name="CalibrationInfo" Description="Calibration info">
+  <Text>Calibrating maximum draw call count, target duration = 1000000 us</Text>
+  <Text>Duration with 1 draw calls = 763 us</Text>
+  <Text>Duration with 2 draw calls = 1022 us</Text>
+  <Text>Duration with 4 draw calls = 1566 us</Text>
+  <Text>Duration with 8 draw calls = 2633 us</Text>
+  <Text>Duration with 16 draw calls = 4806 us</Text>
+  <Text>Duration with 32 draw calls = 9084 us</Text>
+  <Text>Duration with 64 draw calls = 17683 us</Text>
+  <Text>Duration with 128 draw calls = 34886 us</Text>
+  <Text>Duration with 256 draw calls = 69719 us</Text>
+  <Text>Duration with 512 draw calls = 137989 us</Text>
+  <Text>Duration with 1024 draw calls = 275504 us</Text>
+  <Text>Duration with 2048 draw calls = 389614 us</Text>
+  <Text>Duration with 4096 draw calls = 400040 us</Text>
+  <Text>Duration with 8192 draw calls = 418291 us</Text>
+  <Text>Duration with 16384 draw calls = 462591 us</Text>
+  <Text>Duration with 32768 draw calls = 560798 us</Text>
+  <Text>Duration with 65536 draw calls = 760643 us</Text>
+  <Text>Duration with 131072 draw calls = 1156727 us</Text>
+  <Number Name="MaxDrawCalls" Description="Maximum number of draw calls" Unit="">105139</Number>
+</Section>
+ <Section Name="Samples" Description="Samples">
+  <Text>24952 calls:	1284097 us wait,	73 us read</Text>
+  <Text>31958 calls:	1281975 us wait,	74 us read</Text>
+  <Text>33357 calls:	1272643 us wait,	72 us read</Text>
+  <Text>34183 calls:	1273376 us wait,	68 us read</Text>
+  <Text>34195 calls:	1269499 us wait,	74 us read</Text>
+  <Text>37966 calls:	1273928 us wait,	74 us read</Text>
+  <Text>41559 calls:	1283038 us wait,	73 us read</Text>
+  <Text>41827 calls:	1287922 us wait,	74 us read</Text>
+  <Text>42226 calls:	1284306 us wait,	74 us read</Text>
+  <Text>43584 calls:	1278002 us wait,	75 us read</Text>
+  <Text>55653 calls:	1270483 us wait,	73 us read</Text>
+  <Text>63915 calls:	1281529 us wait,	75 us read</Text>
+  <Text>68697 calls:	1274528 us wait,	74 us read</Text>
+  <Text>69240 calls:	1277003 us wait,	73 us read</Text>
+  <Text>69364 calls:	1272350 us wait,	73 us read</Text>
+  <Text>69504 calls:	1277041 us wait,	74 us read</Text>
+  <Text>74266 calls:	1287364 us wait,	73 us read</Text>
+  <Text>77329 calls:	1277715 us wait,	75 us read</Text>
+  <Text>79807 calls:	1271349 us wait,	75 us read</Text>
+  <Text>84617 calls:	1271653 us wait,	73 us read</Text>
+  <Text>92258 calls:	1608583 us wait,	76 us read</Text>
+  <Text>93311 calls:	1283922 us wait,	73 us read</Text>
+  <Text>93877 calls:	1613957 us wait,	73 us read</Text>
+  <Text>94555 calls:	1273131 us wait,	74 us read</Text>
+  <Text>97917 calls:	1279171 us wait,	68 us read</Text>
+</Section>
+ <Number Name="WaitCoefficient" Description="Wait coefficient" Unit="">0.044288</Number>
+ <Number Name="ReadCoefficient" Description="Read coefficient" Unit="">-0.000000</Number>
+ <Number Name="NormalizedWaitCoefficient" Description="Normalized wait coefficient" Unit="">0.004656</Number>
+ <Number Name="NormalizedReadCoefficient" Description="Normalized read coefficient" Unit="">-0.000000</Number>
+ <Text>Wait time is NOT correlated to rendering workload size.</Text>
+ <Text>Read time is NOT correlated to rendering workload size.</Text>
+ <Text>ERROR: Expected wait coefficient to be greater than 0.5</Text>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">46172096</Number>
+ <Result StatusCode="CompatibilityWarning">Suspicious performance behavior</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 169.30 seconds
+
+#endSession

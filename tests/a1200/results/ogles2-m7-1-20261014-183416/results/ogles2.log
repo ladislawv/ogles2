@@ -1,0 +1,349 @@
+     1 ogles2.library 1.3 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0838C620
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x084E452C, 256x256
+    15 compiler: LIBS:v3dglslc, 19007620 bytes, id D9245FC7
+    16 compiler: started (0 s)
+    17 compiler: shader compiled in 1280 ms
+    18 compiler: shader compiled in 40 ms
+    19 compiler: program compiled in 280 ms, OGLES2Cache:bae0fb585cae279ea529a3cb.v3dp
+    20 glLinkProgram: OGLES2Cache:bae0fb585cae279ea529a3cb.v3dp (5 variants, 856 bytes of code)
+    21 job: depth and stencil kept across a mid-frame flush (logged once)
+    22 compiler: shader compiled in 40 ms
+    23 compiler: shader compiled in 40 ms
+    24 compiler: program compiled in 160 ms, OGLES2Cache:050126da5c5e29ccefca2cf2.v3dp
+    25 glLinkProgram: OGLES2Cache:050126da5c5e29ccefca2cf2.v3dp (5 variants, 1064 bytes of code)
+    26 compiler: shader compiled in 40 ms
+    27 compiler: shader compiled in 40 ms
+    28 compiler: program failed in 40 ms, OGLES2Cache:70171ae1892bbccb7545d13b.v3dp
+    29 glLinkProgram: the compiler failed: link failed: error: fragment shader input `v_color' has no matching output in the previous stage
+
+
+    30 compiler: shader compiled in 20 ms
+    31 compiler: program compiled in 160 ms, OGLES2Cache:2f711ebdff43b6f1d26127ad.v3dp
+    32 glLinkProgram: OGLES2Cache:2f711ebdff43b6f1d26127ad.v3dp (5 variants, 856 bytes of code)
+    33 glGetIntegerv: pname 0x821B not supported yet
+    34 glGetIntegerv: pname 0x821B not supported yet
+    35 glGetIntegerv: pname 0x821B not supported yet
+    36 glGetIntegerv: pname 0x821B not supported yet
+    37 glGetIntegerv: pname 0x821B not supported yet
+    38 glGetIntegerv: pname 0x821B not supported yet
+    39 glGetIntegerv: pname 0x821B not supported yet
+    40 glGetIntegerv: pname 0x821B not supported yet
+    41 glGetIntegerv: pname 0x821B not supported yet
+    42 compiler: shader compiled in 40 ms
+    43 compiler: program compiled in 160 ms, OGLES2Cache:0ef464af33d30d3e27399ca3.v3dp
+    44 glLinkProgram: OGLES2Cache:0ef464af33d30d3e27399ca3.v3dp (5 variants, 1088 bytes of code)
+    45 glGetIntegerv: pname 0x821B not supported yet
+    46 glGetIntegerv: pname 0x821B not supported yet
+    47 glGetIntegerv: pname 0x821B not supported yet
+    48 glGetIntegerv: pname 0x821B not supported yet
+    49 glLinkProgram: OGLES2Cache:236f617eb7dcc9457fa23afb.v3dp (5 variants, 664 bytes of code)
+    50 glGetIntegerv: pname 0x821B not supported yet
+    51 compiler: shader compiled in 20 ms
+    52 compiler: program compiled in 200 ms, OGLES2Cache:c4d6f4ade1482051a74042e8.v3dp
+    53 glLinkProgram: OGLES2Cache:c4d6f4ade1482051a74042e8.v3dp (5 variants, 848 bytes of code)
+    54 compiler: shader compiled in 20 ms
+    55 compiler: program compiled in 160 ms, OGLES2Cache:cbc7e7034b66a47d1635d395.v3dp
+    56 glLinkProgram: OGLES2Cache:cbc7e7034b66a47d1635d395.v3dp (5 variants, 848 bytes of code)
+    57 compiler: shader compiled in 20 ms
+    58 compiler: program compiled in 200 ms, OGLES2Cache:bf6f4dc826ab2bbd208587d5.v3dp
+    59 glLinkProgram: OGLES2Cache:bf6f4dc826ab2bbd208587d5.v3dp (5 variants, 848 bytes of code)
+    60 compiler: shader compiled in 40 ms
+    61 compiler: program compiled in 160 ms, OGLES2Cache:6d6739900fba58670a467cae.v3dp
+    62 glLinkProgram: OGLES2Cache:6d6739900fba58670a467cae.v3dp (5 variants, 824 bytes of code)
+    63 compiler: shader compiled in 40 ms
+    64 compiler: program compiled in 160 ms, OGLES2Cache:179f333f93db715f2ba4bea0.v3dp
+    65 glLinkProgram: OGLES2Cache:179f333f93db715f2ba4bea0.v3dp (5 variants, 848 bytes of code)
+    66 compiler: shader compiled in 40 ms
+    67 compiler: program compiled in 200 ms, OGLES2Cache:4ec0f1232192f9651854c5a4.v3dp
+    68 glLinkProgram: OGLES2Cache:4ec0f1232192f9651854c5a4.v3dp (5 variants, 848 bytes of code)
+    69 glGetIntegerv: pname 0x821B not supported yet
+    70 glGetIntegerv: pname 0x821B not supported yet
+    71 glGetIntegerv: pname 0x821B not supported yet
+    72 glGetIntegerv: pname 0x821B not supported yet
+    73 glGetIntegerv: pname 0x821B not supported yet
+    74 glGetIntegerv: pname 0x821B not supported yet
+    75 glGetIntegerv: pname 0x821B not supported yet
+    76 glGetIntegerv: pname 0x821B not supported yet
+    77 glGetIntegerv: pname 0x821B not supported yet
+    78 glGetIntegerv: pname 0x821B not supported yet
+    79 glGetIntegerv: pname 0x821B not supported yet
+    80 glGetIntegerv: pname 0x821B not supported yet
+    81 glGetIntegerv: pname 0x821B not supported yet
+    82 glGetIntegerv: pname 0x821B not supported yet
+    83 glGetIntegerv: pname 0x821B not supported yet
+    84 glGetIntegerv: pname 0x821B not supported yet
+    85 glGetIntegerv: pname 0x821B not supported yet
+    86 glGetIntegerv: pname 0x821B not supported yet
+    87 glGetIntegerv: pname 0x821B not supported yet
+    88 glGetIntegerv: pname 0x821B not supported yet
+    89 glGetIntegerv: pname 0x821B not supported yet
+    90 glGetIntegerv: pname 0x821B not supported yet
+    91 glGetIntegerv: pname 0x821B not supported yet
+    92 glGetIntegerv: pname 0x821B not supported yet
+    93 glGetIntegerv: pname 0x821B not supported yet
+    94 glGetIntegerv: pname 0x821B not supported yet
+    95 glGetIntegerv: pname 0x821B not supported yet
+    96 glGetIntegerv: pname 0x821B not supported yet
+    97 glGetIntegerv: pname 0x821B not supported yet
+    98 glGetIntegerv: pname 0x821B not supported yet
+    99 glGetIntegerv: pname 0x821B not supported yet
+   100 glGetIntegerv: pname 0x821B not supported yet
+   101 glGetIntegerv: pname 0x821B not supported yet
+   102 glGetIntegerv: pname 0x821B not supported yet
+   103 glGetIntegerv: pname 0x821B not supported yet
+   104 glGetIntegerv: pname 0x821B not supported yet
+   105 glGetIntegerv: pname 0x821B not supported yet
+   106 glGetIntegerv: pname 0x821B not supported yet
+   107 glGetIntegerv: pname 0x821B not supported yet
+   108 glGetIntegerv: pname 0x821B not supported yet
+   109 glGetIntegerv: pname 0x821B not supported yet
+   110 glGetIntegerv: pname 0x821B not supported yet
+   111 glGetIntegerv: pname 0x821B not supported yet
+   112 glGetIntegerv: pname 0x821B not supported yet
+   113 glGetIntegerv: pname 0x821B not supported yet
+   114 glGetIntegerv: pname 0x821B not supported yet
+   115 glGetIntegerv: pname 0x821B not supported yet
+   116 glGetIntegerv: pname 0x821B not supported yet
+   117 glGetIntegerv: pname 0x821B not supported yet
+   118 glGetIntegerv: pname 0x821B not supported yet
+   119 glGetIntegerv: pname 0x821B not supported yet
+   120 glGetIntegerv: pname 0x821B not supported yet
+   121 glGetIntegerv: pname 0x821B not supported yet
+   122 glGetIntegerv: pname 0x821B not supported yet
+   123 glGetIntegerv: pname 0x821B not supported yet
+   124 glGetIntegerv: pname 0x821B not supported yet
+   125 glGetIntegerv: pname 0x821B not supported yet
+   126 glGetIntegerv: pname 0x821B not supported yet
+   127 glGetIntegerv: pname 0x821B not supported yet
+   128 glGetIntegerv: pname 0x821B not supported yet
+   129 glGetIntegerv: pname 0x821B not supported yet
+   130 glGetIntegerv: pname 0x821B not supported yet
+   131 glGetIntegerv: pname 0x821B not supported yet
+   132 glGetIntegerv: pname 0x821B not supported yet
+   133 glGetIntegerv: pname 0x821B not supported yet
+   134 glGetIntegerv: pname 0x821B not supported yet
+   135 glGetIntegerv: pname 0x821B not supported yet
+   136 glGetIntegerv: pname 0x821B not supported yet
+   137 glGetIntegerv: pname 0x821B not supported yet
+   138 glGetIntegerv: pname 0x821B not supported yet
+   139 glGetIntegerv: pname 0x821B not supported yet
+   140 glGetIntegerv: pname 0x821B not supported yet
+   141 glGetIntegerv: pname 0x821B not supported yet
+   142 glGetIntegerv: pname 0x821B not supported yet
+   143 glGetIntegerv: pname 0x821B not supported yet
+   144 glGetIntegerv: pname 0x821B not supported yet
+   145 glGetIntegerv: pname 0x821B not supported yet
+   146 glGetIntegerv: pname 0x821B not supported yet
+   147 glGetIntegerv: pname 0x821B not supported yet
+   148 glGetIntegerv: pname 0x821B not supported yet
+   149 glGetIntegerv: pname 0x821B not supported yet
+   150 glGetIntegerv: pname 0x821B not supported yet
+   151 glGetIntegerv: pname 0x821B not supported yet
+   152 glGetIntegerv: pname 0x821B not supported yet
+   153 glGetIntegerv: pname 0x821B not supported yet
+   154 glGetIntegerv: pname 0x821B not supported yet
+   155 glGetIntegerv: pname 0x821B not supported yet
+   156 glGetIntegerv: pname 0x821B not supported yet
+   157 glGetIntegerv: pname 0x821B not supported yet
+   158 glGetIntegerv: pname 0x821B not supported yet
+   159 glGetIntegerv: pname 0x821B not supported yet
+   160 glGetIntegerv: pname 0x821B not supported yet
+   161 glGetIntegerv: pname 0x821B not supported yet
+   162 glGetIntegerv: pname 0x821B not supported yet
+   163 glGetIntegerv: pname 0x821B not supported yet
+   164 glGetIntegerv: pname 0x821B not supported yet
+   165 glGetIntegerv: pname 0x821B not supported yet
+   166 glGetIntegerv: pname 0x821B not supported yet
+   167 glGetIntegerv: pname 0x821B not supported yet
+   168 glGetIntegerv: pname 0x821B not supported yet
+   169 glGetIntegerv: pname 0x821B not supported yet
+   170 glGetIntegerv: pname 0x821B not supported yet
+   171 glGetIntegerv: pname 0x821B not supported yet
+   172 glGetIntegerv: pname 0x821B not supported yet
+   173 glGetIntegerv: pname 0x821B not supported yet
+   174 glGetIntegerv: pname 0x821B not supported yet
+   175 glGetIntegerv: pname 0x821B not supported yet
+   176 glGetIntegerv: pname 0x821B not supported yet
+   177 glGetIntegerv: pname 0x821B not supported yet
+   178 glGetIntegerv: pname 0x821B not supported yet
+   179 glGetIntegerv: pname 0x821B not supported yet
+   180 glGetIntegerv: pname 0x821B not supported yet
+   181 glGetIntegerv: pname 0x821B not supported yet
+   182 glGetIntegerv: pname 0x821B not supported yet
+   183 glGetIntegerv: pname 0x821B not supported yet
+   184 glGetIntegerv: pname 0x821B not supported yet
+   185 glGetIntegerv: pname 0x821B not supported yet
+   186 glGetIntegerv: pname 0x821B not supported yet
+   187 glGetIntegerv: pname 0x821B not supported yet
+   188 glGetIntegerv: pname 0x821B not supported yet
+   189 glGetIntegerv: pname 0x821B not supported yet
+   190 glGetIntegerv: pname 0x821B not supported yet
+   191 glGetIntegerv: pname 0x821B not supported yet
+   192 glGetIntegerv: pname 0x821B not supported yet
+   193 glGetIntegerv: pname 0x821B not supported yet
+   194 glGetIntegerv: pname 0x821B not supported yet
+   195 glGetIntegerv: pname 0x821B not supported yet
+   196 glGetIntegerv: pname 0x821B not supported yet
+   197 glGetIntegerv: pname 0x821B not supported yet
+   198 glGetIntegerv: pname 0x821B not supported yet
+   199 glGetIntegerv: pname 0x821B not supported yet
+   200 glGetIntegerv: pname 0x821B not supported yet
+   201 glGetIntegerv: pname 0x821B not supported yet
+   202 glGetIntegerv: pname 0x821B not supported yet
+   203 glGetIntegerv: pname 0x821B not supported yet
+   204 glGetIntegerv: pname 0x821B not supported yet
+   205 glGetIntegerv: pname 0x821B not supported yet
+   206 glGetIntegerv: pname 0x821B not supported yet
+   207 glGetIntegerv: pname 0x821B not supported yet
+   208 glGetIntegerv: pname 0x821B not supported yet
+   209 glGetIntegerv: pname 0x821B not supported yet
+   210 glGetIntegerv: pname 0x821B not supported yet
+   211 glGetIntegerv: pname 0x821B not supported yet
+   212 glGetIntegerv: pname 0x821B not supported yet
+   213 glGetIntegerv: pname 0x821B not supported yet
+   214 glGetIntegerv: pname 0x821B not supported yet
+   215 glGetIntegerv: pname 0x821B not supported yet
+   216 glGetIntegerv: pname 0x821B not supported yet
+   217 glGetIntegerv: pname 0x821B not supported yet
+   218 glGetIntegerv: pname 0x821B not supported yet
+   219 glGetIntegerv: pname 0x821B not supported yet
+   220 glGetIntegerv: pname 0x821B not supported yet
+   221 glGetIntegerv: pname 0x821B not supported yet
+   222 glGetIntegerv: pname 0x821B not supported yet
+   223 glGetIntegerv: pname 0x821B not supported yet
+   224 glGetIntegerv: pname 0x821B not supported yet
+   225 glGetIntegerv: pname 0x821B not supported yet
+   226 glGetIntegerv: pname 0x821B not supported yet
+   227 glGetIntegerv: pname 0x821B not supported yet
+   228 glGetIntegerv: pname 0x821B not supported yet
+   229 glGetIntegerv: pname 0x821B not supported yet
+   230 glGetIntegerv: pname 0x821B not supported yet
+   231 glGetIntegerv: pname 0x821B not supported yet
+   232 glGetIntegerv: pname 0x821B not supported yet
+   233 glGetIntegerv: pname 0x821B not supported yet
+   234 glGetIntegerv: pname 0x821B not supported yet
+   235 glGetIntegerv: pname 0x821B not supported yet
+   236 glGetIntegerv: pname 0x821B not supported yet
+   237 glGetIntegerv: pname 0x821B not supported yet
+   238 glGetIntegerv: pname 0x821B not supported yet
+   239 glGetIntegerv: pname 0x821B not supported yet
+   240 compiler: shader compiled in 40 ms
+   241 compiler: program compiled in 160 ms, OGLES2Cache:d4b47f80d96792ae4d0cb4c4.v3dp
+   242 glLinkProgram: OGLES2Cache:d4b47f80d96792ae4d0cb4c4.v3dp (5 variants, 760 bytes of code)
+   243 glGetIntegerv: pname 0x821B not supported yet
+   244 glGetIntegerv: pname 0x821B not supported yet
+   245 glGetIntegerv: pname 0x821B not supported yet
+   246 glGetIntegerv: pname 0x821B not supported yet
+   247 glGetIntegerv: pname 0x821B not supported yet
+   248 glGetIntegerv: pname 0x821B not supported yet
+   249 glGetIntegerv: pname 0x821B not supported yet
+   250 glGetIntegerv: pname 0x821B not supported yet
+   251 glGetIntegerv: pname 0x821B not supported yet
+   252 glGetIntegerv: pname 0x821B not supported yet
+   253 glGetIntegerv: pname 0x821B not supported yet
+   254 glGetIntegerv: pname 0x821B not supported yet
+   255 glGetIntegerv: pname 0x821B not supported yet
+   256 glGetIntegerv: pname 0x821B not supported yet
+   257 glGetIntegerv: pname 0x821B not supported yet
+   258 glGetIntegerv: pname 0x821B not supported yet
+   259 glGetIntegerv: pname 0x821B not supported yet
+   260 glGetIntegerv: pname 0x821B not supported yet
+   261 glGetIntegerv: pname 0x821B not supported yet
+   262 texture 1 sampled while incomplete (it reads black): mip chain, level 0 255x255, min filter 0x2700, level 1 of 8 missing or inconsistent (logged once a texture)
+   263 texture 1 sampled while incomplete (it reads black): mip chain, level 0 256x256, min filter 0x2700, level 1 of 9 missing or inconsistent (logged once a texture)
+   264 texture 1 sampled while incomplete (it reads black): no GPU copy, level 0 0x0, min filter 0x2700, level 1 of 1 missing or inconsistent (logged once a texture)
+   265 texture 1 sampled while incomplete (it reads black): mip chain, level 0 128x128, min filter 0x2700, level 1 of 8 missing or inconsistent (logged once a texture)
+   266 texture 1 sampled while incomplete (it reads black): mip chain, level 0 128x128, min filter 0x2700, level 1 of 8 missing or inconsistent (logged once a texture)
+   267 texture 1 sampled while incomplete (it reads black): mip chain, level 0 128x128, min filter 0x2700, level 1 of 8 missing or inconsistent (logged once a texture)
+   268 texture 1 sampled while incomplete (it reads black): mip chain, level 0 128x128, min filter 0x2700, level 1 of 8 missing or inconsistent (logged once a texture)
+   269 texture 1 sampled while incomplete (it reads black): mip chain, level 0 128x128, min filter 0x2700, level 1 of 8 missing or inconsistent (logged once a texture)
+   270 texture 1 sampled while incomplete (it reads black): mip chain, level 0 128x128, min filter 0x2700, level 3 of 8 missing or inconsistent (logged once a texture)
+   271 texture 1 sampled while incomplete (it reads black): mip chain, level 0 128x64, min filter 0x2700, level 7 of 8 missing or inconsistent (logged once a texture)
+   272 texture 1 sampled while incomplete (it reads black): no GPU copy, level 0 0x0, min filter 0x2700, level 1 of 1 missing or inconsistent (logged once a texture)
+   273 texture 1 sampled while incomplete (it reads black): mip chain, level 0 63x63, min filter 0x2700, level 1 of 6 missing or inconsistent (logged once a texture)
+   274 texture 1 sampled while incomplete (it reads black): mip chain, level 0 64x64, min filter 0x2700, level 1 of 7 missing or inconsistent (logged once a texture)
+   275 texture 1 sampled while incomplete (it reads black): no GPU copy, level 0 63x63, min filter 0x2700, level 1 of 6 missing or inconsistent (logged once a texture)
+   276 texture 1 sampled while incomplete (it reads black): mip chain, level 0 64x64, min filter 0x2700, level 7 of 7 missing or inconsistent (logged once a texture)
+   277 texture 1 sampled while incomplete (it reads black): no GPU copy, level 0 0x0, min filter 0x2700, level 1 of 1 missing or inconsistent (logged once a texture)
+   278 texture 1 sampled while incomplete (it reads black): mip chain, level 0 64x64, min filter 0x2700, level 1 of 7 missing or inconsistent (logged once a texture)
+   279 texture 1 sampled while incomplete (it reads black): mip chain, level 0 64x64, min filter 0x2700, level 1 of 7 missing or inconsistent (logged once a texture)
+   280 texture 1 sampled while incomplete (it reads black): mip chain, level 0 64x64, min filter 0x2700, level 1 of 7 missing or inconsistent (logged once a texture)
+   281 texture 1 sampled while incomplete (it reads black): mip chain, level 0 64x64, min filter 0x2700, level 1 of 7 missing or inconsistent (logged once a texture)
+   282 texture 1 sampled while incomplete (it reads black): no GPU copy, level 0 64x64, min filter 0x2700, level 7 of 7 missing or inconsistent (logged once a texture)
+   283 texture 1 sampled while incomplete (it reads black): no GPU copy, level 0 64x64, min filter 0x2700, level 7 of 7 missing or inconsistent (logged once a texture)
+   284 texture 1 sampled while incomplete (it reads black): mip chain, level 0 64x64, min filter 0x2700, level 1 of 7 missing or inconsistent (logged once a texture)
+   285 texture 1 sampled while incomplete (it reads black): mip chain, level 0 64x64, min filter 0x2700, level 3 of 7 missing or inconsistent (logged once a texture)
+   286 texture 1 sampled while incomplete (it reads black): no GPU copy, level 0 64x64, min filter 0x2700, level 1 of 7 missing or inconsistent (logged once a texture)
+   287 texture 1 sampled while incomplete (it reads black): no GPU copy, level 0 64x64, min filter 0x2700, level 3 of 7 missing or inconsistent (logged once a texture)
+   288 texture 0 sampled while incomplete (it reads black): no GPU copy, level 0 0x0, min filter 0x2702, level 1 of 1 missing or inconsistent (logged once a texture)
+   289 compiler: shader compiled in 40 ms
+   290 compiler: shader compiled in 40 ms
+   291 compiler: program compiled in 160 ms, OGLES2Cache:b1ac6f52f10226cb7d679536.v3dp
+   292 glLinkProgram: OGLES2Cache:b1ac6f52f10226cb7d679536.v3dp (5 variants, 592 bytes of code)
+   293 glGetIntegerv: pname 0x821B not supported yet
+   294 compiler: shader compiled in 20 ms
+   295 compiler: program compiled in 200 ms, OGLES2Cache:fc202c7d8ce813e0d921ad36.v3dp
+   296 glLinkProgram: OGLES2Cache:fc202c7d8ce813e0d921ad36.v3dp (5 variants, 640 bytes of code)
+   297 glGetIntegerv: pname 0x821B not supported yet
+   298 glGetIntegerv: pname 0x821B not supported yet
+   299 glGetIntegerv: pname 0x821B not supported yet
+   300 glGetIntegerv: pname 0x821B not supported yet
+   301 glGetIntegerv: pname 0x821B not supported yet
+   302 glGetIntegerv: pname 0x821B not supported yet
+   303 glGetIntegerv: pname 0x821B not supported yet
+   304 glGetIntegerv: pname 0x821B not supported yet
+   305 glGetIntegerv: pname 0x821B not supported yet
+   306 glGetIntegerv: pname 0x821B not supported yet
+   307 glGetIntegerv: pname 0x821B not supported yet
+   308 glGetIntegerv: pname 0x821B not supported yet
+   309 glGetIntegerv: pname 0x821B not supported yet
+   310 glGetIntegerv: pname 0x821B not supported yet
+   311 glGetIntegerv: pname 0x821B not supported yet
+   312 glGetIntegerv: pname 0x821B not supported yet
+   313 glGetIntegerv: pname 0x821B not supported yet
+   314 glGetIntegerv: pname 0x821B not supported yet
+   315 glGetIntegerv: pname 0x821B not supported yet
+   316 glGetIntegerv: pname 0x821B not supported yet
+   317 glGetIntegerv: pname 0x821B not supported yet
+   318 glGetIntegerv: pname 0x821B not supported yet
+   319 glGetIntegerv: pname 0x821B not supported yet
+   320 glGetIntegerv: pname 0x821B not supported yet
+   321 glGetIntegerv: pname 0x821B not supported yet
+   322 glGetIntegerv: pname 0x821B not supported yet
+   323 glGetIntegerv: pname 0x821B not supported yet
+   324 glGetIntegerv: pname 0x821B not supported yet
+   325 glGetIntegerv: pname 0x821B not supported yet
+   326 glGetIntegerv: pname 0x821B not supported yet
+   327 glGetIntegerv: pname 0x821B not supported yet
+   328 glGetIntegerv: pname 0x821B not supported yet
+   329 glGetIntegerv: pname 0x821B not supported yet
+   330 glGetIntegerv: pname 0x821B not supported yet
+   331 glGetIntegerv: pname 0x821B not supported yet
+   332 glGetIntegerv: pname 0x821B not supported yet
+   333 glGetIntegerv: pname 0x821B not supported yet
+   334 glGetIntegerv: pname 0x821B not supported yet
+   335 glGetIntegerv: pname 0x821B not supported yet
+   336 glGetIntegerv: pname 0x821B not supported yet
+   337 glGetIntegerv: pname 0x821B not supported yet
+   338 glGetIntegerv: pname 0x821B not supported yet
+   339 glGetIntegerv: pname 0x821B not supported yet
+   340 glGetIntegerv: pname 0x821B not supported yet
+   341 aglDestroyContext: context 0x084E452C: freeing
+   342 device: context freed, 0 bytes of GPU memory still in use
+   343 aglDestroyContext: context 0x084E452C (7034 frames, 0 dropped, 0 binning blocks added)
+   344 timing: 7034 jobs, each on average: 10517 us of CPU work before its flush, 21 us waiting for binning, 194 us for the render
+   345 timing: and in each flush 67 us building the render list, 77 us for the CPU cache before the GPU, 58 us after
+   346 timing: 1851 swaps, 143665 us from one to the next on average, 378 us of it presenting
+   347 timing: per frame 4 draws, 2140 us in them; in all 0 ms in glBuffer(Sub)Data, 1896 ms in glTex(Sub)Image2D

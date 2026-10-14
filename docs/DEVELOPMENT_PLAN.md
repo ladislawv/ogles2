@@ -1404,9 +1404,21 @@ M6's exit criterion. Each row is a workload measured on the test A1200 (Pi 4B, E
 - **Step 5, `GL_EXT_draw_buffers` (2026-10-14)**, with `NV_fbo_color_attachments` and `OES_required_internalformat`: four colour attachments, `glDrawBuffersEXT` (164 dispatch entries), a job with 1-4 render targets (Mesa's tile sizes, a load/store/clear per target), partial clears through a program in the library's data (`tools/clear_mrt`), compiler variants for 2-4 targets for programs that write `gl_FragData[1]` or up. Deviation: a `gl_FragColor` program draws into the first target only (the extension broadcasts it). Test `m7_mrt`, package `m7-4`. dEQP `fbo` 709/709 (the 54 `attachment_combinations` cases now run).
 - **dEQP:** `debug_marker`, `uniform_api`, `negative_api`, `implementation_limits`, `state_query`, `shaders.builtin_variable`, `clip_control`, `clipping`, `depth_range`, `polygon_offset`, `fbo` all pass; `texture` 783/807 (the 24 cube cases of the deviation). For `clip_control`, the dEQP port's patch 0004 (its cases bind vertex array objects unchecked) and `glTexImage2D` taking `GL_RGBA8_OES`/`GL_RGB8_OES` (as `OES_required_internalformat`).
 
+**Done (2026-10-14): the final M7 conformance and regression run** (library 1.3, compiler with Mesa patches 0001-0013, every package cache emptied first).
+- **dEQP-GLES2, the whole must-pass list (17,165 cases):** 17,130 passed, 27 failed, 6 warnings (`flush_finish` timing 3, `rasterization.interpolation` quality 3), 2 not supported (`multisampled_render_to_texture`: no `EXT_multisampled_render_to_texture`; one shader case). The failures: the 25 cube-map cases of the documented deviation (§13 M7 entry; seamless filtering), and with `multisample` run in a 4x MSAA context (`Run-M1 MSAA=1`), `proportionality_alpha_to_coverage` (alpha to coverage not implemented) and `stencil` (to be looked at). Runs `ogles2-m7-1-20261014-181436` to `-191934`, `-192743` (`shaders-random`), `-operator`, `ogles2-m7-1-20261015-000040` (MSAA).
+- **The earlier packages and the new ones:** `m5-1`, the corpus (14 of 14 against the references), `m6-6` (88/88, and 87/87 compiled on the A1200), `m6-8`, `m6-10`, `m6-4` (SDL; vsync 60.0 fps), `m6-7` (glmark2 score 242, `terrain` 26 fps with vertex texture fetch), `m7-2`, `m7-3`, `m7-4`: every check passes.
+- **Quake III:** its shipped cache compiled again (228 programs, 452 shader records; the compiler changed), a fresh install compiles nothing; timedemo `four` **75.4 fps** (13.3 ms average: within §10.2's 13.5 ms, but 7% slower than the 80.5-81 fps of 2026-10-12/13).
+- **Found on the way:**
+  - **`amictld`'s large-reply stall is real.** After `shaders-random` (a 2.7 MB log), the server stopped answering, and only a reset brought it back. The run had finished.
+  - **A slowdown since 2026-10-13:** besides Quake, dEQP's `shaders-operator` took about 2 hours against 90 minutes. Suspects: the clip-control coefficient in every vertex and binning shader (patch 0013), and the draw-buffer variant choice per draw.
+
 **Next, in order (M6: ecosystem, sharing and performance, §9):**
-1. **M7: dEQP-GLES2** (§9): the five optional features are done (`docs/M7_EXTENSIONS_PLAN.md`); next the full run on the final build (the package caches cleared, Quake III's shipped cache compiled again), `multisample` with `MSAA=1`, the earlier packages, and the conformance results with the release.
-2. **The rest of M6's scope:** optional: MSAA alpha to coverage; optional: native ETC1 sampling; the large-reply stall (`amictld`). glmark2's `buffer` scenes (49–83 fps: half of a 200-column buffer rewritten every frame) are a candidate for the buffer path.
+1. **M7, before the release:**
+   - the slowdown (measure where the frame time went, then fix);
+   - `amictld`'s large-reply stall;
+   - `multisample.stencil` with 4x MSAA, and alpha to coverage;
+   - then the release (D6, the `LICENSE` section for `ports/`, the installer and SDK, the deviations documented, the conformance figures above).
+2. **The rest of M6's scope:** optional: native ETC1 sampling. glmark2's `buffer` scenes (49–83 fps: half of a 200-column buffer rewritten every frame) are a candidate for the buffer path.
 3. **Postponed (2026-10-13, the developer's decision):** per-draw CPU time for gl4es programs (the gl4es build: 23.3 ms a frame against MiniGL's 16.4; ogles2's draw about 28 us, 32 us for renderergl2's), and minigl.library coexistence (D3: the shared submission component with PiStorm3D's maintainers; the turn across programs above is ogles2's half).
 
 ---

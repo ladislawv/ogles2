@@ -1,0 +1,1849 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/shaders-invariance.txt --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/shaders-invariance.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.common_subexpression_0
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.common_subexpression_0" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">1272.978027</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">39.673000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">325.256989</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">34.368000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.550000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">163.427002</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1874724</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.common_subexpression_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.common_subexpression_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.148998</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.551000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">242.942993</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.987000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.559000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">202.634995</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">535504</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.common_subexpression_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.common_subexpression_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.980999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.554000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">162.729996</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.456001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.562000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">162.835007</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">419728</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.common_subexpression_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.common_subexpression_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.118999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.974000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">201.695999</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.338001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.674000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">203.078995</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">497471</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.subexpression_precision_lowp
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.subexpression_precision_lowp" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.902000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.577000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">362.929993</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.891998</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.563000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">263.369995</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">721652</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.subexpression_precision_mediump
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.subexpression_precision_mediump" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">33.673000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.555000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">403.519012</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.150002</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.558000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">286.385010</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">778477</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.subexpression_precision_highp
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.subexpression_precision_highp" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">33.417000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.566000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">363.716003</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.846001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.580000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">282.856995</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">735841</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.loop_0
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.loop_0" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">34.818001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.562000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">363.411987</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.660999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.684000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">242.807999</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">696284</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.loop_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.loop_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">38.453999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.588000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">282.411987</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">40.879002</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.592000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">278.884003</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">658905</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.loop_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.loop_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.929001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.565000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">283.438995</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.240002</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">2.020000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">282.524994</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">659727</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.loop_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.loop_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.543999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.582000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">443.723999</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.520000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.711000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">442.778015</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">979231</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.highp.loop_4
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.highp.loop_4" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.729000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.591000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">1003.646973</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.073002</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.704000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">402.472992</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1502853</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.common_subexpression_0
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.common_subexpression_0" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.451000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.577000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">202.248001</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.525002</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.578000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">162.595001</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">455015</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.common_subexpression_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.common_subexpression_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.875999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">1.425000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">242.623001</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.198002</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.589000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">201.813004</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">539822</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.common_subexpression_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.common_subexpression_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.012001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.589000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">162.479004</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.806000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.696000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">162.529007</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">416537</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.common_subexpression_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.common_subexpression_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.098999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.579000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">203.768997</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.508999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.569000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">203.251007</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">500778</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.subexpression_precision_lowp
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.subexpression_precision_lowp" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.231998</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.595000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">322.334991</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.223000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.707000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">281.786011</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">697741</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.subexpression_precision_mediump
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.subexpression_precision_mediump" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.553001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.594000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">402.683990</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.144001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.596000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">322.437012</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">821093</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.subexpression_precision_highp
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.subexpression_precision_highp" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">33.294998</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.592000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">402.934998</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.862999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.593000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">322.737000</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">815222</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.loop_0
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.loop_0" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.998001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.583000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">324.773010</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.076000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.574000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">244.615997</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">659539</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.loop_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.loop_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">38.365002</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.598000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">281.348999</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.202000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.603000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">242.067001</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">616877</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.loop_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.loop_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">38.909000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.582000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">283.635010</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.078999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.719000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">282.322998</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">661886</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.loop_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.loop_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.721001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.603000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">423.049011</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.737000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">1.910000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">402.649994</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">921395</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.mediump.loop_4
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.mediump.loop_4" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">33.294998</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.581000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">910.640015</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">29.837000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.581000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">403.372009</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1395272</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.common_subexpression_0
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.common_subexpression_0" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.919998</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.589000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">207.123993</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">32.269001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.582000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">162.716003</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">463015</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.common_subexpression_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.common_subexpression_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">31.775999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.588000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">243.619003</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.006001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.584000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">204.417007</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">534781</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.common_subexpression_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.common_subexpression_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">34.813999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.581000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">161.759003</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">38.335999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.603000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">161.649002</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">415264</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.common_subexpression_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.common_subexpression_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">38.937000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.600000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">202.108994</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.285000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.613000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">202.067993</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">503439</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.subexpression_precision_lowp
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.subexpression_precision_lowp" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">32.459999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.571000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">332.667999</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">27.002001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.582000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">282.959015</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">694242</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.subexpression_precision_mediump
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.subexpression_precision_mediump" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.300999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">1.800000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">361.332001</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.985001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.609000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">282.816986</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">736826</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.subexpression_precision_highp
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.subexpression_precision_highp" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.515999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.603000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">322.994995</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.755001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.590000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">283.208008</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">697798</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.loop_0
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.loop_0" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">38.330002</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.607000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">246.141998</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">32.256001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.591000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">203.164993</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">539369</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.loop_1
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.loop_1" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.320000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.606000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">242.423996</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.382000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.603000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">241.772995</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">577552</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.loop_2
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.loop_2" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">42.514000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">1.177000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">237.526993</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.144001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.582000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">203.737000</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">539084</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.loop_3
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.loop_3" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">37.938999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.611000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">282.502014</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.882000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.732000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">246.147995</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">621164</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.invariance.lowp.loop_4
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.invariance.lowp.loop_4" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Shader 1:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.891998</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.605000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">362.882996</Number>
+ <Text>Shader 2:</Text>
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">36.041000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.584000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">265.346008</Number>
+ <Text>Testing position invariance.</Text>
+ <Text>Drawing position test pattern using shader 1. Primitive color: red - purple.</Text>
+ <Text>Drawing position test pattern using shader 2. Primitive color: green.</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Text>Testing position invariance with z-test. Enabling GL_DEPTH_TEST.</Text>
+ <Text>Drawing Z-test pattern using shader 1. Primitive color: red - purple. DepthFunc: GL_ALWAYS</Text>
+ <Text>Drawing Z-test pattern using shader 2. Primitive color: green. DepthFunc: GL_EQUAL</Text>
+ <Text>Verifying output. Expecting only green or background colored pixels.</Text>
+ <Text>No variance found.</Text>
+ <ImageSet Name="Results" Description="Result verification" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">718819</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 25.81 seconds
+
+#endSession

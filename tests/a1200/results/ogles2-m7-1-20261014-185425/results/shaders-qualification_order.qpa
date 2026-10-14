@@ -1,0 +1,1496 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-caselist-file M7R1:caselists/shaders-qualification_order.txt --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/shaders-qualification_order.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.valid.invariant_storage_precision
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.valid.invariant_storage_precision" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">1271.869995</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">43.702000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">281.444000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">1622405</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.valid.storage_precision
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.valid.storage_precision" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">28.653000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">41.396999</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">121.581001</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">201310</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.valid.invariant_storage
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.valid.invariant_storage" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">25.707001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">40.421001</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">122.426003</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">197703</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.invariant_precision_storage
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.invariant_precision_storage" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+invariant lowp varying float x0;
+
+ mediump uniform float x1;
+
+ mediump attribute float x2;
+
+void main()
+{
+    x0 = 1.0;
+    gl_Position = dEQP_Position;
+}
+</ShaderSource>
+   <InfoLog>0:4(11): error: precision qualifiers must come last
+0:6(2): error: precision qualifiers must come last
+0:8(2): error: precision qualifiers must come last
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+invariant lowp varying float x0;
+
+ mediump uniform float x1;
+
+void main()
+{
+    float result = x0 + x1;
+    gl_FragColor = vec4(result, result, result, 1.0);
+}
+</ShaderSource>
+   <InfoLog>0:3(11): error: precision qualifiers must come last
+0:5(2): error: precision qualifiers must come last
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">25.007999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">40.068001</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">71438</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.storage_invariant_precision
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.storage_invariant_precision" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+varying invariant lowp float x0;
+
+uniform mediump float x1;
+
+attribute mediump float x2;
+
+void main()
+{
+    x0 = 1.0;
+    gl_Position = dEQP_Position;
+}
+</ShaderSource>
+   <InfoLog>0:4(1): error: storage qualifiers must come after precise, invariant, interpolation, layout and auxiliary storage qualifiers
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+varying invariant lowp float x0;
+
+uniform mediump float x1;
+
+void main()
+{
+    float result = x0 + x1;
+    gl_FragColor = vec4(result, result, result, 1.0);
+}
+</ShaderSource>
+   <InfoLog>0:3(1): error: storage qualifiers must come after precise, invariant, interpolation, layout and auxiliary storage qualifiers
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">32.777000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">39.594002</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">78256</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.storage_precision_invariant
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.storage_precision_invariant" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+varying lowp invariant float x0;
+
+uniform mediump float x1;
+
+attribute mediump float x2;
+
+void main()
+{
+    x0 = 1.0;
+    gl_Position = dEQP_Position;
+}
+</ShaderSource>
+   <InfoLog>0:4(9): error: precision qualifiers must come last
+0:4(1): error: storage qualifiers must come after precise, invariant, interpolation, layout and auxiliary storage qualifiers
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+varying lowp invariant float x0;
+
+uniform mediump float x1;
+
+void main()
+{
+    float result = x0 + x1;
+    gl_FragColor = vec4(result, result, result, 1.0);
+}
+</ShaderSource>
+   <InfoLog>0:3(9): error: precision qualifiers must come last
+0:3(1): error: storage qualifiers must come after precise, invariant, interpolation, layout and auxiliary storage qualifiers
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">32.945000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">39.046001</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">81123</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.precision_invariant_storage
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.precision_invariant_storage" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+lowp invariant varying float x0;
+
+mediump uniform float x1;
+
+mediump attribute float x2;
+
+void main()
+{
+    x0 = 1.0;
+    gl_Position = dEQP_Position;
+}
+</ShaderSource>
+   <InfoLog>0:4(1): error: precision qualifiers must come last
+0:6(1): error: precision qualifiers must come last
+0:8(1): error: precision qualifiers must come last
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+lowp invariant varying float x0;
+
+mediump uniform float x1;
+
+void main()
+{
+    float result = x0 + x1;
+    gl_FragColor = vec4(result, result, result, 1.0);
+}
+</ShaderSource>
+   <InfoLog>0:3(1): error: precision qualifiers must come last
+0:5(1): error: precision qualifiers must come last
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">29.298000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">40.202000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">76520</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.precision_storage_invariant
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.precision_storage_invariant" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+lowp varying invariant float x0;
+
+mediump uniform float x1;
+
+mediump attribute float x2;
+
+void main()
+{
+    x0 = 1.0;
+    gl_Position = dEQP_Position;
+}
+</ShaderSource>
+   <InfoLog>0:4(6): error: storage qualifiers must come after precise, invariant, interpolation, layout and auxiliary storage qualifiers
+0:4(1): error: precision qualifiers must come last
+0:6(1): error: precision qualifiers must come last
+0:8(1): error: precision qualifiers must come last
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+lowp varying invariant float x0;
+
+mediump uniform float x1;
+
+void main()
+{
+    float result = x0 + x1;
+    gl_FragColor = vec4(result, result, result, 1.0);
+}
+</ShaderSource>
+   <InfoLog>0:3(6): error: storage qualifiers must come after precise, invariant, interpolation, layout and auxiliary storage qualifiers
+0:3(1): error: precision qualifiers must come last
+0:5(1): error: precision qualifiers must come last
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">29.716000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">39.759998</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">76109</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.precision_storage
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.precision_storage" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+lowp varying float x0;
+
+mediump uniform float x1;
+
+mediump attribute float x2;
+
+void main()
+{
+    x0 = 1.0;
+    gl_Position = dEQP_Position;
+}
+</ShaderSource>
+   <InfoLog>0:4(1): error: precision qualifiers must come last
+0:6(1): error: precision qualifiers must come last
+0:8(1): error: precision qualifiers must come last
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+lowp varying float x0;
+
+mediump uniform float x1;
+
+void main()
+{
+    float result = x0 + x1;
+    gl_FragColor = vec4(result, result, result, 1.0);
+}
+</ShaderSource>
+   <InfoLog>0:3(1): error: precision qualifiers must come last
+0:5(1): error: precision qualifiers must come last
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">31.959999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">39.848000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">77041</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.storage_invariant
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.variables.invalid.storage_invariant" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+varying invariant float x0;
+
+uniform float x1;
+
+attribute float x2;
+
+void main()
+{
+    x0 = 1.0;
+    gl_Position = dEQP_Position;
+}
+</ShaderSource>
+   <InfoLog>0:4(1): error: storage qualifiers must come after precise, invariant, interpolation, layout and auxiliary storage qualifiers
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+varying invariant float x0;
+
+uniform float x1;
+
+void main()
+{
+    float result = x0 + x1;
+    gl_FragColor = vec4(result, result, result, 1.0);
+}
+</ShaderSource>
+   <InfoLog>0:3(1): error: storage qualifiers must come after precise, invariant, interpolation, layout and auxiliary storage qualifiers
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">31.148001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">40.055000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">77881</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_parameter_precision_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_parameter_precision_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">35.523998</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">1.689000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">116.847000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">163326</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_parameter_precision_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_parameter_precision_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">2.553000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">41.904999</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">123.460999</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">177487</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_parameter_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_parameter_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">26.212000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.573000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">123.434998</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">159397</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_parameter_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_parameter_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">0.713000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">44.022999</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">122.496002</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">175485</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_precision_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_precision_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog>0:24(7): warning: `result&apos; used uninitialized
+0:26(7): warning: `result&apos; used uninitialized
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">27.716000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">1.121000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">119.799004</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">158813</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_precision_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.storage_precision_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog>0:23(7): warning: `result&apos; used uninitialized
+0:25(7): warning: `result&apos; used uninitialized
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">0.712000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">24.815001</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">122.707001</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">156509</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.parameter_precision_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.parameter_precision_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">26.580999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.585000</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">121.987999</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">157417</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.parameter_precision_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.valid.parameter_precision_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <ShaderProgram LinkStatus="OK">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">0.711000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">24.259001</Number>
+ <Number Name="LinkTime" Description="Link time" Tag="Time" Unit="ms">125.264000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">158451</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.storage_precision_parameter_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.storage_precision_parameter_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+
+float foo0 (const lowp in float x)
+{
+    return x + 1.0;
+}
+
+void foo1 ( mediump out float x)
+{
+    x = 1.0;
+}
+
+float foo2 ( mediump inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_Position = dEQP_Position;
+
+}
+</ShaderSource>
+   <InfoLog>0:5(19): error: precision qualifiers must come last
+0:10(13): error: precision qualifiers must come last
+0:15(14): error: precision qualifiers must come last
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">28.233000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.589000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">34943</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.storage_precision_parameter_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.storage_precision_parameter_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+
+float foo0 (const lowp in float x)
+{
+    return x + 1.0;
+}
+
+void foo1 ( mediump out float x)
+{
+    x = 1.0;
+}
+
+float foo2 ( mediump inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_FragColor = vec4(1.0);
+
+}
+</ShaderSource>
+   <InfoLog>0:4(19): error: precision qualifiers must come last
+0:9(13): error: precision qualifiers must come last
+0:14(14): error: precision qualifiers must come last
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">0.704000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">26.688000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">33095</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_storage_precision_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_storage_precision_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+
+float foo0 (in const lowp float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (out mediump float x)
+{
+    x = 1.0;
+}
+
+float foo2 (inout mediump float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_Position = dEQP_Position;
+
+}
+</ShaderSource>
+   <InfoLog>0:5(13): error: in/out/inout must come after const or precise
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">31.408001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.589000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">36999</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_storage_precision_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_storage_precision_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+
+float foo0 (in const lowp float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (out mediump float x)
+{
+    x = 1.0;
+}
+
+float foo2 (inout mediump float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_FragColor = vec4(1.0);
+
+}
+</ShaderSource>
+   <InfoLog>0:4(13): error: in/out/inout must come after const or precise
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">0.712000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">31.639000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">39013</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_precision_storage_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_precision_storage_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+
+float foo0 (in lowp const float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (out mediump float x)
+{
+    x = 1.0;
+}
+
+float foo2 (inout mediump float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_Position = dEQP_Position;
+
+}
+</ShaderSource>
+   <InfoLog>0:5(16): error: precision qualifiers must come last
+0:5(13): error: in/out/inout must come after const or precise
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">31.035999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.573000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">37496</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_precision_storage_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_precision_storage_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+
+float foo0 (in lowp const float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (out mediump float x)
+{
+    x = 1.0;
+}
+
+float foo2 (inout mediump float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_FragColor = vec4(1.0);
+
+}
+</ShaderSource>
+   <InfoLog>0:4(16): error: precision qualifiers must come last
+0:4(13): error: in/out/inout must come after const or precise
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">0.711000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">30.764999</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">36324</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_storage_parameter_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_storage_parameter_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+
+float foo0 (lowp const in float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (mediump out float x)
+{
+    x = 1.0;
+}
+
+float foo2 (mediump inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_Position = dEQP_Position;
+
+}
+</ShaderSource>
+   <InfoLog>0:5(13): error: precision qualifiers must come last
+0:10(12): error: precision qualifiers must come last
+0:15(13): error: precision qualifiers must come last
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">32.804001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">1.043000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">38922</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_storage_parameter_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_storage_parameter_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+
+float foo0 (lowp const in float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (mediump out float x)
+{
+    x = 1.0;
+}
+
+float foo2 (mediump inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_FragColor = vec4(1.0);
+
+}
+</ShaderSource>
+   <InfoLog>0:4(13): error: precision qualifiers must come last
+0:9(12): error: precision qualifiers must come last
+0:14(13): error: precision qualifiers must come last
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">1.857000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">30.237000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">37659</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_parameter_storage_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_parameter_storage_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+
+float foo0 (lowp in const float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (mediump out float x)
+{
+    x = 1.0;
+}
+
+float foo2 (mediump inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_Position = dEQP_Position;
+
+}
+</ShaderSource>
+   <InfoLog>0:5(18): error: in/out/inout must come after const or precise
+0:5(13): error: precision qualifiers must come last
+0:10(12): error: precision qualifiers must come last
+0:15(13): error: precision qualifiers must come last
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">29.907000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.572000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">35610</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_parameter_storage_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_parameter_storage_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+
+float foo0 (lowp in const float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (mediump out float x)
+{
+    x = 1.0;
+}
+
+float foo2 (mediump inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_FragColor = vec4(1.0);
+
+}
+</ShaderSource>
+   <InfoLog>0:4(18): error: in/out/inout must come after const or precise
+0:4(13): error: precision qualifiers must come last
+0:9(12): error: precision qualifiers must come last
+0:14(13): error: precision qualifiers must come last
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">0.718000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">30.396000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">38644</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_storage_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_storage_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+
+float foo0 (in const float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (out float x)
+{
+    x = 1.0;
+}
+
+float foo2 (inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_Position = dEQP_Position;
+
+}
+</ShaderSource>
+   <InfoLog>0:5(13): error: in/out/inout must come after const or precise
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">30.613001</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.573000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">37156</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_storage_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.parameter_storage_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+
+float foo0 (in const float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (out float x)
+{
+    x = 1.0;
+}
+
+float foo2 (inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_FragColor = vec4(1.0);
+
+}
+</ShaderSource>
+   <InfoLog>0:4(13): error: in/out/inout must come after const or precise
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">0.718000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">32.057999</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">37535</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_storage_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_storage_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+
+float foo0 (lowp const float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (mediump float x)
+{
+    x = 1.0;
+}
+
+float foo2 (mediump float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_Position = dEQP_Position;
+
+}
+</ShaderSource>
+   <InfoLog>0:5(13): error: precision qualifiers must come last
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">31.118999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">0.572000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">36821</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_storage_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_storage_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+
+float foo0 (lowp const float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (mediump float x)
+{
+    x = 1.0;
+}
+
+float foo2 (mediump float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_FragColor = vec4(1.0);
+
+}
+</ShaderSource>
+   <InfoLog>0:4(13): error: precision qualifiers must come last
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">0.723000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">30.943001</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">38295</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_parameter_vertex
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_parameter_vertex" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+attribute highp vec4 dEQP_Position;
+
+
+float foo0 (lowp in float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (mediump out float x)
+{
+    x = 1.0;
+}
+
+float foo2 (mediump inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_Position = dEQP_Position;
+
+}
+</ShaderSource>
+   <InfoLog>0:5(13): error: precision qualifiers must come last
+0:10(12): error: precision qualifiers must come last
+0:15(13): error: precision qualifiers must come last
+</InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">32.118999</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">2.334000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">39875</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_parameter_fragment
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.shaders.qualification_order.parameters.invalid.precision_parameter_fragment" Version="0.3.4" CaseType="SelfValidate">
+ <Text>Expecting shader compilation to fail.</Text>
+ <ShaderProgram LinkStatus="Fail">
+  <InfoLog></InfoLog>
+  <VertexShader CompileStatus="OK">
+   <ShaderSource></ShaderSource>
+   <InfoLog></InfoLog>
+</VertexShader>
+  <FragmentShader CompileStatus="Fail">
+   <ShaderSource>precision mediump float;
+
+
+float foo0 (lowp in float x)
+{
+    return x + 1.0;
+}
+
+void foo1 (mediump out float x)
+{
+    x = 1.0;
+}
+
+float foo2 (mediump inout float x)
+{
+    return x + 1.0;
+}
+
+void main()
+{
+    
+    float result;
+    foo1(result);
+    float x0 = foo0(1.0);
+    foo2(result);
+    gl_FragColor = vec4(1.0);
+
+}
+</ShaderSource>
+   <InfoLog>0:4(13): error: precision qualifiers must come last
+0:9(12): error: precision qualifiers must come last
+0:14(13): error: precision qualifiers must come last
+</InfoLog>
+</FragmentShader>
+</ShaderProgram>
+ <Number Name="VertexCompileTime" Description="Vertex shader compile time" Tag="Time" Unit="ms">2.161000</Number>
+ <Number Name="FragmentCompileTime" Description="Fragment shader compile time" Tag="Time" Unit="ms">31.028000</Number>
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">42558</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 4.67 seconds
+
+#endSession
