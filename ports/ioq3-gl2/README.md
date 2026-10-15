@@ -76,4 +76,5 @@ Output: `$B/ioq3gl2/quake3-gl2` and the game `.dll`s. Package
   refills at every draw, and draws animated models from one static buffer
   per model at a moving offset; ogles2 has a path for each (buffer.c).
 
-GPL v2 or later, as ioquake3; kept apart from the MIT library.
+GPL v2 or later, as ioquake3. It links `libogles2.a` (`client/`), which is MIT, and opens
+ogles2.library at run time (LICENSE, sections 2 and 4).

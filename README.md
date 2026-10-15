@@ -127,13 +127,15 @@ far are in `tests/a1200/results/`. [CONTRIBUTING.md](CONTRIBUTING.md) describes 
 
 ## Licence
 
-`ogles2.library` incorporates PiStorm3D's V3D backend (`v3dcore/`), which is under the Hyperion
-MiniGL Open Source License ([`LICENSE`](LICENSE), `licences/License_MiniGL_Library.txt`): the
-library may only be built for AmigaOS, and the source of all modifications must be published
-to the Amiga developer community. The parts that incorporate no MiniGL code (`v3dp/`,
-`tools/v3dglslc/`, `tools/amictl/`, `gen/`, `tests/corpus/`) are MIT. Third-party code keeps
-its own licence and notices (`licences/License_V3D_ThirdParty.txt`; Khronos headers MIT,
-`gl.xml` Apache-2.0; Mesa MIT).
+`ogles2.library` as built incorporates PiStorm3D's V3D backend (`v3dcore/`), so it is under the
+Hyperion MiniGL Open Source License ([`LICENSE`](LICENSE), `licences/License_MiniGL_Library.txt`):
+the library may only be built for AmigaOS, and the source of all modifications must be
+published to the Amiga developer community. That licence covers `v3dcore/`, the six front-end
+files that adapt PiStorm3D's code (listed in `LICENSE`) and `tools/builtin_shaders/`.
+Everything else written for this project is MIT, including the import library and headers
+programs build against (`client/`, `include/libraries/`, `include/clib/`), so a program of any
+licence, GPL included, may link them. Third-party code and the ports keep their own licences
+and notices (`LICENSE` sections 3 and 4; `licences/License_V3D_ThirdParty.txt`).
 
 ## Credits
 

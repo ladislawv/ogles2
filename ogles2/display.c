@@ -16,6 +16,9 @@
  * "DON'T lock the bitmap longer than for one frame. DON'T use any library
  * calls while the bitmap is locked!"): ogles2_display_lock before the job's
  * tile stores, ogles2_display_unlock after its render has finished.
+ *
+ * Licence: this file adapts PiStorm3D's code, so it is under the Hyperion
+ * MiniGL Open Source License (LICENSE, section 1).
  */
 #include <string.h>
 #include <exec/memory.h>

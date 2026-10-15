@@ -17,6 +17,9 @@
  * Every claim is filled before the next one is made: a claim that grows the
  * state buffer flushes the old block and starts a new one (v3d_clbuf.c), so
  * a filled block's addresses stay valid until the frame retires.
+ *
+ * Licence: this file adapts PiStorm3D's code, so it is under the Hyperion
+ * MiniGL Open Source License (LICENSE, section 1).
  */
 #include <exec/memory.h>
 #include <proto/exec.h>

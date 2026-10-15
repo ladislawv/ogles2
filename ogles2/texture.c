@@ -21,6 +21,9 @@
  * Render to texture (plan 7.7, fbo.c): a level a framebuffer object's job
  * drew into is newer on the GPU than its RAM copy (OGLES2Face.rendered);
  * the copy is read back (sync) before anything works from it.
+ *
+ * Licence: this file adapts PiStorm3D's code, so it is under the Hyperion
+ * MiniGL Open Source License (LICENSE, section 1).
  */
 #include <exec/memory.h>
 #include <proto/exec.h>

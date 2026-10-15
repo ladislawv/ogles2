@@ -33,6 +33,9 @@
  *    and stores its colour image in the image's own layout and its depth
  *    and stencil every time, without the Y flip, with tile pools of its own
  *    when it has more tiles than the default framebuffer.
+ *
+ * Licence: this file adapts PiStorm3D's code, so it is under the Hyperion
+ * MiniGL Open Source License (LICENSE, section 1).
  */
 #include <exec/execbase.h>
 #include <proto/exec.h>

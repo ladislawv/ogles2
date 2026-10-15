@@ -2,32 +2,73 @@ ogles2.library licensing
 ========================
 
 This repository holds code under two licences, plus third-party code that
-keeps its own.
+keeps its own. The licence decision is D6 in docs/DEVELOPMENT_PLAN.md
+(section 12).
 
-1. ogles2.library and everything built with PiStorm3D's V3D backend
-   (ogles2/, v3dcore/, client/, cmd/, include/libraries, include/clib,
-   tests/ except tests/corpus/, tools/builtin_shaders/) are under the
-   Hyperion MiniGL Open Source License below, because v3dcore/ is
-   PiStorm3D's backend (minigl.library 29.1, see v3dcore/PROVENANCE.md).
-   In short: the library may only be built for AmigaOS, and the source of
-   all modifications must be published to the Amiga developer community.
+1. ogles2.library as built is under the Hyperion MiniGL Open Source
+   License below, because it incorporates PiStorm3D's V3D backend
+   (minigl.library 29.1, see v3dcore/PROVENANCE.md). In short: the library
+   may only be built for AmigaOS, and the source of all modifications must
+   be published to the Amiga developer community. The files under that
+   licence:
+   - v3dcore/ (the backend);
+   - the front-end files that adapt PiStorm3D code: ogles2/job.c,
+     ogles2/display.c, ogles2/draw.c, ogles2/program.c, ogles2/texture.c,
+     ogles2/builtin_shaders.h;
+   - tools/builtin_shaders/ (assembles the built-in shaders with the
+     backend's assembler).
 
-2. The parts that incorporate no MiniGL code are under the MIT License
-   below: v3dp/, tools/v3dglslc/, tools/amictl/, tools/v3dp_tests/,
-   tools/blake3_test/, tools/check_fpconv.py, gen/ (except gen/khronos/),
-   tests/corpus/, dev/.
+2. Everything else written for this project is under the MIT License
+   below, and may be used on any platform:
+   - the import library and headers programs build against: client/,
+     include/libraries/, include/clib/ (they contain no MiniGL code, so a
+     program of any licence, GPL included, may link them; the library
+     itself is opened at run time with OpenLibrary);
+   - the other front-end files: ogles2/buffer.c, compiler.c, context.c,
+     debug.c, device.c, etc1.c, etc1.h, fbo.c, frame.c, library.c, log.c,
+     ogles2_internal.h, runtime.c, share.c, start.s, state.c, v3dp.c,
+     clear_mrt_v3dp.h;
+   - cmd/, tests/, v3dp/, gen/ (except gen/khronos/), dev/, docs/;
+   - tools/v3dglslc/, tools/amictl/, tools/v3dp_tests/, tools/blake3_test/,
+     tools/etc1_test/, tools/clear_mrt/, tools/check_fpconv.py;
+   - in ports/, the build scripts and the files the ports add, except where
+     section 4 says otherwise.
+   MIT code may be combined with the Hyperion files: the built library as a
+   whole is then distributed under the Hyperion terms, and its MIT files
+   stay MIT on their own.
 
 3. Third-party code keeps its own licence and notices:
    - include/GLES2/, include/KHR/: Khronos headers (MIT / Apache-2.0, see
      the file headers); gen/khronos/gl.xml: Apache-2.0.
    - v3dcore/: code by Macoy Madson and code derived from Mesa (Broadcom,
-     VMware): licences/License_V3D_ThirdParty.txt.
-   - ogles2/blake3.c follows the BLAKE3 reference implementation (CC0 /
-     Apache-2.0); tools/v3dglslc builds Mesa (MIT) with the patches in
-     tools/v3dglslc/patches.
+     VMware), MIT: licences/License_V3D_ThirdParty.txt. These notices must
+     ship with the library.
+   - ogles2/blake3.c, ogles2/blake3.h follow the BLAKE3 reference
+     implementation (CC0 / Apache-2.0).
+   - tools/v3dglslc builds Mesa (MIT, with the patches in
+     tools/v3dglslc/patches); the compiler shipped as LIBS:v3dglslc is Mesa
+     and carries Mesa's notices.
    - The corpus programs (Mesa demos, the OpenGL ES 2.0 Programming Guide
      samples) are not in this repository: tests/corpus/build_corpus.sh
      fetches them.
+
+4. The ports (ports/): the programs keep their own licences, and so do the
+   patches to them. A port's binaries may be distributed only on their
+   licence's terms; for the GPL ones that means the complete source: the
+   pinned upstream trees (each port's build or sources script) plus the
+   patches and files here.
+   - ports/ioq3, ports/ioq3-gl2: Quake III Arena / ioquake3, GPL v2 or
+     later; the files added here (the glimps, the GLES2 glue) are GPL v2 or
+     later as well.
+   - ports/glmark2: glmark2, GPL v3; the files added here (the AmigaOS
+     backends) are GPL v3 as well.
+   - ports/gl4es: gl4es, MIT; ports/gl4es/agl_os3.c is derived from its
+     src/agl/agl.c.
+   - ports/sdl2, ports/sdl3: SDL, zlib; the files added here are MIT.
+   - ports/deqp: VK-GL-CTS (dEQP), Apache-2.0; the AmigaOS platform files
+     added here are Apache-2.0 as well.
+   The game data, demos and other content these programs use are not part
+   of this repository.
 
 
 Hyperion MiniGL Open Source License

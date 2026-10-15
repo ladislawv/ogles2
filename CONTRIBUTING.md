@@ -212,8 +212,11 @@ Each of these cost real time once.
 
 ## Licences
 
-Code that links with `v3dcore/` is under the Hyperion MiniGL Open Source License: it may only
-be built for AmigaOS, and all modifications must be published. Keep third-party notices in
-place (`licences/`, `v3dcore/PROVENANCE.md`), and do not commit code whose licence does not
-allow redistribution (the corpus fetches such programs at build time instead). See
-[`LICENSE`](LICENSE).
+New code is MIT. Code that adapts PiStorm3D's or MiniGL's code is under the Hyperion MiniGL
+Open Source License (it may only be built for AmigaOS, and all modifications must be
+published): `v3dcore/` and the files `LICENSE` lists in section 1. Adapting such code into
+another file moves that file to section 1: say so in its opening comment and in `LICENSE`. Keep
+`client/` and the public headers free of it, so programs of any licence can link them. Keep
+third-party notices in place (`licences/`, `v3dcore/PROVENANCE.md`), and do not commit code
+whose licence does not allow redistribution (the corpus fetches such programs at build time
+instead). See [`LICENSE`](LICENSE).
