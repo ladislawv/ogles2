@@ -1,7 +1,9 @@
 #!/bin/bash
-# Builds the release archive: ~/ogles2-build/release/ogles2/ (the tree) and
-# ~/ogles2-build/release/ogles2-<version>.lha. Run inside WSL:
-#   bash release/build_release.sh
+# Builds the release: ~/ogles2-build/release/ogles2/ (the tree) and the
+# archives ogles2-<version>.lha (users), ogles2-<version>-sdk.lha (with the
+# SDK) and ogles2-<version>-sdk.zip (the SDK alone). Run inside WSL:
+#   bash release/build_release.sh        (into ~/ogles2-build/release)
+#   bash release/build_release.sh dist   (and copies them to release/dist/)
 #
 # It builds the library, the import libraries (GCC and vbcc) and OGLES2Log,
 # compiles the examples' shaders with the offline compiler (host v3dglslc)
@@ -103,8 +105,38 @@ PATH=$VBCC/bin:$PATH VBCC=$VBCC make -C "$W/sdk-vbcc/examples" vbcc \
     > "$W/examples-vbcc.txt"
 echo "examples: GCC and vbcc builds ok"
 
-# ---- the archive: lh5, which every Amiga LhA/LZX/UnArc version reads
-(cd "$OUT" && $LHA -ao5q "ogles2-$VERSION.lha" ogles2)
-(cd "$OUT" && $LHA -l "ogles2-$VERSION.lha")
-ls -l "$OUT/ogles2-$VERSION.lha"
-sha256sum "$OUT/ogles2-$VERSION.lha"
+# ---- the archives
+#   ogles2-<v>.lha      for users: library, compiler, installer, examples
+#   ogles2-<v>-sdk.lha  the same with SDK/
+#   ogles2-<v>-sdk.zip  SDK/ alone (with the licences), for cross development on a PC
+# LhA archives: lh5, which every Amiga LhA/LZX/UnArc version reads.
+rm -f "$OUT"/ogles2-$VERSION*.lha "$OUT"/ogles2-$VERSION*.zip
+(cd "$OUT" && $LHA -ao5q "ogles2-$VERSION-sdk.lha" ogles2)
+rm -rf "$W/user" && mkdir -p "$W/user" && cp -r "$R" "$W/user/" && rm -rf "$W/user/ogles2/SDK"
+(cd "$W/user" && $LHA -ao5q "$OUT/ogles2-$VERSION.lha" ogles2)
+S=$W/zip/ogles2-sdk-$VERSION
+rm -rf "$W/zip" && mkdir -p "$S" && cp -r "$R/SDK/." "$S/" && cp -r "$R/LICENSE" "$R/licences" "$S/"
+python3 - "$W/zip" "ogles2-sdk-$VERSION" "$OUT/ogles2-$VERSION-sdk.zip" <<'EOF'
+import os, sys, zipfile
+base, top, out = sys.argv[1:]
+with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+    for d, dirs, files in os.walk(os.path.join(base, top)):
+        dirs.sort()
+        for f in sorted(files):
+            p = os.path.join(d, f)
+            z.write(p, os.path.relpath(p, base))
+EOF
+(cd "$OUT" && $LHA -l "ogles2-$VERSION.lha" | tail -3)
+ls -l "$OUT"/ogles2-$VERSION*.lha "$OUT"/ogles2-$VERSION*.zip
+(cd "$OUT" && sha256sum ogles2-$VERSION*.lha ogles2-$VERSION*.zip)
+
+# ---- "dist": the archives into the repository (release/dist/), for those
+# who develop on Windows without WSL's build output at hand. Only on request:
+# each copy is a new 10 MB in the repository's history.
+if [ "${1:-}" = dist ]; then
+    rm -f "$HERE"/dist/ogles2-*.lha "$HERE"/dist/ogles2-*.zip
+    mkdir -p "$HERE/dist"
+    cp "$OUT"/ogles2-$VERSION*.lha "$OUT"/ogles2-$VERSION*.zip "$HERE/dist/"
+    (cd "$HERE/dist" && sha256sum ogles2-$VERSION*.lha ogles2-$VERSION*.zip > SHA256SUMS)
+    echo "copied to $HERE/dist"
+fi

@@ -10,7 +10,8 @@ testing on the Amiga, conventions, traps) and [`docs/DEVELOPMENT_PLAN.md`](docs/
 
 Ubuntu 24.04, on Windows inside WSL; everything builds there, the repository may live on a
 Windows drive (`/mnt/c/...`), output goes to `~/ogles2-build`; the release archive is built
-by `bash release/build_release.sh` (CONTRIBUTING.md, "Building"). Set it up with the scripts in
+by `bash release/build_release.sh` (CONTRIBUTING.md, "Building"); `... dist` also refreshes the
+committed archives in `release/dist/` (only when a release changes: ~10 MB of history each). Set it up with the scripts in
 [`dev/host-setup/`](dev/host-setup/README.md) in the order its README gives (the toolchains
 take hours). Ports fetch their own sources at pinned commits on first build (gl4es, SDL2/3,
 Quake III: `ports/ioq3/sources.sh`). `ogles2` and `ioq3-amiga` are private GitHub

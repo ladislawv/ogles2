@@ -34,6 +34,18 @@ To build: one of
   - vbcc with the AmigaOS 3 target and the NDK headers.
 and this SDK: include/ and lib/.
 
+On Windows: unpack ogles2-1.3-sdk.zip anywhere (no spaces in the path is
+safest for make). Build with amiga-gcc in WSL (or a Windows build of it) or
+with vbcc for Windows. In VS Code, give the C/C++ extension the headers
+for IntelliSense, in .vscode/c_cpp_properties.json:
+    "includePath": [ "<SDK>/include", "<NDK headers>" ],
+    "defines": [ "__AMIGA__", "__mc68000__" ],
+    "compilerPath": ""
+(<NDK headers>: the AmigaOS headers your compiler uses, e.g. amiga-gcc's
+m68k-amigaos/ndk-include, or the NDK's Include_H for vbcc). Copy the built program to
+the Amiga by network share, CF/SD card or a serial or TCP tool of your
+choice.
+
 For shaders: the shader compiler v3dglslc installed on the development
 Amiga (LIBS:v3dglslc, from the archive's Libs/). Your users do not need it
 if you ship your shaders' binaries (section 5).

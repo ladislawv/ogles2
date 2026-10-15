@@ -68,9 +68,11 @@ with `-lm881`, not `-lm` (see [CONTRIBUTING.md](CONTRIBUTING.md#traps)). Without
 screen tag the library opens its own window; `OGLES2_CCT_WINDOW`, `OGLES2_CCT_MODEID` and
 `OGLES2_CCT_BITMAP` render into yours (`include/libraries/ogles2.h`).
 
-**Release:** `bash release/build_release.sh` (in WSL) builds the user archive with the SDK
-(`~/ogles2-build/release/ogles2-<version>.lha`: the library, the compiler, an installer,
-examples, headers, import libraries and the autodoc `ogles2.doc`). A program finds
+**Release:** the built archives are in [`release/dist/`](release/dist/): `ogles2-1.3.lha` for
+users (the library, the compiler, an installer, examples), `ogles2-1.3-sdk.lha` (the same with
+the SDK: headers, import libraries for GCC and vbcc, the autodoc `ogles2.doc`, the guide
+`GettingStarted.txt`, the examples' sources) and `ogles2-1.3-sdk.zip` (the SDK alone, for
+building on a PC). `bash release/build_release.sh dist` (in WSL) rebuilds them. A program finds
 `ogles2.library` and `v3dglslc` in its own drawer (`libs/`, or beside it) when they are not
 installed, so it can ship them.
 

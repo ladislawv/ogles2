@@ -51,16 +51,20 @@ make perf-mgl         # the MiniGL side of the speed comparison (needs MGL_SDK)
 make gl4es            # gl4es for AmigaOS 3 and gears_gl4es (ports/gl4es/README.md)
 bash ports/ioq3/build.sh       # Quake III on gl4es (after make gl4es): ~/ogles2-build/m68k/ioq3
 bash ports/ioq3-gl2/build.sh   # Quake III with renderergl2 (after ports/ioq3): .../ioq3gl2
-bash release/build_release.sh  # the release: ~/ogles2-build/release/ogles2-<version>.lha
+bash release/build_release.sh  # the release archives in ~/ogles2-build/release ("dist": also release/dist/)
 ```
 
 The release builder needs the shader compiler built both ways (`tools/v3dglslc/build_m68k.sh`
 and `build_host.sh`, checked identical by `compare_v3dp.sh`): the m68k one ships as
 `Libs/v3dglslc`, the host one compiles the examples' shaders. It builds the examples from the
 SDK as assembled, with GCC and vbcc, so a broken SDK fails the build. The release's texts are
-in `release/` (`ReadMe`, `Install-ogles2`, the autodoc `ogles2.doc`), its examples in
-`release/examples/`; keep `ogles2.doc` in step with the library's tags, extensions and
-deviations.
+in `release/` (`ReadMe`, `Install-ogles2`, the autodoc `ogles2.doc`, the guide
+`GettingStarted.txt`), its examples in `release/examples/`; keep `ogles2.doc` and the guide in
+step with the library's tags, extensions and deviations. It makes three archives: `ogles2-<v>.lha`
+(users), `ogles2-<v>-sdk.lha` (with `SDK/`) and `ogles2-<v>-sdk.zip` (`SDK/` alone, for
+Windows). `release/dist/` holds the current ones, committed for those who work on Windows
+without the build machine's output: refresh them with `build_release.sh dist` when a release
+changes, not on every build (each refresh adds about 10 MB to the history).
 
 The ports fetch their sources on first build, each at a pinned commit: gl4es and SDL2/SDL3
 from GitHub (their `build.sh`), Quake III through `ports/ioq3/sources.sh` (Cowcat's AmigaOS 3
