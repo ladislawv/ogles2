@@ -73,6 +73,7 @@ cp "$B/vbcc/ogles2.lib" "$R/SDK/lib/"
 # Autodoc: a form feed before each entry
 sed 's/\r$//' "$HERE/ogles2.doc" | awk 'NR > 1 && /^ogles2\.library\/[^ ]+ +ogles2\.library\// {printf "\f"} {print}' \
     > "$R/SDK/doc/ogles2.doc"
+text "$HERE/GettingStarted.txt" "$R/SDK/doc/GettingStarted.txt"
 for f in Makefile triangle.c triangle_shaders.h cube.c cube_shaders.h; do
     text "$HERE/examples/$f" "$R/SDK/examples/$f"
 done

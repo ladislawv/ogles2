@@ -27,6 +27,9 @@ ogles2.library/--background--                   ogles2.library/--background--
        windowed rendering.
 
    CALLING THE LIBRARY
+       GettingStarted.txt (beside this file) walks through a first
+       program, building, shaders, shipping and debugging.
+
        A program includes <proto/ogles2.h> and links the import library:
        libogles2.a (GCC) or ogles2.lib (vbcc). It calls OGLES2Open() before
        anything else; the GL functions and agl* calls then go to
