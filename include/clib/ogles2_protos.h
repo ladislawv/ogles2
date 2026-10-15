@@ -12,8 +12,12 @@
 extern "C" {
 #endif
 
-/* Open ogles2.library and fetch its dispatch table; FALSE if the library is
- * missing, too old, or built for another dispatch ABI. */
+/* Open ogles2.library and fetch its dispatch table: the installed one (in
+ * memory, or LIBS:), else PROGDIR:libs/ogles2.library, else
+ * PROGDIR:ogles2.library, the first that is new enough and of this dispatch
+ * ABI. One in memory that is not is expunged first if no program has it open
+ * (exec keeps one library of a name); one in use cannot be replaced. FALSE
+ * if there is none. */
 BOOL OGLES2Open(void);
 void OGLES2Close(void);
 

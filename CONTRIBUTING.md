@@ -11,12 +11,14 @@ document. Read §1 (goals), §7 (runtime design), §8 (the shader pipeline), §9
 there. When something is done, decided or found, update the plan (the relevant section and
 §13) in the same change, rather than writing a separate document.
 
-M0 to M5 are complete, and most of M6: the library runs real GLES2 programs and compiles
-their shaders on the Amiga (`v3dglslc`, a resident compiler server the library starts on
-demand), with framebuffer objects, sharing across contexts and tasks, SDL2/SDL3 backends,
-gl4es, and Quake III both through gl4es and with ioquake3's GLES2 renderer directly
-(`ports/ioq3-gl2`, 80.7 fps at 640x480). What is left (glmark2-es2, coexistence with
-minigl.library, conformance and the release) is in §13's "Next" list and §9 (M6, M7).
+M0 to M6 are complete (M6's optional rest aside), and M7 nearly: the library runs real GLES2
+programs and compiles their shaders on the Amiga (`v3dglslc`, a resident compiler server the
+library starts on demand), with framebuffer objects, 4x MSAA, sharing across contexts and
+tasks, SDL2/SDL3 backends, gl4es, glmark2, and Quake III both through gl4es and with
+ioquake3's GLES2 renderer directly (`ports/ioq3-gl2`). dEQP-GLES2's must-pass list passes
+except the documented deviations, and the release archive (library, compiler, installer, SDK)
+is built by `release/build_release.sh`. What is left (publishing the release; the test
+station's large-reply stall, postponed) is in §13's "Next" list.
 [`CLAUDE.md`](CLAUDE.md) has the short version for an AI agent.
 
 ## Setting up a build machine
@@ -49,7 +51,16 @@ make perf-mgl         # the MiniGL side of the speed comparison (needs MGL_SDK)
 make gl4es            # gl4es for AmigaOS 3 and gears_gl4es (ports/gl4es/README.md)
 bash ports/ioq3/build.sh       # Quake III on gl4es (after make gl4es): ~/ogles2-build/m68k/ioq3
 bash ports/ioq3-gl2/build.sh   # Quake III with renderergl2 (after ports/ioq3): .../ioq3gl2
+bash release/build_release.sh  # the release: ~/ogles2-build/release/ogles2-<version>.lha
 ```
+
+The release builder needs the shader compiler built both ways (`tools/v3dglslc/build_m68k.sh`
+and `build_host.sh`, checked identical by `compare_v3dp.sh`): the m68k one ships as
+`Libs/v3dglslc`, the host one compiles the examples' shaders. It builds the examples from the
+SDK as assembled, with GCC and vbcc, so a broken SDK fails the build. The release's texts are
+in `release/` (`ReadMe`, `Install-ogles2`, the autodoc `ogles2.doc`), its examples in
+`release/examples/`; keep `ogles2.doc` in step with the library's tags, extensions and
+deviations.
 
 The ports fetch their sources on first build, each at a pinned commit: gl4es and SDL2/SDL3
 from GitHub (their `build.sh`), Quake III through `ports/ioq3/sources.sh` (Cowcat's AmigaOS 3
@@ -98,6 +109,13 @@ line `device: context freed, 0 bytes of GPU memory still in use`).
 **Results** go to `tests/a1200/results/ogles2-<name>-<date>-<time>/` and are committed: the
 plan cites them as evidence. Screenshots of the test machine's screen (`shots/`, `.png`,
 `.jpg`) stay local: they show the owner's desktop (`.gitignore`).
+
+**The release** is tested from its archive, unpacked on the Amiga with its LhA: once with
+nothing installed (the examples run with `ogles2.library`, and `v3dglslc` if they need it, in
+their drawer or its `libs/`: `OGLES2Open()` and the compiler look there when `LIBS:` has
+none), and once installed with `Execute Install-ogles2 ALL` (the station cannot answer the
+script's `Ask`s: its commands' input is empty, which answers no to each). §13 has the 1.3
+run.
 
 ### The remote test station
 
@@ -209,6 +227,12 @@ Each of these cost real time once.
   is garbled whatever the driver; judge sound by playing.
 - **Two GL programs at once** (a game left running and a test started) can hang the Amiga:
   check with `amictl.py run Status` before starting one.
+- **An installed ogles2 overrides the packages'.** `Run-*` scripts add the package's `libs/`
+  with `Assign LIBS: ... ADD`, which goes after the system's `Libs`: with
+  `LIBS:ogles2.library` installed (the release's installer) every package runs that one, and
+  with `LIBS:v3dglslc` installed the compiler is always there. Before running packages, check
+  `List LIBS:ogles2#? LIBS:v3dglslc` on the station; uninstall (ReadMe, "Installing") to test
+  a build.
 
 ## Licences
 

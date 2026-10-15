@@ -22,7 +22,11 @@
 #include "ogles2_internal.h"
 #include "../v3dp/v3dglsl_port.h"
 
-#define COMPILER_PATH  "LIBS:v3dglslc"
+/* Where the compiler is looked for: installed, then beside the program
+ * that uses the library (its drawer's libs/, then the drawer itself), so a
+ * program can bring it when it is not installed. */
+static const char *const compiler_where[] = {"LIBS:v3dglslc", "PROGDIR:libs/v3dglslc", "PROGDIR:v3dglslc"};
+static char compiler_path[256]; /* the one found, as an absolute path ("" until then) */
 #define COMPILER_STACK (4UL * 1024 * 1024) /* what the A1200 spike runs used */
 #define START_TICKS    (60 * 50)           /* the first start reads 19 MB */
 
@@ -57,8 +61,8 @@ const char *ogles2_cache_dir(void)
     return ogles2_cache_assigned() ? "OGLES2Cache:" : "T:";
 }
 
-/* The installed compiler: its size and build stamp, hashed (never 0), or 0
- * when there is none. A shader record of a failed compile carries it, so
+/* The compiler (compiler_where's first): its size and build stamp, hashed
+ * (never 0), or 0 when there is none. A shader record of a failed compile carries it, so
  * another compiler compiles that shader again (program.c). Not the file's
  * date: copying the same compiler again (as every A1200 test package does)
  * changes it. The size alone matched two different builds in M7 (19,538,220
@@ -97,20 +101,31 @@ ULONG ogles2_compiler_id(void)
     struct Process *me = (struct Process *)FindTask(0);
     struct FileInfoBlock *fib;
     APTR win = 0;
-    BPTR lock, fh;
+    BPTR lock = 0, fh;
     ULONG id = 0, size = 0;
+    unsigned i;
     if (compiler_id)
         return compiler_id;
-    /* LIBS: always exists; no requester either way, but be safe. */
-    if (me->pr_Task.tc_Node.ln_Type == NT_PROCESS) {
+    /* No requester for a missing file or drawer. PROGDIR: is the calling
+     * program's (a task has none: LIBS: only). The one found is kept as an
+     * absolute path: the server is started from it, and another program's
+     * PROGDIR: would name another drawer. */
+    if (me->pr_Task.tc_Node.ln_Type != NT_PROCESS)
+        lock = Lock((STRPTR)compiler_where[0], ACCESS_READ);
+    else {
         win = me->pr_WindowPtr;
         me->pr_WindowPtr = (APTR)-1;
-    }
-    lock = Lock((STRPTR)COMPILER_PATH, ACCESS_READ);
-    if (me->pr_Task.tc_Node.ln_Type == NT_PROCESS)
+        for (i = 0; i < sizeof(compiler_where) / sizeof(compiler_where[0]) && !lock; i++)
+            lock = Lock((STRPTR)compiler_where[i], ACCESS_READ);
         me->pr_WindowPtr = win;
+    }
     if (!lock)
         return 0;
+    if (!NameFromLock(lock, (STRPTR)compiler_path, sizeof(compiler_path))) {
+        UnLock(lock);
+        compiler_path[0] = 0;
+        return 0;
+    }
     if ((fib = AllocDosObject(DOS_FIB, 0))) {
         if (Examine(lock, fib)) {
             size = (ULONG)fib->fib_Size;
@@ -126,7 +141,7 @@ ULONG ogles2_compiler_id(void)
     if (lock)
         UnLock(lock);
     compiler_id = id ? id : 1;
-    ogles2_log("compiler: %s, %lu bytes, id %08lx", (ULONG)COMPILER_PATH, size, compiler_id);
+    ogles2_log("compiler: %s, %lu bytes, id %08lx", (ULONG)compiler_path, size, compiler_id);
     return compiler_id;
 }
 
@@ -138,8 +153,14 @@ BOOL ogles2_compiler_installed(void)
 static BOOL start_server(void)
 {
     struct TagItem tags[6];
-    BPTR in = Open((STRPTR) "NIL:", MODE_OLDFILE), out = Open((STRPTR) "NIL:", MODE_NEWFILE);
+    char cmd[sizeof(compiler_path) + 16];
+    BPTR in, out;
     LONG rc, t;
+    if (!ogles2_compiler_id()) /* finds the compiler (compiler_path) */
+        return FALSE;
+    ogles2_format(cmd, sizeof(cmd), "\"%s\" SERVER", (ULONG)compiler_path);
+    in = Open((STRPTR) "NIL:", MODE_OLDFILE);
+    out = Open((STRPTR) "NIL:", MODE_NEWFILE);
     if (!in || !out) {
         if (in)
             Close(in);
@@ -153,11 +174,11 @@ static BOOL start_server(void)
     tags[3].ti_Tag = NP_StackSize; tags[3].ti_Data = COMPILER_STACK;
     tags[4].ti_Tag = NP_Name;      tags[4].ti_Data = (ULONG) "v3dglsl compiler";
     tags[5].ti_Tag = TAG_DONE;
-    rc = SystemTagList((STRPTR)COMPILER_PATH " SERVER", tags);
+    rc = SystemTagList((STRPTR)cmd, tags);
     if (rc == -1) { /* not started: the handles are still ours */
         Close(in);
         Close(out);
-        ogles2_log("compiler: %s could not be started", (ULONG)COMPILER_PATH);
+        ogles2_log("compiler: %s could not be started", (ULONG)compiler_path);
         return FALSE;
     }
     for (t = 0; t < START_TICKS; t += 5) {
@@ -167,7 +188,7 @@ static BOOL start_server(void)
         }
         Delay(5);
     }
-    ogles2_log("compiler: %s did not answer within %ld s", (ULONG)COMPILER_PATH, (LONG)START_TICKS / 50);
+    ogles2_log("compiler: %s did not answer within %ld s", (ULONG)compiler_path, (LONG)START_TICKS / 50);
     return FALSE;
 }
 

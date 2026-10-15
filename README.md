@@ -5,15 +5,17 @@ OpenGL ES 2.0 for 68k AmigaOS, drawn by the Raspberry Pi 4's GPU (Broadcom V3D 4
 [Emu68](https://github.com/michalsc/Emu68). The API is source-compatible with AmigaOS 4's
 `ogles2.library`: the GLES2 functions plus the `agl*` context calls.
 
-**Status: milestones M0 to M5 of 8 are complete** (see
+**Status: version 1.3, release candidate.** Milestones M0 to M6 are complete; M7
+(conformance and release) lacks only the publication (see
 [the development plan](docs/DEVELOPMENT_PLAN.md), §9 for the milestones and §13 for the current
 state and next steps).
 
-- All 148 entry points are implemented (the GLES2 core and the `agl*` context calls),
-  framebuffer objects included. Extensions: `OES_element_index_uint`,
-  `OES_compressed_ETC1_RGB8_texture`, `EXT_texture_format_BGRA8888`, `OES_mapbuffer`,
-  `EXT_blend_minmax`, `OES_draw_elements_base_vertex`, `OES_rgb8_rgba8`,
-  `OES_packed_depth_stencil`, `OES_fbo_render_mipmap`, `EXT_discard_framebuffer`.
+- The GLES2 core, the `agl*` context calls and 32 extensions (164 entry points), framebuffer
+  objects and 4x multisampling included; the list and the deviations from GLES2 and from
+  AmigaOS 4's library are in [`release/ogles2.doc`](release/ogles2.doc).
+- Conformance: Khronos dEQP-GLES2's must-pass list (17,165 cases) passes on an A1200 except
+  25 cube-map cases (the GPU filters cube maps seamlessly, as GLES 3 requires) and 6 timing
+  and quality warnings.
 - Faster than MiniGL: the same gears scene at 640x480 runs full screen at 1734 fps on ogles2's
   vertex buffers against 791 fps for PiStorm3D 29.1's MiniGL (display lists, its fastest path),
   1171 against 161 fps with 8,000 triangles, and 445 against 47 fps with 32,000 triangles on a
@@ -34,7 +36,8 @@ state and next steps).
   (`OGLES2_CCT_SHARE_WITH`), also from several tasks: a group's calls run under
   its semaphore. The current context of `<proto/ogles2.h>`'s calls is per
   program, so a second task calls through `OGLES2Dispatch` with its context.
-- Not yet: multisampling. This is development software, not a release.
+- The release archive (`release/build_release.sh`): the library, the compiler, an installer,
+  examples, and the SDK (headers, import libraries for GCC and vbcc, autodoc).
 
 ## Requirements
 
@@ -65,8 +68,14 @@ with `-lm881`, not `-lm` (see [CONTRIBUTING.md](CONTRIBUTING.md#traps)). Without
 screen tag the library opens its own window; `OGLES2_CCT_WINDOW`, `OGLES2_CCT_MODEID` and
 `OGLES2_CCT_BITMAP` render into yours (`include/libraries/ogles2.h`).
 
-**Shaders:** with `LIBS:v3dglslc` installed nothing is needed: programs are compiled when they
-link, into `OGLES2Cache:` if that assign exists (kept), else `T:`. To ship binaries instead (or
+**Release:** `bash release/build_release.sh` (in WSL) builds the user archive with the SDK
+(`~/ogles2-build/release/ogles2-<version>.lha`: the library, the compiler, an installer,
+examples, headers, import libraries and the autodoc `ogles2.doc`). A program finds
+`ogles2.library` and `v3dglslc` in its own drawer (`libs/`, or beside it) when they are not
+installed, so it can ship them.
+
+**Shaders:** with `LIBS:v3dglslc` installed (or `v3dglslc` in the program's drawer) nothing is
+needed: programs are compiled when they link, into `OGLES2Cache:` if that assign exists (kept), else `T:`. To ship binaries instead (or
 without the compiler): run the program once; the library appends each missing program's
 sources to `T:ogles2_missing_shaders.txt`. On the PC, `v3dp/split_shaders.py` splits that
 file, `v3dglslc` (`tools/v3dglslc`) compiles each pair to `.v3dp`, and
@@ -122,6 +131,7 @@ far are in `tests/a1200/results/`. [CONTRIBUTING.md](CONTRIBUTING.md) describes 
 | `tests/` | Unit and hardware tests, `a1200/` test packages and results, `corpus/` (real programs against reference images) |
 | `cmd/` | `OGLES2Log` |
 | `dev/` | Build-machine setup (`host-setup/`), the reference sources fetcher, the stream C spike (`spike-c/`: the compiler's feasibility study) |
+| `release/` | The release archive's builder, ReadMe, installer, autodoc and examples |
 | `docs/` | The development plan |
 | `licences/` | Licence texts and third-party notices |
 
@@ -139,7 +149,9 @@ and notices (`LICENSE` sections 3 and 4; `licences/License_V3D_ThirdParty.txt`).
 
 ## Credits
 
-PiStorm3D (`minigl.library` for PiStorm) by Steffen "MagicSN" Haeuser, whose V3D backend this
+ogles2 is developed by R-Typer and Ladislawv, with Claude Opus 5.5 (Anthropic's AI assistant).
+
+It builds on: PiStorm3D (`minigl.library` for PiStorm) by Steffen "MagicSN" Haeuser, whose V3D backend this
 library builds on; the V3D assembler and V3D documentation by Macoy Madson; Mesa's V3D driver
 and compiler (Broadcom, VMware and the Mesa contributors); Emu68 by Michal Schulz; PiStorm by
 Claude Schwarz and contributors; bebbo's amiga-gcc.

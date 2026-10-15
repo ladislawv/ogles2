@@ -9,7 +9,7 @@
  * full hash in the file must match. A
  * program with no binary fails to link; its sources go to
  * T:ogles2_missing_shaders.txt for the offline compiler; with the on-target
- * compiler installed (LIBS:v3dglslc, compiler.c) the program is compiled
+ * compiler present (LIBS:v3dglslc or beside the program, compiler.c) the program is compiled
  * into the disk cache first. Loaded images stay
  * in the context's program cache, by hash, until the context goes: a
  * relink, or another program with the same sources, reuses them (plan 7.8).
@@ -85,9 +85,12 @@ static const struct OGLES2Image builtin_smooth = {
     0, 0,
     sizeof(builtin_coordinate) + sizeof(builtin_vertex_smooth) + sizeof(builtin_fragment_smooth),
     0,          /* no OGLES2_U_CLIP_Z_COEFF: clears are drawn NEGATIVE_ONE_TO_ONE */
-    0, 0, 0,
+    0, 0,       /* code memory (draw.c uploads it per context), allocations */
     0, 0,       /* no binary */
-    0, 0, 0, 0, /* no 32-bit-sampler variants, no sources */
+    0, 0,       /* no 32-bit-sampler variants */
+    0, 0,       /* no alpha-to-coverage variants */
+    0, 0,       /* no sources */
+    0,          /* in no program cache */
 };
 
 const struct OGLES2Image *ogles2_builtin_image(void)

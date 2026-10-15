@@ -1,0 +1,110 @@
+; Install-ogles2 - installs ogles2.library 1.3. See ReadMe.
+; From a Shell, in this drawer:   Execute Install-ogles2
+; It asks before each step; with ALL it does every step without asking:
+;                                 Execute Install-ogles2 ALL
+.key ALL/S
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS Libs/ogles2.library
+  Echo "Please CD into the drawer of this archive first, then:"
+  Echo "  Execute Install-ogles2"
+  Quit 20
+EndIf
+
+Echo "ogles2.library 1.3: OpenGL ES 2.0 for PiStorm (Raspberry Pi 4)"
+Echo ""
+
+; ---- the library
+If "{ALL}" EQ ""
+  Ask "Copy ogles2.library to LIBS:? (y/n)"
+  If NOT WARN
+    Skip compiler
+  EndIf
+EndIf
+Copy Libs/ogles2.library LIBS: CLONE
+If ERROR
+  Echo "Could not copy ogles2.library to LIBS:."
+  Quit 20
+EndIf
+; an older version still in memory is replaced at its next opening
+Avail FLUSH >NIL:
+Echo "  LIBS:ogles2.library installed."
+
+; ---- the shader compiler
+Lab compiler
+Echo ""
+Echo "The shader compiler v3dglslc (19 MB) compiles programs' shaders the"
+Echo "first time they run. Programs that ship their compiled shaders (such"
+Echo "as the examples) do not need it; programs that make shaders at run"
+Echo "time (gl4es, for instance) do."
+If "{ALL}" EQ ""
+  Ask "Copy v3dglslc to LIBS:? (y/n)"
+  If NOT WARN
+    Skip cache
+  EndIf
+EndIf
+Copy Libs/v3dglslc LIBS: CLONE
+If ERROR
+  Echo "Could not copy v3dglslc to LIBS: (is there 19 MB free?)."
+  Quit 20
+EndIf
+Echo "  LIBS:v3dglslc installed."
+
+; ---- the cache of compiled shaders
+Lab cache
+Echo ""
+Echo "Compiled shaders can be kept across reboots in SYS:OGLES2Cache, with"
+Echo "the assign OGLES2Cache: made in S:User-Startup. Without it they are"
+Echo "kept in T: until the next reboot."
+If "{ALL}" EQ ""
+  Ask "Make SYS:OGLES2Cache and the assign? (y/n)"
+  If NOT WARN
+    Skip log
+  EndIf
+EndIf
+If NOT EXISTS SYS:OGLES2Cache
+  MakeDir SYS:OGLES2Cache
+  If ERROR
+    Echo "Could not make SYS:OGLES2Cache."
+    Quit 20
+  EndIf
+EndIf
+Assign OGLES2Cache: SYS:OGLES2Cache
+If EXISTS S:User-Startup
+  Search S:User-Startup "OGLES2Cache:" QUIET >NIL:
+  If WARN
+    Echo ";BEGIN ogles2" >>S:User-Startup
+    Echo "Assign OGLES2Cache: SYS:OGLES2Cache" >>S:User-Startup
+    Echo ";END ogles2" >>S:User-Startup
+    Echo "  Added to S:User-Startup."
+  Else
+    Echo "  S:User-Startup already assigns OGLES2Cache:."
+  EndIf
+Else
+  Echo ";BEGIN ogles2" >S:User-Startup
+  Echo "Assign OGLES2Cache: SYS:OGLES2Cache" >>S:User-Startup
+  Echo ";END ogles2" >>S:User-Startup
+  Echo "  S:User-Startup made."
+EndIf
+
+; ---- OGLES2Log
+Lab log
+Echo ""
+If "{ALL}" EQ ""
+  Ask "Copy OGLES2Log (writes the library's log) to C:? (y/n)"
+  If NOT WARN
+    Skip done
+  EndIf
+EndIf
+Copy C/OGLES2Log C: CLONE
+If ERROR
+  Echo "Could not copy OGLES2Log to C:."
+  Quit 20
+EndIf
+Echo "  C:OGLES2Log installed."
+
+Lab done
+Echo ""
+Echo "Done. Try Examples/triangle and Examples/cube."
