@@ -1,0 +1,157 @@
+logfile opened on Thu Oct 15 10:36:28 2026
+
+----- Client Initialization -----
+----- Initializing Renderer ----
+-------------------------------
+QKEY found.
+----- Client Initialization Complete -----
+----- R_Init -----
+===== quake3-68k, renderergl2 on ogles2.library =====
+...setting mode 3: 640 480 fullscreen
+...ogles2 context 640x480
+Available modes: '640x480 640x512 720x480 704x513 672x544 800x480 848x480 854x480 768x572 768x576 800x600 960x540 1280x546 1024x768 1025x833 1280x720 1366x768 1400x900 1280x1024 1400x1050 1496x1000 1680x1050 1600x1200 1920x1080 1920x1200 2560x1440'
+... Sys_EventPort at 0x8f5c680
+...GL_EXT_occlusion_query_boolean not found
+...GL_NV_read_depth not found
+...GL_NV_read_stencil not found
+...GL_EXT_shadow_samplers not found
+...using GL_OES_standard_derivatives
+...using GL_OES_element_index_uint
+...using GLSL version OpenGL ES GLSL ES 1.00
+------- GLSL_InitGPUShaders -------
+Using GPU vertex animation
+loaded 114 GLSL shaders (48 gen 42 light 24 etc) in  2.47 seconds
+------- R_InitVaos -------
+Initializing Shaders
+
+GL_VENDOR: ogles2.library
+GL_RENDERER: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+GL_VERSION: OpenGL ES 2.0 ogles2.library 1.3
+GL_EXTENSIONS: GL_OES_element_index_uint GL_OES_compressed_ETC1_RGB8_texture GL_EXT_texture_format_BGRA8888 GL_OES_mapbuffer GL_EXT_blend_minmax GL_OES_draw_elements_base_vertex GL_OES_rgb8_rgba8 GL_OES_packed_depth_stencil GL_OES_fbo_render_mipmap GL_EXT_discard_framebuffer GL_OES_texture_npot GL_EXT_read_format_bgra GL_EXT_texture_filter_anisotropic GL_EXT_texture_lod_bias GL_SGIS_texture_lod GL_ARB_texture_mirror_clamp_to_edge GL_OES_standard_derivatives GL_OES_get_program_binary GL_OES_texture_float GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_depth_texture GL_ARB_texture_rectangle GL_EXT_debug_marker GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_s3tc GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_EXT_clip_control GL_EXT_draw_buffers GL_NV_fbo_color_attachments GL_OES_required_internalformat
+GL_MAX_TEXTURE_SIZE: 4096
+GL_MAX_TEXTURE_IMAGE_UNITS: 16
+
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:60
+GAMMA: software w/ 1 overbright bits
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 0
+texture bits: 32
+compiled vertex arrays: disabled
+texenv add: enabled
+compressed textures: disabled
+----- finished R_Init -----
+------ Initializing Sound ------
+Sound disabled.
+--------------------------------
+Try loading dll file M6R5:home/baseq3/ui68k.dll
+Sys_LoadDll(M6R5:home/baseq3/ui68k.dll)... 
+35 arenas parsed
+32 bots parsed
+--- Common Initialization Complete ---
+Hostname: localhost
+IP: 127.0.0.1
+Opening IP socket: 0.0.0.0:27960
+Demo file: demos/four.dm_68
+We are looking in the current search path:
+M6R5:home/baseq3
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak8.pk3 (9 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak7.pk3 (4 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak6.pk3 (64 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak5.pk3 (7 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak4.pk3 (272 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak3.pk3 (4 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak2.pk3 (148 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak1.pk3 (26 files)
+Stuff:Quake3-68k-beta10/Quake3-68k-beta10/baseq3/pak0.pk3 (3539 files)
+
+handle 1: qconsole.log
+handle 2: demos/four.dm_68
+----------------------
+8146 files in pk3 files
+RE_Shutdown( 0 )
+------- R_ShutdownVaos -------
+------- GLSL_ShutdownGPUShaders -------
+Hunk_Clear: reset the hunk ok
+----- R_Init -----
+------- GLSL_InitGPUShaders -------
+Using GPU vertex animation
+loaded 114 GLSL shaders (48 gen 42 light 24 etc) in  1.54 seconds
+------- R_InitVaos -------
+Initializing Shaders
+
+GL_VENDOR: ogles2.library
+GL_RENDERER: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM
+GL_VERSION: OpenGL ES 2.0 ogles2.library 1.3
+GL_EXTENSIONS: GL_OES_element_index_uint GL_OES_compressed_ETC1_RGB8_texture GL_EXT_texture_format_BGRA8888 GL_OES_mapbuffer GL_EXT_blend_minmax GL_OES_draw_elements_base_vertex GL_OES_rgb8_rgba8 GL_OES_packed_depth_stencil GL_OES_fbo_render_mipmap GL_EXT_discard_framebuffer GL_OES_texture_npot GL_EXT_read_format_bgra GL_EXT_texture_filter_anisotropic GL_EXT_texture_lod_bias GL_SGIS_texture_lod GL_ARB_texture_mirror_clamp_to_edge GL_OES_standard_derivatives GL_OES_get_program_binary GL_OES_texture_float GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_depth_texture GL_ARB_texture_rectangle GL_EXT_debug_marker GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_s3tc GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_EXT_clip_control GL_EXT_draw_buffers GL_NV_fbo_color_attachments GL_OES_required_internalformat
+GL_MAX_TEXTURE_SIZE: 4096
+GL_MAX_TEXTURE_IMAGE_UNITS: 16
+
+PIXELFORMAT: color(32-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:60
+GAMMA: software w/ 1 overbright bits
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 0
+texture bits: 32
+compiled vertex arrays: disabled
+texenv add: enabled
+compressed textures: disabled
+----- finished R_Init -----
+Try loading dll file M6R5:home/baseq3/ui68k.dll
+Sys_LoadDll(M6R5:home/baseq3/ui68k.dll)... 
+35 arenas parsed
+32 bots parsed
+Try loading dll file M6R5:home/baseq3/cgame68k.dll
+Sys_LoadDll(M6R5:home/baseq3/cgame68k.dll)... 
+stitched 0 LoD cracks
+...loaded 3728 faces, 358 meshes, 180 trisurfs, 52 flares
+Failed to load model file models/players/characters/james/lower.md3
+CL_InitCGame: 16.52 seconds
+13 msec to draw all images
+marty^7 almost dodged Thanatar^7's rocket
+^2F^7red^2o^7 was gunned down by THEINDIGO^7
+Willits^7 ate Asuka^7's rocket
+Thanatar^7 was machinegunned by Duffy^7
+Asuka^7 almost dodged ^2F^7red^2o^7's rocket
+Duffy^7 melted himself.
+Trillian^7 was machinegunned by Asuka^7
+Thanatar^7 was melted by Willits^7's plasmagun
+marty^7 was gunned down by THEINDIGO^7
+THEINDIGO^7 almost dodged ^2F^7red^2o^7's rocket
+Willits^7 was melted by Asuka^7's plasmagun
+Duffy^7 ate ^2F^7red^2o^7's rocket
+Trillian^7 was melted by Asuka^7's plasmagun
+Asuka^7 was machinegunned by Willits^7
+Thanatar^7 was machinegunned by THEINDIGO^7
+Willits^7 was machinegunned by Duffy^7
+Duffy^7 was machinegunned by Trillian^7
+Trillian^7 was melted by marty^7's plasmagun
+THEINDIGO^7 almost dodged marty^7's rocket
+Trillian^7 was machinegunned by THEINDIGO^7
+Willits^7 almost dodged marty^7's rocket
+Thanatar^7 melted himself.
+Duffy^7 was melted by Willits^7's plasmagun
+Willits^7 ate ^2F^7red^2o^7's rocket
+^2F^7red^2o^7 was melted by THEINDIGO^7's plasmagun
+Thanatar^7 ate Asuka^7's rocket
+Asuka^7 blew itself up.
+marty^7 blew himself up.
+Trillian^7 was machinegunned by marty^7
+Thanatar^7 was melted by THEINDIGO^7's plasmagun
+Duffy^7 ate Willits^7's rocket
+Asuka^7 ate Willits^7's rocket
+Willits^7 almost dodged marty^7's rocket
+Trillian^7 almost dodged marty^7's rocket
+THEINDIGO^7 hit the fraglimit.
+marty^7 was melted by THEINDIGO^7's plasmagun
+1260 frames 16.1 seconds 78.3 fps 5.0/12.8/80.0/4.2 ms
+----- Client Shutdown (Client quit) -----
+RE_Shutdown( 1 )
+------- R_ShutdownVaos -------
+------- GLSL_ShutdownGPUShaders -------
+GLimp_Shutdown: input
+GLimp_Shutdown: the context
+GLimp_Shutdown: done
+Hunk_Clear: reset the hunk ok
+-----------------------
