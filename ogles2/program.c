@@ -4,7 +4,7 @@
  *
  * glCompileShader keeps the source and succeeds (S1, plan 7.8). glLinkProgram
  * hashes the sources (v3dp/FORMAT.md, PROGRAM: the vertex shader, then the
- * fragment shader) and loads <hash>.v3dp from PROGDIR: or OGLES2Cache:, the
+ * fragment shader) and loads <hash>.v3dp from PROGDIR:shaders/, PROGDIR: or OGLES2Cache:, the
  * name being the hash's first 24 hex digits (FFS allows 30 characters); the
  * full hash in the file must match. A
  * program with no binary fails to link; its sources go to
@@ -892,20 +892,22 @@ static void file_path(char *path, const char *dir, const char *hex)
     strcat(path, ".v3dp");
 }
 
-/* Plan 7.8: PROGDIR:, the disk cache (OGLES2Cache:, or T: when it is not
- * assigned: that is where compiled programs go then), the on-target
- * compiler, else the sources go to T:ogles2_missing_shaders.txt. */
+/* Plan 7.8: the program's drawer (its shaders/ drawer, then the drawer
+ * itself), the disk cache (OGLES2Cache:, or T: when it is not assigned:
+ * that is where compiled programs go then), the on-target compiler, else the
+ * sources go to T:ogles2_missing_shaders.txt. */
 static struct OGLES2Image *load_image(struct OGLES2Program *p, const UBYTE *hash, const char *hex,
                                       const char *bindings)
 {
     char path[96];
     struct OGLES2Image *im;
     BOOL refused;
-    const char *dirs[2];
+    const char *dirs[3];
     int d;
-    dirs[0] = "PROGDIR:";
-    dirs[1] = ogles2_cache_dir();
-    for (d = 0; d < 2; d++) {
+    dirs[0] = "PROGDIR:shaders/";
+    dirs[1] = "PROGDIR:";
+    dirs[2] = ogles2_cache_dir();
+    for (d = 0; d < 3; d++) {
         file_path(path, dirs[d], hex);
         if ((im = try_file(p, hash, path, &refused)) || refused)
             return im;
@@ -917,7 +919,7 @@ static struct OGLES2Image *load_image(struct OGLES2Program *p, const UBYTE *hash
             set_log(p, "out of memory", 0);
             return 0;
         }
-        file_path(path, dirs[1], hex);
+        file_path(path, dirs[2], hex);
         ok = bindings ? ogles2_compile_program_bound(p->vs->source, p->fs->source, bindings, path, log, 4096)
                       : ogles2_compile_program(p->vs->source, p->fs->source, path, log, 4096);
         if (ok && (im = try_file(p, hash, path, &refused))) {
@@ -964,8 +966,8 @@ static struct OGLES2Image *try_wide(const UBYTE *hash, const char *path)
  * Once per image: at the first draw that needs them, which waits for the
  * compile (about a second on the A1200). NULL if there are none: such draws
  * then use the 16-bit variants, which read those textures wrongly (logged). */
-/* A second file of a program's variants (.v3dw, .v3da): beside the .v3dp
- * (PROGDIR:, the disk cache), or compiled now by the on-target compiler into
+/* A second file of a program's variants (.v3dw, .v3da): where a .v3dp may be
+ * (PROGDIR:shaders/, PROGDIR:, the disk cache), or compiled now by the on-target compiler into
  * the cache. Once per image: at the first draw that needs them, which waits
  * for the compile (about a second on the A1200). */
 static struct OGLES2Image *extra_image(struct OGLES2Image *im, struct OGLES2Image **slot, BOOL *tried,
@@ -974,7 +976,7 @@ static struct OGLES2Image *extra_image(struct OGLES2Image *im, struct OGLES2Imag
 {
     static const char digits[] = "0123456789abcdef";
     char hex[FILE_HASH_DIGITS + 1], path[96];
-    const char *dirs[2];
+    const char *dirs[3];
     int d, k;
     if (*slot || *tried)
         return *slot;
@@ -984,9 +986,10 @@ static struct OGLES2Image *extra_image(struct OGLES2Image *im, struct OGLES2Imag
         hex[2 * k + 1] = digits[im->hash[k] & 15];
     }
     hex[FILE_HASH_DIGITS] = 0;
-    dirs[0] = "PROGDIR:";
-    dirs[1] = ogles2_cache_dir();
-    for (d = 0; d < 2 && !*slot; d++) {
+    dirs[0] = "PROGDIR:shaders/";
+    dirs[1] = "PROGDIR:";
+    dirs[2] = ogles2_cache_dir();
+    for (d = 0; d < 3 && !*slot; d++) {
         strcpy(path, dirs[d]);
         strcat(path, hex);
         strcat(path, ext);

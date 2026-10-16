@@ -91,7 +91,7 @@ cp "$B/vbcc/ogles2.lib" "$R/SDK/lib/"
 sed 's/\r$//' "$HERE/ogles2.doc" | awk 'NR > 1 && /^ogles2\.library\/[^ ]+ +ogles2\.library\// {printf "\f"} {print}' \
     > "$R/SDK/doc/ogles2.doc"
 text "$HERE/GettingStarted.txt" "$R/SDK/doc/GettingStarted.txt"
-for f in Makefile triangle.c triangle_shaders.h cube.c cube_shaders.h; do
+for f in Makefile triangle.c triangle_shaders.h cube.c cube_shaders.h boingocean.c boingocean_shaders.h; do
     text "$HERE/examples/$f" "$R/SDK/examples/$f"
 done
 
@@ -101,17 +101,18 @@ W=$OUT/work
 gcc -O2 -o "$W/emit" "$HERE/emit_shaders.c"
 mkdir -p "$W/src" "$W/v3dp"
 (cd "$W/src" && ../emit)
-for p in triangle cube; do
+for p in triangle cube boingocean blit height sky; do
     "$V/host/v3dglslc" -o "$W/v3dp" "$W/src/$p.vert" "$W/src/$p.frag" > "$W/v3dglslc-$p.txt" 2>&1 || {
         cat "$W/v3dglslc-$p.txt"; exit 1; }
 done
 python3 "$REPO/v3dp/v3dp_hashname.py" "$W"/v3dp/*.v3dp
-cp "$W"/v3dp/*.v3dp "$R/Examples/"
+mkdir -p "$R/Examples/shaders"
+cp "$W"/v3dp/*.v3dp "$R/Examples/shaders/"
 
 # ---- the examples, built from the SDK as shipped (GCC; vbcc to check)
 cp -r "$R/SDK/." "$W/sdk/"
 make -C "$W/sdk/examples" CC="$TC/bin/m68k-amigaos-gcc" > "$W/examples-gcc.txt"
-for p in triangle cube; do
+for p in triangle cube boingocean; do
     $TC/bin/m68k-amigaos-strip -o "$R/Examples/$p" "$W/sdk/examples/$p"
 done
 mkdir -p "$W/sdk-vbcc" && cp -r "$R/SDK/." "$W/sdk-vbcc/"

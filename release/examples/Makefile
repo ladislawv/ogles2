@@ -11,7 +11,7 @@ CFLAGS ?= -O2 -m68020 -m68881 -mcrt=clib2 -fno-builtin -fbbb=abcfhilmnprsz0 -Wal
 VC     ?= vc +aos68k
 VCFLAGS ?= -c99 -cpu=68020 -fpu=68881 -O1
 
-all: triangle cube
+all: triangle cube boingocean
 
 triangle: triangle.c triangle_shaders.h
 	$(CC) $(CFLAGS) -I../include triangle.c -L../lib -logles2 -o $@
@@ -19,11 +19,15 @@ triangle: triangle.c triangle_shaders.h
 cube: cube.c cube_shaders.h
 	$(CC) $(CFLAGS) -I../include cube.c -L../lib -logles2 -lm881 -o $@
 
-vbcc: triangle.c triangle_shaders.h cube.c cube_shaders.h
+boingocean: boingocean.c boingocean_shaders.h
+	$(CC) $(CFLAGS) -I../include boingocean.c -L../lib -logles2 -lm881 -o $@
+
+vbcc: triangle.c triangle_shaders.h cube.c cube_shaders.h boingocean.c boingocean_shaders.h
 	$(VC) $(VCFLAGS) -I../include triangle.c ../lib/ogles2.lib -lamiga -lm881 -o triangle
 	$(VC) $(VCFLAGS) -I../include cube.c ../lib/ogles2.lib -lamiga -lm881 -o cube
+	$(VC) $(VCFLAGS) -I../include boingocean.c ../lib/ogles2.lib -lamiga -lm881 -o boingocean
 
 clean:
-	rm -f triangle cube
+	rm -f triangle cube boingocean
 
 .PHONY: all vbcc clean

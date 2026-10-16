@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "examples/triangle_shaders.h"
 #include "examples/cube_shaders.h"
+#include "examples/boingocean_shaders.h"
 
 static int put(const char *name, const char *text)
 {
@@ -20,5 +21,8 @@ static int put(const char *name, const char *text)
 int main(void)
 {
     return put("triangle.vert", triangle_vs) | put("triangle.frag", triangle_fs) |
-           put("cube.vert", cube_vs) | put("cube.frag", cube_fs);
+           put("cube.vert", cube_vs) | put("cube.frag", cube_fs) | put("boingocean.vert", boingocean_vs) |
+           put("boingocean.frag", boingocean_fs) | put("blit.vert", blit_vs) | put("blit.frag", blit_fs) |
+           put("height.vert", blit_vs) | put("height.frag", height_fs) | put("sky.vert", blit_vs) |
+           put("sky.frag", sky_fs);
 }

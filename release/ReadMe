@@ -56,13 +56,14 @@ it, unless another program is using the old one at that moment (AmigaOS
 keeps one ogles2.library in memory for all programs).
 
 To try the examples this way: copy Libs/ogles2.library into Examples/libs/
-and run Examples/triangle or Examples/cube.
+and run Examples/triangle, Examples/cube or Examples/boingocean.
 
 Shaders
 -------
 The GPU runs machine code compiled from each program's GLSL. ogles2 finds
 a program's compiled form ("binary", a .v3dp file named by a hash of the
-GLSL text) beside the program, or in OGLES2Cache: (or T:). When there is
+GLSL text) in the program's shaders/ drawer, beside the program, or in
+OGLES2Cache: (or T:). When there is
 none, the compiler v3dglslc compiles it (about 0.2 s per program; its first
 start takes about a second) and the result goes into OGLES2Cache:, so the
 next run needs no compiler.
@@ -76,8 +77,13 @@ The examples
   Examples/triangle   a turning coloured triangle in a window
   Examples/cube       a textured cube with a depth buffer, in a window you
                       can resize
-Close the window or press Esc to quit. Their .v3dp files are beside them:
-they run without the compiler.
+  Examples/boingocean the Boing ball floating on a ray-marched ocean, all
+                      drawn by shaders: 60 fps at 640 x 480 on a Pi 4 with
+                      "boingocean FULLSCREEN" from a Shell (about 55 in a
+                      window); drag with the mouse to move the camera, keys
+                      1 to 4 draw it at 1/1 to 1/4 size and scale it up
+Close the window or press Esc to quit. Their .v3dp files are in
+Examples/shaders/: they run without the compiler.
 
 Logging
 -------

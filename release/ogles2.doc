@@ -123,7 +123,9 @@ ogles2.library/--shaders--                         ogles2.library/--shaders--
        looks for a program's binary in this order:
 
        1. in memory (a program linked before in this session);
-       2. PROGDIR:<hash>.v3dp, a binary the program ships beside itself;
+       2. PROGDIR:shaders/<hash>.v3dp, then PROGDIR:<hash>.v3dp: a binary
+          the program ships in a shaders/ drawer beside itself, or beside
+          itself;
        3. OGLES2Cache:<hash>.v3dp (when that assign exists), else
           T:<hash>.v3dp: binaries compiled before;
        4. the compiler, if found: LIBS:v3dglslc, else PROGDIR:libs/v3dglslc,
