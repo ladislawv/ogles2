@@ -1,0 +1,83 @@
+ogles2 SDL archive: SDL2 and SDL3 for AmigaOS 3 with OpenGL ES 2.0
+=====================================================================
+
+SDL2 (2.33.0) and SDL3 (3.4.14) for 68k AmigaOS 3, built from Steffen
+Haeuser's SDL2_68k and SDL3_68k with the ogles2 project's OpenGL ES 2.0
+backend: SDL programs draw through the PiStorm's GPU (ogles2.library).
+
+  - SDL's 2D API (SDL_Renderer, textures, rotation, blending) is drawn by
+    the GPU through SDL's GLES2 renderer ("opengles2"), with no GL code in
+    the program.
+  - A program that asks SDL for an OpenGL ES 2.0 context gets one from
+    ogles2.library: its own shaders, framebuffer objects, vsync
+    (SDL_GL_SetSwapInterval), windows resized without losing the context.
+  - Any other GL request goes to minigl.library, as in the SDL_68k
+    releases; audio, input, timers and threads are SDL_68k's.
+
+This is for programmers. A finished SDL program carries SDL inside it (these
+are static link libraries); its users need only ogles2.library and the
+shader compiler (the ogles2 archive's Install-ogles2), and minigl.library
+29.1 only if the program uses desktop OpenGL.
+
+Contents (unpack over the ogles2 SDK archive: the drawers merge)
+--------
+
+  SDK/SDL2/include/SDL2/   SDL2's headers
+  SDK/SDL2/lib/            libSDL2.a, libSDL2_test.a
+  SDK/SDL3/include/SDL3/   SDL3's headers
+  SDK/SDL3/lib/            libSDL3.a, libSDL3_test.a
+  SDK/MiniGL/              PiStorm3D's minigl.library 29.1 client SDK
+                           (headers, libminigl.a): SDL links it for its
+                           desktop-GL path, and SDL_opengl.h includes it
+  SDK/doc/SDL.md           how to use them, flags, examples, the figures
+  SDK/examples-sdl/        sdl2_sprites.c (2D renderer), sdl3_gles2.c (own
+                           GLES2 code), Makefile
+  Examples/SDL/            the two examples, built
+  licences/                SDL's licence (zlib), MiniGL's
+
+Building a program (bebbo's m68k-amigaos-gcc 6.5, clib2)
+--------
+
+  -O2 -m68040 -mhard-float -mcrt=clib2 -fbbb=abcfhilmnprsz0 -D__AMIGAOS3__
+  SDL3 also -fshort-wchar
+
+  SDL2: -lSDL2 -logles2 -lminigl -ldebug -lamiga -lm881 -lstubs
+  SDL3: -lSDL3 -logles2 -lminigl -ldebug -lamiga -lm881 -latomic -lstubs
+
+Include paths: SDK/include (ogles2), SDK/SDL2/include or SDK/SDL3/include,
+SDK/MiniGL/minigl-shared-library/include. Link -lm881, not -lm (with clib2,
+-lm is libnix's maths). The libraries do not link with libnix or vbcc
+programs. SDK/examples-sdl/Makefile shows it all.
+
+SDL opens ogles2.library itself (when it loads the GL library); do not call
+OGLES2Open() in an SDL program.
+
+Shaders
+--------
+
+SDL's GLES2 renderer, and most GLES2 programs, write shaders at run time:
+the first run compiles each one with the shader compiler (LIBS:v3dglslc,
+about a second each) and keeps the result in OGLES2Cache: (or T:); later
+runs load it. To ship a program without the compiler, run it once and ship
+the .v3dp files from the cache in its drawer (SDK/doc/GettingStarted.txt,
+section on shaders).
+
+Requirements
+--------
+
+A PiStorm with a Raspberry Pi 4B or CM4, Emu68, AmigaOS 3.x, an RTG system
+(Picasso96 or CyberGraphX) and a 32-bit RTG screen; ogles2.library 1.3 and
+its shader compiler.
+
+Licences
+--------
+
+SDL2_68k and SDL3_68k are SDL: zlib (licences/SDL2-LICENSE.txt,
+SDL3-LICENSE.txt). The ogles2 backend inside them (SDL_os3opengles2.c) is
+zlib as SDL. The MiniGL SDK is PiStorm3D's, under the Hyperion MiniGL Open
+Source License and the notices in licences/. The examples are MIT (LICENSE).
+
+SDL2_68k and SDL3_68k: Steffen Haeuser. SDL: Sam Lantinga and its
+contributors. The ogles2 backend: the ogles2 project. Sources:
+github.com/SteffenHaeuser/SDL2_68k, SDL3_68k; the ogles2 source's
+ports/sdl2 and ports/sdl3.

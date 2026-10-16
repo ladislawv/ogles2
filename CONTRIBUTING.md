@@ -51,7 +51,7 @@ make perf-mgl         # the MiniGL side of the speed comparison (needs MGL_SDK)
 make gl4es            # gl4es for AmigaOS 3 and gears_gl4es (ports/gl4es/README.md)
 bash ports/ioq3/build.sh       # Quake III on gl4es (after make gl4es): ~/ogles2-build/m68k/ioq3
 bash ports/ioq3-gl2/build.sh   # Quake III with renderergl2 (after ports/ioq3): .../ioq3gl2
-bash release/build_release.sh  # the release archives in ~/ogles2-build/release ("dist": also release/dist/)
+bash release/build_release.sh  # the release archives in ~/ogles2-build/release ("dist": also release/dist/; "sdl": the SDL archive too)
 ```
 
 The release builder needs the shader compiler built both ways (`tools/v3dglslc/build_m68k.sh`
@@ -62,7 +62,10 @@ in `release/` (`ReadMe`, `Install-ogles2`, the autodoc `ogles2.doc`, the guide
 `GettingStarted.txt`), its examples in `release/examples/`; keep `ogles2.doc` and the guide in
 step with the library's tags, extensions and deviations. It makes three archives: `ogles2-<v>.lha`
 (users), `ogles2-<v>-sdk.lha` (with `SDK/`) and `ogles2-<v>-sdk.zip` (`SDK/` alone, for
-Windows). `release/dist/` holds the current ones, committed for those who work on Windows
+Windows). With `sdl` it also makes `ogles2-<v>-sdl.lha` and `-sdl.zip`: SDL2 and SDL3 built by
+`ports/sdl2` and `ports/sdl3`, their headers, PiStorm3D's MiniGL SDK (`$PISTORM3D_SDK`), the
+guide `docs/SDL.md` and the examples in `release/examples-sdl/` (built from the assembled SDK
+and SDL archive together); it unpacks over the SDK archive. `release/dist/` holds the current ones, committed for those who work on Windows
 without the build machine's output: refresh them with `build_release.sh dist` when a release
 changes, not on every build (each refresh adds about 10 MB to the history).
 

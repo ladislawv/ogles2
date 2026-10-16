@@ -72,7 +72,10 @@ screen tag the library opens its own window; `OGLES2_CCT_WINDOW`, `OGLES2_CCT_MO
 users (the library, the compiler, an installer, examples), `ogles2-1.3-sdk.lha` (the same with
 the SDK: headers, import libraries for GCC and vbcc, the autodoc `ogles2.doc`, the guide
 `GettingStarted.txt`, the examples' sources) and `ogles2-1.3-sdk.zip` (the SDK alone, for
-building on a PC). `bash release/build_release.sh dist` (in WSL) rebuilds them. A program finds
+building on a PC). For SDL programmers, `ogles2-1.3-sdl.lha` and `.zip` add SDL2 and SDL3 with
+the ogles2 backend, PiStorm3D's MiniGL SDK (which SDL links for desktop GL) and two examples;
+they unpack over the SDK ([`docs/SDL.md`](docs/SDL.md)). `bash release/build_release.sh dist sdl`
+(in WSL) rebuilds them. A program finds
 `ogles2.library` and `v3dglslc` in its own drawer (`libs/`, or beside it) when they are not
 installed, so it can ship them.
 

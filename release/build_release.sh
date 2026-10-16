@@ -4,6 +4,11 @@
 # SDK) and ogles2-<version>-sdk.zip (the SDK alone). Run inside WSL:
 #   bash release/build_release.sh        (into ~/ogles2-build/release)
 #   bash release/build_release.sh dist   (and copies them to release/dist/)
+#   bash release/build_release.sh sdl    (also the SDL archive; with dist too)
+# The SDL archive, ogles2-<version>-sdl.lha and -sdl.zip, holds SDL2 and SDL3
+# with the ogles2 backend (ports/sdl2, ports/sdl3, built here), PiStorm3D's
+# MiniGL SDK (SDL links it for its desktop-GL path) and two examples built
+# from the SDK as assembled; it unpacks over the SDK archive.
 #
 # It builds the library, the import libraries (GCC and vbcc) and OGLES2Log,
 # compiles the examples' shaders with the offline compiler (host v3dglslc)
@@ -21,6 +26,16 @@ VBCC=${VBCC:-$HOME/vbcc}
 MESA=${MESA:-$HOME/mesa-build/mesa}
 LHA=${LHA:-$HOME/tools/bin/lha}
 OUT=${OUT:-$HOME/ogles2-build/release}
+PISTORM3D_SDK=${PISTORM3D_SDK:-/mnt/c/- CPP/pistorm3d/SDK}
+DIST=0
+SDL=0
+for a in "$@"; do
+    case $a in
+    dist) DIST=1 ;;
+    sdl) SDL=1 ;;
+    *) echo "usage: build_release.sh [dist] [sdl]"; exit 1 ;;
+    esac
+done
 
 VER=$(sed -n 's/^#define OGLES2_LIB_VERSION *\([0-9]*\).*/\1/p' "$REPO/ogles2/ogles2_internal.h")
 REV=$(sed -n 's/^#define OGLES2_LIB_REVISION *\([0-9]*\).*/\1/p' "$REPO/ogles2/ogles2_internal.h")
@@ -130,10 +145,69 @@ EOF
 ls -l "$OUT"/ogles2-$VERSION*.lha "$OUT"/ogles2-$VERSION*.zip
 (cd "$OUT" && sha256sum ogles2-$VERSION*.lha ogles2-$VERSION*.zip)
 
+# ---- "sdl": the SDL archive (unpacks over the SDK archive: the drawers merge)
+#   ogles2-<v>-sdl.lha  ogles2/SDK/{SDL2,SDL3,MiniGL,doc/SDL.md,examples-sdl},
+#                       ogles2/Examples/SDL, ogles2/licences, ogles2/ReadMe-SDL
+#   ogles2-<v>-sdl.zip  the SDK part alone, under ogles2-sdk-<v>/ as the SDK zip
+if [ $SDL = 1 ]; then
+    B="$B" PISTORM3D_SDK="$PISTORM3D_SDK" bash "$REPO/ports/sdl2/build.sh" > "$W/sdl2-build.txt" 2>&1 ||
+        { tail -20 "$W/sdl2-build.txt"; exit 1; }
+    B="$B" PISTORM3D_SDK="$PISTORM3D_SDK" bash "$REPO/ports/sdl3/build.sh" > "$W/sdl3-build.txt" 2>&1 ||
+        { tail -20 "$W/sdl3-build.txt"; exit 1; }
+    L2=${SDL68K_SRC:-$HOME/sdl2-msn}/libSDL2-amigaos3-main
+    L3=${SDL3_68K_SRC:-$HOME/sdl3-msn}/SDL3
+    RS=$OUT/sdl/ogles2
+    rm -rf "$OUT/sdl"
+    mkdir -p "$RS"/SDK/{SDL2/include/SDL2,SDL2/lib,SDL3/include/SDL3,SDL3/lib,MiniGL,doc,examples-sdl}         "$RS/Examples/SDL" "$RS/licences"
+    text "$HERE/ReadMe-SDL" "$RS/ReadMe-SDL"
+    # Headers: SDL's public ones (its build configuration for AmigaOS 3 among them).
+    cp "$L2"/include/*.h "$RS/SDK/SDL2/include/SDL2/"
+    cp "$L3"/include/SDL3/*.h "$RS/SDK/SDL3/include/SDL3/"
+    find "$RS/SDK/SDL2" "$RS/SDK/SDL3" -type f -name '*.h' -exec sed -i 's/\r$//' {} +
+    cp "$B"/sdl2/libSDL2.a "$B"/sdl2/libSDL2_test.a "$RS/SDK/SDL2/lib/"
+    cp "$B"/sdl3/libSDL3.a "$B"/sdl3/libSDL3_test.a "$RS/SDK/SDL3/lib/"
+    # PiStorm3D's MiniGL SDK, its layout kept (its headers reach ../../../backend/).
+    cp -r "$PISTORM3D_SDK/." "$RS/SDK/MiniGL/"
+    text "$REPO/docs/SDL.md" "$RS/SDK/doc/SDL.md"
+    for f in Makefile sdl2_sprites.c sdl3_gles2.c; do
+        text "$HERE/examples-sdl/$f" "$RS/SDK/examples-sdl/$f"
+    done
+    sed 's/\r$//' "$L2/LICENSE" > "$RS/licences/SDL2-LICENSE.txt"
+    sed 's/\r$//' "$L3/LICENSE.txt" > "$RS/licences/SDL3-LICENSE.txt"
+    for f in License_MiniGL_Library.txt License_V3D_ThirdParty.txt; do
+        sed 's/\r$//' "$REPO/licences/$f" > "$RS/licences/$f"
+    done
+    sed 's/\r$//' "$REPO/LICENSE" > "$RS/LICENSE"
+    # The examples, built from the ogles2 SDK and this archive's SDK together.
+    rm -rf "$W/sdk-sdl" && mkdir -p "$W/sdk-sdl" && cp -r "$R/SDK/." "$RS/SDK/." "$W/sdk-sdl/"
+    make -C "$W/sdk-sdl/examples-sdl" CC="$TC/bin/m68k-amigaos-gcc" > "$W/examples-sdl.txt" 2>&1 ||
+        { grep -v lang_reloc "$W/examples-sdl.txt" | tail -20; exit 1; } # the linker traces relocations on stderr
+    for p in sdl2_sprites sdl3_gles2; do
+        $TC/bin/m68k-amigaos-strip -o "$RS/Examples/SDL/$p" "$W/sdk-sdl/examples-sdl/$p"
+    done
+    echo "SDL examples: built"
+    rm -f "$OUT"/ogles2-$VERSION-sdl.lha "$OUT"/ogles2-$VERSION-sdl.zip
+    (cd "$OUT/sdl" && $LHA -ao5q "$OUT/ogles2-$VERSION-sdl.lha" ogles2)
+    SZ=$W/zip-sdl/ogles2-sdk-$VERSION
+    rm -rf "$W/zip-sdl" && mkdir -p "$SZ" && cp -r "$RS/SDK/." "$SZ/" && cp -r "$RS/LICENSE" "$RS/licences" "$SZ/"
+    text "$HERE/ReadMe-SDL" "$SZ/ReadMe-SDL"
+    python3 - "$W/zip-sdl" "ogles2-sdk-$VERSION" "$OUT/ogles2-$VERSION-sdl.zip" <<'PYEOF'
+import os, sys, zipfile
+base, top, out = sys.argv[1:]
+with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+    for d, dirs, files in os.walk(os.path.join(base, top)):
+        dirs.sort()
+        for f in sorted(files):
+            p = os.path.join(d, f)
+            z.write(p, os.path.relpath(p, base))
+PYEOF
+    ls -l "$OUT"/ogles2-$VERSION-sdl.lha "$OUT"/ogles2-$VERSION-sdl.zip
+fi
+
 # ---- "dist": the archives into the repository (release/dist/), for those
 # who develop on Windows without WSL's build output at hand. Only on request:
 # each copy is a new 10 MB in the repository's history.
-if [ "${1:-}" = dist ]; then
+if [ $DIST = 1 ]; then
     rm -f "$HERE"/dist/ogles2-*.lha "$HERE"/dist/ogles2-*.zip
     mkdir -p "$HERE/dist"
     cp "$OUT"/ogles2-$VERSION*.lha "$OUT"/ogles2-$VERSION*.zip "$HERE/dist/"
