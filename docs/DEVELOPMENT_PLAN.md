@@ -801,7 +801,7 @@ Sizes, as effort for one experienced developer and with ±50% uncertainty: **S**
   - Fix pass.
   - Licence decision (D6) settled before publishing.
   - Release: SDK (headers, import library, examples, autodoc), LHA package, documentation of deviations (unsupported tags, any remaining limits). Done 2026-10-15 (`release/`, §13).
-- **Exit criteria:** published release with conformance results and known issues.
+- **Exit criteria:** published release with conformance results and known issues. Met 2026-10-18: the repositories are public and release `v1.3` is on GitHub (§13).
 
 **Order of work:** M0 → M1 → M2 → M3 → M4 → M5 → M6 → M7.
 
@@ -1465,10 +1465,17 @@ M6's exit criterion. Each row is a workload measured on the test A1200 (Pi 4B, E
 - **`glCompileShader` reads shader records from `PROGDIR:shaders/` too** (`program.c`: then the cache; new records still go to the cache). With the compiler in the package and no records beside the binaries, each boot's first start would have started the compiler for every shader (the records went to `T:` without `OGLES2Cache:`). `ogles2.doc` --shaders-- and `GettingStarted.txt` say to ship the records with the binaries.
 - **A1200**, the package's drawer after a reboot, nothing installed (no ogles2 in `LIBS:` or memory, no `OGLES2Cache:`): the library from `libs/`, all 114 programs from `PROGDIR:shaders/`, the compiler found in `libs/` and never started; timedemo `four` at 640x480: 1260 frames, **80.4 fps** (12.4 ms average).
 
+**Done (2026-10-18): the release published (M7's exit criterion).**
+- **Public:** `github.com/ladislawv/ogles2` and `github.com/ladislawv/ioq3-amiga`. The Hyperion terms are met: the library's source, modifications included, is published.
+- **ogles2 release `v1.3`** (tag on `bd58b91`): `ogles2-1.3.lha`, `-sdk.lha`, `-sdk.zip`, `-sdl.lha`, `-sdl.zip` and `SHA256SUMS`, the archives of `release/dist/` (the library with the shader lookups in `PROGDIR:shaders/`, still version 1.3); an anonymous download matched its checksum. The notes: what the library offers, the downloads, the four examples, requirements, installing, the deviations, licences, credits.
+- **ioq3-amiga release `296-gles2`** (tag on `d58221c`): `Quake3-GLES2-296.lha` (the game with the GLES2 renderer, `libs/ogles2.library` of the same build, the compiler, the shaders for 640x480 and 1920x1080 with their records, licences; no game data) and `SHA256SUMS`. The same package is in that repository's `release/`, refreshed only when a build is released.
+- **No regression run after the two lookup changes** (binaries 2026-10-16, records 2026-10-18), the developer's decision: they only add places to look, and the programs that use them (Boing Ocean, the examples, the Quake package) were run on the A1200.
+- **Boing Ocean keeps afl_ext's MIT notice** (the developer's decision): its wave model and sky are still theirs.
+
 **Next, in order (M6: ecosystem, sharing and performance, §9):**
-1. **M7, before the release:**
+1. **After the release:**
    - `amictld`'s large-reply stall (postponed: the test station, not the library);
-   - the repositories made public with the release (the Hyperion terms); the backend's authors asked whether their code may become MIT (D6).
+   - the backend's authors asked whether their code may become MIT (D6).
 2. **The rest of M6's scope:** optional: native ETC1 sampling. glmark2's `buffer` scenes (49–83 fps: half of a 200-column buffer rewritten every frame) are a candidate for the buffer path.
 3. **Postponed (2026-10-13, the developer's decision):** per-draw CPU time for gl4es programs (the gl4es build: 23.3 ms a frame against MiniGL's 16.4; ogles2's draw about 28 us, 32 us for renderergl2's), and minigl.library coexistence (D3: the shared submission component with PiStorm3D's maintainers; the turn across programs above is ogles2's half).
 
