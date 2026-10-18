@@ -94,6 +94,13 @@ text "$HERE/GettingStarted.txt" "$R/SDK/doc/GettingStarted.txt"
 for f in Makefile triangle.c triangle_shaders.h cube.c cube_shaders.h boingocean.c boingocean_shaders.h; do
     text "$HERE/examples/$f" "$R/SDK/examples/$f"
 done
+# Boing 2026: a project of its own (its shaders' sources in shaders/)
+B26=$HERE/examples/boing2026
+mkdir -p "$R/SDK/examples/boing2026/shaders" "$R/SDK/examples/boing2026/tools"
+for f in Makefile ReadMe.txt boing2026.c boing2026_shaders.h tools/embed_shaders.py; do
+    text "$B26/$f" "$R/SDK/examples/boing2026/$f"
+done
+for f in "$B26"/shaders/*; do text "$f" "$R/SDK/examples/boing2026/shaders/$(basename "$f")"; done
 
 # ---- the examples' shader binaries: the GLSL byte for byte as the programs
 # pass it, compiled by the offline compiler, named by hash
@@ -108,6 +115,14 @@ done
 python3 "$REPO/v3dp/v3dp_hashname.py" "$W"/v3dp/*.v3dp
 mkdir -p "$R/Examples/shaders"
 cp "$W"/v3dp/*.v3dp "$R/Examples/shaders/"
+# Boing 2026's, from its shaders/ as shipped in the SDK (its header embeds the
+# same bytes); its shadow map is a depth texture, so some come with a .v3dw.
+rm -rf "$W/v3dp-b26" && mkdir -p "$W/v3dp-b26"
+(cd "$R/SDK/examples/boing2026/shaders" && "$V/host/v3dglslc" -o "$W/v3dp-b26" \
+    ball.vert ball.frag room.vert room.frag screen.vert blur.frag screen.vert composite.frag \
+    shadow.vert shadow.frag flare.vert flare.frag > "$W/v3dglslc-b26.txt" 2>&1) || { cat "$W/v3dglslc-b26.txt"; exit 1; }
+python3 "$REPO/v3dp/v3dp_hashname.py" "$W"/v3dp-b26/*
+cp "$W"/v3dp-b26/* "$R/Examples/shaders/"
 
 # ---- the examples, built from the SDK as shipped (GCC; vbcc to check)
 cp -r "$R/SDK/." "$W/sdk/"
@@ -115,6 +130,10 @@ make -C "$W/sdk/examples" CC="$TC/bin/m68k-amigaos-gcc" > "$W/examples-gcc.txt"
 for p in triangle cube boingocean; do
     $TC/bin/m68k-amigaos-strip -o "$R/Examples/$p" "$W/sdk/examples/$p"
 done
+# Boing 2026: GCC only (its sound calls BeginIO through GCC's inline assembly)
+make -C "$W/sdk/examples/boing2026" CC="$TC/bin/m68k-amigaos-gcc" boing2026 >> "$W/examples-gcc.txt"
+$TC/bin/m68k-amigaos-strip -o "$R/Examples/boing2026" "$W/sdk/examples/boing2026/boing2026"
+text "$B26/ReadMe.txt" "$R/Examples/boing2026.txt"
 mkdir -p "$W/sdk-vbcc" && cp -r "$R/SDK/." "$W/sdk-vbcc/"
 PATH=$VBCC/bin:$PATH VBCC=$VBCC make -C "$W/sdk-vbcc/examples" vbcc \
     VC="$VBCC/bin/vc +aos68k" VCFLAGS="-c99 -cpu=68020 -fpu=68881 -O1 -I$TC/m68k-amigaos/ndk-include" \
