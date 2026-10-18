@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Date | Started 2026-10-09; status kept current in §13 |
-| Status | In development: M0 to M5 done (real GLES2 programs, shaders compiled on the Amiga, the whole GLES2 core with framebuffer objects, faster than MiniGL); M6 (ecosystem, sharing, performance) next (§13) |
+| Status | Released: ogles2.library 1.3; M0 to M7 done (real GLES2 programs, shaders compiled on the Amiga, the whole GLES2 core with framebuffer objects and 32 extensions, dEQP-GLES2's must-pass list, Quake III about 30% faster than on MiniGL); what is left in §13 |
 | Baseline | PiStorm3D / minigl.library 29.1 (`MiniGL_Library_68k`, branch `PiStorm3D` @ `01f5a3e`) |
 | Target | AmigaOS 3.x, 68k under Emu68 on PiStorm with Raspberry Pi 4B / CM4 (the hardware PiStorm3D supports), RTG (Picasso96 or CyberGraphX) |
 | Team | Ladislawv, R-Typer and Claude Opus 5.5 AI assistant (§2.4) |
@@ -1463,7 +1463,7 @@ M6's exit criterion. Each row is a workload measured on the test A1200 (Pi 4B, E
 **Done (2026-10-18): Quake III's GLES2 build moved into ioq3-amiga; shader records in `PROGDIR:shaders/`.**
 - **The source of the GLES2 Quake is now one tree:** `github.com/ladislawv/ioq3-amiga` holds upstream ioquake3's `renderergl2`/`renderercommon` at `83a7762` (one commit unchanged, one with the two changes of `ports/ioq3-gl2/patches`), and `code/amiga-gl2/` (the glimp, the ref adapter, the compatibility and SDL headers, a `<mgl/gl.h>` stand-in with the two pointer calls the engine's input code needs, Mesa's and Khronos' desktop GL headers for types and constants, `gen_glue.py`), `build_ioq3_ogles2_wsl.sh` (engine, game modules and renderer from that tree with amiga-gcc and the ogles2 SDK; the game modules byte for byte as `ports/ioq3`'s) and `package_ioq3_ogles2_wsl.sh` (`Quake3-GLES2-<build>.lha`: the game, `libs/ogles2.library`, `libs/v3dglslc`, the 680 files of `tests/a1200/m6-5/cache` in `shaders/`, ReadMe, GPL and ogles2's licences; no game data). For the GPL: the binary's whole source is in that repository.
 - **`glCompileShader` reads shader records from `PROGDIR:shaders/` too** (`program.c`: then the cache; new records still go to the cache). With the compiler in the package and no records beside the binaries, each boot's first start would have started the compiler for every shader (the records went to `T:` without `OGLES2Cache:`). `ogles2.doc` --shaders-- and `GettingStarted.txt` say to ship the records with the binaries.
-- **A1200**, the package's drawer after a reboot, nothing installed (no ogles2 in `LIBS:` or memory, no `OGLES2Cache:`): the library from `libs/`, all 114 programs from `PROGDIR:shaders/`, the compiler found in `libs/` and never started; timedemo `four` at 640x480: 1260 frames, **80.4 fps** (12.4 ms average).
+- **A1200**, the package's drawer after a reboot, nothing installed (no ogles2 in `LIBS:` or memory, no `OGLES2Cache:`): the library from `libs/`, all 114 programs from `PROGDIR:shaders/`, the compiler found in `libs/` and never started; timedemo `four` at 640x480: 1260 frames, **80.4 fps** (12.4 ms average): against MiniGL's 61.3 (2026-10-15, above), **about 30% faster** (31%; the README's figure).
 
 **Done (2026-10-18): the release published (M7's exit criterion).**
 - **Public:** `github.com/ladislawv/ogles2` and `github.com/ladislawv/ioq3-amiga`. The Hyperion terms are met: the library's source, modifications included, is published.

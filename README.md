@@ -16,8 +16,8 @@ Amiga.
 - **Real shaders.** Full GLSL ES 1.00, compiled by Mesa's own V3D compiler, running *on the
   Amiga*: a program hands the library its shader source, and it is compiled at link time and
   cached on disk. Or ship the compiled binaries with the program and start instantly.
-- **Fast.** Quake III with its modern GLES2 renderer runs about **20% faster** than on MiniGL
-  (timedemo `four`: 75.7 against 61.3 fps). Raw throughput is in another league: the same gears
+- **Fast.** Quake III with its modern GLES2 renderer runs about **30% faster** than on MiniGL
+  (timedemo `four` at 640x480: 80.4 against 61.3 fps). Raw throughput is in another league: the same gears
   scene at 1734 fps against MiniGL's 791, and with 32,000 triangles 445 fps against 47.
 - **Proven against the standard.** Khronos' own dEQP-GLES2 test suite, all 17,165 cases on a real
   A1200: everything passes except 25 cube-map cases, where the GPU filters edges seamlessly (as
