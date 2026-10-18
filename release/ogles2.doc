@@ -152,7 +152,8 @@ ogles2.library/--shaders--                         ogles2.library/--shaders--
        that ships its binaries and runs where a compiler may be installed
        should ship these records too, in the same shaders/ drawer:
        glCompileShader looks in PROGDIR:shaders/, then in the cache. Take
-       them from OGLES2Cache: with the binaries.
+       them from OGLES2Cache: with the binaries, or write them on a PC with
+       the source distribution's v3dp/v3ds_record.py.
 
        glGetProgramBinaryOES returns the .v3dp file
        (GL_PROGRAM_BINARY_V3DP_PISTORM); glProgramBinaryOES takes one.

@@ -5,8 +5,10 @@
 # The shaders' sources are in shaders/; boing2026_shaders.h holds them as C
 # strings (make it again with "make header" after editing them: python3). The
 # program needs their compiled forms (.v3dp/.v3dw) in a shaders/ drawer beside
-# it, or the shader compiler: the release ships them. "make shaders" compiles
-# them with the offline compiler of the ogles2 source (OGLES2, V3DGLSLC).
+# it, or the shader compiler: the release ships them, with the shaders'
+# records (.v3ds), which keep an installed compiler from starting. "make
+# shaders" makes all three with the offline compiler of the ogles2 source
+# (OGLES2, V3DGLSLC) into build/v3dp.
 
 SDK      ?= ../..
 CC       ?= m68k-amigaos-gcc
@@ -34,6 +36,7 @@ shaders: $(SHADERS)
 	rm -rf build/v3dp && mkdir -p build/v3dp
 	cd shaders && $(V3DGLSLC) -o ../build/v3dp $(PAIRS)
 	python3 -I $(OGLES2)/v3dp/v3dp_hashname.py build/v3dp/*
+	python3 -I $(OGLES2)/v3dp/v3ds_record.py build/v3dp $(SHADERS)
 
 clean:
 	rm -rf boing2026 build

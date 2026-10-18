@@ -2,7 +2,9 @@
 # or with vbcc:  make vbcc
 # From the SDK's examples/ drawer; the headers and import libraries are in
 # ../include and ../lib. The programs need their .v3dp files (the compiled
-# shaders) beside them, or the shader compiler: see ../doc/ogles2.doc.
+# shaders) in a shaders/ drawer beside them, or the shader compiler; with
+# the shaders' .v3ds records there too, an installed compiler is not
+# started: see ../doc/ogles2.doc. The release's Examples/shaders/ has both.
 
 CC     ?= m68k-amigaos-gcc
 # -fbbb=...: bebbo's optimiser without "e", which deletes the fintrz of

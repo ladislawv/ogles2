@@ -69,8 +69,10 @@ start takes about a second) and the result goes into OGLES2Cache:, so the
 next run needs no compiler.
 
 Programs that ship their binaries (as the examples do) run without the
-compiler. Programs that make shaders at run time (gl4es and the programs
-built on it, for instance) need it.
+compiler. Where it is installed, they leave it unstarted only if they also
+ship their shaders' records (.v3ds files, in shaders/ with the binaries),
+as the examples do. Programs that make shaders at run time (gl4es
+and the programs built on it, for instance) need it.
 
 The examples
 ------------

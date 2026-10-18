@@ -232,6 +232,9 @@ Each of these cost real time once.
 - **Quake III keeps settings** in its home's `baseq3/q3config.cfg` from run to run (archived
   cvars): delete it before a comparison. A timedemo runs faster than real time, so its sound
   is garbled whatever the driver; judge sound by playing.
+- **`Assign LIBS:` with nothing after it removes the assign**, it does not list it: the
+  station lost its `LIBS:` that way once (2026-10-18). List with plain `Assign`; take a
+  package's drawer out with `Assign LIBS: <drawer> REMOVE`.
 - **Two GL programs at once** (a game left running and a test started) can hang the Amiga:
   check with `amictl.py run Status` before starting one.
 - **An installed ogles2 overrides the packages'.** `Run-*` scripts add the package's `libs/`

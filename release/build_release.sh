@@ -123,6 +123,11 @@ rm -rf "$W/v3dp-b26" && mkdir -p "$W/v3dp-b26"
     shadow.vert shadow.frag flare.vert flare.frag > "$W/v3dglslc-b26.txt" 2>&1) || { cat "$W/v3dglslc-b26.txt"; exit 1; }
 python3 "$REPO/v3dp/v3dp_hashname.py" "$W"/v3dp-b26/*
 cp "$W"/v3dp-b26/* "$R/Examples/shaders/"
+# Every shader's record (.v3ds) beside them: with v3dglslc installed, a
+# shader without one starts the compiler at glCompileShader, binaries or
+# not (1.3 shipped none: the examples started it after every boot).
+python3 "$REPO/v3dp/v3ds_record.py" "$R/Examples/shaders" "$W"/src/*.vert "$W"/src/*.frag \
+    "$R"/SDK/examples/boing2026/shaders/* > "$W/v3ds.txt"
 
 # ---- the examples, built from the SDK as shipped (GCC; vbcc to check)
 cp -r "$R/SDK/." "$W/sdk/"

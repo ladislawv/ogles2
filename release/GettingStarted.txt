@@ -177,7 +177,9 @@ for byte: <24 hex digits>.v3dp, looked for in a shaders/ drawer beside the
 program (PROGDIR:shaders/), then beside the program (PROGDIR:), then in
 OGLES2Cache: (or T:), else compiled now (ogles2.doc, --shaders--). Ship the
 shader records (<hash>.v3ds) from the cache in shaders/ as well: where a
-compiler is installed, they spare it a start for every shader.
+compiler is installed, glCompileShader starts it for every shader that has
+no record, binaries or not. Records are looked for in PROGDIR:shaders/
+only, not beside the program.
 
 Rules that follow from it:
   - Keep shader sources as constant strings (as triangle_shaders.h does).
@@ -195,18 +197,23 @@ For release, ship the binaries so users need no compiler:
   1. Delete your program's .v3dp files from OGLES2Cache: (or all of them).
   2. Run the program once, through every effect it has, with the compiler
      installed.
-  3. Copy the new .v3dp files from OGLES2Cache: (sort by date) into the
-     program's drawer, beside the program.
+  3. Copy the new .v3dp and .v3ds files from OGLES2Cache: (sort by date)
+     into a shaders/ drawer beside the program.
   4. Test without the compiler: rename LIBS:v3dglslc, Avail FLUSH, run.
      A missing binary fails the link; its shaders' sources are then in
      T:ogles2_missing_shaders.txt.
+  5. Test with the compiler, from an empty cache: put LIBS:v3dglslc back,
+     delete OGLES2Cache:#?.v3ds (or T:#?.v3ds), Avail FLUSH, run. The
+     compiler must not start (Status lists no v3dglslc): a shader without
+     a record would start it.
 A .v3dw or .v3da file next to a .v3dp (programs that sample float or depth
 textures, or use alpha to coverage) belongs with it: ship it too.
 
 Without an Amiga compiler, binaries can be made on a PC with the source
 distribution's offline compiler (tools/v3dglslc; v3dp/split_shaders.py
 splits T:ogles2_missing_shaders.txt, v3dp/v3dp_hashname.py names the
-files). It produces the same bytes as the Amiga one.
+files, v3dp/v3ds_record.py writes the shaders' records). It produces the
+same bytes as the Amiga one.
 
 Info logs: with the compiler, glCompileShader reports real errors and
 glGetShaderInfoLog has the compiler's messages. Without it, a shader's

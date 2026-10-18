@@ -83,8 +83,8 @@ code; built in `Examples/SDL/`). Or build them from the source tree (below).
 - **SDL's GLES2 renderer writes its shaders at run time**, so 2D programs need
   the compiler too. The first run compiles each shader (about a second each);
   the results go to `OGLES2Cache:` (or `T:`) and later runs load them. To ship
-  without the compiler, run the program once and ship the `.v3dp` files from
-  the cache in the program's drawer (see `release/GettingStarted.txt`, the
+  without the compiler, run the program once and ship the `.v3dp` and `.v3ds`
+  files from the cache in a `shaders/` drawer beside the program (see `release/GettingStarted.txt`, the
   section on shaders).
 - `minigl.library` is linked in (for the MiniGL path) but only opened by
   programs that ask for desktop GL.
@@ -201,7 +201,7 @@ The profile request is what selects ogles2.library. A program that does not set
 - **No `glFinish` before a swap is needed or wanted:** ogles2 overlaps the next
   frame's CPU work with the GPU render.
 - **Shaders compile on the Amiga** the first time (about a second each, once).
-  Ship the cache's `.v3dp` files to start instantly.
+  Ship the cache's `.v3dp` and `.v3ds` files in `shaders/` to start instantly.
 - **GLES2 only.** SDL's desktop-GL renderer and GLES3 code do not run on ogles2;
   for desktop GL code use gl4es (`ports/gl4es`) on ogles2, or SDL's MiniGL path.
 - **The test programs** (`testgles2`, `testsprite`, `testrendercopyex`,

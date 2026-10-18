@@ -59,8 +59,8 @@ SDL's GLES2 renderer, and most GLES2 programs, write shaders at run time:
 the first run compiles each one with the shader compiler (LIBS:v3dglslc,
 about a second each) and keeps the result in OGLES2Cache: (or T:); later
 runs load it. To ship a program without the compiler, run it once and ship
-the .v3dp files from the cache in its drawer (SDK/doc/GettingStarted.txt,
-section on shaders).
+the .v3dp and .v3ds files from the cache in a shaders/ drawer beside it
+(SDK/doc/GettingStarted.txt, section on shaders).
 
 Requirements
 --------
