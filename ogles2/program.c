@@ -388,7 +388,7 @@ void ogles2_glShaderSource(struct OGLES2Context *ctx, GLuint shader, GLsizei cou
     s->source = src;
 }
 
-static void shader_record_path(char *path, const struct OGLES2Shader *s);
+static void shader_record_path(char *path, const char *dir, const struct OGLES2Shader *s);
 static int read_record(const char *path, ULONG compiler, char **log);
 static void write_record(const char *path, const char *log);
 static void write_fail_record(const char *path, ULONG compiler, const char *log);
@@ -419,11 +419,17 @@ void ogles2_glCompileShader(struct OGLES2Context *ctx, GLuint shader)
         s->compiled = GL_TRUE;
         return;
     }
-    shader_record_path(path, s);
     /* A record: compiled before, or failed with this compiler (gl4es tries
      * shaders for optional features at every start that fail by design: the
-     * compiler need not be started for them, about a second). */
+     * compiler need not be started for them, about a second). A program may
+     * ship its records beside its binaries, in its shaders/ drawer; the
+     * compiler's go to the disk cache. */
+    shader_record_path(path, "PROGDIR:shaders/", s);
     rc = read_record(path, compiler, &s->info_log);
+    if (rc < 0) {
+        shader_record_path(path, ogles2_cache_dir(), s);
+        rc = read_record(path, compiler, &s->info_log);
+    }
     if (rc >= 0) {
         s->compiled = rc ? GL_TRUE : GL_FALSE;
         return;
@@ -723,7 +729,8 @@ static UBYTE *read_file(const char *path, ULONG *len)
 #define RECORD_TAG "v3ds 1\n"
 #define FAIL_TAG "v3ds 0 "
 
-static void shader_record_path(char *path, const struct OGLES2Shader *s)
+/* The record of shader s in drawer dir ("PROGDIR:shaders/", the cache). */
+static void shader_record_path(char *path, const char *dir, const struct OGLES2Shader *s)
 {
     static const char digits[] = "0123456789abcdef";
     struct blake3 h;
@@ -738,7 +745,7 @@ static void shader_record_path(char *path, const struct OGLES2Shader *s)
     blake3_update(&h, w, 8);
     blake3_update(&h, s->source, len);
     blake3_final(&h, out);
-    strcpy(path, ogles2_cache_dir());
+    strcpy(path, dir);
     q = path + str_len(path);
     for (i = 0; i < 12; i++) { /* 24 digits + ".v3ds": FFS's 30 characters */
         *q++ = digits[out[i] >> 4];
@@ -820,7 +827,14 @@ static void mark_compiled(const struct OGLES2Shader *s)
 {
     char path[96], *log;
     int rc;
-    shader_record_path(path, s);
+    /* Recorded already: shipped with the program, or in the cache. */
+    shader_record_path(path, "PROGDIR:shaders/", s);
+    rc = read_record(path, ogles2_compiler_id(), &log);
+    if (log)
+        FreeVec(log);
+    if (rc == 1)
+        return;
+    shader_record_path(path, ogles2_cache_dir(), s);
     rc = read_record(path, ogles2_compiler_id(), &log);
     if (log)
         FreeVec(log);

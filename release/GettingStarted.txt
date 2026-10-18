@@ -175,7 +175,9 @@ about 0.2 s per program, plus about 1 s when the compiler starts.
 ogles2 finds a program's binary by a hash of the two shader texts, byte
 for byte: <24 hex digits>.v3dp, looked for in a shaders/ drawer beside the
 program (PROGDIR:shaders/), then beside the program (PROGDIR:), then in
-OGLES2Cache: (or T:), else compiled now (ogles2.doc, --shaders--).
+OGLES2Cache: (or T:), else compiled now (ogles2.doc, --shaders--). Ship the
+shader records (<hash>.v3ds) from the cache in shaders/ as well: where a
+compiler is installed, they spare it a start for every shader.
 
 Rules that follow from it:
   - Keep shader sources as constant strings (as triangle_shaders.h does).

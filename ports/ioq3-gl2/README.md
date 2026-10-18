@@ -4,6 +4,11 @@
 modern renderer, `renderergl2`, running on ogles2.library directly, without
 gl4es. The plan and its status: `docs/IOQ3_GLES2_PORT_PLAN.md`.
 
+The same build, with its whole source in one tree and a user package, is in
+[ioq3-amiga](https://github.com/ladislawv/ioq3-amiga) (`code/amiga-gl2/`,
+`build_ioq3_ogles2_wsl.sh`, `package_ioq3_ogles2_wsl.sh`): released Quake
+binaries are built there. This port stays for the ogles2 test packages.
+
 ## How it is put together
 
 - **Engine:** Cowcat's AmigaOS 3 ioquake3 with the PiStorm changes

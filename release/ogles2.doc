@@ -146,7 +146,13 @@ ogles2.library/--shaders--                         ogles2.library/--shaders--
 
        glCompileShader compiles in the compiler's front end and reports
        real errors when the compiler is there; without it, it only records
-       the source and reports success, and the link decides.
+       the source and reports success, and the link decides. A shader
+       compiled once leaves a record, <hash>.v3ds, in the cache: next time
+       it answers for the shader without starting the compiler. A program
+       that ships its binaries and runs where a compiler may be installed
+       should ship these records too, in the same shaders/ drawer:
+       glCompileShader looks in PROGDIR:shaders/, then in the cache. Take
+       them from OGLES2Cache: with the binaries.
 
        glGetProgramBinaryOES returns the .v3dp file
        (GL_PROGRAM_BINARY_V3DP_PISTORM); glProgramBinaryOES takes one.
