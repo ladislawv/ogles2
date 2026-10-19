@@ -204,7 +204,16 @@ The profile request is what selects ogles2.library. A program that does not set
   Ship the cache's `.v3dp` and `.v3ds` files in `shaders/` to start instantly.
 - **GLES2 only.** SDL's desktop-GL renderer and GLES3 code do not run on ogles2;
   for desktop GL code use gl4es (`ports/gl4es`) on ogles2, or SDL's MiniGL path.
+- **Audio (SDL2):** SDL picks Paula (`audio.device`) first, then AHI. SDL2_68k
+  reads no Amiga environment variable (its `SDL_getenv` is SDL's own table), so
+  `SetEnv SDL_AUDIODRIVER ahi` does nothing: a program chooses AHI with
+  `SDL_SetHint(SDL_HINT_AUDIODRIVER, "ahi")` before `SDL_Init`. AHI plays since
+  `ports/sdl2/patches/0002` (GitHub issue 5); before, its audio thread hung.
+- **Full screen (SDL2)** opens a 32-bit screen of the size asked for and
+  closes it afterwards (0002: no blank "SDL" screen is left behind).
 - **The test programs** (`testgles2`, `testsprite`, `testrendercopyex`,
   `testdraw2` / `testdraw`) are built by the scripts and run by the A1200 test
   packages `m6-3` (SDL2) and `m6-4` (SDL3); `tests/run_for.c` adds
-  `--seconds N` to quit them after N seconds.
+  `--seconds N` to quit them after N seconds. SDL2's `audiotest` (the audio
+  thread keeps playing, AHI or Paula) and `screens` (Intuition's screens) run
+  in package `m7-7`.

@@ -1,0 +1,486 @@
+SDL2_68k fixes for AmigaOS 3 on the PiStorm, from arczi84's patch (GitHub
+issue 5 of ladislawv/ogles2, gist 18ddb47cc9059dd7cf6c6842e58bf6d5), on top
+of 0001 and src/:
+- Makefile: no -DSDL_OS3_DEBUG (SDL wrote WORK:sdl_log.txt and
+  WORK:sdl_debug.log, from subtasks and under Forbid: a requester on systems
+  without a WORK: volume);
+- AHI audio: SDL's audio thread holds the message port while it runs, so
+  WaitIO there gets the replies (silence, then noise, before); ogles2
+  changed arczi84's version from taking the port at the first I/O to
+  ThreadInit/ThreadDeinit, so a reply after the thread ends signals the
+  opening task, not a task that is gone;
+- AHI audio (ogles2's, found testing the above on the A1200): the
+  availability check opens AHI_NO_UNIT, not unit 0 (unit 0 opened, closed
+  and opened again at once left AHI 6.7 there never completing the first
+  write: the thread hung);
+- fullscreen on PiStorm RTG: a 32-bit mode of the size asked for, from the
+  display database (BestCModeIDTags with depth 32 finds none there);
+- the display's driverdata, so the screen SetDisplayMode opens is recorded
+  and closed (each fullscreen run left a blank "SDL" screen), and the
+  desktop mode is the Workbench (no new screen);
+- rawkeys 0x64/0x65 are Alt and 0x66/0x67 Amiga (they were swapped).
+
+diff --git a/libSDL2-amigaos3-main/Makefile b/libSDL2-amigaos3-main/Makefile
+index 349adfbf..3026389f 100644
+--- a/libSDL2-amigaos3-main/Makefile
++++ b/libSDL2-amigaos3-main/Makefile
+@@ -18,7 +18,7 @@ EXAMPLE_DIR = $(BUILD_DIR)/examples
+ CFLAGS = -std=gnu99 -O2 -m68040 -mcrt=clib2 -mhard-float \
+          -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare \
+          -I./include -I./src \
+-         -D__AMIGAOS3__ -DSDL_OS3_DEBUG
++         -D__AMIGAOS3__
+ # ogles2 (ports/sdl2): its headers (include/ and the generated proto/ogles2.h)
+ CFLAGS += $(OGLES2_CFLAGS)
+ 
+diff --git a/libSDL2-amigaos3-main/src/audio/amigaos3/SDL_os3audio.c b/libSDL2-amigaos3-main/src/audio/amigaos3/SDL_os3audio.c
+index d924649c..04398daf 100644
+--- a/libSDL2-amigaos3-main/src/audio/amigaos3/SDL_os3audio.c
++++ b/libSDL2-amigaos3-main/src/audio/amigaos3/SDL_os3audio.c
+@@ -33,6 +33,49 @@
+ 
+ #define OS3AHI_DRIVER_NAME "ahi"
+ 
++/* AHI replies signal the port's task. The port comes from CreateMsgPort in
++   OpenDevice, which SDL runs in the task that opens the device, but the I/O
++   (WaitIO in PlayDevice and WaitDevice) runs in SDL's audio thread: it waited
++   for a signal that went to the other task, and the thread hung after two
++   buffers (silence, then noise; arczi84, github.com/ladislawv/ogles2 issue 5).
++   The thread takes the port over when it starts, before any request is sent,
++   and gives it back when it ends: a request still in flight then signals the
++   opening task, in which CloseDevice aborts and waits for it (a reply to the
++   ended thread's task would write into freed memory). Under Disable: a device
++   may reply from an interrupt. */
++static void OS3AHI_ThreadInit(_THIS)
++{
++    struct SDL_PrivateAudioData *hidden = _this->hidden;
++    BYTE bit;
++
++    if (!hidden || !hidden->port || (bit = AllocSignal(-1)) < 0)
++        return;
++    Disable();
++    hidden->port->mp_SigBit  = (UBYTE)bit;
++    hidden->port->mp_SigTask = FindTask(NULL);
++    Enable();
++    hidden->thread_sigbit = bit;
++}
++
++static void os3ahi_return_port(struct SDL_PrivateAudioData *hidden)
++{
++    Disable();
++    hidden->port->mp_SigBit  = (UBYTE)hidden->open_sigbit;
++    hidden->port->mp_SigTask = hidden->open_task;
++    Enable();
++}
++
++static void OS3AHI_ThreadDeinit(_THIS)
++{
++    struct SDL_PrivateAudioData *hidden = _this->hidden;
++
++    if (!hidden || !hidden->port || hidden->thread_sigbit < 0)
++        return;
++    os3ahi_return_port(hidden);
++    FreeSignal(hidden->thread_sigbit);
++    hidden->thread_sigbit = -1;
++}
++
+ static void OS3AHI_DetectDevices(void)
+ {
+ }
+@@ -89,6 +132,9 @@ static int OS3AHI_OpenDevice(_THIS, const char *devname)
+     hidden->port = CreateMsgPort();
+     if (!hidden->port)
+         return SDL_SetError("AHI: CreateMsgPort failed");
++    hidden->open_task     = hidden->port->mp_SigTask;
++    hidden->open_sigbit   = (BYTE)hidden->port->mp_SigBit;
++    hidden->thread_sigbit = -1;
+ 
+     /* Create primary AHIRequest */
+     hidden->req[0] = (struct AHIRequest *)
+@@ -181,6 +227,13 @@ static void OS3AHI_CloseDevice(_THIS)
+ 
+     if (!hidden) return;
+ 
++    /* The thread gave the port back (ThreadDeinit); if it did not, the
++       port is the opening task's again all the same (the thread's signal
++       went with it). */
++    if (hidden->port && hidden->thread_sigbit >= 0) {
++        os3ahi_return_port(hidden);
++        hidden->thread_sigbit = -1;
++    }
+     if (hidden->req[0]) {
+         if (hidden->req[1] && hidden->playing > 1) {
+             AbortIO((struct IORequest *)hidden->req[1]);
+@@ -220,7 +273,11 @@ static void OS3AHI_CloseDevice(_THIS)
+ }
+ 
+ /* Probe whether ahi.device can be opened.
+-   If not, return SDL_FALSE so SDL2 falls through to Paula. */
++   If not, return SDL_FALSE so SDL2 falls through to Paula.
++   AHI_NO_UNIT: the device without a unit, so no audio hardware is
++   allocated and freed. With unit 0, opened and closed here and opened again
++   at once by OpenDevice, AHI 6.7 on the PiStorm test A1200 never completed
++   the first CMD_WRITE, and the audio thread hung (ogles2, issue 5). */
+ static int OS3AHI_Available(void)
+ {
+     struct MsgPort *p;
+@@ -244,7 +301,7 @@ static int OS3AHI_Available(void)
+     oldwin = me->pr_WindowPtr;
+     me->pr_WindowPtr = (APTR)-1L;
+ 
+-    if (OpenDevice((CONST_STRPTR)AHINAME, 0,
++    if (OpenDevice((CONST_STRPTR)AHINAME, AHI_NO_UNIT,
+                    (struct IORequest *)req, NULL) == 0) {
+         ok = 1;
+         CloseDevice((struct IORequest *)req);
+@@ -268,6 +325,8 @@ static SDL_bool OS3AHI_Init(SDL_AudioDriverImpl *impl)
+     impl->GetDeviceBuf  = OS3AHI_GetDeviceBuf;
+     impl->WaitDevice    = OS3AHI_WaitDevice;
+     impl->CloseDevice   = OS3AHI_CloseDevice;
++    impl->ThreadInit    = OS3AHI_ThreadInit;
++    impl->ThreadDeinit  = OS3AHI_ThreadDeinit;
+ 
+     impl->OnlyHasDefaultOutputDevice = SDL_TRUE;
+     impl->HasCaptureSupport = SDL_FALSE;
+diff --git a/libSDL2-amigaos3-main/src/audio/amigaos3/SDL_os3audio.h b/libSDL2-amigaos3-main/src/audio/amigaos3/SDL_os3audio.h
+index f80b76da..e5323a4f 100644
+--- a/libSDL2-amigaos3-main/src/audio/amigaos3/SDL_os3audio.h
++++ b/libSDL2-amigaos3-main/src/audio/amigaos3/SDL_os3audio.h
+@@ -26,6 +26,12 @@ struct SDL_PrivateAudioData {
+     ULONG              bufsize;
+     ULONG              ahi_type;
+     ULONG              ahi_freq;
++    /* The port is made in OpenDevice (the opening task), but SDL's audio
++       thread does the I/O: it holds the port while it runs (ThreadInit,
++       ThreadDeinit; thread_sigbit -1 when it does not). */
++    struct Task       *open_task;
++    BYTE               open_sigbit;
++    BYTE               thread_sigbit;
+ };
+ 
+ #define _THIS SDL_AudioDevice *_this
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3events.c b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3events.c
+index 150e2412..7d3ecf50 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3events.c
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3events.c
+@@ -145,10 +145,10 @@ static const SDL_Scancode os3_scancode_table[0x78] = {
+     /* 0x61 */ SDL_SCANCODE_RSHIFT,
+     /* 0x62 */ SDL_SCANCODE_CAPSLOCK,
+     /* 0x63 */ SDL_SCANCODE_LCTRL,
+-    /* 0x64 */ SDL_SCANCODE_LGUI,        /* Left Amiga key */
+-    /* 0x65 */ SDL_SCANCODE_RGUI,        /* Right Amiga key */
+-    /* 0x66 */ SDL_SCANCODE_LALT,
+-    /* 0x67 */ SDL_SCANCODE_RALT,
++    /* 0x64 */ SDL_SCANCODE_LALT,        /* Amiga rawkeys: 0x64/0x65 are Alt */
++    /* 0x65 */ SDL_SCANCODE_RALT,
++    /* 0x66 */ SDL_SCANCODE_LGUI,        /* Left Amiga key (0x66) */
++    /* 0x67 */ SDL_SCANCODE_RGUI,        /* Right Amiga key (0x67) */
+     /* 0x68 */ SDL_SCANCODE_UNKNOWN,     /* (undefined) */
+     /* 0x69 */ SDL_SCANCODE_UNKNOWN,     /* (undefined) */
+     /* 0x6A */ SDL_SCANCODE_UNKNOWN,     /* (undefined) */
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.c b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.c
+index 588b6de4..8bdf0f19 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.c
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.c
+@@ -50,6 +50,9 @@ struct GfxBase         *GfxBase       = NULL;
+ /* Forward declarations */
+ static int  OS3_VideoInit(_THIS);
+ static void OS3_VideoQuit(_THIS);
++static struct Screen *os3_pending_screen;
++static BOOL os3_try_close_screen(struct Screen *screen);
++static void os3_close_display_screen(OS3_DisplayData *data);
+ static void OS3_DeleteDevice(SDL_VideoDevice *device);
+ static void OS3_GetDisplayModes(_THIS, SDL_VideoDisplay *display);
+ static int  OS3_SetDisplayMode(_THIS, SDL_VideoDisplay *display,
+@@ -296,6 +299,16 @@ static int OS3_VideoInit(_THIS)
+         return -1;
+     }
+ 
++    /* The display's driverdata holds its fullscreen screen
++     * (OS3_SetDisplayMode). SDL_AddBasicVideoDisplay leaves it NULL, so the
++     * screen SetDisplayMode opened was never recorded: the window opened its
++     * own screen besides, and every fullscreen run left a blank "SDL" screen
++     * behind. */
++    if (_this->num_displays > 0 && !_this->displays[0].driverdata) {
++        OS3_DisplayData *dd = (OS3_DisplayData *)SDL_calloc(1, sizeof(OS3_DisplayData));
++        _this->displays[0].driverdata = dd;
++    }
++
+     OS3_InitMouse();
+ 
+     return 0;
+@@ -303,8 +316,15 @@ static int OS3_VideoInit(_THIS)
+ 
+ static void OS3_VideoQuit(_THIS)
+ {
++    int i;
++
+     OS3_QuitMouse();
+ 
++    for (i = 0; i < _this->num_displays; i++)
++        os3_close_display_screen((OS3_DisplayData *)_this->displays[i].driverdata);
++    if (os3_pending_screen && os3_try_close_screen(os3_pending_screen))
++        os3_pending_screen = NULL;
++
+     /* Libraries -- close in reverse order. Windows and screens must be
+        closed already (DestroyWindow is called before VideoQuit). */
+     if (CyberGfxBase) {
+@@ -368,6 +388,41 @@ static void OS3_GetDisplayModes(_THIS, SDL_VideoDisplay *display)
+     }
+ }
+ 
++/* A display screen whose CloseScreen had to wait for its window: os3_pending_screen */
++
++static BOOL os3_try_close_screen(struct Screen *screen)
++{
++    if (screen->FirstWindow)
++        return FALSE;
++    if (screen->UserData) {
++        FreeMem(screen->UserData, 6 * sizeof(UWORD)); /* the empty pointer */
++        screen->UserData = NULL;
++    }
++    return CloseScreen(screen) ? TRUE : FALSE;
++}
++
++void OS3_ReleaseDisplayScreen(struct Screen *screen)
++{
++    if (screen && screen == os3_pending_screen && os3_try_close_screen(screen))
++        os3_pending_screen = NULL;
++}
++
++/* Leaving fullscreen: the screen goes now, or when its window has closed.
++ * (It used to be dropped even when CloseScreen failed with the game's window
++ * still on it, and restoring the desktop mode opened another screen: two
++ * blank screens stayed after a fullscreen program quit.) */
++static void os3_close_display_screen(OS3_DisplayData *data)
++{
++    if (!data || !data->fullscreen_screen)
++        return;
++    if (!os3_try_close_screen(data->fullscreen_screen)) {
++        if (os3_pending_screen)
++            os3_try_close_screen(os3_pending_screen);
++        os3_pending_screen = data->fullscreen_screen;
++    }
++    data->fullscreen_screen = NULL;
++}
++
+ static int OS3_SetDisplayMode(_THIS, SDL_VideoDisplay *display,
+                               SDL_DisplayMode *mode)
+ {
+@@ -376,12 +431,10 @@ static int OS3_SetDisplayMode(_THIS, SDL_VideoDisplay *display,
+     struct Screen *screen;
+     int depth;
+ 
+-    if (!mode) {
+-        /* NULL mode = restore desktop mode. Close fullscreen screen if any. */
+-        if (data && data->fullscreen_screen) {
+-            CloseScreen(data->fullscreen_screen);
+-            data->fullscreen_screen = NULL;
+-        }
++    if (!mode || (mode->w == display->desktop_mode.w && mode->h == display->desktop_mode.h &&
++                  mode->format == display->desktop_mode.format)) {
++        /* Restore the desktop mode: that is the Workbench, no new screen */
++        os3_close_display_screen(data);
+         return 0;
+     }
+ 
+@@ -393,20 +446,19 @@ static int OS3_SetDisplayMode(_THIS, SDL_VideoDisplay *display,
+     }
+ 
+     /* Close any previous fullscreen screen */
+-    if (data && data->fullscreen_screen) {
+-        CloseScreen(data->fullscreen_screen);
+-        data->fullscreen_screen = NULL;
+-    }
++    os3_close_display_screen(data);
+ 
+     depth = SDL_BYTESPERPIXEL(mode->format) * 8;
+     if (depth < 16) depth = 16;
+ 
+-    modeid = BestCModeIDTags(
+-        CYBRBIDTG_NominalWidth,  mode->w,
+-        CYBRBIDTG_NominalHeight, mode->h,
+-        CYBRBIDTG_Depth,         depth,
+-        TAG_DONE
+-    );
++    modeid = depth == 32 ? OS3_Best32BitMode(mode->w, mode->h) : INVALID_ID;
++    if (modeid == INVALID_ID)
++        modeid = BestCModeIDTags(
++            CYBRBIDTG_NominalWidth,  mode->w,
++            CYBRBIDTG_NominalHeight, mode->h,
++            CYBRBIDTG_Depth,         depth,
++            TAG_DONE
++        );
+     if (modeid == INVALID_ID) {
+         /* P96/SAGA fallback */
+         modeid = OS3_FindRTGMode(mode->w, mode->h, depth);
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.h b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.h
+index db126c4a..db222e62 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.h
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3video.h
+@@ -43,11 +43,15 @@ typedef struct OS3_DisplayData {
+     struct Screen *fullscreen_screen; /* custom screen for fullscreen mode (NULL = WB) */
+ } OS3_DisplayData;
+ 
++/* The display's fullscreen screen closes only once no window is on it. */
++void OS3_ReleaseDisplayScreen(struct Screen *screen);
++
+ /* Per-window driver data */
+ typedef struct OS3_WindowData {
+     struct Window *window;    /* Intuition window */
+     struct Screen *screen;    /* Intuition screen (NULL if using WB screen) */
+     int            is_fullscreen; /* non-zero if we own the screen */
++    int            screen_from_display; /* screen is the display's fullscreen_screen */
+     int            is_opengl;     /* SDL_WINDOW_OPENGL window */
+     int            external_window; /* native Window and screen belong to caller */
+     int            gl_width, gl_height; /* current MiniGL drawable size */
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3window.c b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3window.c
+index 4479770a..e16fa7d7 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3window.c
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3window.c
+@@ -79,6 +79,64 @@ ULONG OS3_FindRTGMode(int want_w, int want_h, int want_depth)
+     return best_id;
+ }
+ 
++/*
++ * A 32-bit RTG mode of the requested size. On PiStorm RTG,
++ * BestCModeIDTags(CYBRBIDTG_Depth, 32) finds nothing, and the old fallback
++ * (640x480x16) then failed to open as 32 bit: no fullscreen. The same was
++ * fixed in the MiniGL port's SDL 1.2 (CGX_FindBGRA32Mode). Exact size first,
++ * BGRA32 preferred (the PiStorm RTG / V3D format), else the smallest larger
++ * 32-bit mode.
++ */
++ULONG OS3_Find32BitMode(int want_w, int want_h)
++{
++    ULONG id = INVALID_ID;
++    ULONG exact_any = INVALID_ID, best = INVALID_ID;
++    ULONG best_w = 0xFFFFFFFF, best_h = 0xFFFFFFFF;
++
++    if (!CyberGfxBase)
++        return INVALID_ID;
++    while ((id = NextDisplayInfo(id)) != INVALID_ID) {
++        ULONG w, h;
++        if (!IsCyberModeID(id))
++            continue;
++        if (GetCyberIDAttr(CYBRIDATTR_BPPIX, id) != 4)
++            continue;
++        w = GetCyberIDAttr(CYBRIDATTR_WIDTH, id);
++        h = GetCyberIDAttr(CYBRIDATTR_HEIGHT, id);
++        if ((int)w == want_w && (int)h == want_h) {
++            if (GetCyberIDAttr(CYBRIDATTR_PIXFMT, id) == PIXFMT_BGRA32)
++                return id;
++            if (exact_any == INVALID_ID)
++                exact_any = id;
++        } else if ((int)w >= want_w && (int)h >= want_h &&
++                   (w < best_w || (w == best_w && h < best_h))) {
++            best_w = w;
++            best_h = h;
++            best = id;
++        }
++    }
++    return exact_any != INVALID_ID ? exact_any : best;
++}
++
++/* BestCModeIDTags for 32 bit, but only if it really is a 32-bit mode */
++ULONG OS3_Best32BitMode(int want_w, int want_h)
++{
++    ULONG modeid = OS3_Find32BitMode(want_w, want_h);
++    if (modeid != INVALID_ID)
++        return modeid;
++    if (!CyberGfxBase)
++        return INVALID_ID;
++    modeid = BestCModeIDTags(
++        CYBRBIDTG_NominalWidth,  want_w,
++        CYBRBIDTG_NominalHeight, want_h,
++        CYBRBIDTG_Depth,         32,
++        TAG_DONE
++    );
++    if (modeid != INVALID_ID && GetCyberIDAttr(CYBRIDATTR_BPPIX, modeid) != 4)
++        modeid = INVALID_ID;
++    return modeid;
++}
++
+ /* Window flags for windowed mode */
+ #define OS3_WFLG_WINDOWED \
+     (WFLG_DRAGBAR    | \
+@@ -104,6 +162,13 @@ static void OS3_CloseWindowAndScreen(OS3_WindowData *data)
+         CloseWindow(data->window);
+         data->window = NULL;
+     }
++    if (data->screen && data->screen_from_display) {
++        /* the display's screen: closed by the display code, or now if that
++         * already gave it up while this window was still open */
++        OS3_ReleaseDisplayScreen(data->screen);
++        data->screen = NULL;
++        data->screen_from_display = 0;
++    }
+     if (data->screen) {
+         /* Free CHIP RAM empty pointer if we allocated one (stored in UserData) */
+         if (data->screen->UserData) {
+@@ -196,12 +261,7 @@ static int OS3_OpenFullscreen(OS3_WindowData *data, int w, int h)
+     if (w < 640) w = 640;
+     if (h < 480) h = 480;
+ 
+-    modeid = BestCModeIDTags(
+-        CYBRBIDTG_NominalWidth,  w,
+-        CYBRBIDTG_NominalHeight, h,
+-        CYBRBIDTG_Depth,         32,
+-        TAG_DONE
+-    );
++    modeid = OS3_Best32BitMode(w, h);
+     if (modeid == INVALID_ID) {
+         modeid = BestCModeIDTags(
+             CYBRBIDTG_NominalWidth,  640,
+@@ -291,12 +351,7 @@ static int OS3_OpenWindowed(OS3_WindowData *data, SDL_Window *window)
+         int scrw = window->w;
+         int scrh = window->h;
+ 
+-        modeid = BestCModeIDTags(
+-            CYBRBIDTG_NominalWidth,  scrw,
+-            CYBRBIDTG_NominalHeight, scrh,
+-            CYBRBIDTG_Depth,         32,
+-            TAG_DONE
+-        );
++        modeid = OS3_Best32BitMode(scrw, scrh);
+         if (modeid == INVALID_ID) {
+             modeid = BestCModeIDTags(
+                 CYBRBIDTG_NominalWidth,  640,
+@@ -434,7 +489,9 @@ void OS3_SetWindowFullscreen(_THIS, SDL_Window *window,
+         data->window = NULL;
+     }
+     /* Close any screen WE own (from windowed custom screen path) */
+-    if (data->screen && (!disp_data || data->screen != disp_data->fullscreen_screen)) {
++    if (data->screen && data->screen_from_display) {
++        OS3_ReleaseDisplayScreen(data->screen);
++    } else if (data->screen && (!disp_data || data->screen != disp_data->fullscreen_screen)) {
+         if (data->screen->UserData) {
+             FreeMem(data->screen->UserData, 6 * sizeof(UWORD));
+             data->screen->UserData = NULL;
+@@ -442,6 +499,7 @@ void OS3_SetWindowFullscreen(_THIS, SDL_Window *window,
+         CloseScreen(data->screen);
+     }
+     data->screen = NULL;
++    data->screen_from_display = 0;
+     data->is_fullscreen = 0;
+ 
+     if (fullscreen && disp_data && disp_data->fullscreen_screen) {
+@@ -463,6 +521,7 @@ void OS3_SetWindowFullscreen(_THIS, SDL_Window *window,
+             UWORD *empty_ptr;
+             data->window = iwin;
+             data->screen = screen;
++            data->screen_from_display = 1;
+             data->is_fullscreen = 1;
+ 
+             /* Hide pointer in fullscreen (same reason as OS3_OpenFullscreen) */
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3window.h b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3window.h
+index 5011bf4d..83a24a88 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3window.h
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3window.h
+@@ -39,5 +39,7 @@ extern void OS3_RaiseWindow(_THIS, SDL_Window *window);
+ 
+ /* RTG mode fallback: walk display database manually when BestCModeIDTags fails */
+ extern ULONG OS3_FindRTGMode(int want_w, int want_h, int want_depth);
++extern ULONG OS3_Find32BitMode(int want_w, int want_h);
++extern ULONG OS3_Best32BitMode(int want_w, int want_h);
+ 
+ #endif /* SDL_os3window_h_ */

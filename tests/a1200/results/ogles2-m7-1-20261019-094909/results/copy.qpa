@@ -1,0 +1,1483 @@
+#sessionInfo releaseName unknown
+#sessionInfo releaseId 0xcafebabe
+#sessionInfo targetName "AmigaOS3"
+#sessionInfo logFormatVersion "0.3.4"
+#sessionInfo vendor "ogles2.library"
+#sessionInfo renderer "V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM"
+#sessionInfo commandLineParameters "--deqp-case dEQP-GLES2.functional.texture.specification.basic_copy* --deqp-archive-dir=M7R1:bin --deqp-log-filename=M7R1:results/copy.qpa --deqp-log-images=disable --deqp-log-shader-sources=disable --deqp-surface-width=256 --deqp-surface-height=256 --deqp-gl-config-name=rgba8888d24s8ms0"
+
+#beginSession
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_alpha
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_alpha" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, 42, 155, 128, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 1, GL_ALPHA, 113, 177, 64, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 2, GL_ALPHA, 14, 128, 32, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 3, GL_ALPHA, 238, 95, 16, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 4, GL_ALPHA, 150, 22, 8, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 5, GL_ALPHA, 69, 44, 4, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 6, GL_ALPHA, 133, 224, 2, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 7, GL_ALPHA, 157, 139, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">271693</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_luminance
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_luminance" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 80, 105, 128, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 1, GL_LUMINANCE, 45, 214, 64, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 2, GL_LUMINANCE, 6, 74, 32, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 3, GL_LUMINANCE, 84, 158, 16, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 4, GL_LUMINANCE, 90, 204, 8, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 5, GL_LUMINANCE, 182, 172, 4, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 6, GL_LUMINANCE, 99, 216, 2, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 7, GL_LUMINANCE, 91, 67, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">238968</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_luminance_alpha
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_luminance_alpha" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, 66, 59, 128, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 1, GL_LUMINANCE_ALPHA, 71, 23, 64, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 2, GL_LUMINANCE_ALPHA, 114, 40, 32, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 3, GL_LUMINANCE_ALPHA, 18, 198, 16, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 4, GL_LUMINANCE_ALPHA, 244, 107, 8, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 5, GL_LUMINANCE_ALPHA, 238, 242, 4, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 6, GL_LUMINANCE_ALPHA, 63, 173, 2, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 7, GL_LUMINANCE_ALPHA, 50, 85, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">233635</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_rgb
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_rgb" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 99, 166, 128, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 1, GL_RGB, 113, 134, 64, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 2, GL_RGB, 187, 80, 32, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 3, GL_RGB, 205, 184, 16, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 4, GL_RGB, 26, 127, 8, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 5, GL_RGB, 1, 63, 4, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 6, GL_RGB, 67, 209, 2, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 7, GL_RGB, 161, 73, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">237777</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_rgba
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.2d_rgba" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 46, 146, 128, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 1, GL_RGBA, 104, 59, 64, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 2, GL_RGBA, 73, 230, 32, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 3, GL_RGBA, 80, 34, 16, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 4, GL_RGBA, 95, 57, 8, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 5, GL_RGBA, 131, 53, 4, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 6, GL_RGBA, 78, 225, 2, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_2D, 7, GL_RGBA, 91, 93, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">233184</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_alpha
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_alpha" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_ALPHA, 179, 6, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_ALPHA, 98, 121, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_ALPHA, 58, 45, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_ALPHA, 160, 66, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_ALPHA, 112, 89, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_ALPHA, 42, 192, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_ALPHA, 160, 115, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_ALPHA, 14, 179, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_ALPHA, 180, 155, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_ALPHA, 54, 191, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_ALPHA, 170, 158, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_ALPHA, 47, 122, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_ALPHA, 201, 101, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_ALPHA, 201, 95, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_ALPHA, 26, 229, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_ALPHA, 87, 211, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_ALPHA, 209, 74, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_ALPHA, 185, 13, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_ALPHA, 9, 19, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_ALPHA, 195, 157, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_ALPHA, 141, 132, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_ALPHA, 75, 231, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_ALPHA, 186, 177, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_ALPHA, 247, 148, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_ALPHA, 17, 85, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_ALPHA, 235, 1, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_ALPHA, 106, 160, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_ALPHA, 185, 74, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_ALPHA, 51, 42, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_ALPHA, 146, 240, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_ALPHA, 133, 186, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_ALPHA, 117, 165, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_ALPHA, 99, 50, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_ALPHA, 153, 19, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_ALPHA, 232, 157, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_ALPHA, 193, 53, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_ALPHA, 157, 197, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_ALPHA, 33, 33, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_ALPHA, 70, 177, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_ALPHA, 79, 50, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_ALPHA, 228, 93, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_ALPHA, 254, 60, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">661437</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_luminance
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_luminance" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_LUMINANCE, 172, 164, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_LUMINANCE, 91, 168, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_LUMINANCE, 102, 130, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_LUMINANCE, 3, 65, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_LUMINANCE, 41, 80, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_LUMINANCE, 86, 17, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_LUMINANCE, 87, 85, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_LUMINANCE, 207, 131, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_LUMINANCE, 125, 141, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_LUMINANCE, 150, 154, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_LUMINANCE, 71, 99, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_LUMINANCE, 174, 88, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_LUMINANCE, 13, 47, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_LUMINANCE, 208, 45, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_LUMINANCE, 113, 217, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_LUMINANCE, 52, 62, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_LUMINANCE, 172, 67, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_LUMINANCE, 216, 194, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_LUMINANCE, 63, 163, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_LUMINANCE, 158, 108, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_LUMINANCE, 32, 173, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_LUMINANCE, 67, 70, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_LUMINANCE, 163, 84, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_LUMINANCE, 168, 57, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_LUMINANCE, 31, 194, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_LUMINANCE, 112, 252, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_LUMINANCE, 152, 68, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_LUMINANCE, 139, 29, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_LUMINANCE, 222, 90, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_LUMINANCE, 84, 200, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_LUMINANCE, 11, 67, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_LUMINANCE, 104, 92, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_LUMINANCE, 190, 143, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_LUMINANCE, 137, 225, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_LUMINANCE, 162, 107, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_LUMINANCE, 126, 222, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_LUMINANCE, 76, 139, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_LUMINANCE, 11, 158, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_LUMINANCE, 99, 102, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_LUMINANCE, 184, 252, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_LUMINANCE, 104, 164, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_LUMINANCE, 6, 88, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">635501</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_luminance_alpha
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_luminance_alpha" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_LUMINANCE_ALPHA, 10, 43, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_LUMINANCE_ALPHA, 33, 128, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_LUMINANCE_ALPHA, 152, 40, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_LUMINANCE_ALPHA, 21, 71, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_LUMINANCE_ALPHA, 32, 28, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_LUMINANCE_ALPHA, 30, 35, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_LUMINANCE_ALPHA, 171, 5, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_LUMINANCE_ALPHA, 147, 172, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_LUMINANCE_ALPHA, 104, 32, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_LUMINANCE_ALPHA, 123, 165, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_LUMINANCE_ALPHA, 172, 205, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_LUMINANCE_ALPHA, 137, 44, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_LUMINANCE_ALPHA, 82, 106, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_LUMINANCE_ALPHA, 217, 94, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_LUMINANCE_ALPHA, 57, 72, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_LUMINANCE_ALPHA, 1, 93, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_LUMINANCE_ALPHA, 89, 188, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_LUMINANCE_ALPHA, 99, 124, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_LUMINANCE_ALPHA, 10, 60, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_LUMINANCE_ALPHA, 66, 188, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_LUMINANCE_ALPHA, 21, 236, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_LUMINANCE_ALPHA, 183, 46, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_LUMINANCE_ALPHA, 7, 160, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_LUMINANCE_ALPHA, 240, 2, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_LUMINANCE_ALPHA, 220, 119, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_LUMINANCE_ALPHA, 94, 55, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_LUMINANCE_ALPHA, 99, 189, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_LUMINANCE_ALPHA, 165, 166, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_LUMINANCE_ALPHA, 89, 14, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_LUMINANCE_ALPHA, 82, 210, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_LUMINANCE_ALPHA, 132, 71, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_LUMINANCE_ALPHA, 2, 105, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_LUMINANCE_ALPHA, 143, 212, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_LUMINANCE_ALPHA, 205, 165, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_LUMINANCE_ALPHA, 161, 177, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_LUMINANCE_ALPHA, 39, 179, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_LUMINANCE_ALPHA, 8, 93, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_LUMINANCE_ALPHA, 241, 76, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_LUMINANCE_ALPHA, 87, 125, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_LUMINANCE_ALPHA, 68, 230, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_LUMINANCE_ALPHA, 10, 135, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_LUMINANCE_ALPHA, 105, 28, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">646574</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_rgb
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_rgb" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, 152, 14, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, 184, 75, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, 41, 61, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, 137, 154, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, 102, 57, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, 172, 171, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_RGB, 17, 77, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_RGB, 218, 44, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_RGB, 192, 148, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_RGB, 53, 171, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_RGB, 105, 163, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_RGB, 197, 187, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_RGB, 136, 81, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_RGB, 229, 214, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_RGB, 196, 178, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_RGB, 53, 94, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_RGB, 134, 115, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_RGB, 10, 71, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_RGB, 80, 224, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_RGB, 188, 78, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_RGB, 126, 160, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_RGB, 155, 38, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_RGB, 148, 71, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_RGB, 61, 34, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_RGB, 138, 188, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_RGB, 211, 189, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_RGB, 214, 136, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_RGB, 208, 177, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_RGB, 107, 58, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_RGB, 127, 116, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_RGB, 169, 3, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_RGB, 133, 219, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_RGB, 167, 0, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_RGB, 9, 178, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_RGB, 142, 63, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_RGB, 112, 108, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_RGB, 23, 64, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_RGB, 245, 98, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_RGB, 68, 102, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_RGB, 139, 140, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_RGB, 188, 70, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_RGB, 252, 29, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">636678</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_rgba
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copyteximage2d.cube_rgba" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5e40);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5e20);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5e14);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glGenTextures(1, 0x0b9b5ec6);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGBA, 20, 144, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGBA, 52, 188, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGBA, 143, 53, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGBA, 104, 25, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGBA, 138, 67, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGBA, 102, 65, 64, 64, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_RGBA, 36, 13, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_RGBA, 113, 79, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_RGBA, 50, 202, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_RGBA, 19, 45, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_RGBA, 36, 30, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_RGBA, 37, 129, 32, 32, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_RGBA, 56, 54, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_RGBA, 59, 155, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_RGBA, 93, 231, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_RGBA, 236, 32, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_RGBA, 86, 162, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_RGBA, 180, 2, 16, 16, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_RGBA, 164, 229, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_RGBA, 132, 35, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_RGBA, 231, 157, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_RGBA, 10, 31, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_RGBA, 19, 203, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_RGBA, 202, 70, 8, 8, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_RGBA, 232, 176, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_RGBA, 210, 241, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_RGBA, 177, 29, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_RGBA, 59, 39, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_RGBA, 231, 23, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_RGBA, 56, 62, 4, 4, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_RGBA, 78, 85, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_RGBA, 138, 187, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_RGBA, 100, 46, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_RGBA, 185, 214, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_RGBA, 7, 160, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_RGBA, 89, 200, 2, 2, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_RGBA, 24, 39, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_RGBA, 177, 204, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_RGBA, 117, 106, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_RGBA, 195, 23, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_RGBA, 65, 169, 1, 1, 0)</Text>
+ <Text>glCopyTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_RGBA, 108, 18, 1, 1, 0)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">645623</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_alpha
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_alpha" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, 128, 64, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 1, GL_ALPHA, 64, 32, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 2, GL_ALPHA, 32, 16, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 3, GL_ALPHA, 16, 8, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 4, GL_ALPHA, 8, 4, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b9c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 5, GL_ALPHA, 4, 2, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 6, GL_ALPHA, 2, 1, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b24);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 7, GL_ALPHA, 1, 1, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5db0);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d90);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d84);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 50, 0, 57, 58, 78, 51)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 1, 6, 7, 123, 104, 56, 16)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 2, 0, 3, 153, 136, 1, 8)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 3, 10, 4, 26, 150, 6, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 4, 0, 0, 126, 231, 5, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 5, 1, 0, 36, 1, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 6, 0, 0, 24, 105, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 7, 0, 0, 47, 114, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">247322</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_luminance
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_luminance" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 128, 64, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 1, GL_LUMINANCE, 64, 32, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 2, GL_LUMINANCE, 32, 16, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 3, GL_LUMINANCE, 16, 8, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 4, GL_LUMINANCE, 8, 4, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b9c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 5, GL_LUMINANCE, 4, 2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 6, GL_LUMINANCE, 2, 1, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b24);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 7, GL_LUMINANCE, 1, 1, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5db0);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d90);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d84);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 33, 20, 131, 172, 67, 44)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 1, 4, 4, 12, 217, 51, 26)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 2, 2, 1, 195, 193, 6, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 3, 4, 0, 92, 134, 3, 8)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 4, 0, 1, 211, 190, 7, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 5, 0, 0, 224, 41, 3, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 6, 1, 0, 251, 78, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 7, 0, 0, 184, 181, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">249678</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_luminance_alpha
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_luminance_alpha" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, 128, 64, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbb74754);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 1, GL_LUMINANCE_ALPHA, 64, 32, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 2, GL_LUMINANCE_ALPHA, 32, 16, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 3, GL_LUMINANCE_ALPHA, 16, 8, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 4, GL_LUMINANCE_ALPHA, 8, 4, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 5, GL_LUMINANCE_ALPHA, 4, 2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 6, GL_LUMINANCE_ALPHA, 2, 1, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 7, GL_LUMINANCE_ALPHA, 1, 1, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5db0);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d90);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d84);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 9, 36, 21, 67, 118, 11)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 1, 22, 9, 51, 59, 27, 11)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 2, 3, 6, 211, 157, 15, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 3, 2, 5, 85, 52, 10, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 4, 0, 0, 237, 62, 5, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 5, 2, 1, 213, 80, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 6, 0, 0, 208, 221, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 7, 0, 0, 53, 7, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">250051</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_rgb
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_rgb" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 128, 64, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb74754);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 1, GL_RGB, 64, 32, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 2, GL_RGB, 32, 16, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 3, GL_RGB, 16, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 4, GL_RGB, 8, 4, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16e94);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 5, GL_RGB, 4, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 6, GL_RGB, 2, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b34);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 7, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5db0);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d90);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d84);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 51, 43, 50, 16, 30, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 1, 9, 0, 164, 73, 5, 30)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 2, 6, 12, 101, 110, 26, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 3, 0, 4, 228, 247, 11, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 4, 0, 3, 22, 227, 4, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 5, 0, 0, 30, 146, 4, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 6, 0, 0, 71, 192, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 7, 0, 0, 37, 69, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">219946</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_rgba
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.2d_rgba" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_2D, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 128, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc2c3cc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 1, GL_RGBA, 64, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 2, GL_RGBA, 32, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 3, GL_RGBA, 16, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 4, GL_RGBA, 8, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 5, GL_RGBA, 4, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b9c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 6, GL_RGBA, 2, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_2D, 7, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b24);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5db0);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d90);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d84);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 38, 12, 181, 149, 24, 20)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 1, 4, 17, 188, 89, 60, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 2, 1, 2, 232, 65, 16, 11)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 3, 0, 2, 96, 17, 5, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 4, 0, 1, 161, 240, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 5, 0, 1, 49, 96, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 6, 0, 0, 88, 166, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_2D, 7, 0, 0, 107, 168, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">231858</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_alpha
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_alpha" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_ALPHA, 64, 64, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_ALPHA, 64, 64, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_ALPHA, 64, 64, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_ALPHA, 64, 64, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_ALPHA, 64, 64, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_ALPHA, 64, 64, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_ALPHA, 32, 32, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_ALPHA, 32, 32, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_ALPHA, 32, 32, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_ALPHA, 32, 32, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_ALPHA, 32, 32, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_ALPHA, 32, 32, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_ALPHA, 16, 16, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_ALPHA, 16, 16, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_ALPHA, 16, 16, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_ALPHA, 16, 16, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_ALPHA, 16, 16, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_ALPHA, 16, 16, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_ALPHA, 8, 8, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_ALPHA, 8, 8, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_ALPHA, 8, 8, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_ALPHA, 8, 8, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_ALPHA, 8, 8, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_ALPHA, 8, 8, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_ALPHA, 4, 4, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_ALPHA, 4, 4, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_ALPHA, 4, 4, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_ALPHA, 4, 4, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_ALPHA, 4, 4, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_ALPHA, 4, 4, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_ALPHA, 2, 2, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_ALPHA, 2, 2, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_ALPHA, 2, 2, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_ALPHA, 2, 2, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_ALPHA, 2, 2, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_ALPHA, 2, 2, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_ALPHA, 1, 1, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_ALPHA, 1, 1, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_ALPHA, 1, 1, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_ALPHA, 1, 1, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_ALPHA, 1, 1, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_ALPHA, 1, 1, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5da4);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d84);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d78);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 0, 31, 81, 20, 55, 11)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 26, 34, 50, 149, 25, 27)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 1, 2, 149, 111, 62, 50)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 6, 47, 208, 212, 38, 16)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 4, 30, 57, 131, 37, 28)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 11, 11, 102, 157, 42, 40)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, 3, 9, 137, 200, 19, 8)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, 17, 2, 243, 130, 2, 23)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, 10, 8, 167, 32, 22, 12)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, 0, 8, 41, 125, 32, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, 7, 18, 52, 211, 7, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, 8, 27, 196, 128, 10, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, 3, 0, 14, 4, 1, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, 2, 0, 27, 157, 14, 14)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, 5, 5, 21, 126, 11, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, 7, 0, 33, 228, 3, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, 5, 0, 116, 226, 2, 8)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, 8, 0, 62, 88, 4, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, 0, 3, 240, 75, 8, 5)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, 0, 3, 59, 163, 5, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, 1, 0, 142, 202, 2, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, 0, 0, 46, 88, 5, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, 5, 0, 153, 188, 2, 8)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, 6, 0, 230, 180, 2, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, 0, 0, 64, 35, 4, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, 0, 0, 54, 197, 3, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, 0, 0, 16, 251, 4, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, 0, 1, 171, 248, 1, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, 0, 2, 157, 132, 4, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, 3, 3, 142, 249, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, 0, 0, 55, 109, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, 0, 0, 46, 81, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, 0, 0, 119, 8, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, 0, 0, 254, 236, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, 0, 1, 254, 244, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, 0, 1, 79, 4, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, 0, 0, 29, 159, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, 0, 0, 161, 91, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, 0, 0, 85, 125, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, 0, 0, 209, 84, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, 0, 0, 42, 125, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, 0, 0, 171, 231, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">654903</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_luminance
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_luminance" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_LUMINANCE, 64, 64, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_LUMINANCE, 64, 64, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_LUMINANCE, 64, 64, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_LUMINANCE, 64, 64, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_LUMINANCE, 64, 64, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_LUMINANCE, 64, 64, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_LUMINANCE, 32, 32, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_LUMINANCE, 32, 32, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_LUMINANCE, 32, 32, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_LUMINANCE, 32, 32, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_LUMINANCE, 32, 32, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_LUMINANCE, 32, 32, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_LUMINANCE, 16, 16, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_LUMINANCE, 16, 16, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_LUMINANCE, 16, 16, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_LUMINANCE, 16, 16, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_LUMINANCE, 16, 16, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_LUMINANCE, 16, 16, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_LUMINANCE, 8, 8, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_LUMINANCE, 8, 8, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_LUMINANCE, 8, 8, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_LUMINANCE, 8, 8, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_LUMINANCE, 8, 8, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_LUMINANCE, 8, 8, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_LUMINANCE, 4, 4, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_LUMINANCE, 4, 4, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_LUMINANCE, 4, 4, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_LUMINANCE, 4, 4, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_LUMINANCE, 4, 4, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_LUMINANCE, 4, 4, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_LUMINANCE, 2, 2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_LUMINANCE, 2, 2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_LUMINANCE, 2, 2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_LUMINANCE, 2, 2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_LUMINANCE, 2, 2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_LUMINANCE, 2, 2, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_LUMINANCE, 1, 1, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_LUMINANCE, 1, 1, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_LUMINANCE, 1, 1, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_LUMINANCE, 1, 1, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_LUMINANCE, 1, 1, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_LUMINANCE, 1, 1, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5da4);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d84);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d78);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 3, 7, 246, 190, 3, 53)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 9, 15, 113, 64, 15, 49)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 26, 27, 122, 188, 18, 21)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, 13, 199, 174, 48, 37)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 11, 3, 112, 26, 33, 59)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 8, 3, 186, 167, 56, 13)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, 2, 15, 133, 126, 11, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, 21, 16, 179, 227, 2, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, 14, 11, 8, 183, 7, 18)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, 8, 18, 180, 242, 16, 12)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, 1, 17, 233, 102, 12, 5)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, 1, 20, 108, 90, 31, 11)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, 5, 8, 204, 184, 1, 6)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, 6, 13, 161, 195, 5, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, 0, 2, 188, 33, 10, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, 4, 0, 104, 182, 12, 8)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, 0, 5, 44, 158, 16, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, 2, 1, 58, 207, 9, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, 2, 1, 70, 140, 6, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, 0, 4, 48, 211, 8, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, 0, 2, 135, 235, 6, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, 0, 3, 48, 196, 7, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, 0, 0, 28, 202, 1, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, 6, 3, 192, 36, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, 0, 2, 230, 253, 4, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, 0, 0, 231, 140, 3, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, 0, 0, 104, 183, 4, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, 0, 0, 106, 155, 1, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, 0, 0, 225, 171, 4, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, 3, 1, 249, 169, 1, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, 0, 0, 31, 126, 1, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, 0, 1, 216, 101, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, 0, 0, 145, 137, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, 1, 0, 180, 43, 1, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, 0, 0, 173, 138, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, 0, 0, 107, 203, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, 0, 0, 121, 158, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, 0, 0, 229, 137, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, 0, 0, 124, 96, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, 0, 0, 238, 65, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, 0, 0, 123, 53, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, 0, 0, 212, 101, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">677245</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_luminance_alpha
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_luminance_alpha" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_LUMINANCE_ALPHA, 64, 64, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_LUMINANCE_ALPHA, 64, 64, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_LUMINANCE_ALPHA, 64, 64, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_LUMINANCE_ALPHA, 64, 64, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_LUMINANCE_ALPHA, 64, 64, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_LUMINANCE_ALPHA, 64, 64, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_LUMINANCE_ALPHA, 32, 32, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_LUMINANCE_ALPHA, 32, 32, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_LUMINANCE_ALPHA, 32, 32, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_LUMINANCE_ALPHA, 32, 32, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_LUMINANCE_ALPHA, 32, 32, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_LUMINANCE_ALPHA, 32, 32, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_LUMINANCE_ALPHA, 16, 16, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_LUMINANCE_ALPHA, 16, 16, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_LUMINANCE_ALPHA, 16, 16, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_LUMINANCE_ALPHA, 16, 16, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_LUMINANCE_ALPHA, 16, 16, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_LUMINANCE_ALPHA, 16, 16, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_LUMINANCE_ALPHA, 8, 8, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_LUMINANCE_ALPHA, 8, 8, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_LUMINANCE_ALPHA, 8, 8, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_LUMINANCE_ALPHA, 8, 8, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_LUMINANCE_ALPHA, 8, 8, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_LUMINANCE_ALPHA, 8, 8, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_LUMINANCE_ALPHA, 4, 4, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b9c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_LUMINANCE_ALPHA, 4, 4, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b9c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_LUMINANCE_ALPHA, 4, 4, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b9c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_LUMINANCE_ALPHA, 4, 4, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b9c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_LUMINANCE_ALPHA, 4, 4, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b9c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_LUMINANCE_ALPHA, 4, 4, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b9c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_LUMINANCE_ALPHA, 2, 2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_LUMINANCE_ALPHA, 2, 2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_LUMINANCE_ALPHA, 2, 2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_LUMINANCE_ALPHA, 2, 2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_LUMINANCE_ALPHA, 2, 2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_LUMINANCE_ALPHA, 2, 2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_LUMINANCE_ALPHA, 1, 1, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b24);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_LUMINANCE_ALPHA, 1, 1, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b24);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_LUMINANCE_ALPHA, 1, 1, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b24);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_LUMINANCE_ALPHA, 1, 1, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b24);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_LUMINANCE_ALPHA, 1, 1, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b24);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_LUMINANCE_ALPHA, 1, 1, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 0xbc16b24);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5da4);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d84);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d78);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 19, 7, 59, 101, 34, 43)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 42, 0, 135, 160, 7, 64)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 23, 30, 137, 46, 23, 33)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 31, 12, 109, 112, 9, 9)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 10, 21, 123, 112, 51, 22)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 1, 24, 68, 66, 18, 18)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, 0, 1, 176, 26, 14, 31)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, 0, 1, 95, 25, 24, 29)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, 7, 9, 207, 186, 16, 23)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, 6, 13, 219, 20, 15, 18)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, 15, 5, 214, 117, 13, 27)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, 5, 16, 172, 94, 17, 12)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, 10, 10, 225, 86, 5, 6)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, 2, 12, 171, 187, 12, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, 8, 0, 116, 150, 2, 15)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, 10, 0, 126, 76, 4, 14)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, 11, 6, 156, 180, 4, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, 6, 13, 114, 91, 6, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, 0, 3, 61, 104, 8, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, 1, 5, 212, 195, 7, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, 5, 0, 171, 156, 2, 5)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, 1, 0, 150, 229, 1, 6)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, 0, 3, 32, 196, 5, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, 5, 0, 37, 234, 3, 8)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, 1, 1, 40, 9, 3, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, 1, 1, 13, 161, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, 3, 0, 28, 216, 1, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, 0, 0, 40, 239, 4, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, 1, 0, 153, 228, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, 0, 0, 166, 162, 4, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, 0, 1, 5, 133, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, 0, 0, 198, 50, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, 1, 0, 68, 151, 1, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, 1, 0, 18, 160, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, 1, 0, 169, 246, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, 0, 1, 76, 111, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, 0, 0, 237, 167, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, 0, 0, 215, 37, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, 0, 0, 69, 34, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, 0, 0, 187, 136, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, 0, 0, 84, 187, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, 0, 0, 207, 241, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">699163</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_rgb
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_rgb" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, 64, 64, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, 64, 64, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, 64, 64, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, 64, 64, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, 64, 64, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, 64, 64, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_RGB, 32, 32, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb81abc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_RGB, 32, 32, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb81abc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_RGB, 32, 32, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb81abc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_RGB, 32, 32, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb81abc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_RGB, 32, 32, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb81abc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_RGB, 32, 32, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbb81abc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_RGB, 16, 16, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_RGB, 16, 16, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_RGB, 16, 16, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_RGB, 16, 16, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_RGB, 16, 16, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_RGB, 16, 16, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc17384);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_RGB, 4, 4, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16bdc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_RGB, 4, 4, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16bdc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_RGB, 4, 4, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16bdc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_RGB, 4, 4, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16bdc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_RGB, 4, 4, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16bdc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_RGB, 4, 4, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16bdc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_RGB, 2, 2, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5da4);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d84);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d78);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 38, 12, 132, 18, 6, 26)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 29, 2, 108, 44, 15, 62)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 4, 16, 190, 133, 50, 35)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 25, 10, 187, 3, 35, 39)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 11, 6, 167, 126, 50, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 8, 0, 143, 67, 12, 47)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, 0, 28, 142, 6, 30, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, 17, 11, 69, 56, 6, 20)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, 0, 5, 81, 137, 31, 23)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, 16, 1, 185, 209, 11, 27)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, 8, 2, 151, 128, 17, 24)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, 4, 19, 227, 1, 3, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, 1, 1, 206, 58, 14, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, 1, 1, 140, 62, 8, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, 5, 5, 224, 150, 9, 10)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, 6, 4, 186, 176, 3, 11)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, 3, 6, 151, 17, 9, 9)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, 8, 3, 98, 233, 5, 13)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, 0, 1, 181, 227, 8, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, 1, 0, 172, 224, 7, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, 0, 0, 142, 226, 8, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, 0, 1, 119, 18, 1, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, 1, 0, 171, 201, 1, 6)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, 2, 3, 162, 107, 4, 5)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, 1, 2, 16, 62, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, 0, 1, 70, 143, 4, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, 1, 0, 26, 63, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, 1, 1, 199, 220, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, 2, 2, 89, 126, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, 0, 0, 236, 85, 1, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, 0, 0, 173, 194, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, 0, 0, 65, 8, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, 0, 1, 5, 181, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, 0, 0, 213, 65, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, 0, 0, 76, 196, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, 0, 1, 16, 172, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, 0, 0, 237, 106, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, 0, 0, 48, 121, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, 0, 0, 154, 191, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, 0, 0, 147, 150, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, 0, 0, 23, 154, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, 0, 0, 55, 232, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">636579</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+#beginTestCaseResult dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_rgba
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseResult CasePath="dEQP-GLES2.functional.texture.specification.basic_copytexsubimage2d.cube_rgba" Version="0.3.4" CaseType="SelfValidate">
+ <Text>glClearColor(0.125, 0.25, 0.5, 1);</Text>
+ <Text>glClear(GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</Text>
+ <Text>glGenTextures(1, 0x0b9b5e5a);</Text>
+ <Text>// textures = { 1 }</Text>
+ <Text>glBindTexture(GL_TEXTURE_CUBE_MAP, 1);</Text>
+ <Text>glPixelStorei(GL_UNPACK_ALIGNMENT, 1);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc2e3cc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc2e3cc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc2e3cc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc2e3cc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc2e3cc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGBA, 64, 64, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc2e3cc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbb910dc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, GL_RGBA, 16, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, GL_RGBA, 16, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, GL_RGBA, 16, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, GL_RGBA, 16, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, GL_RGBA, 16, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, GL_RGBA, 16, 16, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbbd4bcc);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, GL_RGBA, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, GL_RGBA, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, GL_RGBA, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, GL_RGBA, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, GL_RGBA, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, GL_RGBA, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16c1c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b0c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0xbc16b2c);</Text>
+ <Text>glGetAttribLocation(1, a_position);</Text>
+ <Text>// 0 returned</Text>
+ <Text>glGetAttribLocation(1, a_coord);</Text>
+ <Text>// 1 returned</Text>
+ <Text>glUseProgram(1);</Text>
+ <Text>glEnableVertexAttribArray(0);</Text>
+ <Text>glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0xb9b5da4);</Text>
+ <Text>glEnableVertexAttribArray(1);</Text>
+ <Text>glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0xb9b5d84);</Text>
+ <Text>glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0xb9b5d78);</Text>
+ <Text>glDisableVertexAttribArray(0);</Text>
+ <Text>glDisableVertexAttribArray(1);</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 15, 8, 31, 114, 32, 48)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 35, 39, 122, 214, 22, 23)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 12, 2, 23, 36, 45, 61)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 17, 19, 181, 161, 40, 14)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 36, 43, 17, 183, 24, 12)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 1, 7, 91, 42, 12, 18)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, 0, 11, 150, 40, 27, 16)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 1, 8, 3, 164, 162, 22, 11)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 1, 11, 14, 23, 58, 18, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, 14, 2, 94, 31, 15, 28)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 1, 15, 2, 121, 144, 9, 17)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 1, 0, 20, 161, 29, 32, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, 0, 0, 133, 84, 13, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 2, 3, 12, 244, 212, 11, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 2, 3, 2, 128, 30, 6, 14)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, 0, 0, 35, 187, 13, 16)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 2, 3, 1, 158, 151, 10, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 2, 1, 1, 141, 222, 13, 15)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 3, 1, 4, 204, 213, 3, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 3, 6, 4, 144, 16, 1, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, 3, 2, 229, 41, 4, 5)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 3, 5, 5, 152, 210, 2, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 3, 0, 6, 225, 37, 8, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 3, 1, 1, 29, 39, 4, 7)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 4, 0, 2, 223, 135, 3, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 4, 1, 1, 222, 123, 2, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 4, 3, 1, 110, 160, 1, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 4, 1, 0, 230, 192, 3, 4)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 4, 1, 1, 66, 130, 3, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, 0, 1, 86, 132, 4, 3)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 5, 0, 1, 72, 92, 2, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 5, 1, 0, 239, 17, 1, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 5, 0, 0, 135, 49, 1, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 5, 1, 0, 69, 245, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, 1, 0, 55, 247, 1, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 5, 0, 0, 11, 100, 1, 2)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 6, 0, 0, 184, 248, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 6, 0, 0, 243, 128, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 6, 0, 0, 65, 110, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 6, 0, 0, 96, 164, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 6, 0, 0, 147, 211, 1, 1)</Text>
+ <Text>glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 6, 0, 0, 230, 104, 1, 1)</Text>
+ <Text>glGetError();</Text>
+ <Text>// GL_NO_ERROR returned</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);</Text>
+ <Text>glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);</Text>
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_X" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Y" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_NEGATIVE_Z" />
+ <ImageSet Name="Result" Description="Image comparison result: CUBEFACE_POSITIVE_Z" />
+ <Number Name="TestDuration" Description="Test case duration in microseconds" Tag="Time" Unit="us">657537</Number>
+ <Result StatusCode="Pass">Pass</Result>
+</TestCaseResult>
+
+#endTestCaseResult
+
+Run took 9.22 seconds
+
+#endSession

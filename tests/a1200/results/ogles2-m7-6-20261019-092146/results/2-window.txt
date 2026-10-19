@@ -1,0 +1,19 @@
+ogles2 M7: glCopyTexImage2D and glCopyTexSubImage2D
+PASS: glCopyTexImage2D: no error
+PASS: window framebuffer: glCopyTexImage2D RGBA, whole: the quadrants in place
+PASS: glCopyTexSubImage2D: no error
+PASS: window framebuffer: glCopyTexSubImage2D 32x32 at (8, 16): quadrants there, the rest kept
+PASS: window framebuffer: glCopyTexSubImage2D into RGB565
+PASS: window framebuffer: glCopyTexSubImage2D into LUMINANCE (red)
+PASS: window framebuffer: a second copy after more drawing has it
+PASS: window framebuffer: the framebuffer keeps its picture
+PASS: glCopyTexImage2D: no error
+PASS: framebuffer object: glCopyTexImage2D RGBA, whole: the quadrants in place
+PASS: glCopyTexSubImage2D: no error
+PASS: framebuffer object: glCopyTexSubImage2D 32x32 at (8, 16): quadrants there, the rest kept
+PASS: framebuffer object: glCopyTexSubImage2D into RGB565
+PASS: framebuffer object: glCopyTexSubImage2D into LUMINANCE (red)
+PASS: framebuffer object: a second copy after more drawing has it
+PASS: framebuffer object: the framebuffer keeps its picture
+PASS: no GL error left over
+ALL PASSED: 17 of 17 checks passed

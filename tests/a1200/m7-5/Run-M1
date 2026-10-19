@@ -1,0 +1,67 @@
+; Run-M1 - ogles2 M7 run 5: EXT_color_buffer_half_float. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m7-5 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M7R5: ""
+If NOT EXISTS M7R5:results
+  MakeDir M7R5:results
+EndIf
+Echo "ogles2 M7 run 5, starting at step {FROM}" >>M7R5:results/00-progress.txt
+Date >>M7R5:results/00-progress.txt
+Assign LIBS: M7R5:libs ADD
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M7R5:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 2: triangles, textures, framebuffer objects as before (nothing to see)"
+  M7R5:bin/m1_draw BITMAP QUICK >M7R5:results/1-draw.txt
+  M7R5:bin/m2_texture BITMAP QUICK >M7R5:results/1-texture.txt
+  M7R5:bin/m5_fbo >M7R5:results/1-fbo.txt
+  Echo "step 1 done" >>M7R5:results/00-progress.txt
+EndIf
+
+; m7_half's and m7_mrt's programs have no binary in bin/: the compiler in
+; compiler/ compiles them into cache/, emptied first (a .v3dp there is used
+; whatever compiler made it). The compiler is in LIBS: for this step only:
+; step 1's tests would start it and count its memory. Last: it stays in
+; memory a while.
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 2: half-float render targets, several render targets (nothing to see)"
+  If NOT EXISTS M7R5:cache
+    MakeDir M7R5:cache
+  EndIf
+  Delete M7R5:cache/#? QUIET >NIL:
+  Assign OGLES2Cache: M7R5:cache
+  Assign LIBS: M7R5:compiler ADD
+  M7R5:bin/m7_half >M7R5:results/2-half.txt
+  M7R5:bin/m7_mrt >M7R5:results/2-mrt.txt
+  Assign LIBS: M7R5:compiler REMOVE
+  Assign OGLES2Cache:
+  Echo "step 2 done" >>M7R5:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M7R5:libs REMOVE
+Avail FLUSH >NIL:
+If NOT EXISTS M7R5:results/notes.txt
+  Copy M7R5:notes-template.txt M7R5:results/notes.txt
+EndIf
+List M7R5:results >M7R5:results/99-files.txt
+Echo "finished" >>M7R5:results/00-progress.txt
+Date >>M7R5:results/00-progress.txt
+Assign M7R5:
+Echo ""
+Echo "Done. Results are in results/."

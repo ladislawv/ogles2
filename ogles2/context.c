@@ -110,6 +110,8 @@ struct OGLES2Context *ogles2_aglCreateContext2(ULONG *errcode, struct TagItem *t
                     ctx->probe |= OGLES2_PROBE_CPU_MIPMAP;
                 else if (*p == 'U')
                     ctx->probe |= OGLES2_PROBE_CPU_UPLOAD;
+                else if (*p == 'K')
+                    ctx->probe |= OGLES2_PROBE_CPU_COPY;
             }
             ogles2_log("aglCreateContext2: probes \"%s\" (ENV:OGLES2/Probe)", var);
             if ((ctx->probe & OGLES2_PROBE_ADDR) &&
@@ -316,7 +318,8 @@ const GLubyte *ogles2_glGetString(struct OGLES2Context *ctx, GLenum name)
                                  "GL_OES_texture_half_float_linear GL_OES_depth_texture GL_ARB_texture_rectangle "
                                  "GL_EXT_debug_marker GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_s3tc "
                                  "GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_EXT_clip_control "
-                                 "GL_EXT_draw_buffers GL_NV_fbo_color_attachments GL_OES_required_internalformat";
+                                 "GL_EXT_draw_buffers GL_NV_fbo_color_attachments GL_OES_required_internalformat "
+                                 "GL_EXT_color_buffer_half_float";
     default:
         ogles2_error(ctx, GL_INVALID_ENUM);
         return 0;

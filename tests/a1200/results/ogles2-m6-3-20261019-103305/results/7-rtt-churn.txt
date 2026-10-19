@@ -1,0 +1,18 @@
+a new target texture every frame, 120 frames: 6799 us a frame (147.0 fps)
+  create texture (glTexImage2D NULL)        1805 us
+  bind framebuffer, attach, status            72 us
+  draw background into it                    123 us
+  draw sprite into it                         17 us
+  bind framebuffer 0                           2 us
+  draw it onto the window                   2289 us
+  glDeleteTextures                           455 us
+  aglSwapBuffers                            2030 us
+one target texture, 120 frames: 3114 us a frame (321.1 fps)
+  create texture (glTexImage2D NULL)           0 us
+  bind framebuffer, attach, status            33 us
+  draw background into it                    135 us
+  draw sprite into it                         17 us
+  bind framebuffer 0                           2 us
+  draw it onto the window                    307 us
+  glDeleteTextures                             0 us
+  aglSwapBuffers                            2616 us

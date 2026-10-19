@@ -1,0 +1,52 @@
+     1 ogles2.library 1.3 init
+     2 open (count 1)
+     3 GPU submission lock "V3D 4.2 submit" at 0x0825BFE0
+     4 device: V3D 4.2.14 (PiStorm), 8 QPUs, 64 KB VPM, clipper granularity 256
+     5 device: GPU-visible RAM (device tree memory): 0x01000000-0x3C9FFFFF
+     6 device: GPU-visible RAM (device tree memory): 0x40000000-0x79DFFFFF
+     7 device: memory region "expansion memory" 0x08000020-0x3C9FFFFF fast: the GPU reaches it
+     8 device: memory region "expansion memory" 0x01000020-0x07FFFFFF fast: the GPU reaches it
+     9 device: memory region "expansion memory" 0x41000020-0x79DFFFFF fast: the GPU reaches it
+    10 device: memory region "memory" 0x00C00020-0x00C7FFFF fast: OUTSIDE the GPU-visible RAM
+    11 device: memory region "chip memory" 0x00001020-0x001FFFFF chip: OUTSIDE the GPU-visible RAM
+    12 display: own window, 256x256, BGRA
+    13 device: context pools for 256x256, D32F, 17783168 bytes of GPU memory in use
+    14 aglCreateContext2: context 0x08FBFE4C, 256x256
+    15 glGetIntegerv: pname 0x821B not supported yet
+    16 compiler: Stuff:amictld/work/ogles2-m7-1/libs/v3dglslc, 19007888 bytes, id F758B608
+    17 glLinkProgram: OGLES2Cache:d4b47f80d96792ae4d0cb4c4.v3dp (5 variants, 760 bytes of code)
+    18 job: depth and stencil kept across a mid-frame flush (logged once)
+    19 glLinkProgram: OGLES2Cache:236f617eb7dcc9457fa23afb.v3dp (5 variants, 664 bytes of code)
+    20 glGetIntegerv: pname 0x821B not supported yet
+    21 glGetIntegerv: pname 0x821B not supported yet
+    22 glGetIntegerv: pname 0x821B not supported yet
+    23 glCopyTexSubImage2D: copies from the default framebuffer drawn by the GPU (the first: 128x64)
+    24 glGetIntegerv: pname 0x821B not supported yet
+    25 glGetIntegerv: pname 0x821B not supported yet
+    26 glLinkProgram: OGLES2Cache:c4d6f4ade1482051a74042e8.v3dp (5 variants, 848 bytes of code)
+    27 glLinkProgram: OGLES2Cache:cbc7e7034b66a47d1635d395.v3dp (5 variants, 848 bytes of code)
+    28 glLinkProgram: OGLES2Cache:bf6f4dc826ab2bbd208587d5.v3dp (5 variants, 848 bytes of code)
+    29 glLinkProgram: OGLES2Cache:6d6739900fba58670a467cae.v3dp (5 variants, 824 bytes of code)
+    30 glLinkProgram: OGLES2Cache:179f333f93db715f2ba4bea0.v3dp (5 variants, 848 bytes of code)
+    31 glLinkProgram: OGLES2Cache:4ec0f1232192f9651854c5a4.v3dp (5 variants, 848 bytes of code)
+    32 glGetIntegerv: pname 0x821B not supported yet
+    33 glGetIntegerv: pname 0x821B not supported yet
+    34 glGetIntegerv: pname 0x821B not supported yet
+    35 glGetIntegerv: pname 0x821B not supported yet
+    36 glGetIntegerv: pname 0x821B not supported yet
+    37 glGetIntegerv: pname 0x821B not supported yet
+    38 glGetIntegerv: pname 0x821B not supported yet
+    39 glGetIntegerv: pname 0x821B not supported yet
+    40 glGetIntegerv: pname 0x821B not supported yet
+    41 glGetIntegerv: pname 0x821B not supported yet
+    42 glGetIntegerv: pname 0x821B not supported yet
+    43 glGetIntegerv: pname 0x821B not supported yet
+    44 glGetIntegerv: pname 0x821B not supported yet
+    45 glGetIntegerv: pname 0x821B not supported yet
+    46 aglDestroyContext: context 0x08FBFE4C: freeing
+    47 device: context freed, 0 bytes of GPU memory still in use
+    48 aglDestroyContext: context 0x08FBFE4C (548 frames, 0 dropped, 0 binning blocks added)
+    49 timing: 548 jobs, each on average: 3354 us of CPU work before its flush, 7 us waiting for binning, 139 us for the render
+    50 timing: and in each flush 67 us building the render list, 77 us for the CPU cache before the GPU, 40 us after
+    51 timing: 20 swaps, 461661 us from one to the next on average, 394 us of it presenting
+    52 timing: per frame 18 draws, 3436 us in them; in all 0 ms in glBuffer(Sub)Data, 58 ms in glTex(Sub)Image2D

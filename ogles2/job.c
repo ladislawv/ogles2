@@ -177,7 +177,7 @@ void ogles2_job_begin(struct OGLES2Context *ctx)
     V3DContext *v = ctx->v3d;
     struct OGLES2Target tg;
     UWORD w = v->width, h = v->height;
-    UBYTE nrt = 1, tw, th;
+    UBYTE nrt = 1, bpp = V3D_INTERNAL_BPP_32, tw, th;
     BOOL bad = FALSE;
     v3d_u8 s;
 
@@ -194,6 +194,7 @@ void ogles2_job_begin(struct OGLES2Context *ctx)
             w = tg.w;
             h = tg.h;
             nrt = tg.nrt;
+            bpp = tg.bpp;
         } else {
             bad = TRUE; /* no memory for its tile pools: the job is dropped at the flush */
         }
@@ -206,10 +207,16 @@ void ogles2_job_begin(struct OGLES2Context *ctx)
     ctx->t_job_begin = ogles2_clock_us();
     ctx->job_discard = 0;
     ctx->job_noload = ctx->draw_fb ? ogles2_fbo_take_discarded(ctx->draw_fb) : 0;
-    /* An object's job with several render targets (EXT_draw_buffers) has
-     * smaller tiles as well: ogles2_fbo_target's, from the same rule. */
-    tw = ctx->job_msaa || nrt > 2 ? 32 : 64;
-    th = ctx->job_msaa || nrt > 1 ? 32 : 64;
+    /* An object's job with several render targets (EXT_draw_buffers) or a
+     * 64-bit one (EXT_color_buffer_half_float) has smaller tiles as well:
+     * ogles2_fbo_target's. */
+    if (ctx->draw_fb && !bad) {
+        tw = tg.tile_w;
+        th = tg.tile_h;
+    } else {
+        tw = ctx->job_msaa ? 32 : 64;
+        th = ctx->job_msaa ? 32 : 64;
+    }
     v->frame.tilesX = (w + tw - 1) / tw;
     v->frame.tilesY = (h + th - 1) / th;
     s = v->build_slot;
@@ -229,7 +236,7 @@ void ogles2_job_begin(struct OGLES2Context *ctx)
     /* As Mesa's v3d_start_binning (v3dx_draw.c). */
     NumberOfLayers(v, 1);
     TileBinningModeCfg(v, v3d_TILE_ALLOCATION_INITIAL_BLOCK_SIZE_64B,
-                       v3d_TILE_ALLOCATION_BLOCK_SIZE_64B, nrt, V3D_INTERNAL_BPP_32, ctx->job_msaa, FALSE, w, h);
+                       v3d_TILE_ALLOCATION_BLOCK_SIZE_64B, nrt, bpp, ctx->job_msaa, FALSE, w, h);
     DoCommand(v, v3d_OP_FLUSH_VCD_CACHE);
     OcclusionQueryCounter(v, 0);
     DoCommand(v, v3d_OP_START_TILE_BINNING);
@@ -262,12 +269,15 @@ void ogles2_job_clear(struct OGLES2Context *ctx, GLbitfield mask)
 {
     V3DContext *v = ctx->v3d;
     const GLfloat *c = ctx->state.clear_color;
+    int k;
 
     ogles2_job_begin(ctx);
     if (mask & GL_COLOR_BUFFER_BIT) {
         v->pending_clear_color = TRUE;
         v->clear_color_value = ((v3d_u32)to_byte(c[3]) << 24) | ((v3d_u32)to_byte(c[0]) << 16) |
                                ((v3d_u32)to_byte(c[1]) << 8) | to_byte(c[2]); /* ARGB */
+        for (k = 0; k < 4; k++) /* a 16F target's (build_render_fbo) */
+            ctx->job_clear_rgba[k] = c[k];
     }
     /* The tile buffer clears depth and stencil together; each keeps the
      * value of the last glClear that named it (a stencil clear after a full
@@ -464,6 +474,38 @@ static void clear_colors_part3(V3DContext *v, UBYTE rt, ULONG pad)
     b[8] = 0;
 }
 
+/* TILE_RENDERING_MODE_CFG (Clear Colors Part1, and Part2 for a 64-bit
+ * target), render target rt, as raw little-endian bytes: the clear colour
+ * in the target's internal type, lo and hi its first and second 32 bits
+ * (Mesa's v3dx_rcl.c: Part1 the low 32 bits and the next 24, Part2 the 32
+ * after them; the rest is 0 up to 64 bits). */
+static void clear_colors(V3DContext *v, UBYTE rt, ULONG lo, ULONG hi, BOOL wide)
+{
+    UBYTE *b = v3d_buffer_claim_memory(v->current_buf, wide ? 18 : 9);
+    int i;
+    if (!b)
+        return;
+    b[0] = v3d_OP_TILE_RENDERING_MODE_CFG_CLEAR_COLORS_PART1;
+    b[1] = (UBYTE)(3 | rt << 4); /* sub-id 3, the render target */
+    for (i = 0; i < 4; i++)
+        b[2 + i] = (UBYTE)(lo >> (8 * i));
+    for (i = 0; i < 3; i++)
+        b[6 + i] = (UBYTE)(hi >> (8 * i));
+    if (!wide)
+        return;
+    b[9] = v3d_OP_TILE_RENDERING_MODE_CFG_CLEAR_COLORS_PART2;
+    b[10] = (UBYTE)(4 | rt << 4); /* sub-id 4 */
+    b[11] = (UBYTE)(hi >> 24);
+    for (i = 12; i < 18; i++)
+        b[i] = 0;
+}
+
+/* Bytes per pixel of a colour target's image (V3D_OUTPUT_IMAGE_FORMAT_*). */
+static ULONG target_cpp(UBYTE format)
+{
+    return format == V3D_OUTPUT_IMAGE_FORMAT_RGBA16F ? 8 : format == V3D_OUTPUT_IMAGE_FORMAT_RGBA8 ? 4 : 2;
+}
+
 /* The render list of a framebuffer object's job (Mesa's v3dx_rcl.c): colour
  * loaded unless cleared, depth and stencil loaded unless cleared, all
  * stored, in the images' own layouts; no Y flip. Each colour image drawn
@@ -476,6 +518,7 @@ static void build_render_fbo(struct OGLES2Context *ctx, const struct OGLES2Targe
     UWORD width = tg->w, height = tg->h;
     ULONG tilesX = (width + tg->tile_w - 1) / tg->tile_w, tilesY = (height + tg->tile_h - 1) / tg->tile_h;
     ULONG start, end, sw = 1, sh = 1, fw, fh, argb, abgr;
+    UBYTE rt_bpp[4], rt_type[4], rt_clamp[4];
     UBYTE rt;
     UBYTE clear_color = v->pending_clear_color, clear_zs = v->pending_clear_depth;
     UBYTE ez = v->first_ez_state;
@@ -550,22 +593,38 @@ static void build_render_fbo(struct OGLES2Context *ctx, const struct OGLES2Targe
     SetBuffer(v, &v->render_buf[s]);
     if (ctx->probe & OGLES2_PROBE_SEMAPHORE)
         DoCommand(v, v3d_OP_WAIT_ON_SEMAPHORE);
-    TileRenderingModeCFGCommon(v, tg->nrt, width, height, v3d_RENDER_TARGET_MAXIMUM_32BPP, FALSE, FALSE,
+    TileRenderingModeCFGCommon(v, tg->nrt, width, height, tg->bpp, FALSE, FALSE,
                                ez == V3D_EZ_GT_GE ? v3d_EARLY_Z_DIRECTION_GT_GE
                                                   : v3d_EARLY_Z_DIRECTION_LT_LE,
                                ez_off, tg->depth_type, early_zs_clear);
     argb = v->clear_color_value;
     abgr = (argb & 0xFF00FF00UL) | ((argb & 0x00FF0000UL) >> 16) | ((argb & 0x000000FFUL) << 16);
+    /* Each target's internal type: 8 bits a channel, or 16F for a half-float
+     * image (64 bits; EXT_color_buffer_half_float), not clamped (Mesa: clamp
+     * none but for sRGB and integer formats). The fragment shader writes both
+     * alike, as 16-bit floats (Mesa's key changes only for 32-bit, 16-bit
+     * normalized and integer targets), so its variants are the same. */
     for (rt = 0; rt < tg->nrt; rt++) {
-        TileRenderingModeCFGClearColorsPart1(v, rt, abgr);
+        BOOL wide;
         c = &tg->color[rt];
+        wide = (tg->colors & (1 << rt)) && c->format == V3D_OUTPUT_IMAGE_FORMAT_RGBA16F;
+        rt_bpp[rt] = wide ? V3D_INTERNAL_BPP_64 : V3D_INTERNAL_BPP_32;
+        rt_type[rt] = wide ? V3D_INTERNAL_TYPE_16F : V3D_INTERNAL_TYPE_8;
+        rt_clamp[rt] = 0;
+        if (wide) {
+            const GLfloat *f = ctx->job_clear_rgba;
+            clear_colors(v, rt, ogles2_float_to_half(f[0]) | (ULONG)ogles2_float_to_half(f[1]) << 16,
+                         ogles2_float_to_half(f[2]) | (ULONG)ogles2_float_to_half(f[3]) << 16, TRUE);
+        } else {
+            clear_colors(v, rt, abgr, 0, FALSE);
+        }
         if ((tg->colors & (1 << rt)) && c->ub) {
-            ULONG ubh = 2 * v3d_utile_height(c->format == V3D_OUTPUT_IMAGE_FORMAT_RGBA8 ? 4 : 2);
+            ULONG ubh = 2 * v3d_utile_height((int)target_cpp(c->format));
             if (c->ub - (height + ubh - 1) / ubh >= 15)
                 clear_colors_part3(v, rt, c->ub);
         }
     }
-    TileRenderingModeCFGColor(v, tg->nrt, V3D_INTERNAL_BPP_32, V3D_INTERNAL_TYPE_8, 0);
+    TileRenderingModeCFGColorEach(v, tg->nrt, rt_bpp, rt_type, rt_clamp);
     TileRenderingModeCFGZSClearValues(v, clear_zs ? ctx->job_clear_stencil : 0,
                                       clear_zs ? v->clear_depth_value : 1.0f);
     TileListInitialBlockSize(v, v3d_TILE_ALLOCATION_BLOCK_SIZE_64B, TRUE);

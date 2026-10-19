@@ -106,6 +106,7 @@ struct OGLES2TexState
     UBYTE active;
     BOOL warned_flush;
     BOOL logged_tfu;                /* glGenerateMipmap's first TFU job logged */
+    struct OGLES2Texture *scratch;  /* glCopyTex* from the default framebuffer (copy.c) */
 };
 
 static void sync(struct OGLES2Texture *t);
@@ -215,6 +216,7 @@ void ogles2_textures_free(struct OGLES2Context *ctx)
     free_levels(&ts->defaultcube);
     free_levels(&ts->defaultrect);
     free_levels(&ts->fallback);
+    ogles2_texture_hidden_free(ctx, ts->scratch);
     FreeVec(ts);
     ctx->tex = 0;
 }
@@ -882,7 +884,7 @@ static GLfloat half_to_float(UWORD h)
     return u2f(s | ((e + 112) << 23) | (m << 13));
 }
 
-static UWORD float_to_half(GLfloat f)
+UWORD ogles2_float_to_half(GLfloat f)
 {
     ULONG u = f2u(f), s = (u >> 16) & 0x8000, m = u & 0x7fffff;
     LONG e = (LONG)((u >> 23) & 255) - 127 + 15;
@@ -1376,7 +1378,7 @@ static void pack_wide(const struct OGLES2Texture *t, const UBYTE *src, UBYTE *d,
         for (c = 0; c < nc; c++) {
             if (t->hw_type == V3D_TEXTURE_DATA_FORMAT_R16F || t->hw_type == V3D_TEXTURE_DATA_FORMAT_RG16F ||
                 t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGBA16F) {
-                UWORD hv = float_to_half(v[c]);
+                UWORD hv = ogles2_float_to_half(v[c]);
                 *d++ = (UBYTE)hv;
                 *d++ = (UBYTE)(hv >> 8);
             } else {
@@ -1446,9 +1448,18 @@ static void unpack(const struct OGLES2Texture *t, const UBYTE *s, UBYTE *d, ULON
     }
 }
 
+/* The inverse of pack_wide for RGBA16F (what a framebuffer object's job
+ * drew into a half-float texture): n texels into RGBA floats. */
+static void unpack_half(const UBYTE *s, GLfloat *d, ULONG n)
+{
+    ULONG i;
+    for (i = 0; i < n * 4; i++, s += 2)
+        d[i] = half_to_float((UWORD)(s[0] | (s[1] << 8)));
+}
+
 /* A box of face k, level l from the GPU's copy, as the RAM copy holds it:
- * RGBA8 rows, or depth words (a depth texture a job drew into). Float
- * textures are never drawn into. */
+ * RGBA8 rows, depth words (a depth texture a job drew into), or RGBA
+ * floats (a half-float one). Other float textures are never drawn into. */
 static BOOL load_box(struct OGLES2Texture *t, int k, int l, int x, int y, int w, int h, UBYTE *rgba,
                      ULONG stride)
 {
@@ -1456,7 +1467,8 @@ static BOOL load_box(struct OGLES2Texture *t, int k, int l, int x, int y, int w,
     ULONG row = (ULONG)w * t->cpp;
     UBYTE *packed;
     int j;
-    if (!t->gpu || l >= t->gpu->num_levels || w <= 0 || h <= 0 || float_type(t->hw_type))
+    if (!t->gpu || l >= t->gpu->num_levels || w <= 0 || h <= 0 ||
+        (float_type(t->hw_type) && t->hw_type != V3D_TEXTURE_DATA_FORMAT_RGBA16F))
         return FALSE;
     if (!(packed = AllocVec(row * h + 4, MEMF_ANY)))
         return FALSE;
@@ -1464,6 +1476,8 @@ static BOOL load_box(struct OGLES2Texture *t, int k, int l, int x, int y, int w,
     for (j = 0; j < h; j++)
         if (depth_type(t->hw_type))
             unpack_depth(t, packed + (ULONG)j * row, (ULONG *)(rgba + (ULONG)j * stride), (ULONG)w);
+        else if (t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGBA16F)
+            unpack_half(packed + (ULONG)j * row, (GLfloat *)(rgba + (ULONG)j * stride), (ULONG)w);
         else
             unpack(t, packed + (ULONG)j * row, rgba + (ULONG)j * stride, (ULONG)w);
     FreeVec(packed);
@@ -1697,7 +1711,10 @@ BOOL ogles2_texture_image(const struct OGLES2Texture *t, int k, int l, UWORD *w,
 
 /* GLES2's colour-renderable texture images (plan 7.7): RGB and RGBA in the
  * formats the TLB stores; the GPU copy is in level 0's format, so the level
- * must have level 0's format and type. */
+ * must have level 0's format and type. Half-float RGBA too
+ * (EXT_color_buffer_half_float, which names RGBA only for textures, as
+ * dEQP checks): stored as RGBA16F, which the TLB writes from a 16F render
+ * target. */
 BOOL ogles2_texture_renderable(const struct OGLES2Texture *t, int k, int l)
 {
     const struct OGLES2Face *f = &t->f[k], *f0 = &t->f[0];
@@ -1712,7 +1729,13 @@ BOOL ogles2_texture_renderable(const struct OGLES2Texture *t, int k, int l)
      * colour-renderable as RGBA is (EXT_texture_format_BGRA8888). */
     return (ty == GL_UNSIGNED_BYTE && (fm == GL_RGB || fm == GL_RGBA || fm == GL_BGRA_EXT)) ||
            (ty == GL_UNSIGNED_SHORT_5_6_5 && fm == GL_RGB) ||
-           ((ty == GL_UNSIGNED_SHORT_4_4_4_4 || ty == GL_UNSIGNED_SHORT_5_5_5_1) && fm == GL_RGBA);
+           ((ty == GL_UNSIGNED_SHORT_4_4_4_4 || ty == GL_UNSIGNED_SHORT_5_5_5_1) && fm == GL_RGBA) ||
+           (ty == GL_HALF_FLOAT_OES && fm == GL_RGBA);
+}
+
+BOOL ogles2_texture_half(const struct OGLES2Texture *t, int k, int l)
+{
+    return ogles2_texture_renderable(t, k, l) && t->f[k].type[l] == GL_HALF_FLOAT_OES;
 }
 
 BOOL ogles2_texture_surface(struct OGLES2Context *ctx, struct OGLES2Texture *t, int k, int l,
@@ -1734,6 +1757,7 @@ BOOL ogles2_texture_surface(struct OGLES2Context *ctx, struct OGLES2Texture *t, 
     s->format = t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGB565 ? V3D_OUTPUT_IMAGE_FORMAT_BGR565
               : t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGBA4  ? V3D_OUTPUT_IMAGE_FORMAT_ABGR4444
               : t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGB5A1 ? V3D_OUTPUT_IMAGE_FORMAT_ABGR1555
+              : t->hw_type == V3D_TEXTURE_DATA_FORMAT_RGBA16F ? V3D_OUTPUT_IMAGE_FORMAT_RGBA16F
                                                              : V3D_OUTPUT_IMAGE_FORMAT_RGBA8;
     s->force_alpha1 = t->f[k].format[l] == GL_RGB;
     s->ub = s->mem_format == V3D_MEMORY_FORMAT_UIF_NO_XOR || s->mem_format == V3D_MEMORY_FORMAT_UIF_XOR
@@ -1806,11 +1830,51 @@ void ogles2_texture_rendered(struct OGLES2Texture *t, int k, int l)
     t->f[k].blank &= ~(1UL << l);
 }
 
+/* A half-float level read as RGBA bytes (glReadPixels' RGBA/UNSIGNED_BYTE):
+ * each value clamped to [0,1] and rounded, as GLES 2.0 4.3.1 converts a
+ * colour for an unsigned normalized type. */
+static UBYTE float_byte(GLfloat v)
+{
+    return v <= 0.0f ? 0 : v >= 1.0f ? 255 : (UBYTE)(v * 255.0f + 0.5f);
+}
+
+static BOOL read_half(struct OGLES2Texture *t, int k, int l, int x, int y, int w, int h, UBYTE *rgba,
+                      ULONG stride)
+{
+    const struct OGLES2Face *f = &t->f[k];
+    ULONG row = (ULONG)w * 16, i;
+    GLfloat *box = AllocVec(row * h + 4, MEMF_ANY);
+    int j;
+    if (!box)
+        return FALSE;
+    if (!load_box(t, k, l, x, y, w, h, (UBYTE *)box, row)) {
+        if (!f->shadow[l]) { /* no GPU copy (a state-only context): the RAM copy */
+            FreeVec(box);
+            return FALSE;
+        }
+        for (j = 0; j < h; j++)
+            memcpy((UBYTE *)box + (ULONG)j * row, f->shadow[l] + ((ULONG)(y + j) * f->w[l] + x) * 16, row);
+    }
+    for (j = 0; j < h; j++) {
+        const GLfloat *s = (const GLfloat *)((UBYTE *)box + (ULONG)j * row);
+        UBYTE *d = rgba + (ULONG)j * stride;
+        for (i = 0; i < (ULONG)w * 4; i++)
+            d[i] = float_byte(s[i]);
+        if (f->format[l] == GL_RGB) /* the stored alpha is the shader's: an RGB image reads 1 */
+            for (i = 3; i < (ULONG)w * 4; i += 4)
+                d[i] = 255;
+    }
+    FreeVec(box);
+    return TRUE;
+}
+
 BOOL ogles2_texture_read(struct OGLES2Texture *t, int k, int l, int x, int y, int w, int h,
                          UBYTE *rgba, ULONG stride)
 {
     const struct OGLES2Face *f = &t->f[k];
     int j;
+    if (ogles2_texture_half(t, k, l))
+        return read_half(t, k, l, x, y, w, h, rgba, stride);
     if (level_class(f, l) != CLASS_RGBA8)
         return FALSE;
     if (load_box(t, k, l, x, y, w, h, rgba, stride))
@@ -1852,6 +1916,99 @@ void ogles2_texture_hidden_free(struct OGLES2Context *ctx, struct OGLES2Texture 
     t->f[0].rendered = 0;
     free_levels(t);
     FreeVec(t);
+}
+
+/* ---- for glCopyTex* on the GPU (copy.c) ---- */
+
+/* The default framebuffer's region as a texture: w x h RGBA8, filled by the
+ * TFU from the raster image at `src` (rows `stride` bytes apart, the top row
+ * first, in the render bitmap the GPU drew), red and blue swapped in the
+ * sampler for a BGRA bitmap. One per context, made again for another size.
+ * The caller has rendered and finished the context's jobs: none still reads
+ * the scratch texture, none still writes the bitmap. 0: the TFU could not
+ * (the CPU copies). */
+struct OGLES2Texture *ogles2_texture_scratch(struct OGLES2Context *ctx, UWORD w, UWORD h, ULONG src, ULONG stride,
+                                             BOOL bgra)
+{
+    struct OGLES2TexState *ts = ts_get(ctx);
+    struct OGLES2Texture *t;
+    UBYTE sw0, sw2;
+    int r;
+    if (!ts || !ctx->v3d)
+        return 0;
+    if ((t = ts->scratch) && (t->f[0].w[0] != w || t->f[0].h[0] != h)) {
+        ogles2_texture_hidden_free(ctx, t);
+        ts->scratch = t = 0;
+    }
+    if (!t && !(t = ts->scratch = ogles2_texture_hidden(ctx, w, h, GL_RGBA, GL_UNSIGNED_BYTE)))
+        return 0;
+    CacheClearE(0, ~0UL, CACRF_ClearD); /* no dirty CPU line over the texture's memory */
+    if (!v3d_gpu_lock(ogles2_device_gpu_lock(), TFU_LOCK_TIMEOUT_MS))
+        return 0;
+    r = v3d_tfu_store_raster(ogles2_device(), t->gpu, 0, t->hw_type, w, h, (const void *)src, stride);
+    v3d_gpu_unlock(ogles2_device_gpu_lock());
+    if (r) {
+        ogles2_log("glCopyTexSubImage2D: the TFU did not copy %ldx%ld from the framebuffer (%ld): the CPU copies",
+                   (ULONG)w, (ULONG)h, (LONG)r);
+        return 0;
+    }
+    t->f[0].rendered = 1; /* its RAM copy is not the picture (never read: nothing changes it) */
+    t->f[0].blank = 0;
+    sw0 = bgra ? v3d_SWIZZLE_BLUE : v3d_SWIZZLE_RED;
+    sw2 = bgra ? v3d_SWIZZLE_RED : v3d_SWIZZLE_BLUE;
+    if (t->swizzle[0] != sw0 || t->swizzle[2] != sw2) {
+        t->swizzle[0] = sw0;
+        t->swizzle[2] = sw2;
+        t->pver++; /* the state records hold the swizzle */
+    }
+    return t;
+}
+
+/* Texture t on unit 0's 2D target for the copy's draw (draw.c); the one
+ * there before is returned, to be put back. */
+struct OGLES2Texture *ogles2_texture_unit0(struct OGLES2Context *ctx, struct OGLES2Texture *t)
+{
+    struct OGLES2TexState *ts = ts_get(ctx);
+    struct OGLES2Texture *old;
+    if (!ts)
+        return 0;
+    old = ts->unit2d[0];
+    ts->unit2d[0] = t;
+    return old;
+}
+
+/* A framebuffer object's colour texture sampled by the copy: level 0,
+ * nearest, clamped, whatever the application set (put back with
+ * ogles2_texture_params_restore). */
+void ogles2_texture_params_copy(struct OGLES2Texture *t, struct OGLES2TexParams *saved)
+{
+    saved->min_filter = t->min_filter;
+    saved->mag_filter = t->mag_filter;
+    saved->wrap_s = t->wrap_s;
+    saved->wrap_t = t->wrap_t;
+    saved->base_level = t->base_level;
+    saved->max_level = t->max_level;
+    saved->max_aniso = t->max_aniso;
+    saved->lod_bias = t->lod_bias;
+    t->min_filter = t->mag_filter = GL_NEAREST;
+    t->wrap_s = t->wrap_t = GL_CLAMP_TO_EDGE;
+    t->base_level = t->max_level = 0;
+    t->max_aniso = 1.0f;
+    t->lod_bias = 0.0f;
+    t->pver++;
+}
+
+void ogles2_texture_params_restore(struct OGLES2Texture *t, const struct OGLES2TexParams *saved)
+{
+    t->min_filter = saved->min_filter;
+    t->mag_filter = saved->mag_filter;
+    t->wrap_s = saved->wrap_s;
+    t->wrap_t = saved->wrap_t;
+    t->base_level = saved->base_level;
+    t->max_level = saved->max_level;
+    t->max_aniso = saved->max_aniso;
+    t->lod_bias = saved->lod_bias;
+    t->pver++;
 }
 
 static void set_level(struct OGLES2Context *ctx, struct OGLES2Texture *t, int k, GLint level, UBYTE *img,
@@ -2153,6 +2310,22 @@ void ogles2_glCopyTexImage2D(struct OGLES2Context *ctx, GLenum target, GLint lev
     }
     if (!ogles2_fb_ready(ctx)) /* GL_INVALID_FRAMEBUFFER_OPERATION */
         return;
+    /* RGB and RGBA on the GPU (copy.c): the level made empty, as
+     * glTexImage2D makes it (its errors are glTexImage2D's), then the
+     * region drawn into it. */
+    if ((internalformat == GL_RGB || internalformat == GL_RGBA) && width > 0 && height > 0 &&
+        ctx->error == GL_NO_ERROR && ctx->v3d && !(ctx->probe & OGLES2_PROBE_CPU_COPY)) {
+        struct OGLES2TexState *ts;
+        struct OGLES2Texture *t;
+        int k;
+        ogles2_glTexImage2D(ctx, target, level, (GLint)internalformat, width, height, 0, internalformat,
+                            GL_UNSIGNED_BYTE, 0);
+        if (ctx->error != GL_NO_ERROR)
+            return;
+        if ((ts = ts_get(ctx)) && (t = image_texture(ctx, ts, target, level, &k)) &&
+            ogles2_copy_gpu(ctx, t, k, level, 0, 0, x, y, width, height))
+            return;
+    }
     if (!(img = read_region(ctx, x, y, width, height, internalformat))) {
         ogles2_error(ctx, GL_OUT_OF_MEMORY);
         return;
@@ -2188,12 +2361,23 @@ void ogles2_glCopyTexSubImage2D(struct OGLES2Context *ctx, GLenum target, GLint 
     {
         struct OGLES2TexState *ts = ts_get(ctx);
         struct OGLES2Texture *t;
+        const struct OGLES2Face *f;
         int k;
         if (!ts || !(t = image_texture(ctx, ts, target, level, &k)))
             return;
-        fmt = level >= 0 && level < MAX_LEVELS ? t->f[k].format[level] : 0;
+        f = &t->f[k];
+        fmt = level >= 0 && level < MAX_LEVELS ? f->format[level] : 0;
         if (!base_components(fmt))
             fmt = GL_RGBA; /* an undefined level: glTexSubImage2D refuses it */
+        /* On the GPU (copy.c) when glTexSubImage2D would take the copy: a
+         * level of its own, the region inside it, a format a render target
+         * holds and RGBA bytes fill (not half-float: glTexSubImage2D takes
+         * no bytes into a float level). */
+        if (width > 0 && height > 0 && level >= 0 && level < MAX_LEVELS && (f->defined & (1UL << level)) &&
+            xoffset >= 0 && yoffset >= 0 && xoffset + width <= f->w[level] && yoffset + height <= f->h[level] &&
+            level_class(f, level) == CLASS_RGBA8 &&
+            ogles2_copy_gpu(ctx, t, k, level, xoffset, yoffset, x, y, width, height))
+            return;
     }
     if (!width || !height) { /* nothing to copy; the level and offsets are still checked */
         ogles2_glTexSubImage2D(ctx, target, level, xoffset, yoffset, width, height, fmt,

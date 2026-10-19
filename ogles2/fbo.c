@@ -43,6 +43,18 @@
 #ifndef GL_BGRA8_EXT
 #define GL_BGRA8_EXT 0x93A1
 #endif
+#ifndef GL_RGBA16F_EXT
+#define GL_RGBA16F_EXT 0x881A /* EXT_color_buffer_half_float */
+#define GL_RGB16F_EXT  0x881B
+#endif
+#ifndef GL_R16F_EXT
+#define GL_R16F_EXT  0x822D
+#define GL_RG16F_EXT 0x822F
+#endif
+#ifndef GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT
+#define GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT 0x8211
+#define GL_UNSIGNED_NORMALIZED_EXT                   0x8C17
+#endif
 #ifndef GL_DEPTH24_STENCIL8_OES
 #define GL_DEPTH24_STENCIL8_OES 0x88F0 /* OES_packed_depth_stencil */
 #endif
@@ -95,6 +107,7 @@ struct OGLES2FboState
     struct OGLES2Renderbuffer *rb_bound;
     BOOL warned_incomplete;
     struct OGLES2FarName *far_fb;    /* fbs' names past OGLES2_NEAR_NAMES (share.c) */
+    struct OGLES2Framebuffer *copy_fb; /* glCopyTex*'s target on the GPU (copy.c): never named */
 };
 
 static struct OGLES2FboState *fs_get(struct OGLES2Context *ctx)
@@ -160,11 +173,20 @@ static BOOL is_stencil(GLenum f)
     return f == GL_STENCIL_INDEX8 || f == GL_DEPTH24_STENCIL8_OES;
 }
 
+/* EXT_color_buffer_half_float's renderbuffer formats: each stored as an
+ * RGBA half-float texture, the components the format lacks masked when
+ * read (ogles2_fbo_read). */
+static BOOL is_half(GLenum f)
+{
+    return f == GL_RGBA16F_EXT || f == GL_RGB16F_EXT || f == GL_RG16F_EXT || f == GL_R16F_EXT;
+}
+
 static BOOL is_color(GLenum f)
 {
-    /* BGRA_EXT and BGRA8_EXT (EXT_texture_format_BGRA8888) are kept as RGBA8. */
+    /* BGRA_EXT and BGRA8_EXT (EXT_texture_format_BGRA8888) are kept as RGBA8;
+     * the 16F ones (EXT_color_buffer_half_float) as RGBA16F. */
     return f == GL_RGBA4 || f == GL_RGB5_A1 || f == GL_RGB565 || f == GL_RGB8_OES || f == GL_RGBA8_OES ||
-           f == GL_BGRA_EXT || f == GL_BGRA8_EXT;
+           f == GL_BGRA_EXT || f == GL_BGRA8_EXT || is_half(f);
 }
 
 /* Depth and stencil: UIF without XOR, Mesa's padding for a UIF level. */
@@ -277,6 +299,63 @@ void ogles2_fbo_texture_deleted(struct OGLES2Context *ctx, struct OGLES2Texture 
             att_clear(ctx, &fb->att[a], FALSE);
         }
     ogles2_fb_update(ctx);
+}
+
+static GLenum status_of(struct OGLES2Framebuffer *fb);
+
+/* glCopyTexImage2D and glCopyTexSubImage2D on the GPU (copy.c): an object
+ * of the context's own, never named or bound by the application, its colour
+ * attachment 0 the level the copy draws into. The attachment holds the
+ * texture, as any does, until a copy into another level or
+ * aglDestroyContext; the job or render of a copy into the old one is
+ * rendered first. */
+struct OGLES2Framebuffer *ogles2_fbo_copy_target(struct OGLES2Context *ctx, struct OGLES2Texture *t, int face,
+                                                 int level)
+{
+    struct OGLES2FboState *fs = fs_get(ctx);
+    struct OGLES2Framebuffer *fb;
+    struct OGLES2Attachment *at;
+    if (!fs)
+        return 0;
+    if (!(fb = fs->copy_fb)) {
+        if (!(fb = AllocVec(sizeof(*fb), MEMF_ANY | MEMF_CLEAR)))
+            return 0;
+        fb->draw_buf[0] = GL_COLOR_ATTACHMENT0;
+        fs->copy_fb = fb;
+    }
+    at = &fb->att[ATT_COLOR];
+    if (at->type == GL_TEXTURE && at->tex == t && at->face == face && at->level == level)
+        return status_of(fb) == GL_FRAMEBUFFER_COMPLETE ? fb : 0;
+    before_fb_change(ctx, fb);
+    ogles2_texture_attach(t); /* first: the same texture again must not free an orphan */
+    att_clear(ctx, at, FALSE);
+    at->type = GL_TEXTURE;
+    at->tex = t;
+    at->face = (UBYTE)face;
+    at->level = (UBYTE)level;
+    return status_of(fb) == GL_FRAMEBUFFER_COMPLETE ? fb : 0; /* no GL error: the CPU copies then */
+}
+
+/* The bound framebuffer's colour image for glCopyTex* on the GPU (copy.c):
+ * a texture level or a colour renderbuffer's own texture; FALSE without. */
+BOOL ogles2_fbo_color_image(struct OGLES2Context *ctx, struct OGLES2Texture **t, int *face, int *level)
+{
+    const struct OGLES2Attachment *c;
+    if (!ctx->draw_fb)
+        return FALSE;
+    c = &ctx->draw_fb->att[ATT_COLOR];
+    if (c->type == GL_TEXTURE) {
+        *t = c->tex;
+        *face = c->face;
+        *level = c->level;
+        return TRUE;
+    }
+    if (c->type == GL_RENDERBUFFER && c->rb->color) {
+        *t = c->rb->color;
+        *face = *level = 0;
+        return TRUE;
+    }
+    return FALSE;
 }
 
 /* ---- names and binding ---- */
@@ -550,6 +629,7 @@ void ogles2_glRenderbufferStorage(struct OGLES2Context *ctx, GLenum target, GLen
             GLenum ty = internalformat == GL_RGBA4    ? GL_UNSIGNED_SHORT_4_4_4_4
                       : internalformat == GL_RGB5_A1  ? GL_UNSIGNED_SHORT_5_5_5_1
                       : internalformat == GL_RGB565   ? GL_UNSIGNED_SHORT_5_6_5
+                      : is_half(internalformat)       ? GL_HALF_FLOAT_OES
                                                       : GL_UNSIGNED_BYTE;
             ok = (rb->color = ogles2_texture_hidden(ctx, (UWORD)width, (UWORD)height, f, ty)) != 0;
         } else {
@@ -970,8 +1050,10 @@ static BOOL pools(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, struc
         if (fb->pool_state.hostptr)
             v3d_mem_free(ogles2_device(), &fb->pool_state);
         fb->pool_tiles = 0;
-        /* sized for 32x32 tiles when the job's are smaller than 64x64 */
-        v3d_frame_compute_pool_sizes(t->w, t->h, 16, t->tile_w < 64 || t->tile_h < 64, &zs, &ts, &ta, &tx, &ty);
+        /* sized for 32x32 tiles when the job's are smaller than 64x64; for
+         * 32x16 ones (four 64-bit targets) as 32x32 over twice the height */
+        v3d_frame_compute_pool_sizes(t->w, t->tile_h < 32 ? 2 * t->h : t->h, 16, t->tile_w < 64 || t->tile_h < 64,
+                                     &zs, &ts, &ta, &tx, &ty);
         if (v3d_mem_alloc(ogles2_device(), &fb->pool_alloc, ta + 4096) < 0)
             return FALSE;
         if (v3d_mem_alloc(ogles2_device(), &fb->pool_state, ts + 4096) < 0) {
@@ -1012,11 +1094,26 @@ BOOL ogles2_fbo_target(struct OGLES2Context *ctx, struct OGLES2Framebuffer *fb, 
     t->nrt = ctx->fb_nrt;
     ctx->draw_fb = saved;
     ogles2_fb_update(ctx);
-    /* Mesa's v3d_choose_tile_size for V3D 4.x, 32-bit targets: 64x64 for
-     * one, 64x32 for two, 32x32 for three or four (the hardware derives the
-     * same from the configuration packets). */
-    t->tile_w = t->nrt > 2 ? 32 : 64;
-    t->tile_h = t->nrt > 1 ? 32 : 64;
+    /* The widest drawn target: 64 bits with a half-float one. */
+    t->bpp = V3D_INTERNAL_BPP_32;
+    for (i = 0; i < OGLES2_MAX_DRAW_BUFFERS; i++) {
+        const struct OGLES2Attachment *c = &fb->att[ATT_COLOR + i];
+        if ((drawn & (1 << i)) &&
+            (c->type == GL_TEXTURE ? ogles2_texture_half(c->tex, c->face, c->level)
+                                   : c->type == GL_RENDERBUFFER && c->rb->color &&
+                                         ogles2_texture_half(c->rb->color, 0, 0)))
+            t->bpp = V3D_INTERNAL_BPP_64;
+    }
+    /* Mesa's v3d_choose_tile_size for V3D 4.x: 64x64 for one 32-bit
+     * target, a step smaller for two, two steps for three or four, and one
+     * more for 64-bit ones (64x32, 32x32, 32x16); the hardware derives the
+     * same from the configuration packets. */
+    {
+        static const UBYTE sizes[] = {64, 64, 64, 32, 32, 32, 32, 16};
+        int k = (t->nrt > 2 ? 2 : t->nrt > 1 ? 1 : 0) + (t->bpp == V3D_INTERNAL_BPP_64);
+        t->tile_w = sizes[2 * k];
+        t->tile_h = sizes[2 * k + 1];
+    }
     if (!t->w || !t->h || !pools(ctx, fb, t))
         return FALSE;
     if (!surfaces)
@@ -1087,8 +1184,25 @@ BOOL ogles2_fbo_read(struct OGLES2Context *ctx, int x, int y, int w, int h, UBYT
     const struct OGLES2Attachment *c = &ctx->draw_fb->att[ATT_COLOR];
     if (c->type == GL_TEXTURE)
         return ogles2_texture_read(c->tex, c->face, c->level, x, y, w, h, rgba, stride);
-    if (c->type == GL_RENDERBUFFER && c->rb->color)
-        return ogles2_texture_read(c->rb->color, 0, 0, x, y, w, h, rgba, stride);
+    if (c->type == GL_RENDERBUFFER && c->rb->color) {
+        GLenum f = c->rb->format;
+        int i, j;
+        if (!ogles2_texture_read(c->rb->color, 0, 0, x, y, w, h, rgba, stride))
+            return FALSE;
+        /* A 16F format without some components (kept as RGBA16F): those
+         * read as GLES reads absent ones, green and blue 0, alpha 1. */
+        if (f == GL_RGB16F_EXT || f == GL_RG16F_EXT || f == GL_R16F_EXT)
+            for (j = 0; j < h; j++)
+                for (i = 0; i < w; i++) {
+                    UBYTE *p = rgba + (ULONG)j * stride + (ULONG)i * 4;
+                    if (f == GL_R16F_EXT)
+                        p[1] = 0;
+                    if (f != GL_RGB16F_EXT)
+                        p[2] = 0;
+                    p[3] = 255;
+                }
+        return TRUE;
+    }
     return FALSE;
 }
 
@@ -1105,6 +1219,10 @@ static void rb_bits(GLenum f, GLint *r, GLint *g, GLint *b, GLint *a, GLint *d, 
     case GL_RGBA8_OES:
     case GL_BGRA_EXT:
     case GL_BGRA8_EXT: *r = *g = *b = *a = 8; break;
+    case GL_RGBA16F_EXT: *r = *g = *b = *a = 16; break;
+    case GL_RGB16F_EXT: *r = *g = *b = 16; break;
+    case GL_RG16F_EXT: *r = *g = 16; break;
+    case GL_R16F_EXT: *r = 16; break;
     case GL_DEPTH_COMPONENT16: *d = 16; break;
     case GL_STENCIL_INDEX8: *s = 8; break;
     case GL_DEPTH24_STENCIL8_OES: *d = 24; *s = 8; break;
@@ -1122,6 +1240,19 @@ static void tex_bits(const struct OGLES2Attachment *at, GLint *r, GLint *g, GLin
     if (ty == GL_UNSIGNED_SHORT_5_6_5) { *r = *b = 5; *g = 6; }
     if (ty == GL_UNSIGNED_SHORT_4_4_4_4) { *r = *g = *b = *a = 4; }
     if (ty == GL_UNSIGNED_SHORT_5_5_5_1) { *r = *g = *b = 5; *a = 1; }
+    if (ty == GL_HALF_FLOAT_OES) { *r = *g = *b = 16; *a = f == GL_RGBA ? 16 : 0; }
+}
+
+/* EXT_color_buffer_half_float: an attachment's component type. */
+static GLint component_type(const struct OGLES2Attachment *at, int a)
+{
+    if (a == ATT_STENCIL)
+        return GL_UNSIGNED_INT; /* stencil indices (GLES 3.0's answer) */
+    if (a < ATT_DEPTH &&
+        (at->type == GL_TEXTURE ? ogles2_texture_half(at->tex, at->face, at->level)
+                                : at->rb->color && ogles2_texture_half(at->rb->color, 0, 0)))
+        return GL_FLOAT;
+    return GL_UNSIGNED_NORMALIZED_EXT;
 }
 
 void ogles2_glGetRenderbufferParameteriv(struct OGLES2Context *ctx, GLenum target, GLenum pname,
@@ -1195,6 +1326,9 @@ void ogles2_glGetFramebufferAttachmentParameteriv(struct OGLES2Context *ctx, GLe
             return;
         }
         break;
+    case GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT:
+        *params = component_type(at, a);
+        return;
     }
     ogles2_error(ctx, GL_INVALID_ENUM);
 }
@@ -1237,11 +1371,18 @@ void ogles2_fbo_free(struct OGLES2Context *ctx)
     GLuint i;
     int a;
     /* The attachments let go first: an orphan they keep goes with them. */
-    if (fs)
+    if (fs) {
         for (i = 1; i < fs->nfbs; i++)
             if (fs->fbs[i])
                 for (a = 0; a < NATT; a++)
                     att_clear(ctx, &fs->fbs[i]->att[a], TRUE);
+        if (fs->copy_fb) {
+            for (a = 0; a < NATT; a++)
+                att_clear(ctx, &fs->copy_fb->att[a], TRUE);
+            fb_free(fs->copy_fb);
+            fs->copy_fb = 0;
+        }
+    }
     if (sh && sh->members == 1) {
         for (i = 1; i < sh->nrbs; i++)
             if (sh->rbs[i]) {

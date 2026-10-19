@@ -68,6 +68,10 @@ struct OGLES2Draw
     struct OGLES2Program mrt_quad;
     struct OGLES2Image *mrt_image;
     BOOL mrt_ready, mrt_failed;
+    /* and glCopyTex* on the GPU (copy.c): copy_tex_v3dp.h */
+    struct OGLES2Program copy_prog;
+    struct OGLES2Image *copy_image;
+    BOOL copy_ready, copy_failed;
     struct dedup dd;
     v3d_u32 defattr_gen;           /* the default attribute block of this control list */
     ULONG defattr;
@@ -232,6 +236,10 @@ void ogles2_draw_free(struct OGLES2Context *ctx)
         ogles2_program_builtin_free(&d->mrt_quad);
     if (d->mrt_image)
         ogles2_image_free(d->mrt_image, ctx);
+    if (d->copy_ready)
+        ogles2_program_builtin_free(&d->copy_prog);
+    if (d->copy_image)
+        ogles2_image_free(d->copy_image, ctx);
     FreeVec(d);
     ctx->draw = 0;
 }
@@ -1902,6 +1910,101 @@ static struct OGLES2Program *mrt_program(struct OGLES2Draw *d)
         p->attrib_index[a] = d->mrt_image->attribs[a].name[2] == 'p' /* a_position */
                                  ? OGLES2_MAX_VERTEX_ATTRIBS - 2 : OGLES2_MAX_VERTEX_ATTRIBS - 1;
     return p;
+}
+
+#include "copy_tex_v3dp.h"
+
+/* The program glCopyTex* draws with on the GPU: unit 0's 2D texture over a
+ * quad, position from the last but one generic attribute, texture
+ * coordinates from the last; tools/copy_tex. 0: none (logged once), and the
+ * copies go through the CPU. */
+static struct OGLES2Program *copy_program(struct OGLES2Draw *d)
+{
+    struct OGLES2Program *p = &d->copy_prog;
+    UWORD a;
+    if (!d->copy_ready && !d->copy_failed) {
+        char why[96];
+        if (!(d->copy_image = ogles2_v3dp_load(copy_tex_v3dp, sizeof(copy_tex_v3dp), why, sizeof(why))) ||
+            !ogles2_program_image(p, d->copy_image)) {
+            d->copy_failed = TRUE;
+            ogles2_log("glCopyTexSubImage2D: no program for copies on the GPU (%s): the CPU copies",
+                       (ULONG)(d->copy_image ? "out of memory" : why));
+            return 0;
+        }
+        d->copy_ready = TRUE;
+    }
+    if (!d->copy_ready)
+        return 0;
+    for (a = 0; a < d->copy_image->nattribs; a++)
+        p->attrib_index[a] = d->copy_image->attribs[a].name[2] == 'p' /* a_position */
+                                 ? OGLES2_MAX_VERTEX_ATTRIBS - 2 : OGLES2_MAX_VERTEX_ATTRIBS - 1;
+    return p;
+}
+
+/* glCopyTexImage2D and glCopyTexSubImage2D on the GPU (copy.c): texture
+ * src, bound to unit 0 for the draw, over the window rectangle (x, y, w, h)
+ * of the bound framebuffer (the copy's target), texture coordinates tc[0]
+ * to tc[2] left to right and tc[1] to tc[3] bottom to top. None of the
+ * application's state applies: no test, blending, dithering or mask, as a
+ * copy writes. The application's state is restored afterwards. FALSE:
+ * nothing drawn (no program). */
+BOOL ogles2_draw_copy(struct OGLES2Context *ctx, struct OGLES2Texture *src, const GLfloat *tc, GLint x, GLint y,
+                      GLsizei w, GLsizei h)
+{
+    struct OGLES2State saved = ctx->state, *s = &ctx->state;
+    struct OGLES2Array saved_pos = ctx->array[OGLES2_MAX_VERTEX_ATTRIBS - 2];
+    struct OGLES2Array saved_tc = ctx->array[OGLES2_MAX_VERTEX_ATTRIBS - 1];
+    struct OGLES2Program *saved_prog = ctx->program, *p;
+    struct OGLES2Texture *saved_tex;
+    struct OGLES2Draw *d;
+    static const GLfloat pos[8] = {-1, -1, 1, -1, -1, 1, 1, 1};
+    GLfloat uv[8];
+    GLint saved_vp[4];
+    int k;
+
+    if (!(d = draw_state(ctx)) || !(p = copy_program(d)))
+        return FALSE;
+    for (k = 0; k < 4; k++)
+        saved_vp[k] = ctx->viewport[k];
+    uv[0] = tc[0]; uv[1] = tc[1]; uv[2] = tc[2]; uv[3] = tc[1];
+    uv[4] = tc[0]; uv[5] = tc[3]; uv[6] = tc[2]; uv[7] = tc[3];
+    for (k = 0; k < 2; k++) {
+        struct OGLES2Array *a = &ctx->array[OGLES2_MAX_VERTEX_ATTRIBS - 2 + k];
+        a->enabled = GL_TRUE;
+        a->size = 2;
+        a->type = GL_FLOAT;
+        a->normalized = GL_FALSE;
+        a->stride = 0;
+        a->pointer = k ? (const void *)uv : (const void *)pos;
+        a->buffer = 0;
+    }
+    s->caps = 0;
+    s->polygon_mode = GL_FILL;
+    s->color_mask[0] = s->color_mask[1] = s->color_mask[2] = s->color_mask[3] = GL_TRUE;
+    s->depth_range[0] = 0.0f;
+    s->depth_range[1] = 1.0f;
+    s->clip_origin = GL_LOWER_LEFT_EXT;
+    s->clip_depth = GL_NEGATIVE_ONE_TO_ONE_EXT;
+    ctx->viewport[0] = x;
+    ctx->viewport[1] = y;
+    ctx->viewport[2] = w;
+    ctx->viewport[3] = h;
+    saved_tex = ogles2_texture_unit0(ctx, src);
+
+    ogles2_job_begin(ctx);
+    ctx->state_ver++; /* the override above */
+    mark(ctx, -1);
+    draw_arrays(ctx, p, GL_TRIANGLE_STRIP, 0, 4, 0);
+
+    ogles2_texture_unit0(ctx, saved_tex);
+    ctx->state = saved;
+    ctx->state_ver++;
+    ctx->array[OGLES2_MAX_VERTEX_ATTRIBS - 2] = saved_pos;
+    ctx->array[OGLES2_MAX_VERTEX_ATTRIBS - 1] = saved_tc;
+    ctx->program = saved_prog;
+    for (k = 0; k < 4; k++)
+        ctx->viewport[k] = saved_vp[k];
+    return TRUE;
 }
 
 /* ---- clears that the tile buffer cannot do ----

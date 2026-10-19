@@ -1,0 +1,66 @@
+; Run-M1 - ogles2 M7 run 6: copies from the framebuffer. See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m7-6 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M7R6: ""
+If NOT EXISTS M7R6:results
+  MakeDir M7R6:results
+EndIf
+Echo "ogles2 M7 run 6, starting at step {FROM}" >>M7R6:results/00-progress.txt
+Date >>M7R6:results/00-progress.txt
+Assign LIBS: M7R6:libs ADD
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M7R6:results/ogles2.log
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 4: copies from a hidden bitmap and a framebuffer object (nothing to see)"
+  M7R6:bin/m7_copy BITMAP >M7R6:results/1-bitmap.txt
+  Echo "step 1 done" >>M7R6:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 4: the same from a small window: four coloured quarters, about a second"
+  M7R6:bin/m7_copy WINDOW >M7R6:results/2-window.txt
+  Echo "step 2 done" >>M7R6:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 4: frame time, 640x480 window: moving rectangles, a strip at the bottom"
+  M7R6:bin/m7_copy BENCH >M7R6:results/3-bench.txt
+  Echo "step 3 done" >>M7R6:results/00-progress.txt
+EndIf
+
+; Probe K: the copies through the CPU, as before, for the comparison.
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 4: the same, the copy through the CPU: moving rectangles, a strip at the bottom"
+  SetEnv OGLES2/Probe K
+  M7R6:bin/m7_copy BENCH >M7R6:results/4-bench-cpu.txt
+  UnSetEnv OGLES2/Probe
+  Echo "step 4 done" >>M7R6:results/00-progress.txt
+EndIf
+
+UnSetEnv OGLES2/LogFile
+Assign LIBS: M7R6:libs REMOVE
+Avail FLUSH >NIL:
+If NOT EXISTS M7R6:results/notes.txt
+  Copy M7R6:notes-template.txt M7R6:results/notes.txt
+EndIf
+List M7R6:results >M7R6:results/99-files.txt
+Echo "finished" >>M7R6:results/00-progress.txt
+Date >>M7R6:results/00-progress.txt
+Assign M7R6:
+Echo ""
+Echo "Done. Results are in results/."

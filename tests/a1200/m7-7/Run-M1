@@ -1,0 +1,99 @@
+; Run-M1 - ogles2 M7 run 7: SDL2's fixes (audio, fullscreen). See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end; OGLES2Cache: points at cache/ for the run. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m7-7 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M7R7: ""
+If NOT EXISTS M7R7:results
+  MakeDir M7R7:results
+EndIf
+If NOT EXISTS M7R7:cache
+  MakeDir M7R7:cache
+EndIf
+Echo "ogles2 M7 run 7, starting at step {FROM}" >>M7R7:results/00-progress.txt
+Date >>M7R7:results/00-progress.txt
+Assign LIBS: M7R7:libs ADD
+Assign OGLES2Cache: M7R7:cache
+Avail FLUSH >NIL:
+SetEnv OGLES2/LogFile M7R7:results/ogles2.log
+; The tests load icon.bmp and sample.bmp from the current directory.
+CD M7R7:bin
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 6: a quiet tone for 3 seconds through AHI."
+  ; In the background: if it hangs, the script goes on (its output so far
+  ; is in the file).
+  Run >NIL: M7R7:bin/audiotest >M7R7:results/1-audio-ahi.txt --seconds 3 --driver ahi
+  Wait 10
+  Echo "step 1 done" >>M7R7:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 6: the same tone for 3 seconds through Paula."
+  M7R7:bin/audiotest --seconds 3 --driver paula >M7R7:results/2-audio-paula.txt
+  Echo "step 2 done" >>M7R7:results/00-progress.txt
+EndIf
+
+; The windowed runs first: they compile the shaders into cache/, so the
+; fullscreen ones start at once and screens finds them running.
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 6: testgles2 in a window, 4 seconds: a spinning cube."
+  M7R7:bin/testgles2 --seconds 4 >M7R7:results/3-testgles2.txt
+  Echo "step 3 done" >>M7R7:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 6: testsprite2 on SDL's GLES2 renderer in a window, 4 seconds."
+  M7R7:bin/testsprite2 --renderer opengles2 --seconds 4 >M7R7:results/4-sprites.txt
+  Echo "step 4 done" >>M7R7:results/00-progress.txt
+EndIf
+
+; Full screen: the screens while it runs (a 32-bit screen titled SDL) and
+; after it (none titled SDL left).
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 6: testgles2 full screen, 8 seconds: the screen switches to the cube and back."
+  M7R7:bin/screens >M7R7:results/5-screens-before.txt
+  Run >NIL: M7R7:bin/testgles2 >M7R7:results/5-testgles2-fullscreen.txt --fullscreen --seconds 8
+  Wait 5
+  M7R7:bin/screens >M7R7:results/5-screens-during.txt
+  Wait 9
+  M7R7:bin/screens NOSDL >M7R7:results/5-screens-after.txt
+  Echo "step 5 done" >>M7R7:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 6 VAL
+  Echo "Step 6 of 6: testsprite2 full screen on the GLES2 renderer, 8 seconds."
+  Run >NIL: M7R7:bin/testsprite2 >M7R7:results/6-sprites-fullscreen.txt --renderer opengles2 --fullscreen --seconds 8
+  Wait 5
+  M7R7:bin/screens >M7R7:results/6-screens-during.txt
+  Wait 9
+  M7R7:bin/screens NOSDL >M7R7:results/6-screens-after.txt
+  Echo "step 6 done" >>M7R7:results/00-progress.txt
+EndIf
+
+CD M7R7:
+UnSetEnv OGLES2/LogFile
+Assign OGLES2Cache:
+Assign LIBS: M7R7:libs REMOVE
+Avail FLUSH >NIL:
+If NOT EXISTS M7R7:results/notes.txt
+  Copy M7R7:notes-template.txt M7R7:results/notes.txt
+EndIf
+List M7R7:results >M7R7:results/99-files.txt
+Echo "finished" >>M7R7:results/00-progress.txt
+Date >>M7R7:results/00-progress.txt
+Assign M7R7:
+Echo ""
+Echo "Done. Results are in results/."

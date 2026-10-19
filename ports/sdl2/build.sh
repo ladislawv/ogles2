@@ -77,5 +77,10 @@ done
 for t in testsprite2 testdraw2; do
     m68k-amigaos-gcc "${CFLAGS[@]}" -Dmain=test_main "$L/examples/upstream/$t.c" "$O/testutils.o" "$O/run_for.o"         "${LIBS[@]}" -o "$O/tests/$t"
 done
+# Ours for the fixes of patches/0002 (GitHub issue 5): audiotest (the audio
+# thread keeps playing), screens (Intuition's screens: no "SDL" one left
+# behind by a fullscreen program). Not linked with run_for.o's wrappers.
+m68k-amigaos-gcc "${CFLAGS[@]}" "$HERE/tests/audiotest.c" -L"$O" -lSDL2 -L"$B" -logles2 -L"$O/lib" -lminigl -ldebug -lamiga -lm881 -lstubs -o "$O/tests/audiotest"
+m68k-amigaos-gcc -std=gnu99 -O2 -m68020 -mcrt=clib2 -Wall "$HERE/tests/screens.c" -o "$O/tests/screens"
 cp "$L/examples/upstream/icon.bmp" "$SDLUP_SRC/test/sample.bmp" "$O/tests/"
 ls -l "$O/tests"

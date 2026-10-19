@@ -832,6 +832,22 @@ void TileRenderingModeCFGClearColorsPart1(V3DContext* context, UBYTE target, ULO
 
 void TileRenderingModeCFGColor(V3DContext* context, UBYTE targets, UBYTE bpp, UBYTE type, UBYTE clamp)
 {
+    UBYTE b[4], t[4], c[4];
+    int rt;
+    for (rt = 0; rt < 4; rt++) {
+        b[rt] = bpp;
+        t[rt] = type;
+        c[rt] = clamp;
+    }
+    TileRenderingModeCFGColorEach(context, targets, b, t, c);
+}
+
+/* ogles2: as TileRenderingModeCFGColor, each render target with its own
+ * internal bpp, type and clamp (a framebuffer object's targets may differ:
+ * RGBA8 and RGBA16F, EXT_color_buffer_half_float). */
+void TileRenderingModeCFGColorEach(V3DContext* context, UBYTE targets, const UBYTE* bpp, const UBYTE* type,
+                                   const UBYTE* clamp)
+{
     ULONG lo = 1, hi = 0; /* sub-id 1; bits 32-63 */
     UBYTE rt;
 
@@ -844,7 +860,7 @@ void TileRenderingModeCFGColor(V3DContext* context, UBYTE targets, UBYTE bpp, UB
      * v3d_packet.xml, V3D 4.2): bpp 2, type 4, clamp 2; target 3's clamp
      * crosses into the high word. */
     for (rt = 0; rt < targets && rt < 4; rt++) {
-        ULONG field = (ULONG)bpp | (ULONG)type << 2 | (ULONG)clamp << 6, shift = 4 + 8UL * rt;
+        ULONG field = (ULONG)bpp[rt] | (ULONG)type[rt] << 2 | (ULONG)clamp[rt] << 6, shift = 4 + 8UL * rt;
         lo |= field << shift;
         if (shift + 8 > 32)
             hi |= field >> (32 - shift);

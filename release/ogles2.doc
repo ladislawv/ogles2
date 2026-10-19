@@ -84,7 +84,15 @@ ogles2.library/--background--                   ogles2.library/--background--
        EXT_texture_compression_dxt1, EXT_texture_compression_s3tc,
        ANGLE_texture_compression_dxt3, ANGLE_texture_compression_dxt5,
        EXT_clip_control, EXT_draw_buffers, NV_fbo_color_attachments,
-       OES_required_internalformat.
+       OES_required_internalformat, EXT_color_buffer_half_float.
+
+       EXT_color_buffer_half_float: half-float RGBA textures
+       (OES_texture_half_float) and GL_RGBA16F_EXT, GL_RGB16F_EXT,
+       GL_RG16F_EXT and GL_R16F_EXT renderbuffers are colour attachments;
+       what is drawn into them keeps values outside [0, 1], blended as
+       floats. With EXT_draw_buffers they mix with 8-bit targets in one
+       framebuffer. Half-float RGB and 32-bit float textures are not
+       colour-renderable.
 
        Their functions are reached through <proto/ogles2.h> by name, or
        through aglGetProcAddress(). AmigaOS 4's extras glPolygonMode,
@@ -92,6 +100,15 @@ ogles2.library/--background--                   ogles2.library/--background--
        GLES 3.0's glDrawRangeElements through aglGetProcAddress().
        Enumerants missing from <GLES2/gl2ext.h> are in
        <libraries/ogles2.h>.
+
+   COPIES
+       glCopyTexImage2D and glCopyTexSubImage2D are drawn by the GPU into
+       RGBA, RGB, RGB565, RGBA4 and RGB5_A1 levels, from the screen and from
+       framebuffer objects: a 640x480 copy costs about 2.6 ms a frame on an
+       A1200 (through the CPU, 23 ms). A copy from the screen still renders
+       the frame so far and waits for it. LUMINANCE, ALPHA and
+       LUMINANCE_ALPHA levels, and copies from a cube face or a mip level
+       of an object, go through the CPU.
 
    LIMITS
        Textures and framebuffers up to 4096 x 4096; 16 vertex attributes.
@@ -173,6 +190,9 @@ ogles2.library/--deviations--                   ogles2.library/--deviations--
      alone. 25 dEQP-GLES2 cube map cases fail for this reason.
    - EXT_draw_buffers: a program that writes gl_FragColor draws into the
      first render target only (the extension writes it to every one).
+   - A half-float colour buffer (EXT_color_buffer_half_float) is read by
+     glReadPixels as GL_RGBA, GL_UNSIGNED_BYTE only, clamped to [0, 1];
+     sample it as a texture to see its values.
    - glPolygonMode takes GL_FRONT_AND_BACK only: the hardware has one mode
      for both faces.
    - Framebuffer objects are not multisampled; only the default

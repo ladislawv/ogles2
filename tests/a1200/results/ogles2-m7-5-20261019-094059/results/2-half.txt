@@ -1,0 +1,35 @@
+ogles2 M7: EXT_color_buffer_half_float (rendering into half-float textures)
+PASS: GL_EXTENSIONS has GL_EXT_color_buffer_half_float
+PASS: an RGBA half-float texture is colour-renderable
+PASS: an RGB half-float texture is not (the extension names RGBA textures only)
+PASS: a 32-bit float texture is still not (no EXT_color_buffer_float)
+PASS: a LUMINANCE half-float texture is not
+PASS: its GL_RED_BITS and GL_ALPHA_BITS are 16, its component type GL_FLOAT
+PASS: an RGBA8 texture's component type is GL_UNSIGNED_NORMALIZED_EXT
+PASS: an RGBA16F_EXT renderbuffer: 16 bits red and alpha
+PASS: attached: complete, component type GL_FLOAT
+PASS: an RGB16F_EXT renderbuffer: no alpha, complete
+PASS: an RG16F_EXT renderbuffer: 16 bits green, no blue, complete
+PASS: an R16F_EXT renderbuffer: 16 bits red, no green, complete
+PASS: no GL error left over
+PASS: clear: a whole clear of a 16F target, read back
+PASS: clear: the same, sampled
+PASS: draw: (2, -1, 0.5, 3) kept in the 16F target (sampled x 0.2 + 0.3)
+PASS: draw: glReadPixels clamps it to [0, 1]
+PASS: readback: after a glTexSubImage2D the drawn part keeps (2, -1, 0.5, 3)
+PASS: readback: and the square holds the new 0.5
+PASS: draw: an RGB16F renderbuffer reads its components, the others 0 and alpha 1
+PASS: draw: an RG16F renderbuffer reads its components, the others 0 and alpha 1
+PASS: draw: an R16F renderbuffer reads its components, the others 0 and alpha 1
+PASS: blend: ONE + ONE of 0.75 twice is 1.5, past 1 (sampled x 0.5)
+PASS: pingpong: eight passes adding 0.375 make 3.0
+PASS: targets: four 16F targets complete
+PASS: targets: four 16F at 300x200, target 0 drawn on the left, cleared on the right
+PASS: targets: four 16F at 300x200, target 1 drawn on the left, cleared on the right
+PASS: targets: four 16F at 300x200, target 2 drawn on the left, cleared on the right
+PASS: targets: four 16F at 300x200, target 3 drawn on the left, cleared on the right
+PASS: targets: RGBA8 and 16F together complete
+PASS: targets: the RGBA8 one holds (0.25, 0.5, 0.75, 1)
+PASS: targets: the 16F one holds (2, 1.5, -0.5, 2.5)
+PASS: no GL error left over
+ALL PASSED: 33 of 33 checks passed

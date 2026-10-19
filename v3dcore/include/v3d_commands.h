@@ -72,6 +72,8 @@ void TileRenderingModeCFGClearColorsPart1(V3DContext* context, UBYTE target, ULO
 /* ogles2: render targets 0 .. targets-1, all of one internal bpp, type and
  * clamp (EXT_draw_buffers: up to 4). */
 void TileRenderingModeCFGColor(V3DContext* context, UBYTE targets, UBYTE bpp, UBYTE type, UBYTE clamp);
+void TileRenderingModeCFGColorEach(V3DContext* context, UBYTE targets, const UBYTE* bpp, const UBYTE* type,
+                                   const UBYTE* clamp);
 void glShaderStateAttributeRecord(V3DContext* context, APTR address, UBYTE raiu, UBYTE nit,
                                   UBYTE sit, UBYTE vsize, UBYTE vtype, UBYTE novrbvs, UBYTE novrbcs,
                                   UWORD divisor, ULONG stride, ULONG maxindex);

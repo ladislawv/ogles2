@@ -426,7 +426,8 @@ struct OGLES2Target
     UWORD w, h;
     UBYTE colors;          /* bit i: colour attachment i is drawn (a draw buffer) and has an image */
     UBYTE nrt;             /* the tile buffer's render targets: the highest drawn + 1 (1 with none) */
-    UBYTE tile_w, tile_h;  /* the tile size nrt gives (Mesa's v3d_choose_tile_size) */
+    UBYTE tile_w, tile_h;  /* the tile size nrt and bpp give (Mesa's v3d_choose_tile_size) */
+    UBYTE bpp;             /* V3D_INTERNAL_BPP_*: the widest drawn target's (64 with a 16F one) */
     BOOL has_z, has_s, packed_zs; /* packed: one D24S8 image for both */
     struct OGLES2Surface color[OGLES2_MAX_DRAW_BUFFERS], z, s;
     UBYTE depth_type;      /* V3D_INTERNAL_TYPE_DEPTH* for the tile buffer */
@@ -449,6 +450,9 @@ struct OGLES2Context
     UBYTE depth_format;             /* OGLES2_DEPTH_*: the tile buffer's depth type */
     BOOL msaa;                      /* 4x MSAA on the default framebuffer (OGLES2_CCT_PISTORM_MSAA) */
     UBYTE job_clear_stencil;        /* the open job's stencil clear value (job.c) */
+    GLfloat job_clear_rgba[4];      /* its colour clear value, for 16F targets (job.c) */
+    UBYTE copy_logged;              /* glCopyTex* on the GPU: 1 from the default framebuffer, 2 from
+                                     * an object, logged (copy.c) */
     GLint viewport[4];              /* x, y, width, height */
     GLint scissor[4];
     ULONG frames, frames_dropped;   /* statistics, logged at destroy */
@@ -552,6 +556,7 @@ struct OGLES2Context
 #define OGLES2_PROBE_PERIODIC 128UL  /* P: every 256 swaps, the timing, GPU memory and renames since the last */
 #define OGLES2_PROBE_CPU_MIPMAP 256UL /* M: glGenerateMipmap on the CPU, not the TFU (texture.c) */
 #define OGLES2_PROBE_CPU_UPLOAD 512UL /* U: texture uploads tiled by the CPU, not the TFU (texture.c) */
+#define OGLES2_PROBE_CPU_COPY 1024UL /* K: glCopyTex* through the CPU, not drawn by the GPU (copy.c) */
 
 void ogles2_state_init(struct OGLES2Context *ctx);
 BOOL ogles2_state_dither(struct OGLES2Context *ctx); /* GL_DITHER enabled */
@@ -599,8 +604,35 @@ void ogles2_texture_detach(struct OGLES2Context *ctx, struct OGLES2Texture *t, B
 /* The image of face k, level l: FALSE if not defined. */
 BOOL ogles2_texture_image(const struct OGLES2Texture *t, int k, int l, UWORD *w, UWORD *h,
                           GLenum *format, GLenum *type);
-/* Colour-renderable (plan 7.7): RGBA8, RGB565, RGBA4, RGB5_A1 storage. */
+/* Colour-renderable (plan 7.7): RGBA8, RGB565, RGBA4, RGB5_A1 storage; RGBA16F
+ * (half-float RGBA, EXT_color_buffer_half_float). */
 BOOL ogles2_texture_renderable(const struct OGLES2Texture *t, int k, int l);
+/* That image is half-float: a 64-bit render target (16F in the tile buffer). */
+BOOL ogles2_texture_half(const struct OGLES2Texture *t, int k, int l);
+UWORD ogles2_float_to_half(GLfloat f); /* IEEE half precision, by the bits (texture.c) */
+/* glCopyTex* on the GPU (copy.c): the default framebuffer's region tiled by
+ * the TFU into a scratch texture (0: could not); unit 0's 2D texture swapped
+ * for the copy's draw; a framebuffer's colour texture sampled level 0,
+ * nearest and clamped for it, and its parameters put back. */
+struct OGLES2Texture *ogles2_texture_scratch(struct OGLES2Context *ctx, UWORD w, UWORD h, ULONG src, ULONG stride,
+                                             BOOL bgra);
+struct OGLES2Texture *ogles2_texture_unit0(struct OGLES2Context *ctx, struct OGLES2Texture *t);
+struct OGLES2TexParams
+{
+    GLenum min_filter, mag_filter, wrap_s, wrap_t;
+    GLint base_level, max_level;
+    GLfloat max_aniso, lod_bias;
+};
+void ogles2_texture_params_copy(struct OGLES2Texture *t, struct OGLES2TexParams *saved);
+void ogles2_texture_params_restore(struct OGLES2Texture *t, const struct OGLES2TexParams *saved);
+BOOL ogles2_copy_gpu(struct OGLES2Context *ctx, struct OGLES2Texture *t, int k, int level, GLint xoffset,
+                     GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
+BOOL ogles2_draw_copy(struct OGLES2Context *ctx, struct OGLES2Texture *src, const GLfloat *tc, GLint x, GLint y,
+                      GLsizei w, GLsizei h);
+struct OGLES2Framebuffer;
+struct OGLES2Framebuffer *ogles2_fbo_copy_target(struct OGLES2Context *ctx, struct OGLES2Texture *t, int face,
+                                                 int level);
+BOOL ogles2_fbo_color_image(struct OGLES2Context *ctx, struct OGLES2Texture **t, int *face, int *level);
 /* The image as a render target, its GPU storage made first; FALSE: none. */
 BOOL ogles2_texture_surface(struct OGLES2Context *ctx, struct OGLES2Texture *t, int k, int l,
                             struct OGLES2Surface *s);

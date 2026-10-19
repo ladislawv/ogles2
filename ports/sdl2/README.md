@@ -58,10 +58,26 @@ A program links `-lSDL2 -logles2 -lminigl -ldebug -lamiga -lm881 -lstubs`
     arguments leaves the wrong base in A6: `AllocBitMap` ran through
     CyberGfxBase and the software renderer crashed. Unpatched SDL2_68k built
     with this toolchain crashes the same way (Aminet's binary does not).
+- **`patches/0002-os3-fixes-issue5.patch`** (GitHub issue 5, from arczi84's
+  patch, gist `18ddb47cc9059dd7cf6c6842e58bf6d5`; its header lists the
+  changes): no `-DSDL_OS3_DEBUG` (SDL wrote logs on `WORK:`, a requester
+  without that volume); AHI audio, whose thread now holds the message port
+  while it runs (`ThreadInit`/`ThreadDeinit`; arczi84's version took it at the
+  first I/O and gave it back only after the thread had ended) and whose
+  availability check opens `AHI_NO_UNIT` (unit 0 opened, closed and opened
+  again at once left AHI 6.7 on the test A1200 never completing the first
+  write); a 32-bit fullscreen mode found in the display database; the
+  display's `driverdata`, so fullscreen screens are closed; the Alt and Amiga
+  rawkeys.
 - **`-fbbb=abcfhilmnprsz0`**: the library and tests are built with ogles2's
   optimiser passes (without "e").
 - **`tests/run_for.c`**: a `main` for SDL's test programs on the test
   station: `--seconds N` posts `SDL_QUIT` after N seconds.
+- **`tests/audiotest.c`**: a quiet tone for `--seconds N` through
+  `--driver ahi` or `paula` (SDL's hint: this SDL reads no Amiga environment
+  variable); the callback's count of buffers must keep pace with the time.
+  **`tests/screens.c`**: Intuition's screens, size, depth and title (`NOSDL`:
+  return 10 if one titled "SDL" is open). Package `m7-7` runs both.
 
 ## Licences
 

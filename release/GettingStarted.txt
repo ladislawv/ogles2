@@ -318,8 +318,9 @@ compiler installed.
 
 Deviations from GLES2 to know: cube maps are always filtered seamlessly;
 with EXT_draw_buffers, gl_FragColor goes to the first buffer only;
-glPolygonMode takes GL_FRONT_AND_BACK only; float textures are sampled
-nearest. Details in ogles2.doc.
+glPolygonMode takes GL_FRONT_AND_BACK only; 32-bit float textures are
+sampled nearest; a half-float colour buffer reads back as clamped bytes.
+Details in ogles2.doc.
 
 
 10. Working with an AI assistant

@@ -1,0 +1,7 @@
+attribute vec2 a_position;
+attribute vec2 a_texcoord;
+varying highp vec2 v_tc;
+void main() {
+    v_tc = a_texcoord;
+    gl_Position = vec4(a_position, 0.0, 1.0);
+}

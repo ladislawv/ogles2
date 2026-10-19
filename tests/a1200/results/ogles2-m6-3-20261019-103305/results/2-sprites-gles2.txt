@@ -1,0 +1,31 @@
+Built-in render drivers:
+  Renderer opengles2:
+    Flags: 0x0000000E (Accelerated | PresentVSync | TargetTexturesSupported)
+    Texture formats (4): RGBA8888, BGRA8888, 0x16661804, 0x16261804
+  Renderer software:
+    Flags: 0x0000000D (Software | PresentVSync | TargetTexturesSupported)
+    Texture formats (8): ARGB8888, ABGR8888, RGBA8888, BGRA8888, RGB888, BGR888, RGB565, RGB555
+SDL_CreateRenderer: driver returned 0
+SDL_CreateRenderer: calculating vsync interval
+SDL_CreateRenderer: verifying draw queue
+SDL_CreateRenderer: draw queue OK
+SDL_CreateRenderer: sizeof(SDL_Renderer)=596 renderer=0x8fcc0cc
+SDL_CreateRenderer: creating target_mutex
+SDL_CreateRenderer: setting scale (float)
+SDL_CreateRenderer: setting rect_index_order
+SDL_CreateRenderer: GetOutputSize fptr=0xaea9294 driverdata=0x8fcc374
+SDL_CreateRenderer: calling GetOutputSize...
+SDL_CreateRenderer: output=640x480, getting window size
+SDL_CreateRenderer: window=640x480 output=640x480
+SDL_CreateRenderer: dpi_scale done
+SDL_CreateRenderer: setting relative_scaling
+SDL_CreateRenderer: setting line_method
+SDL_CreateRenderer: setting viewport
+SDL_CreateRenderer: adding event watch
+SDL_CreateRenderer: SUCCESS renderer=0x8fcc0cc
+Current renderer:
+  Renderer opengles2:
+    Flags: 0x0000000A (Accelerated | TargetTexturesSupported)
+    Texture formats (9): RGBA8888, BGRA8888, 0x16661804, 0x16261804, YV12, IYUV, NV12, NV21, 0x2053454f
+    Max Texture Size: 4096x4096
+190.76 frames per second

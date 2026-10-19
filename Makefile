@@ -39,7 +39,7 @@ GEN_STAMP := $(B)/gen/.stamp
 LIB_SRC   := ogles2/library.c ogles2/log.c ogles2/context.c ogles2/device.c ogles2/runtime.c \
              ogles2/state.c ogles2/display.c ogles2/job.c ogles2/frame.c ogles2/program.c \
              ogles2/draw.c ogles2/v3dp.c ogles2/blake3.c ogles2/texture.c \
-             ogles2/buffer.c ogles2/compiler.c ogles2/etc1.c ogles2/fbo.c ogles2/share.c \
+             ogles2/buffer.c ogles2/compiler.c ogles2/etc1.c ogles2/fbo.c ogles2/copy.c ogles2/share.c \
              ogles2/debug.c
 # Library files that use v3dcore directly
 V3D_USERS := device job draw v3dp texture buffer fbo share
@@ -55,7 +55,7 @@ CLIENT_OBJ := $(patsubst %.c,$(B)/obj/%.o,$(CLIENT_SRC)) $(B)/obj/client/lvo.o \
 .PHONY: all gen clean vbcc
 all: $(B)/fpcheck.ok $(B)/libv3dcore.a $(B)/ogles2.library $(B)/libogles2.a $(B)/tests/abi_layout $(B)/tests/smoke \
      $(B)/tests/abi_probe $(B)/tests/m1_clear $(B)/tests/m1_probe $(B)/tests/m1_draw $(B)/tests/m1_hwprobe $(B)/tests/m1_soak $(B)/tests/m2_link $(B)/tests/m2_texture $(B)/tests/m2_elements $(B)/tests/m2_buffers $(B)/tests/m4_stress $(B)/tests/m4_depth $(B)/tests/m4_setbitmap $(B)/tests/gears_gles2 $(B)/tests/cachetime $(B)/tests/emuspeed $(B)/tests/m5_fbo \
-     $(B)/tests/rtt_churn $(B)/tests/m6_share $(B)/tests/m6_tasks $(B)/tests/m6_ext $(B)/tests/m6_tfu $(B)/tests/m6_flip $(B)/tests/m6_vsync $(B)/tests/m6_msaa $(B)/tests/m7_points $(B)/tests/m7_s3tc $(B)/tests/m7_clip $(B)/tests/m7_mrt $(B)/cmd/OGLES2Log $(B)/amictl/amictld
+     $(B)/tests/rtt_churn $(B)/tests/m6_share $(B)/tests/m6_tasks $(B)/tests/m6_ext $(B)/tests/m6_tfu $(B)/tests/m6_flip $(B)/tests/m6_vsync $(B)/tests/m6_msaa $(B)/tests/m7_points $(B)/tests/m7_s3tc $(B)/tests/m7_clip $(B)/tests/m7_mrt $(B)/tests/m7_half $(B)/tests/m7_copy $(B)/cmd/OGLES2Log $(B)/amictl/amictld
 
 # ---- generated code (plan section 6.6). Re-run when the inputs or the set of
 # implemented ogles2_* functions change.
@@ -192,6 +192,12 @@ $(B)/tests/m7_clip: tests/m7_clip/m7_clip.c $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
 $(B)/tests/m7_mrt: tests/m7_mrt/m7_mrt.c $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m7_half: tests/m7_half/m7_half.c $(B)/libogles2.a
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
+$(B)/tests/m7_copy: tests/m7_copy/m7_copy.c tests/common/smooth_shaders.h tests/common/tex_shaders.h $(B)/libogles2.a
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INC) $< -L$(B) -logles2 -o $@
 $(B)/tests/m6_flip: tests/m6_flip/m6_flip.c
