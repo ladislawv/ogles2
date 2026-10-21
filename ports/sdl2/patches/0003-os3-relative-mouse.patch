@@ -1,0 +1,113 @@
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3events.c b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3events.c
+index 7d3ecf50..4e035248 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3events.c
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3events.c
+@@ -19,6 +19,7 @@
+ 
+ #include "SDL_os3video.h"
+ #include "SDL_os3events.h"
++#include "SDL_os3mouse.h"
+ #include "SDL_os3opengl.h"
+ #include "../../events/SDL_events_c.h"
+ #include "../../events/SDL_keyboard_c.h"
+@@ -229,6 +230,8 @@ void OS3_PumpEvents(_THIS)
+     UWORD  code;
+     WORD   mousex, mousey;
+     struct Window *intuiwin;
++    ULONG  idcmp;
++    SDL_bool skipmove;
+ 
+     /* Walk all open SDL windows and drain their IDCMP queues */
+     for (sdlwin = _this->windows; sdlwin; sdlwin = sdlwin->next) {
+@@ -239,6 +242,18 @@ void OS3_PumpEvents(_THIS)
+ 
+         intuiwin = data->window;
+ 
++        /* SDL's relative mouse mode (patch 0003): Intuition reports the
++           mouse's own movement (IDCMP_DELTAMOVE) instead of the pointer's
++           position, which stops at the screen's edge. The moves queued
++           before a switch are in the other form: dropped. */
++        idcmp = OS3_relative_mouse ? (intuiwin->IDCMPFlags | IDCMP_DELTAMOVE)
++                                   : (intuiwin->IDCMPFlags & ~IDCMP_DELTAMOVE);
++        skipmove = SDL_FALSE;
++        if (idcmp != intuiwin->IDCMPFlags) {
++            ModifyIDCMP(intuiwin, idcmp);
++            skipmove = SDL_TRUE;
++        }
++
+         while ((imsg = (struct IntuiMessage *)GetMsg(intuiwin->UserPort)) != NULL) {
+             /* Copy fields BEFORE ReplyMsg -- message memory is Intuition's */
+             class  = imsg->Class;
+@@ -260,6 +275,16 @@ void OS3_PumpEvents(_THIS)
+                 break;
+ 
+             case IDCMP_MOUSEMOVE:
++                if (skipmove) {
++                    break;
++                }
++                if (OS3_relative_mouse) {
++                    /* IDCMP_DELTAMOVE: the movement since the last message */
++                    if (mousex || mousey) {
++                        SDL_SendMouseMotion(sdlwin, 0, 1, (int)mousex, (int)mousey);
++                    }
++                    break;
++                }
+                 /* WA_GimmeZeroZero: coordinates are relative to inner area */
+                 SDL_SendMouseMotion(sdlwin, 0, 0, (int)mousex, (int)mousey);
+                 break;
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3mouse.c b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3mouse.c
+index 502ce7f7..11adeda1 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3mouse.c
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3mouse.c
+@@ -426,6 +426,22 @@ static void OS3_FreeCursor(SDL_Cursor *cursor)
+     SDL_free(cursor);
+ }
+ 
++/*
++ * Relative mouse mode (ogles2 ports/sdl2 patch 0003). Without it SDL emulates
++ * relative mode by warping the pointer back to the window's centre, and
++ * OS3_WarpMouse cannot warp: the hidden pointer ran into the screen's edge and
++ * a game's mouse look stopped there. Here the mode is only recorded; the event
++ * pump (SDL_os3events.c) sets IDCMP_DELTAMOVE on the windows to match, so that
++ * Intuition reports the mouse's own movement, which goes on at the edge.
++ */
++SDL_bool OS3_relative_mouse = SDL_FALSE;
++
++static int OS3_SetRelativeMouseMode(SDL_bool enabled)
++{
++    OS3_relative_mouse = enabled;
++    return 0;
++}
++
+ static void OS3_WarpMouse(SDL_Window *window, int x, int y)
+ {
+     /* Not implemented for Phase 2.
+@@ -449,6 +465,7 @@ void OS3_InitMouse(void)
+     mouse->ShowCursor         = OS3_ShowCursor;
+     mouse->FreeCursor         = OS3_FreeCursor;
+     mouse->WarpMouse          = OS3_WarpMouse;
++    mouse->SetRelativeMouseMode = OS3_SetRelativeMouseMode;
+ 
+     SDL_SetDefaultCursor(OS3_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
+ }
+@@ -464,6 +481,8 @@ void OS3_QuitMouse(void)
+     mouse->ShowCursor         = NULL;
+     mouse->FreeCursor         = NULL;
+     mouse->WarpMouse          = NULL;
++    mouse->SetRelativeMouseMode = NULL;
++    OS3_relative_mouse        = SDL_FALSE;
+ 
+     /* Note: the static empty_sprite in OS3_ShowCursor is intentionally
+        NOT freed here. It is a tiny 12-byte CHIP RAM allocation that
+diff --git a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3mouse.h b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3mouse.h
+index f11bbab9..5d7a059a 100644
+--- a/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3mouse.h
++++ b/libSDL2-amigaos3-main/src/video/amigaos3/SDL_os3mouse.h
+@@ -11,4 +11,7 @@
+ extern void OS3_InitMouse(void);
+ extern void OS3_QuitMouse(void);
+ 
++/* SDL's relative mouse mode is on: the windows report IDCMP_DELTAMOVE (patch 0003) */
++extern SDL_bool OS3_relative_mouse;
++
+ #endif /* SDL_os3mouse_h_ */

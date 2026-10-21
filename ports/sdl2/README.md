@@ -69,6 +69,13 @@ A program links `-lSDL2 -logles2 -lminigl -ldebug -lamiga -lm881 -lstubs`
   write); a 32-bit fullscreen mode found in the display database; the
   display's `driverdata`, so fullscreen screens are closed; the Alt and Amiga
   rawkeys.
+- **`patches/0003-os3-relative-mouse.patch`** (2026-10-21): SDL's relative
+  mouse mode for the amigaos3 driver. The driver had none and its `WarpMouse`
+  is a stub, so SDL's fallback (warping the pointer back to the window's
+  centre) did nothing: the hidden pointer stopped at the screen's edge, and so
+  did a game's mouse look. The event pump now sets `IDCMP_DELTAMOVE` on the
+  windows while the mode is on and sends Intuition's movement deltas as
+  relative motion (moves queued across a switch are dropped).
 - **`-fbbb=abcfhilmnprsz0`**: the library and tests are built with ogles2's
   optimiser passes (without "e").
 - **`tests/run_for.c`**: a `main` for SDL's test programs on the test
