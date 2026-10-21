@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import amictl
 
 PORT = 6800
+INPUT_PORT = 6801
 TOKEN = "0123456789abcdef0123456789abcdef"
 failures = 0
 checks = 0
@@ -132,6 +133,110 @@ def main():
         except amictl.StationError:
             check(True, "UNSETENV")
 
+        # input channel (plan 10.1.1)
+        input_log = os.path.join(root, "base", "input.log")
+
+        def input_lines():
+            try:
+                return open(input_log).read().splitlines()
+            except OSError:
+                return []
+
+        s = socket.create_connection(("127.0.0.1", INPUT_PORT), timeout=5)
+        s.sendall(b"AMI1" + struct.pack(">I", 5) + b"wrong")
+        head = s.recv(8)
+        s.close()
+        check(head == b"AMI1\0\0\0\2", "input: a wrong token is refused")
+        link = amictl.InputLink("127.0.0.1", INPUT_PORT, TOKEN)
+        check((link.width, link.height) == (640, 512), "input: HELLO gives the screen size")
+        link.send("MOVETO", 100, 50)
+        check(link.pos() == (100, 50), "input: MOVETO and POS")
+        link.send("MOVE", 7, -3)
+        check(link.pos() == (107, 47), "input: relative MOVE")
+        link.send("MOVE", -10, 5, flags=2)
+        p = link.pos()
+        check(p == (97, 52) and [l.split(" qual")[0] for l in input_lines()[-2:]] ==
+              ["moveto 98 51", "mouse 0xff -1 1"],
+              "input: MOVE in pointer mode: placed one short, a 1-count raw step (%s, %s)" %
+              (p, input_lines()[-2:]))
+        link.send("BUTTON", 0, 1)
+        link.send("MOVE", 5, -3, flags=2)
+        link.send("BUTTON", 0, 0)
+        check(link.pos() == (102, 49) and
+              [l.split(" qual")[0] for l in input_lines()[-3:]] ==
+              ["moveto 101 50", "mouse 0xff 1 -1", "mouse 0xe8 0 0"],
+              "input: pointer mode with a button down: placed one short, a 1-count raw step (%s)" %
+              input_lines()[-4:])
+        n0 = len(input_lines())
+        link.sock.sendall(b"".join(struct.pack(">BBhhh", 1, 2, 1, 1, 0) for _ in range(50)))
+        check(link.pos() == (152, 99) and len(input_lines()) - n0 <= 5,
+              "input: queued moves merged (%d events for 50 moves)" % (len(input_lines()) - n0))
+        link.type("A+")
+        link.pos()
+        lines = input_lines()
+        check(["key 0x60 down qual 0x0001", "key 0x20 down qual 0x0001", "key 0x20 up qual 0x0001",
+               "key 0x60 up qual 0x0000", "key 0x60 down qual 0x0001", "key 0x0c down qual 0x0001"]
+              == lines[-8:-2], "input: typing 'A+' gives shifted raw keys (%s)" % lines[-8:])
+        # Ctrl-Amiga-Amiga is dropped
+        for k in (0x63, 0x66, 0x67):
+            link.key(k, True)
+        link.pos()
+        check("key 0x67 down" not in "".join(input_lines()[-3:]),
+              "input: Ctrl-Amiga-Amiga is not passed on")
+        # A server busy with a command does not hold up input
+        wait_arg = b"%d\n3000" % st.start("sleep 2")
+        st.sock.sendall(b"AMC1" + struct.pack(">III", 9, len(wait_arg), 0) + wait_arg)
+        t0 = time.time()
+        link.pos()
+        check(time.time() - t0 < 0.5, "input: answered while the server waits for a job (%.3f s)" %
+              (time.time() - t0))
+        st._recv(12 + 8 + 0)  # the WAIT reply (done, rc, no output)
+        # disconnect with keys and a button still down: all released
+        link.send("BUTTON", 0, 1)
+        link.key(0x20, True)
+        link.pos()
+        link.sock.close()
+        time.sleep(0.3)
+        tail = input_lines()[-6:]
+        check(any("key 0x20 up" in l for l in tail) and any("mouse 0xe8" in l for l in tail) and
+              any("key 0x63 up" in l for l in tail),
+              "input: a dropped connection releases keys and buttons (%s)" % tail)
+        # the edge: entering at the left, leaving through it
+        link = amictl.InputLink("127.0.0.1", INPUT_PORT, TOKEN)
+        link.send("ENTER", 32767, 0, 0)
+        x, y = link.pos()
+        check((x, y) == (1, 255), "input: ENTER at the left edge, half way down (%d,%d)" % (x, y))
+        link.send("MOVE", -5, 0)
+        check(link.pos()[0] == 0, "input: pointer at the left edge")
+        link.send("BUTTON", 0, 1)
+        link.send("MOVE", -1, 0)
+        x, y = link.pos()
+        link.send("BUTTON", 0, 0)
+        check(x == 0 and not any("0xe8" in l for l in input_lines()[-2:-1]),
+              "input: no way out through the edge with a button down")
+        link.send("MOVE", -1, 0)
+        t, a, b, c = link.read()
+        while t == amictl.AMI["POS"]:
+            t, a, b, c = link.read()
+        check(t == amictl.AMI["LEAVE"] and abs((a & 0xffff) - 32767) < 200,
+              "input: LEAVE through the left edge at the same height (%d)" % (a & 0xffff))
+        link.send("MOVE", -1, 0)
+        link.send("MOVE", 3, 0)
+        check(link.pos()[0] == 0, "input: movement after LEAVE is dropped")
+        # a client that never closes does not keep the channel: the newest wins
+        stale = amictl.InputLink("127.0.0.1", INPUT_PORT, TOKEN)
+        stale.send("KEY", 0x20, 1)
+        stale.pos()
+        t0 = time.time()
+        fresh = amictl.InputLink("127.0.0.1", INPUT_PORT, TOKEN)
+        check(fresh.pos() is not None and time.time() - t0 < 2 and
+              any("key 0x20 up" in l for l in input_lines()[-3:]),
+              "input: a new connection replaces a stale one, its keys released (%.2f s)" %
+              (time.time() - t0))
+        fresh.close()
+        stale.sock.close()
+        link.sock.close()
+
         # self-update: upload the same binary as amictld.new and restart into it
         st.put("PROGDIR:amictld.new", open(binary, "rb").read())
         st.call("RESTART", "amictld.new")
@@ -146,6 +251,17 @@ def main():
                 time.sleep(0.2)
         check(st is not None and "starts 2" in st.hello_text,
               "RESTART: the new server answers, start count 2")
+        link = None
+        for _ in range(50):
+            try:
+                link = amictl.InputLink("127.0.0.1", INPUT_PORT, TOKEN)
+                break
+            except OSError:
+                time.sleep(0.2)
+        check(link is not None and link.pos() is not None,
+              "RESTART: the new server's input process answers")
+        if link:
+            link.close()
         st.call("QUIT")
         st.close()
         time.sleep(0.5)
@@ -154,6 +270,11 @@ def main():
             check(False, "QUIT stops the server")
         except OSError:
             check(True, "QUIT stops the server")
+        try:
+            socket.create_connection(("127.0.0.1", INPUT_PORT), timeout=1).close()
+            check(False, "QUIT stops the input process")
+        except OSError:
+            check(True, "QUIT stops the input process")
 
         # an address that is not allowed
         srv2 = start_server(binary, root, allow="10.9.8.7")

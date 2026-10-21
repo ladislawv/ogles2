@@ -384,3 +384,125 @@ void os_sleep_ms(unsigned long ms)
     t.tv_nsec = (long)(ms % 1000) * 1000000L;
     nanosleep(&t, 0);
 }
+
+/* ---- input channel (plan 10.1.1): a process of its own, like the Amiga's;
+ * events go to ROOT/base/input.log, the pointer is simulated on a 640x512
+ * screen. ---- */
+
+#include <sys/prctl.h>
+#include <sys/select.h>
+#include <netinet/tcp.h>
+
+static pid_t input_pid;
+static int ptr_x = 320, ptr_y = 256;
+#define SCREEN_W 640
+#define SCREEN_H 512
+
+int os_spawn_input(void)
+{
+    input_pid = fork();
+    if (input_pid < 0) {
+        input_pid = 0;
+        return -1;
+    }
+    if (input_pid == 0) {
+        prctl(PR_SET_PDEATHSIG, SIGINT); /* never outlives the server */
+        got_int = 0;
+        _exit(input_main());
+    }
+    return 0;
+}
+
+void os_stop_input(void)
+{
+    if (input_pid > 0) {
+        kill(input_pid, SIGINT);
+        waitpid(input_pid, 0, 0);
+        input_pid = 0;
+    }
+}
+
+int os_wait_readable(int s, unsigned long ms)
+{
+    fd_set r;
+    struct timeval tv;
+    int n;
+    if (got_int)
+        return -1;
+    FD_ZERO(&r);
+    FD_SET(s, &r);
+    tv.tv_sec = (time_t)(ms / 1000);
+    tv.tv_usec = (long)(ms % 1000) * 1000;
+    n = select(s + 1, &r, 0, 0, &tv);
+    if (n < 0)
+        return errno == EINTR && !got_int ? 0 : -1;
+    return n > 0;
+}
+
+void os_nodelay(int s)
+{
+    int one = 1;
+    setsockopt(s, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one));
+}
+
+static void input_log(const char *fmt, ...)
+{
+    char p[700];
+    FILE *f;
+    va_list ap;
+    snprintf(p, sizeof(p), "%sinput.log", base);
+    f = fopen(p, "a");
+    if (!f)
+        return;
+    va_start(ap, fmt);
+    vfprintf(f, fmt, ap);
+    va_end(ap);
+    fputc('\n', f);
+    fclose(f);
+}
+
+int os_input_open(void) { return 0; }
+void os_input_close(void) {}
+
+static int clamp(int v, int hi)
+{
+    return v < 0 ? 0 : v > hi ? hi : v;
+}
+
+void os_input_raw(int kind, unsigned code, unsigned qualifier, int dx, int dy)
+{
+    if (kind == 0) {
+        ptr_x = clamp(ptr_x + dx, SCREEN_W - 1);
+        ptr_y = clamp(ptr_y + dy, SCREEN_H - 1);
+        input_log("mouse 0x%02x %d %d qual 0x%04x", code, dx, dy, qualifier);
+    } else
+        input_log("key 0x%02x %s qual 0x%04x", code & 0x7f, code & 0x80 ? "up" : "down",
+                  qualifier);
+}
+
+void os_input_moveto(int x, int y, unsigned qualifier)
+{
+    ptr_x = clamp(x, SCREEN_W - 1);
+    ptr_y = clamp(y, SCREEN_H - 1);
+    input_log("moveto %d %d qual 0x%04x", ptr_x, ptr_y, qualifier);
+}
+
+void os_input_pointer(int *x, int *y, int *w, int *h)
+{
+    *x = ptr_x;
+    *y = ptr_y;
+    *w = SCREEN_W;
+    *h = SCREEN_H;
+}
+
+int os_input_trace(int on)
+{
+    (void)on;
+    return -1; /* the host build has no input events to watch */
+}
+
+int os_input_trace_get(int *cls, int *sub, int *code, int *qual, int *x, int *y, int *ms)
+{
+    (void)cls; (void)sub; (void)code; (void)qual; (void)x; (void)y; (void)ms;
+    return 0;
+}

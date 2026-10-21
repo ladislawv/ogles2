@@ -2,5 +2,6 @@
   "host": "192.168.0.50",
   "port": 6800,
   "token": "replace with the output of: python3 tools/amictl/amictl.py gentoken /dev/stdout",
-  "allow": ["192.168.0.10"]
+  "allow": ["192.168.0.10"],
+  "kvm": {"edge": "right", "scale": 1.0, "hotkey": "ScrollLock", "mode": "pointer"}
 }

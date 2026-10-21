@@ -61,4 +61,26 @@ void os_reboot(void);                    /* does not return */
 int os_restart(const char *new_binary);  /* 0: the new server is starting, exit now */
 void os_sleep_ms(unsigned long ms);
 
+/* Input channel (plan 10.1.1). The input server runs as its own process
+ * (input_main in amictld.c): os_spawn_input starts it, os_stop_input ends it
+ * and waits until its port is free. */
+int input_main(void);
+int os_spawn_input(void);
+void os_stop_input(void);
+/* 1 when s is readable, 0 after ms milliseconds, -1 on Ctrl-C or error. */
+int os_wait_readable(int s, unsigned long ms);
+void os_nodelay(int s);
+int os_input_open(void);
+void os_input_close(void);
+/* Raw events: kind 0 a mouse event (code: IECODE_ button code or 0xff, dx, dy
+ * relative), kind 1 a key (code: raw key, with 0x80 for up). */
+void os_input_raw(int kind, unsigned code, unsigned qualifier, int dx, int dy);
+void os_input_moveto(int x, int y, unsigned qualifier);
+/* The pointer on the front screen, and that screen's size. */
+void os_input_pointer(int *x, int *y, int *w, int *h);
+/* Event tracing (AMI_TRACE): 0 when started or stopped; os_input_trace_get
+ * returns 1 with the oldest recorded event, 0 when there is none. */
+int os_input_trace(int on);
+int os_input_trace_get(int *cls, int *sub, int *code, int *qual, int *x, int *y, int *ms);
+
 #endif

@@ -20,6 +20,15 @@ not in git) or from AMICTL_HOST / AMICTL_PORT / AMICTL_TOKEN.
                                    --shots: a screenshot every SECONDS meanwhile
   amictl gentoken FILE             write a new random token
 
+Input (port 6801, plan section 10.1.1; raw keys assume the usa keymap):
+  amictl key KEY...                press and release each: a name (return, esc,
+                                   f1, lamiga+w, ctrl+c, ...) or 0xNN
+  amictl type TEXT                 type the text
+  amictl click X Y [left|right|middle]   on the front screen
+  amictl move X Y | pos
+  amictl trace [SECONDS]           print every input event the Amiga sees (default 10 s)
+  The mouse and keyboard of the PC: tools/amictl/amikvm.ps1 (Windows).
+
 MIT licence (tools/amictl/LICENSE).
 """
 import datetime, json, os, re, secrets, socket, struct, sys, time, zlib
@@ -287,6 +296,166 @@ def runpkg(st, pkgdir, timeout, shots=0, script_args=""):
     return rc
 
 
+# ---- input channel ----
+
+AMI = {"MOVE": 1, "BUTTON": 2, "WHEEL": 3, "KEY": 4, "RELEASE": 5, "ENTER": 6, "MOVETO": 7,
+       "PING": 8, "RESET_OK": 9, "TRACE": 10, "POS": 0x81, "LEAVE": 0x82, "EVENT": 0x83,
+       "EVENT2": 0x84}
+
+# Amiga raw keys by name, and the usa keymap's characters (unshifted, shifted).
+RAWKEY = {"esc": 0x45, "escape": 0x45, "tab": 0x42, "return": 0x44, "enter": 0x43, "space": 0x40,
+          "backspace": 0x41, "del": 0x46, "delete": 0x46, "help": 0x5f, "up": 0x4c,
+          "down": 0x4d, "right": 0x4e, "left": 0x4f, "lshift": 0x60, "shift": 0x60,
+          "rshift": 0x61, "caps": 0x62, "ctrl": 0x63, "control": 0x63, "lalt": 0x64,
+          "alt": 0x64, "ralt": 0x65, "lamiga": 0x66, "ramiga": 0x67}
+RAWKEY.update({"f%d" % i: 0x4f + i for i in range(1, 11)})
+CHARS = {}
+for row, base in (("`1234567890-=\\", 0x00), ("qwertyuiop[]", 0x10), ("asdfghjkl;'", 0x20),
+                  ("zxcvbnm,./", 0x31)):
+    for i, ch in enumerate(row):
+        CHARS[ch] = (base + i, False)
+for row, base in (('~!@#$%^&*()_+|', 0x00), ("QWERTYUIOP{}", 0x10), ('ASDFGHJKL:"', 0x20),
+                  ("ZXCVBNM<>?", 0x31)):
+    for i, ch in enumerate(row):
+        CHARS[ch] = (base + i, True)
+CHARS.update({" ": (0x40, False), "\n": (0x44, False), "\t": (0x42, False)})
+
+
+class InputLink:
+    """The input channel of amictld 1.3 (port 6801)."""
+
+    def __init__(self, host=None, port=None, token=None, timeout=10):
+        cfg = config() if token is None else {"host": host, "port": 6800, "token": token}
+        if port is None:
+            port = int(cfg.get("input_port", cfg["port"] + 1))
+        self.sock = socket.create_connection((host or cfg["host"], port), timeout=timeout)
+        self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        t = cfg["token"].encode("latin-1")
+        self.sock.sendall(b"AMI1" + struct.pack(">I", len(t)) + t)
+        head = self._recv(8)
+        if head[:4] != b"AMI1" or struct.unpack(">I", head[4:])[0]:
+            raise StationError(struct.unpack(">I", head[4:])[0] if len(head) == 8 else 1, "input")
+        self.width, self.height = struct.unpack(">HH", self._recv(4))
+
+    def _recv(self, n):
+        out = b""
+        while len(out) < n:
+            chunk = self.sock.recv(n - len(out))
+            if not chunk:
+                raise ConnectionError("station closed the input connection")
+            out += chunk
+        return out
+
+    def send(self, kind, a=0, b=0, c=0, flags=0):
+        self.sock.sendall(struct.pack(">BBhhh", AMI[kind], flags, a, b, c))
+
+    def read(self):
+        """One record from the server: (type, a, b, c)."""
+        t, _, a, b, c = struct.unpack(">BBhhh", self._recv(8))
+        return t, a, b, c
+
+    def pos(self):
+        """The pointer after everything sent so far (the POS that echoes this PING)."""
+        self.ping = (getattr(self, "ping", 0) + 1) & 255
+        self.send("PING", self.ping)
+        while True:
+            t, flags, a, b, c = struct.unpack(">BBhhh", self._recv(8))
+            if t == AMI["POS"] and flags == self.ping:
+                return a, b
+
+    def key(self, code, down):
+        self.send("KEY", code, 1 if down else 0)
+
+    def tap(self, spec):
+        """'a', 'return', 'lamiga+w', '0x45'."""
+        parts = spec.split("+")
+        codes = []
+        for p in parts:
+            if p.lower().startswith("0x"):
+                codes.append(int(p, 16))
+            elif p.lower() in RAWKEY:
+                codes.append(RAWKEY[p.lower()])
+            elif p in CHARS:
+                code, shifted = CHARS[p]
+                if shifted:
+                    codes.append(0x60)
+                codes.append(code)
+            else:
+                raise SystemExit("amictl: unknown key %r" % p)
+        for c in codes:
+            self.key(c, True)
+        for c in reversed(codes):
+            self.key(c, False)
+
+    def type(self, text):
+        for ch in text:
+            if ch not in CHARS:
+                raise SystemExit("amictl: cannot type %r with the usa keymap" % ch)
+            code, shifted = CHARS[ch]
+            if shifted:
+                self.key(0x60, True)
+            self.key(code, True)
+            self.key(code, False)
+            if shifted:
+                self.key(0x60, False)
+
+    def click(self, x, y, button=0):
+        self.send("MOVETO", x, y)
+        self.send("BUTTON", button, 1)
+        time.sleep(0.05)
+        self.send("BUTTON", button, 0)
+
+    def close(self):
+        try:
+            self.send("RELEASE")
+            self.pos()  # every event above has been handled
+        except OSError:
+            pass
+        self.sock.close()
+
+
+def input_command(cmd, args):
+    link = InputLink()
+    try:
+        if cmd == "key":
+            for k in args:
+                link.tap(k)
+        elif cmd == "type":
+            link.type(" ".join(args))
+        elif cmd == "trace":
+            classes = {1: "RAWKEY", 2: "RAWMOUSE", 0x13: "NEWPOINTERPOS", 0x16: "NEWMOUSE",
+                       4: "POINTERPOS", 6: "TIMER", 0x11: "CHANGEWINDOW"}
+            link.send("TRACE", 1)
+            end = time.time() + float(args[0] if args else 10)
+            link.sock.settimeout(0.5)
+            while time.time() < end:
+                try:
+                    t, flags, a, b, c = struct.unpack(">BBhhh", link._recv(8))
+                except socket.timeout:
+                    continue
+                if t != AMI["EVENT"]:
+                    continue
+                _, _, x, y, ms = struct.unpack(">BBhhh", link._recv(8))
+                if flags == 6:
+                    continue  # timer ticks
+                print("%5d ms  %-13s sub %d code 0x%04x qual 0x%04x  x %5d y %5d" %
+                      (ms & 0xffff, classes.get(flags, "class %d" % flags), c & 0xff, a & 0xffff,
+                       b & 0xffff, x, y), flush=True)
+            link.sock.settimeout(10)
+            link.send("TRACE", 0)
+        elif cmd in ("click", "move"):
+            x, y = int(args[0]), int(args[1])
+            if cmd == "move":
+                link.send("MOVETO", x, y)
+            else:
+                link.click(x, y, {"left": 0, "right": 1, "middle": 2}[args[2] if len(args) > 2 else "left"])
+        x, y = link.pos()
+        print("pointer %d,%d on a %dx%d screen" % (x, y, link.width, link.height))
+    finally:
+        link.close()
+    return 0
+
+
 def main(argv):
     if not argv or argv[0] in ("-h", "--help", "help"):
         print(__doc__)
@@ -299,6 +468,8 @@ def main(argv):
         st = up(int(args[0]) if args else 300)
         print(st.hello_text, end="")
         return 0
+    if cmd in ("key", "type", "click", "move", "pos", "trace"):
+        return input_command(cmd, args)
     st = Station()
     try:
         if cmd == "hello":

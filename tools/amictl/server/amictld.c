@@ -116,7 +116,8 @@ static void trim(char *s)
         s[--n] = 0;
 }
 
-static int load_config(void)
+/* count_start: 0 for the input process, which shares the server's start. */
+static int load_config(int count_start)
 {
     struct buf b = {0};
     char path[300], *line, *next;
@@ -158,6 +159,8 @@ static int load_config(void)
         say("%s lists no address: refusing to start", path);
         return -1;
     }
+    if (!count_start)
+        return 0;
 
     sprintf(path, "%samictld.starts", os_base());
     if (os_file_read(path, &b) == AMS_OK) {
@@ -434,15 +437,392 @@ static void serve(int s, unsigned long ip)
     buf_free(&out);
 }
 
+/* ---- input channel (plan section 10.1.1) ---- */
+
+/* input.device qualifiers and button codes (devices/inputevent.h) */
+#define Q_LSHIFT 0x0001
+#define Q_RSHIFT 0x0002
+#define Q_CAPS 0x0004
+#define Q_CONTROL 0x0008
+#define Q_LALT 0x0010
+#define Q_RALT 0x0020
+#define Q_LAMIGA 0x0040
+#define Q_RAMIGA 0x0080
+#define Q_NUMPAD 0x0100
+#define Q_REPEAT 0x0200
+#define Q_MBUTTON 0x1000
+#define Q_RBUTTON 0x2000
+#define Q_LBUTTON 0x4000
+#define Q_RELMOUSE 0x8000
+#define K_CAPS 0x62
+#define K_CONTROL 0x63
+#define K_LAMIGA 0x66
+#define K_RAMIGA 0x67
+#define K_WHEELUP 0x7a
+#define K_WHEELDOWN 0x7b
+
+static struct {
+    unsigned char down[128];
+    unsigned buttons; /* Q_LBUTTON etc. */
+    int caps, entered, side, left, reset_ok, ping, tracing;
+} in;
+
+static unsigned qualifier(void)
+{
+    static const unsigned short mod[8] = {Q_LSHIFT, Q_RSHIFT, 0, Q_CONTROL,
+                                          Q_LALT,   Q_RALT,   Q_LAMIGA, Q_RAMIGA};
+    unsigned q = in.buttons | (in.caps ? Q_CAPS : 0);
+    int k;
+    for (k = 0x60; k <= 0x67; k++)
+        if (in.down[k])
+            q |= mod[k - 0x60];
+    return q;
+}
+
+static int numpad_key(unsigned k)
+{
+    return k == 0x0f || (k >= 0x1d && k <= 0x1f) || (k >= 0x2d && k <= 0x2f) ||
+           (k >= 0x3c && k <= 0x3f) || k == 0x43 || k == 0x4a || (k >= 0x5a && k <= 0x5e);
+}
+
+static void key(unsigned k, int down, int repeat)
+{
+    unsigned q;
+    k &= 0x7f;
+    if (k == K_CAPS) {
+        /* The Amiga's Caps Lock locks mechanically: down when it locks, up
+         * when it unlocks. A PC sends down and up for every press. */
+        if (!down || repeat)
+            return;
+        in.caps = !in.caps;
+        down = in.caps;
+        in.down[k] = (unsigned char)down;
+        os_input_raw(1, k | (down ? 0 : 0x80), qualifier(), 0, 0);
+        return;
+    }
+    if (down && !in.reset_ok && in.down[K_CONTROL] &&
+        ((k == K_LAMIGA && in.down[K_RAMIGA]) || (k == K_RAMIGA && in.down[K_LAMIGA]) ||
+         (k == K_CONTROL && in.down[K_LAMIGA] && in.down[K_RAMIGA]))) {
+        say("input: Ctrl-Amiga-Amiga dropped");
+        return;
+    }
+    if (!down && !in.down[k])
+        return;
+    in.down[k] = (unsigned char)down;
+    q = qualifier() | (repeat ? Q_REPEAT : 0) | (numpad_key(k) ? Q_NUMPAD : 0);
+    os_input_raw(1, k | (down ? 0 : 0x80), q, 0, 0);
+}
+
+static void button(int b, int down)
+{
+    static const unsigned bit[3] = {Q_LBUTTON, Q_RBUTTON, Q_MBUTTON};
+    if (b < 0 || b > 2 || !!(in.buttons & bit[b]) == !!down)
+        return;
+    if (down)
+        in.buttons |= bit[b];
+    else
+        in.buttons &= ~bit[b];
+    os_input_raw(0, (unsigned)(0x68 + b) | (down ? 0 : 0x80), qualifier() | Q_RELMOUSE, 0, 0);
+}
+
+static void release_all(void)
+{
+    int k;
+    for (k = 0; k < 128; k++)
+        if (in.down[k] && k != K_CAPS)
+            key((unsigned)k, 0, 0);
+    for (k = 0; k < 3; k++)
+        button(k, 0);
+}
+
+static int get_i16(const unsigned char *p)
+{
+    int v = (p[0] << 8) | p[1];
+    return v >= 0x8000 ? v - 0x10000 : v;
+}
+
+static int send_rec(int s, int type, int a, int b, int c, int flags)
+{
+    unsigned char r[8];
+    r[0] = (unsigned char)type;
+    r[1] = (unsigned char)flags;
+    r[2] = (unsigned char)(a >> 8); r[3] = (unsigned char)a;
+    r[4] = (unsigned char)(b >> 8); r[5] = (unsigned char)b;
+    r[6] = (unsigned char)(c >> 8); r[7] = (unsigned char)c;
+    return os_send_all(s, r, 8);
+}
+
+/* One record. Returns 1 when the pointer moved (a POS is due), 2 when it
+ * left, 0 otherwise. */
+static int input_record(const unsigned char *r)
+{
+    int a = get_i16(r + 2), b = get_i16(r + 4), c = get_i16(r + 6);
+    int x, y, w, h;
+
+    switch (r[0]) {
+    case AMI_MOVE:
+        if (in.left)
+            return 0; /* still in flight after a LEAVE */
+        os_input_pointer(&x, &y, &w, &h);
+        /* Never out through the edge with a button down: the button stays
+         * down on the Amiga until the client lets go of it. */
+        if (in.entered && !in.buttons &&
+            ((in.side == 0 && x <= 0 && a < 0) || (in.side == 1 && x >= w - 1 && a > 0)))
+            return 2;
+        if (r[1] & 2) {
+            /* Pointer mode: the pointer is placed one pixel short of the
+             * target and a 1-count RAWMOUSE step finishes the move. Exact:
+             * the Amiga accelerates RAWMOUSE steps of 3 counts or more (by 3
+             * to 5), not 1 or 2. And real movement to everything that
+             * watches the mouse: Intuition drags windows, icons and sliders
+             * only on RAWMOUSE movement, and a commodity that activates the
+             * window under the pointer missed placed-only moves, so a right
+             * click went to the previously active window (Directory Opus
+             * showed its main menu, not the icon's). One redraw a move: 2-count
+             * steps all the way fell 30 s behind on a long drag. A1200,
+             * 2026-10-19/20. */
+            int tx = x + a, ty = y + b, px, py;
+            tx = tx < 0 ? 0 : tx >= w ? w - 1 : tx;
+            ty = ty < 0 ? 0 : ty >= h ? h - 1 : ty;
+            px = tx - (a > 0) + (a < 0);
+            py = ty - (b > 0) + (b < 0);
+            px = px < 0 ? 0 : px >= w ? w - 1 : px;
+            py = py < 0 ? 0 : py >= h ? h - 1 : py;
+            os_input_moveto(px, py, qualifier());
+            os_input_raw(0, 0xff, qualifier() | Q_RELMOUSE, tx - px, ty - py);
+        } else
+            os_input_raw(0, 0xff, qualifier() | Q_RELMOUSE, a, b);
+        return 1;
+    case AMI_BUTTON:
+        if (!in.left)
+            button(a, b);
+        return 0;
+    case AMI_WHEEL:
+        for (; !in.left && a; a += a > 0 ? -1 : 1) {
+            os_input_raw(1, a > 0 ? K_WHEELUP : K_WHEELDOWN, qualifier(), 0, 0);
+            os_input_raw(1, (a > 0 ? K_WHEELUP : K_WHEELDOWN) | 0x80, qualifier(), 0, 0);
+        }
+        return 0;
+    case AMI_KEY:
+        if (!in.left && a >= 0 && a < 0x78)
+            key((unsigned)a, b, r[1] & 1);
+        return 0;
+    case AMI_RELEASE:
+        release_all();
+        return 0;
+    case AMI_ENTER:
+        os_input_pointer(&x, &y, &w, &h);
+        in.entered = 1;
+        in.left = 0;
+        in.side = c ? 1 : 0;
+        os_input_moveto(in.side ? w - 2 : 1, (int)((unsigned long)(a & 0xffff) * (h - 1) / 65535),
+                        qualifier());
+        return 1;
+    case AMI_MOVETO:
+        os_input_moveto(a, b, qualifier());
+        return 1;
+    case AMI_PING:
+        in.ping = a & 255;
+        return 1;
+    case AMI_TRACE:
+        in.tracing = os_input_trace(a != 0) == 0 && a != 0;
+        return 0;
+    case AMI_RESET_OK:
+        in.reset_ok = a != 0;
+        return 0;
+    default:
+        return 0;
+    }
+}
+
+/* Handles one record; -1 when the connection failed. */
+static int input_handle(int s, unsigned long ip, const unsigned char *r, int *due)
+{
+    int x, y, w, h, what = input_record(r);
+    if (what == 2) {
+        os_input_pointer(&x, &y, &w, &h);
+        release_all();
+        in.entered = 0;
+        in.left = 1;
+        if (send_rec(s, AMI_LEAVE, (int)((unsigned long)(y < 0 ? 0 : y) * 65535 /
+                                         (unsigned long)(h > 1 ? h - 1 : 1)), 0, 0, 0))
+            return -1;
+        say("%s: input: left through the %s edge", ip_str(ip), in.side ? "right" : "left");
+        *due = 0;
+    } else if (what == 1)
+        *due = 1;
+    return 0;
+}
+
+static void put_i16(unsigned char *p, int v)
+{
+    v = v > 32767 ? 32767 : v < -32768 ? -32768 : v;
+    p[0] = (unsigned char)(v >> 8);
+    p[1] = (unsigned char)v;
+}
+
+/* Sends the input events recorded since the last call (AMI_TRACE). */
+static int trace_drain(int s)
+{
+    int cls, sub, code, qual, x, y, ms, n = 0;
+    while (n++ < 64 && os_input_trace_get(&cls, &sub, &code, &qual, &x, &y, &ms)) {
+        unsigned char r[16];
+        r[0] = AMI_EVENT; r[1] = (unsigned char)cls;
+        r[2] = (unsigned char)(code >> 8); r[3] = (unsigned char)code;
+        r[4] = (unsigned char)(qual >> 8); r[5] = (unsigned char)qual;
+        r[6] = (unsigned char)(sub >> 8); r[7] = (unsigned char)sub;
+        r[8] = AMI_EVENT2; r[9] = 0;
+        r[10] = (unsigned char)(x >> 8); r[11] = (unsigned char)x;
+        r[12] = (unsigned char)(y >> 8); r[13] = (unsigned char)y;
+        r[14] = (unsigned char)(ms >> 8); r[15] = (unsigned char)ms;
+        if (os_send_all(s, r, 16))
+            return -1;
+    }
+    return 0;
+}
+
+/* Serves one client until it goes, or until another connects (ls readable):
+ * the newest connection wins, so a client that vanished without closing
+ * cannot keep the channel. */
+static void input_serve(int s, int ls, unsigned long ip)
+{
+    unsigned char r[8], pm[8];
+    int x, y, w, h;
+
+    memset(&in, 0, sizeof(in));
+    for (;;) {
+        int got, due = 0, have = 0;
+        if (os_wait_readable(ls, 0) == 1) {
+            say("%s: input: a new connection replaces this one", ip_str(ip));
+            break;
+        }
+        if (in.tracing && trace_drain(s))
+            break;
+        got = os_wait_readable(s, in.tracing ? 20 : 500);
+        if (got < 0)
+            break;
+        if (!got)
+            continue;
+        /* A batch: everything already received, consecutive moves merged
+         * into one (each injected move can cost the Amiga a redraw), then
+         * one POS. */
+        do {
+            if (os_recv_all(s, r, 8))
+                goto done;
+            if (r[0] == AMI_MOVE && have && pm[1] == r[1]) {
+                put_i16(pm + 2, get_i16(pm + 2) + get_i16(r + 2));
+                put_i16(pm + 4, get_i16(pm + 4) + get_i16(r + 4));
+                continue;
+            }
+            if (have && input_handle(s, ip, pm, &due))
+                goto done;
+            have = 0;
+            if (r[0] == AMI_MOVE) {
+                memcpy(pm, r, 8);
+                have = 1;
+            } else if (input_handle(s, ip, r, &due))
+                goto done;
+        } while (os_wait_readable(s, 0) == 1);
+        if (have && input_handle(s, ip, pm, &due))
+            break;
+        if (due) {
+            os_input_pointer(&x, &y, &w, &h);
+            if (send_rec(s, AMI_POS, x, y, in.entered, in.ping))
+                break;
+        }
+    }
+done:
+    if (in.tracing)
+        os_input_trace(0);
+    release_all();
+}
+
+int input_main(void)
+{
+    int ls = -1, tries;
+    unsigned long ip;
+
+    if (os_input_open()) {
+        say("input: cannot open input.device");
+        return 20;
+    }
+    for (tries = 0; tries < 30 && !os_break() && (ls = os_listen(AMICTL_INPUT_PORT)) < 0; tries++)
+        os_sleep_ms(1000);
+    if (ls < 0) {
+        say("input: cannot listen on port %d", AMICTL_INPUT_PORT);
+        os_input_close();
+        return 20;
+    }
+    say("input: listening on port %d", AMICTL_INPUT_PORT);
+    for (;;) {
+        unsigned char h[8], st[8];
+        char tok[sizeof(token)];
+        unsigned long n;
+        int s, got = os_wait_readable(ls, 1000);
+        if (got < 0)
+            break;
+        if (!got)
+            continue;
+        s = os_accept(ls, &ip);
+        if (s < 0)
+            continue;
+        if (!allowed(ip)) {
+            say("%s: input: not in amictld.allow, refused", ip_str(ip));
+            os_close_socket(s);
+            continue;
+        }
+        os_nodelay(s);
+        n = 0;
+        if (os_wait_readable(s, 5000) != 1 || os_recv_all(s, h, 8) ||
+            get_u32(h) != AMICTL_INPUT_MAGIC || (n = get_u32(h + 4)) >= sizeof(tok) ||
+            os_recv_all(s, tok, n) || (tok[n] = 0, strcmp(tok, token) != 0)) {
+            say("%s: input: authentication failed, closing", ip_str(ip));
+            memcpy(st, "AMI1\0\0\0\2", 8);
+            os_send_all(s, st, 8);
+            os_close_socket(s);
+            continue;
+        }
+        {
+            int x, y, w, hh;
+            unsigned char ok[12] = {'A', 'M', 'I', '1', 0, 0, 0, 0};
+            os_input_pointer(&x, &y, &w, &hh);
+            ok[8] = (unsigned char)(w >> 8); ok[9] = (unsigned char)w;
+            ok[10] = (unsigned char)(hh >> 8); ok[11] = (unsigned char)hh;
+            if (os_send_all(s, ok, 12)) {
+                os_close_socket(s);
+                continue;
+            }
+        }
+        say("%s: input: connected", ip_str(ip));
+        input_serve(s, ls, ip);
+        os_close_socket(s);
+        say("%s: input: disconnected, every key and button released", ip_str(ip));
+    }
+    os_close_socket(ls);
+    os_input_close();
+    say("input: stopped");
+    return 0;
+}
+
 int main(int argc, char **argv)
 {
     int ls;
     unsigned long ip;
 
+    /* amictld INPUT: the input channel's process, started by the server */
+    if (argc > 1 && !strcmp(argv[1], "INPUT")) {
+        int rc;
+        if (os_init(120))
+            return 20;
+        rc = load_config(0) ? 20 : input_main();
+        os_term();
+        return rc;
+    }
+
     /* amictld [SECONDS]: how long to wait for the TCP/IP stack (default 120) */
     if (os_init(argc > 1 ? atoi(argv[1]) : 120))
         return 20;
-    if (load_config()) {
+    if (load_config(1)) {
         os_term();
         return 20;
     }
@@ -459,6 +839,8 @@ int main(int argc, char **argv)
     }
     say("amictld %s started (start %lu), port %d, %d allowed address(es)", AMICTL_VERSION, starts,
          AMICTL_PORT, nallow);
+    if (os_spawn_input())
+        say("cannot start the input process (port %d)", AMICTL_INPUT_PORT);
 
     while (!quit_requested && !reboot_requested) {
         int s;
@@ -467,12 +849,14 @@ int main(int argc, char **argv)
              * let go of it. If starting it fails, carry on serving. */
             say("restarting with %s", restart_binary);
             os_close_socket(ls);
+            os_stop_input(); /* the new server starts its own */
             if (os_restart(restart_binary) == 0) {
                 os_term();
                 return 0;
             }
             say("restart failed, carrying on");
             restart_binary[0] = 0;
+            os_spawn_input();
             ls = os_listen(AMICTL_PORT);
             if (ls < 0) {
                 say("cannot listen on port %d again: stopping", AMICTL_PORT);
@@ -500,6 +884,7 @@ int main(int argc, char **argv)
         say("%s: disconnected", ip_str(ip));
     }
     os_close_socket(ls);
+    os_stop_input();
 
     if (reboot_requested) {
         say("rebooting on request");

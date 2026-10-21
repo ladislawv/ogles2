@@ -14,7 +14,7 @@
 
 #define AMICTL_PORT     6800
 #define AMICTL_MAGIC    0x414d4331UL /* "AMC1" */
-#define AMICTL_VERSION  "1.2"
+#define AMICTL_VERSION  "1.3"
 
 #define AMICTL_MAX_ARG  4096UL
 #define AMICTL_MAX_DATA (64UL * 1024 * 1024)
@@ -52,6 +52,42 @@ enum amictl_status {
     AMS_UNSUPPORTED = 7,
     AMS_NOJOB = 8,
     AMS_TOOBIG = 9
+};
+
+/*
+ * Input channel (plan section 10.1.1): a second port, served by its own
+ * process ("amictld INPUT", started by the server), so that input never waits
+ * behind a command on AMICTL_PORT. One client at a time.
+ *
+ * Client:  "AMI1" | u32 token length | token
+ * Server:  "AMI1" | u32 status | u16 screen width | u16 screen height
+ * Then both sides send 8-byte records: u8 type | u8 flags | i16 a | i16 b | i16 c.
+ * When the connection ends, every key and button still down is released.
+ */
+#define AMICTL_INPUT_PORT  6801
+#define AMICTL_INPUT_MAGIC 0x414d4931UL /* "AMI1" */
+
+enum amictl_input {
+    AMI_MOVE = 1,     /* a dx, b dy: relative pointer movement; flags 2: pointer
+                         mode (the pointer placed 1:1, not a RAWMOUSE event,
+                         which the Amiga accelerates) */
+    AMI_BUTTON = 2,   /* a button (0 left, 1 right, 2 middle), b 1 down / 0 up */
+    AMI_WHEEL = 3,    /* a steps: > 0 up, < 0 down */
+    AMI_KEY = 4,      /* a Amiga raw key, b 1 down / 0 up; flags 1: a repeat */
+    AMI_RELEASE = 5,  /* every key and button up */
+    AMI_ENTER = 6,    /* the PC hands over: a y (0..65535 as u16), c the edge the
+                         pointer enters through (0 left, 1 right); it leaves
+                         through the same edge */
+    AMI_MOVETO = 7,   /* a x, b y: absolute, in front-screen pixels */
+    AMI_PING = 8,     /* answered by AMI_POS, whose flags echo a & 255 */
+    AMI_RESET_OK = 9, /* a 1: let Ctrl-Amiga-Amiga through (default: dropped) */
+    AMI_TRACE = 10,   /* a 1: report every input event (a handler ahead of
+                         Intuition sees them all, real and injected), 0: stop */
+    AMI_POS = 0x81,   /* server: a x, b y on the front screen, c 1 while entered */
+    AMI_LEAVE = 0x82, /* server: the pointer left through the edge; a y (u16) */
+    AMI_EVENT = 0x83, /* server, tracing: flags class, a code, b qualifier, c subclass */
+    AMI_EVENT2 = 0x84 /* server, after each AMI_EVENT: a x, b y (ie_X/ie_Y, or the
+                         position of a NEWPOINTERPOS), c time stamp in ms (low 16 bits) */
 };
 
 #endif
