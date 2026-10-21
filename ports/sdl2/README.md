@@ -76,6 +76,14 @@ A program links `-lSDL2 -logles2 -lminigl -ldebug -lamiga -lm881 -lstubs`
   did a game's mouse look. The event pump now sets `IDCMP_DELTAMOVE` on the
   windows while the mode is on and sends Intuition's movement deltas as
   relative motion (moves queued across a switch are dropped).
+- **`patches/0004-os3-ahi-format.patch`** (2026-10-21): the AHI driver's
+  format search (`OS3AHI_OpenDevice`) kept the format after the one it
+  matched: its loop tested `!found` in its condition, so the increment ran
+  once more, and `AUDIO_S16MSB` became `AUDIO_S16LSB`. SDL then converted an
+  application's big-endian samples to little-endian, and AHI, told
+  `AHIST_S16S`, played them byte-swapped: noise at every level. The loop now
+  stops at the match. `tests/audiotest.c` did not show it: it counts the
+  callback's buffers, it does not listen. The Paula driver was not affected.
 - **`-fbbb=abcfhilmnprsz0`**: the library and tests are built with ogles2's
   optimiser passes (without "e").
 - **`tests/run_for.c`**: a `main` for SDL's test programs on the test

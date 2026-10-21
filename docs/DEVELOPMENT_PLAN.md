@@ -1505,9 +1505,12 @@ M6's exit criterion. Each row is a workload measured on the test A1200 (Pi 4B, E
 
 **Done (2026-10-21): SDL2's relative mouse mode** (`ports/sdl2/patches/0003-os3-relative-mouse.patch`, `ports/sdl2/README.md`). SDL2_68k's amigaos3 driver had none and its `WarpMouse` is a stub, so SDL's fallback (warping the pointer back to the window's centre) did nothing: with `SDL_SetRelativeMouseMode` on, the hidden pointer stopped at the screen's edge, and a game's mouse look stopped turning there. The event pump now sets `IDCMP_DELTAMOVE` on its windows while the mode is on and sends Intuition's movement deltas as relative motion; moves queued across a switch are dropped. Built with `ports/sdl2/build.sh` (no warnings). On the A1200 so far only in a game built on this SDL with another toolchain, where mouse look turned freely; not yet with an SDL test of this port's.
 
+**Done (2026-10-21): SDL2's AHI audio played byte-swapped** (`ports/sdl2/patches/0004-os3-ahi-format.patch`). The AHI driver's format search kept the format after the one it matched (its loop tested `!found` in its condition, so the increment ran once more): `AUDIO_S16MSB` became `AUDIO_S16LSB`, SDL converted an application's big-endian samples to little-endian, and AHI, told `AHIST_S16S`, played them byte-swapped, as noise at every level and on every AHI unit. The loop now stops at the match. Found by capturing what the driver sent with `CMD_WRITE`, which read as a clean tone only as little-endian; on the A1200 the fix gave clean sound in an application built on this SDL with another toolchain. `tests/audiotest.c` (package m7-7) missed it: it counts the callback's buffers and does not listen. Built with `ports/sdl2/build.sh` (no warnings). The Paula driver was not affected.
+
 **Next, in order (M6: ecosystem, sharing and performance, §9):**
 1. **After the release:**
-   - the next archives to carry the fullscreen window drawn without the copy (2026-10-20, above) and SDL2's relative mouse mode (2026-10-21, above);
+   - the next archives to carry the fullscreen window drawn without the copy (2026-10-20, above) and SDL2's relative mouse mode and AHI fix (2026-10-21, above);
+   - `tests/audiotest.c` to check the samples AHI receives (byte order), not only the callback's pace;
    - an SDL test of relative mouse mode on the A1200 (a full turn's worth of motion while the pointer sits at the screen's edge);
    - GitHub issue 5: all three parts done, in `release/dist/` and the GitHub release `v1.3` (2026-10-19, above), answered on the issue; arczi84's test of OpenLara's water, AHI and fullscreen on their machine to follow;
    - `amictld`'s large-reply stall (postponed: the test station, not the library);
