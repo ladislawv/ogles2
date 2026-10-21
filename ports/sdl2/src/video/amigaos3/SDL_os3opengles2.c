@@ -163,8 +163,8 @@ SDL_GLContext OS3_GLES2_CreateContext(_THIS, SDL_Window *window)
         return NULL;
     }
     /* The window's inner area, through an offscreen bitmap and ClipBlit
-     * (ogles2's window mode; a fullscreen SDL window is a window on its own
-     * screen). */
+     * (ogles2's window mode); a fullscreen SDL window is all of its own
+     * screen, which ogles2 renders into directly. */
     ctx = aglCreateContextTags2(&err,
                                 OGLES2_CCT_WINDOW, (ULONG)iwin,
                                 OGLES2_CCT_VSYNC, (ULONG)os3_gles2_swap_interval,

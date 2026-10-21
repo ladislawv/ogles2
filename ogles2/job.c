@@ -747,7 +747,8 @@ void ogles2_job_finish(struct OGLES2Context *ctx)
 }
 
 /* A flush may leave its render running (see the top): a framebuffer
- * object's job, or one on a screen of our own. Never one whose bitmap lock
+ * object's job, or one on a screen of our own or on the screen a window is
+ * all of (display.c, window_is_screen). Never one whose bitmap lock
  * someone else may need: an application's bitmap can be drawn into by
  * another task, and the window mode's copy needs the finished frame. With
  * any number of contexts and programs (M6, plan 7.1 phase 2 within ogles2):
@@ -755,7 +756,7 @@ void ogles2_job_finish(struct OGLES2Context *ctx)
  * next submitter waits for that render on the GPU (take_gpu). */
 static BOOL may_defer(struct OGLES2Context *ctx, BOOL object)
 {
-    return object || ctx->display.own_screen;
+    return object || ctx->display.own_screen || ctx->display.direct;
 }
 
 /* Before a submission, with the submission lock held: a render some

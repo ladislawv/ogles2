@@ -1,11 +1,13 @@
 /*
  * M1 step 1 test: clear and present on the GPU, for every surface kind
  * (plan section 7.2), checked by reading back what is displayed.
- *   usage: m1_clear [WINDOW] [ADOPT] [BITMAP] [FULLSCREEN]   (default: all)
+ *   usage: m1_clear [WINDOW] [ADOPT] [BITMAP] [FULLSCREEN] [SCREENWINDOW]
+ *          (default: all)
  *
  * For each kind: six clear colours, each held 1 s and read back at the centre
  * and the four corners of what is actually shown (the window after the
- * ClipBlit, the screen, or the application's bitmap); a frame that clears
+ * ClipBlit, the screen, or the application's bitmap; SCREENWINDOW is a
+ * window that is all of a screen of the test's, as SDL's fullscreen); a frame that clears
  * only depth must keep the picture (the tile buffer loads it); a 2 s fade to
  * watch; 100 frames timed; and the context's GPU memory must be returned when
  * it is destroyed. About 10 s per kind.
@@ -306,6 +308,119 @@ static void test_fullscreen(void)
     finish_kind("fullscreen", ctx, before);
 }
 
+/* SDL's fullscreen: a borderless window at 0,0 that is all of a private
+ * 32-bit screen. ogles2 renders straight into the screen (no copy; the log
+ * says "all of its screen"). Then the context moves to a smaller window on
+ * that screen (the copy again) and back, and glReadPixels reads the screen. */
+static void test_screen_window(void)
+{
+    static const ULONG depths[2] = {24, 32};
+    ULONG err = 0, before, w = 0, h = 0, mode = find_mode();
+    struct readback r;
+    struct Screen *scr = 0;
+    struct Window *win, *small;
+    void *ctx;
+    char msg[120];
+    ULONG got = 0;
+    UBYTE px[4];
+    int i;
+
+    if (mode == (ULONG)INVALID_ID) {
+        printf("SKIP: screen window: no 32-bit BGRA/RGBA RTG mode of 320x240 to 800x600\n");
+        return;
+    }
+    for (i = 0; i < 2 && !scr; i++)
+        scr = OpenScreenTags(0, SA_DisplayID, mode, SA_Depth, depths[i], SA_Type, CUSTOMSCREEN,
+                             SA_Quiet, TRUE, SA_ShowTitle, FALSE, SA_Exclusive, TRUE, SA_Draggable,
+                             FALSE, TAG_DONE);
+    if (!scr) {
+        check(0, "open a screen of mode", "screen window");
+        return;
+    }
+    win = OpenWindowTags(0, WA_CustomScreen, (ULONG)scr, WA_Left, 0, WA_Top, 0, WA_Width,
+                         (ULONG)scr->Width, WA_Height, (ULONG)scr->Height, WA_Flags,
+                         WFLG_BORDERLESS | WFLG_ACTIVATE | WFLG_RMBTRAP | WFLG_REPORTMOUSE, TAG_DONE);
+    if (!win) {
+        check(0, "open a borderless window of the screen's size", "screen window");
+        CloseScreen(scr);
+        return;
+    }
+    printf("     screen window: mode 0x%08lx, %ldx%ld\n", (unsigned long)mode, (long)scr->Width,
+           (long)scr->Height);
+    before = AvailMem(MEMF_ANY);
+    ctx = aglCreateContextTags2(&err, OGLES2_CCT_WINDOW, (ULONG)win, OGLES2_CCT_DEPTH, 24,
+                                OGLES2_CCT_GET_WIDTH, (ULONG)&w, OGLES2_CCT_GET_HEIGHT, (ULONG)&h,
+                                TAG_DONE);
+    check(ctx != 0, "create (WINDOW tag)", "screen window");
+    if (!ctx) {
+        printf("     error %lu\n", (unsigned long)err);
+        CloseWindow(win);
+        CloseScreen(scr);
+        return;
+    }
+    sprintf(msg, "GET_WIDTH/GET_HEIGHT the screen's %ldx%ld (%lux%lu)", (long)scr->Width,
+            (long)scr->Height, (unsigned long)w, (unsigned long)h);
+    check(w == (ULONG)scr->Width && h == (ULONG)scr->Height, msg, "screen window");
+    r.rp = &scr->RastPort; /* what the screen shows */
+    r.x0 = r.y0 = 0;
+    r.w = (int)w;
+    r.h = (int)h;
+    run_kind("screen window", ctx, &r);
+
+    /* glReadPixels from the screen: a clear not yet swapped. */
+    glClearColor(0.25f, 0.5f, 0.75f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glReadPixels((GLint)w / 2, (GLint)h / 2, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, px);
+    got = ((ULONG)px[0] << 16) | ((ULONG)px[1] << 8) | px[2];
+    sprintf(msg, "glReadPixels reads the clear (%06lx)", (unsigned long)got);
+    check(near(got, expect_rgb(0.25f, 0.5f, 0.75f)) && glGetError() == GL_NO_ERROR, msg,
+          "screen window");
+    aglSwapBuffers();
+
+    /* A smaller window on the same screen: the copy path, then back. */
+    small = OpenWindowTags(0, WA_CustomScreen, (ULONG)scr, WA_Left, 40, WA_Top, 40, WA_Width, 320,
+                           WA_Height, 200, WA_Flags, WFLG_BORDERLESS, TAG_DONE);
+    if (!small) {
+        check(0, "open a 320x200 window on the screen", "screen window");
+    } else {
+        struct readback rs;
+        w = h = 0;
+        aglSetParamsTags2(OGLES2_CCT_WINDOW, (ULONG)small, OGLES2_CCT_GET_WIDTH, (ULONG)&w,
+                          OGLES2_CCT_GET_HEIGHT, (ULONG)&h, TAG_DONE);
+        sprintf(msg, "aglSetParams2 to a 320x200 window on it (%lux%lu)", (unsigned long)w,
+                (unsigned long)h);
+        check(w == 320 && h == 200, msg, "screen window");
+        glViewport(0, 0, 320, 200);
+        glClearColor(1, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+        aglSwapBuffers();
+        Delay(50);
+        rs.rp = small->RPort;
+        rs.x0 = rs.y0 = 0;
+        rs.w = 320;
+        rs.h = 200;
+        sprintf(msg, "the small window shows the clear to ff0000");
+        check(shows(&rs, 0xFF0000, &got), msg, "screen window");
+        aglSetParamsTags2(OGLES2_CCT_WINDOW, (ULONG)win, OGLES2_CCT_GET_WIDTH, (ULONG)&w,
+                          OGLES2_CCT_GET_HEIGHT, (ULONG)&h, TAG_DONE);
+        CloseWindow(small);
+        sprintf(msg, "back to the whole-screen window (%lux%lu)", (unsigned long)w, (unsigned long)h);
+        check(w == (ULONG)scr->Width && h == (ULONG)scr->Height, msg, "screen window");
+        glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+        glClearColor(0, 1, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+        aglSwapBuffers();
+        Delay(50);
+        sprintf(msg, "the screen shows the clear to 00ff00 again");
+        check(shows(&r, 0x00FF00, &got), msg, "screen window");
+        check(glGetError() == GL_NO_ERROR, "no GL error", "screen window");
+    }
+    finish_kind("screen window", ctx, before);
+    CloseWindow(win); /* ours: the library must not have closed it */
+    if (!CloseScreen(scr))
+        check(0, "close the screen (a window left on it?)", "screen window");
+}
+
 int main(int argc, char **argv)
 {
     int i, all = argc < 2;
@@ -334,6 +449,8 @@ int main(int argc, char **argv)
             test_bitmap();
         if (all || !strcmp(a, "FULLSCREEN"))
             test_fullscreen();
+        if (all || !strcmp(a, "SCREENWINDOW"))
+            test_screen_window();
         if (all)
             break;
     }

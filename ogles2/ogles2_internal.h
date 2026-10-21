@@ -391,6 +391,8 @@ struct OGLES2Display
     struct RastPort rastport;       /* window mode: ClipBlit source over bitmap */
     UWORD width, height;
     BOOL own_screen, own_window, own_bitmap, vsync;
+    BOOL direct;                    /* window mode, the window its private screen's whole size:
+                                     * bitmap is the screen's, no copy (display.c) */
     int rb_swap;                    /* 1: BGRA32 target, 0: RGBA32 */
     APTR lock;                      /* cybergraphics bitmap lock, one frame long */
     ULONG bprow, base;              /* valid while locked */

@@ -1,0 +1,108 @@
+; Run-M1 - ogles2 M7 run 8: a fullscreen SDL window drawn without a copy.
+;   See ReadMe.txt.
+;   CD to this directory, then:   Execute Run-M1
+;   After a reboot in the middle:  Execute Run-M1 FROM=<step>
+; Nothing is installed: libs/ is added to LIBS: for the run and removed at the
+; end; OGLES2Cache: points at cache/ for the run. Output goes to results/.
+.key FROM/K
+.def FROM 1
+.bra {
+.ket }
+
+FailAt 21
+If NOT EXISTS libs/ogles2.library
+  Echo "Please CD into the ogles2-m7-8 directory first,"
+  Echo "then run:  Execute Run-M1"
+  Quit 20
+EndIf
+
+Assign M7R8: ""
+If NOT EXISTS M7R8:results
+  MakeDir M7R8:results
+EndIf
+If NOT EXISTS M7R8:cache
+  MakeDir M7R8:cache
+EndIf
+Echo "ogles2 M7 run 8, starting at step {FROM}" >>M7R8:results/00-progress.txt
+Date >>M7R8:results/00-progress.txt
+Assign LIBS: M7R8:libs ADD
+Assign OGLES2Cache: M7R8:cache
+Avail FLUSH >NIL:
+List LIBS:ogles2#? LIBS:v3dglslc >M7R8:results/00-libs.txt
+UnSetEnv OGLES2/WindowCopy
+SetEnv OGLES2/LogFile M7R8:results/ogles2.log
+; The SDL tests load icon.bmp and sample.bmp from the current directory.
+CD M7R8:bin
+
+If NOT {FROM} GT 1 VAL
+  Echo "Step 1 of 7: colours, about 35 seconds: a window on the Workbench,"
+  Echo "  then a screen of ogles2's own, then a screen of the test's"
+  Echo "  (black, red, green, blue, white, light blue, magenta, a fade, a"
+  Echo "  flicker; on the last a red rectangle, then green)."
+  M7R8:bin/m1_clear ADOPT FULLSCREEN SCREENWINDOW >M7R8:results/1-m1_clear.txt
+  Echo "step 1 done" >>M7R8:results/00-progress.txt
+EndIf
+
+; The windowed run first: it compiles the shaders into cache/.
+If NOT {FROM} GT 2 VAL
+  Echo "Step 2 of 7: SDL2 testgles2 in a window, 4 seconds: a spinning cube."
+  M7R8:bin/testgles2 --seconds 4 >M7R8:results/2-testgles2.txt
+  Echo "step 2 done" >>M7R8:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 3 VAL
+  Echo "Step 3 of 7: SDL2 testgles2 full screen, 6 seconds: the cube, then"
+  Echo "  back to the Workbench."
+  Run >NIL: M7R8:bin/testgles2 >M7R8:results/3-testgles2-fullscreen.txt --fullscreen --seconds 6
+  Wait 4
+  M7R8:bin/screens >M7R8:results/3-screens-during.txt
+  Wait 7
+  M7R8:bin/screens NOSDL >M7R8:results/3-screens-after.txt
+  Echo "step 3 done" >>M7R8:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 4 VAL
+  Echo "Step 4 of 7: the same with the copy kept (for the comparison), 6 seconds."
+  SetEnv OGLES2/WindowCopy 1
+  M7R8:bin/testgles2 --fullscreen --seconds 6 >M7R8:results/4-testgles2-fullscreen-copy.txt
+  UnSetEnv OGLES2/WindowCopy
+  Echo "step 4 done" >>M7R8:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 5 VAL
+  Echo "Step 5 of 7: SDL2 testgles2 full screen with vsync, 6 seconds: smooth,"
+  Echo "  no tearing."
+  M7R8:bin/testgles2 --fullscreen --vsync --seconds 6 >M7R8:results/5-testgles2-fullscreen-vsync.txt
+  Echo "step 5 done" >>M7R8:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 6 VAL
+  Echo "Step 6 of 7: SDL2 testsprite2 full screen on the GLES2 renderer, 6"
+  Echo "  seconds: smiley faces bouncing."
+  M7R8:bin/testsprite2 --renderer opengles2 --fullscreen --seconds 6 >M7R8:results/6-sprites-fullscreen.txt
+  Echo "step 6 done" >>M7R8:results/00-progress.txt
+EndIf
+
+If NOT {FROM} GT 7 VAL
+  Echo "Step 7 of 7: SDL3 testgles2 full screen, 6 seconds: the cube."
+  CD M7R8:bin3
+  M7R8:bin3/testgles2 --fullscreen --seconds 6 >M7R8:results/7-sdl3-testgles2-fullscreen.txt
+  CD M7R8:bin
+  M7R8:bin/screens NOSDL >M7R8:results/7-screens-after.txt
+  Echo "step 7 done" >>M7R8:results/00-progress.txt
+EndIf
+
+CD M7R8:
+UnSetEnv OGLES2/LogFile
+Assign OGLES2Cache:
+Assign LIBS: M7R8:libs REMOVE
+Avail FLUSH >NIL:
+If NOT EXISTS M7R8:results/notes.txt
+  Copy M7R8:notes-template.txt M7R8:results/notes.txt
+EndIf
+List M7R8:results >M7R8:results/99-files.txt
+Echo "finished" >>M7R8:results/00-progress.txt
+Date >>M7R8:results/00-progress.txt
+Assign M7R8:
+Echo ""
+Echo "Done. Results are in results/."

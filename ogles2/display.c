@@ -6,7 +6,10 @@
  *   OGLES2_CCT_MODEID     fullscreen: our own screen in that mode, plus a
  *                         borderless backdrop window for input
  *   OGLES2_CCT_WINDOW     the application's window: we render into an
- *                         offscreen 32-bit bitmap and ClipBlit it on swap
+ *                         offscreen 32-bit bitmap and ClipBlit it on swap;
+ *                         a window that is its private screen's whole size
+ *                         (SDL's fullscreen) we render straight into, as
+ *                         into a screen of our own (window_is_screen)
  *   OGLES2_CCT_BITMAP     the application's bitmap: we render into it, the
  *                         application presents it
  *   none of them          our own window on the default public screen,
@@ -29,7 +32,9 @@
 #include <graphics/displayinfo.h>
 #include <cybergraphx/cybergraphics.h>
 #include <utility/tagitem.h>
+#include <dos/var.h>
 #include <proto/exec.h>
+#include <proto/dos.h>
 #include <proto/intuition.h>
 #include <proto/graphics.h>
 #include <proto/cybergraphics.h>
@@ -192,12 +197,67 @@ static BOOL open_fullscreen(struct OGLES2Display *d, ULONG mode)
     return TRUE;
 }
 
+/* A screen other programs may open windows on: the Workbench, or any in the
+ * public screen list. */
+static BOOL is_public_screen(struct Screen *s)
+{
+    struct List *l;
+    struct Node *n;
+    BOOL pub = FALSE;
+    if ((s->Flags & SCREENTYPE) == WBENCHSCREEN)
+        return TRUE;
+    l = LockPubScreenList(); /* no Intuition calls until unlocked */
+    if (!l)
+        return TRUE; /* cannot tell: the copy */
+    for (n = l->lh_Head; n->ln_Succ; n = n->ln_Succ)
+        if (((struct PubScreenNode *)n)->psn_Screen == s) {
+            pub = TRUE;
+            break;
+        }
+    UnlockPubScreenList();
+    return pub;
+}
+
+/* A window that is all of a private screen (SDL's fullscreen: a borderless
+ * window at 0,0 of its custom screen's size): the screen's bitmap is the
+ * window's inner area, so the GPU renders straight into it, as into a
+ * screen of our own -- no offscreen bitmap, no ClipBlit, and the swap
+ * returns once the render is submitted (job.c, may_defer). The screen must
+ * be 32-bit BGRA or RGBA, else the copy converts as before. Whatever opens
+ * over the window later (a requester) is drawn over by the next frame, as
+ * on a screen of our own; nothing but the program's own windows can open
+ * on a private screen. ENV:OGLES2/WindowCopy 1 keeps the copy. */
+static BOOL window_is_screen(struct Window *w)
+{
+    struct Screen *s = w->WScreen;
+    struct BitMap *bm = s->RastPort.BitMap;
+    char var[4];
+    int swap;
+
+    if (w->LeftEdge || w->TopEdge || w->Width != s->Width || w->Height != s->Height ||
+        w->BorderLeft || w->BorderTop || w->BorderRight || w->BorderBottom ||
+        (w->Flags & (WFLG_GIMMEZEROZERO | WFLG_SUPER_BITMAP)) || w->RPort->BitMap != bm)
+        return FALSE;
+    if (!GetCyberMapAttr(bm, CYBRMATTR_ISCYBERGFX) ||
+        !store_swap_for(GetCyberMapAttr(bm, CYBRMATTR_PIXFMT), &swap))
+        return FALSE;
+    if (GetVar((STRPTR) "OGLES2/WindowCopy", (STRPTR)var, sizeof(var), GVF_GLOBAL_ONLY) > 0 &&
+        var[0] == '1')
+        return FALSE;
+    return !is_public_screen(s);
+}
+
 static BOOL open_window_target(struct OGLES2Display *d, struct Window *w)
 {
     d->window = w;
     d->screen = w->WScreen;
     d->width = (UWORD)(w->Width - w->BorderLeft - w->BorderRight);
     d->height = (UWORD)(w->Height - w->BorderTop - w->BorderBottom);
+    if (window_is_screen(w)) {
+        d->bitmap = d->screen->RastPort.BitMap; /* not ours: never freed */
+        d->direct = TRUE;
+        return TRUE;
+    }
     d->bitmap = alloc_render_bitmap(d->width, d->height, w->RPort->BitMap);
     if (!d->bitmap) {
         ogles2_log("display: no %ldx%ld offscreen bitmap", (ULONG)d->width, (ULONG)d->height);
@@ -253,14 +313,15 @@ BOOL ogles2_display_set_bitmap(struct OGLES2Display *d, struct BitMap *bitmap)
 /* aglSetParams2(OGLES2_CCT_WINDOW): a window-mode display renders into
  * another window, or into the same one at its new size, from the next frame
  * (SDL does this when it recreates or resizes its window). A new offscreen
- * bitmap of the window's inner size; on failure the display is as before.
- * The old bitmap is not freed: the caller frees it (ogles2_display_drop) or
- * goes back to the old display. Between jobs (the caller finishes the
- * running one). */
+ * bitmap of the window's inner size, or the screen's bitmap for a window
+ * that is all of its screen (window_is_screen); on failure the display is
+ * as before. The old bitmap is not freed: the caller frees it
+ * (ogles2_display_drop) or goes back to the old display. Between jobs (the
+ * caller finishes the running one). */
 BOOL ogles2_display_set_window(struct OGLES2Display *d, struct Window *w)
 {
     struct OGLES2Display old = *d;
-    if (!w || !d->window || d->own_window || d->own_screen || !d->own_bitmap) {
+    if (!w || !d->window || d->own_window || d->own_screen || !(d->own_bitmap || d->direct)) {
         ogles2_log("aglSetParams2: OGLES2_CCT_WINDOW: %s",
                    (ULONG)(w ? "the context was not created with OGLES2_CCT_WINDOW" : "no window"));
         return FALSE;
@@ -270,6 +331,7 @@ BOOL ogles2_display_set_window(struct OGLES2Display *d, struct Window *w)
         return TRUE; /* the same window at the same size */
     d->bitmap = 0;
     d->own_bitmap = FALSE;
+    d->direct = FALSE;
     if (!open_window_target(d, w) || d->width < 1 || d->height < 1 || d->width > 4096 ||
         d->height > 4096 || !probe_bitmap(d)) {
         ogles2_log("aglSetParams2: window 0x%08lx (%ldx%ld) refused, the old one stays", (ULONG)w,
@@ -320,7 +382,7 @@ void ogles2_display_wait_refresh(struct OGLES2Display *d)
         d->boosted = me;
         SetTaskPri(me, REFRESH_WAIT_PRI);
     }
-    if (d->own_screen && d->screen)
+    if ((d->own_screen || d->direct) && d->screen)
         WaitBOVP(&d->screen->ViewPort); /* the screen's own refresh */
     else
         WaitTOF();
@@ -404,6 +466,7 @@ BOOL ogles2_display_open(struct OGLES2Display *d, struct TagItem *tags, ULONG *w
         return FALSE;
     }
     ogles2_log("display: %s, %ldx%ld, %s", (ULONG)(bitmap ? "application bitmap" :
+                                                d->direct ? "application window, all of its screen (no copy)" :
                                                 window ? "application window" :
                                                 d->own_screen ? "fullscreen" : "own window"),
                (ULONG)d->width, (ULONG)d->height, (ULONG)(d->rb_swap ? "BGRA" : "RGBA"));
@@ -427,12 +490,13 @@ BOOL ogles2_display_lock(struct OGLES2Display *d)
  * reads the bitmap -- the application's own, or the window's copy -- each
  * job cleans its lines before the render (job.c cleans the whole data
  * cache then, M6) and invalidates them after, while locked (exec's rule for
- * a device writing memory). A fullscreen screen is read by the display, not
- * the CPU: ogles2_display_read invalidates what it reads. */
+ * a device writing memory). A fullscreen screen (ours, or the one a window
+ * is all of) is read by the display, not the CPU: ogles2_display_read
+ * invalidates what it reads. */
 void ogles2_display_dma(struct OGLES2Display *d, BOOL after)
 {
     ULONG len;
-    if (!d->lock || d->own_screen)
+    if (!d->lock || d->own_screen || d->direct)
         return;
     len = d->bprow * d->height;
     if (after)
@@ -454,7 +518,7 @@ void ogles2_display_read(struct OGLES2Display *d, UWORD x, UWORD y, UWORD w, UWO
 {
     struct RastPort rp;
     UWORD r;
-    if (d->own_screen && h && ogles2_display_lock(d)) {
+    if ((d->own_screen || d->direct) && h && ogles2_display_lock(d)) {
         /* The rows y .. y+h-1, bottom-up: in memory from the top one. */
         ULONG len = d->bprow * h;
         CachePostDMA((APTR)(d->base + d->bprow * (ULONG)(d->height - (y + h))), &len, 0);
@@ -472,8 +536,9 @@ void ogles2_display_present(struct OGLES2Display *d)
 {
     struct Window *w = d->window;
     if (!w || !d->own_bitmap)
-        return; /* fullscreen draws into the screen (with vsync, after the wait:
-                 * frame.c); an application bitmap is the application's to present */
+        return; /* fullscreen, and a window that is all of its screen, draw into
+                 * the screen (with vsync, after the wait: frame.c); an
+                 * application bitmap is the application's to present */
     if (d->vsync)
         WaitTOF(); /* the copy at the refresh */
     /* A GimmeZeroZero window's RPort is its inner area already (SDL opens

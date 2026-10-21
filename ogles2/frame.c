@@ -21,9 +21,9 @@ void ogles2_aglSwapBuffers(struct OGLES2Context *ctx)
     ULONG t0, t1;
     if (!has_surface(ctx))
         return;
-    /* Vsync on a screen of our own: the frame goes out at the refresh
-     * (display.c). */
-    if (ctx->display.vsync && ctx->display.own_screen)
+    /* Vsync on a screen of our own, or the one a window is all of: the
+     * frame goes out at the refresh (display.c). */
+    if (ctx->display.vsync && (ctx->display.own_screen || ctx->display.direct))
         ogles2_display_wait_refresh(&ctx->display);
     ogles2_job_flush(ctx, TRUE);
     ogles2_display_wait_done(&ctx->display);
@@ -316,8 +316,10 @@ static void set_window(struct OGLES2Context *ctx, struct Window *w)
     old = ctx->display;
     if (!ogles2_display_set_window(&ctx->display, w))
         return;
-    if (ctx->display.bitmap == old.bitmap)
-        return; /* the same window at the same size */
+    if (ctx->display.window == old.window && ctx->display.bitmap == old.bitmap &&
+        ctx->display.width == old.width && ctx->display.height == old.height)
+        return; /* the same window at the same size (a screen's bitmap, unlike
+                 * an offscreen one, can be the same for another window) */
     if (ctx->display.width != old.width || ctx->display.height != old.height) {
         ogles2_job_free(ctx); /* the depth/stencil save is the old size */
         if (!ogles2_device_context_resize(ctx->v3d, ctx->display.width, ctx->display.height)) {
@@ -330,7 +332,8 @@ static void set_window(struct OGLES2Context *ctx, struct Window *w)
     }
     ogles2_display_drop(&old);
     ogles2_fb_update(ctx);
-    ogles2_log("aglSetParams2: window 0x%08lx, %ldx%ld", (ULONG)w, ctx->width, ctx->height);
+    ogles2_log("aglSetParams2: window 0x%08lx, %ldx%ld%s", (ULONG)w, ctx->width, ctx->height,
+               (ULONG)(ctx->display.direct ? ", all of its screen (no copy)" : ""));
 }
 
 void ogles2_aglSetParams2(struct OGLES2Context *ctx, struct TagItem *tags)

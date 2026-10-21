@@ -126,7 +126,11 @@ Where a context draws is chosen when it is created:
   OGLES2_CCT_WINDOW, your window
       The usual choice. Open it on a 32-bit RTG screen (the Workbench, as a
       rule), with the IDCMP you need. Each aglSwapBuffers copies the frame
-      into the window's inner area.
+      into the window's inner area. A borderless window at 0,0 that is all
+      of a 32-bit screen of your own (not a public one) gets no copy: the
+      frame is drawn straight into the screen, as with OGLES2_CCT_MODEID
+      (SDL's full screen is such a window). Close the window only after
+      aglDestroyContext.
       Resizing: on IDCMP_NEWSIZE call
           aglSetParamsTags2(OGLES2_CCT_WINDOW, (ULONG)win,
                             OGLES2_CCT_GET_WIDTH, (ULONG)&w,

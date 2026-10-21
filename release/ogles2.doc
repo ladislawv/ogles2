@@ -282,6 +282,11 @@ ogles2.library/aglCreateContext2               ogles2.library/aglCreateContext2
            OGLES2_CCT_WINDOW (struct Window *): into the program's window;
                each aglSwapBuffers() copies the frame into the window's
                inner area. The window should be on a 32-bit RTG screen.
+               A borderless window at 0,0 of its screen's size, on a
+               32-bit custom screen that is not public, is drawn into
+               directly, without the copy, as a full screen
+               (ENV:OGLES2/WindowCopy 1: the copy always). Close the
+               window only after aglDestroyContext().
            OGLES2_CCT_MODEID (ULONG): a full screen of its own in this
                display mode (OGLES2_CCT_CONTEXT_FOR_MODEID is the same),
                with a backdrop window for input
