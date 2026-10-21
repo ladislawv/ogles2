@@ -40,8 +40,11 @@ done
 VER=$(sed -n 's/^#define OGLES2_LIB_VERSION *\([0-9]*\).*/\1/p' "$REPO/ogles2/ogles2_internal.h")
 REV=$(sed -n 's/^#define OGLES2_LIB_REVISION *\([0-9]*\).*/\1/p' "$REPO/ogles2/ogles2_internal.h")
 VERSION=$VER.$REV
+# the archives' name: the release (OGLES2_RELEASE), which may be newer than the library's version.revision
+RELEASE=$(sed -n 's/^#define OGLES2_RELEASE *"\([^"]*\)".*/\1/p' "$REPO/ogles2/ogles2_internal.h")
+RELEASE=${RELEASE:-$VERSION}
 R=$OUT/ogles2
-echo "ogles2 $VERSION -> $R"
+echo "ogles2 $RELEASE (library $VERSION) -> $R"
 
 # ---- builds
 make -C "$REPO" -j8 B="$B" > /dev/null
@@ -51,7 +54,7 @@ make -C "$REPO" B="$B" vbcc > /dev/null
     exit 1
 }
 
-rm -rf "$R" "$OUT/ogles2-$VERSION.lha" "$OUT/work"
+rm -rf "$R" "$OUT/ogles2-$RELEASE.lha" "$OUT/work"
 mkdir -p "$R"/{Libs,C,Examples,SDK/include,SDK/lib,SDK/doc,SDK/examples,licences/Mesa} "$OUT/work"
 
 # Text files: LF line ends and ASCII, as AmigaOS's tools expect.
@@ -150,13 +153,13 @@ echo "examples: GCC and vbcc builds ok"
 #   ogles2-<v>-sdk.lha  the same with SDK/
 #   ogles2-<v>-sdk.zip  SDK/ alone (with the licences), for cross development on a PC
 # LhA archives: lh5, which every Amiga LhA/LZX/UnArc version reads.
-rm -f "$OUT"/ogles2-$VERSION*.lha "$OUT"/ogles2-$VERSION*.zip
-(cd "$OUT" && $LHA -ao5q "ogles2-$VERSION-sdk.lha" ogles2)
+rm -f "$OUT"/ogles2-$RELEASE*.lha "$OUT"/ogles2-$RELEASE*.zip
+(cd "$OUT" && $LHA -ao5q "ogles2-$RELEASE-sdk.lha" ogles2)
 rm -rf "$W/user" && mkdir -p "$W/user" && cp -r "$R" "$W/user/" && rm -rf "$W/user/ogles2/SDK"
-(cd "$W/user" && $LHA -ao5q "$OUT/ogles2-$VERSION.lha" ogles2)
-S=$W/zip/ogles2-sdk-$VERSION
+(cd "$W/user" && $LHA -ao5q "$OUT/ogles2-$RELEASE.lha" ogles2)
+S=$W/zip/ogles2-sdk-$RELEASE
 rm -rf "$W/zip" && mkdir -p "$S" && cp -r "$R/SDK/." "$S/" && cp -r "$R/LICENSE" "$R/licences" "$S/"
-python3 - "$W/zip" "ogles2-sdk-$VERSION" "$OUT/ogles2-$VERSION-sdk.zip" <<'EOF'
+python3 - "$W/zip" "ogles2-sdk-$RELEASE" "$OUT/ogles2-$RELEASE-sdk.zip" <<'EOF'
 import os, sys, zipfile
 base, top, out = sys.argv[1:]
 with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
@@ -166,9 +169,9 @@ with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
             p = os.path.join(d, f)
             z.write(p, os.path.relpath(p, base))
 EOF
-(cd "$OUT" && $LHA -l "ogles2-$VERSION.lha" | tail -3)
-ls -l "$OUT"/ogles2-$VERSION*.lha "$OUT"/ogles2-$VERSION*.zip
-(cd "$OUT" && sha256sum ogles2-$VERSION*.lha ogles2-$VERSION*.zip)
+(cd "$OUT" && $LHA -l "ogles2-$RELEASE.lha" | tail -3)
+ls -l "$OUT"/ogles2-$RELEASE*.lha "$OUT"/ogles2-$RELEASE*.zip
+(cd "$OUT" && sha256sum ogles2-$RELEASE*.lha ogles2-$RELEASE*.zip)
 
 # ---- "sdl": the SDL archive (unpacks over the SDK archive: the drawers merge)
 #   ogles2-<v>-sdl.lha  ogles2/SDK/{SDL2,SDL3,MiniGL,doc/SDL.md,examples-sdl},
@@ -211,12 +214,12 @@ if [ $SDL = 1 ]; then
         $TC/bin/m68k-amigaos-strip -o "$RS/Examples/SDL/$p" "$W/sdk-sdl/examples-sdl/$p"
     done
     echo "SDL examples: built"
-    rm -f "$OUT"/ogles2-$VERSION-sdl.lha "$OUT"/ogles2-$VERSION-sdl.zip
-    (cd "$OUT/sdl" && $LHA -ao5q "$OUT/ogles2-$VERSION-sdl.lha" ogles2)
-    SZ=$W/zip-sdl/ogles2-sdk-$VERSION
+    rm -f "$OUT"/ogles2-$RELEASE-sdl.lha "$OUT"/ogles2-$RELEASE-sdl.zip
+    (cd "$OUT/sdl" && $LHA -ao5q "$OUT/ogles2-$RELEASE-sdl.lha" ogles2)
+    SZ=$W/zip-sdl/ogles2-sdk-$RELEASE
     rm -rf "$W/zip-sdl" && mkdir -p "$SZ" && cp -r "$RS/SDK/." "$SZ/" && cp -r "$RS/LICENSE" "$RS/licences" "$SZ/"
     text "$HERE/ReadMe-SDL" "$SZ/ReadMe-SDL"
-    python3 - "$W/zip-sdl" "ogles2-sdk-$VERSION" "$OUT/ogles2-$VERSION-sdl.zip" <<'PYEOF'
+    python3 - "$W/zip-sdl" "ogles2-sdk-$RELEASE" "$OUT/ogles2-$RELEASE-sdl.zip" <<'PYEOF'
 import os, sys, zipfile
 base, top, out = sys.argv[1:]
 with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
@@ -226,7 +229,7 @@ with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
             p = os.path.join(d, f)
             z.write(p, os.path.relpath(p, base))
 PYEOF
-    ls -l "$OUT"/ogles2-$VERSION-sdl.lha "$OUT"/ogles2-$VERSION-sdl.zip
+    ls -l "$OUT"/ogles2-$RELEASE-sdl.lha "$OUT"/ogles2-$RELEASE-sdl.zip
 fi
 
 # ---- "dist": the archives into the repository (release/dist/), for those
@@ -235,7 +238,7 @@ fi
 if [ $DIST = 1 ]; then
     rm -f "$HERE"/dist/ogles2-*.lha "$HERE"/dist/ogles2-*.zip
     mkdir -p "$HERE/dist"
-    cp "$OUT"/ogles2-$VERSION*.lha "$OUT"/ogles2-$VERSION*.zip "$HERE/dist/"
-    (cd "$HERE/dist" && sha256sum ogles2-$VERSION*.lha ogles2-$VERSION*.zip > SHA256SUMS)
+    cp "$OUT"/ogles2-$RELEASE*.lha "$OUT"/ogles2-$RELEASE*.zip "$HERE/dist/"
+    (cd "$HERE/dist" && sha256sum ogles2-$RELEASE*.lha ogles2-$RELEASE*.zip > SHA256SUMS)
     echo "copied to $HERE/dist"
 fi

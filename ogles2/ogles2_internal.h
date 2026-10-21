@@ -20,7 +20,10 @@
  * glGetString's GL_VERSION (context.c) names the same revision. */
 #define OGLES2_LIB_VERSION  1
 #define OGLES2_LIB_REVISION 3
-#define OGLES2_LIB_DATE     "13.10.2026"
+#define OGLES2_LIB_DATE     "21.10.2026"
+/* the release's name (its archives, release/build_release.sh): a release may
+   rebuild a library without a new version.revision */
+#define OGLES2_RELEASE      "1.3.1"
 
 struct OGLES2Library
 {
