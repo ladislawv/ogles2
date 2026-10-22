@@ -84,6 +84,20 @@ A program links `-lSDL2 -logles2 -lminigl -ldebug -lamiga -lm881 -lstubs`
   `AHIST_S16S`, played them byte-swapped: noise at every level. The loop now
   stops at the match. `tests/audiotest.c` did not show it: it counts the
   callback's buffers, it does not listen. The Paula driver was not affected.
+- **`patches/0005-os3-atomics-no-spin.patch`** (2026-10-22): SDL's atomics
+  without spinlocks. SDL2_68k has no native atomics (`HAVE_GCC_ATOMICS` off),
+  so `SDL_atomic.c` emulated every atomic operation (`SDL_AtomicGet`, `Add`,
+  `CAS`) with one of 32 spinlocks, and `SDL_AtomicLock` waited on them with
+  `SDL_Delay(0)`. exec always runs the highest-priority ready task, so that
+  gives nothing to a holder of lower priority: when the audio thread
+  (priority 10) wanted the lock the application's task (0) held, it spun for
+  ever, and everything under priority 10 stopped (the whole A1200 froze at
+  random, seconds to minutes in; a flight recorder above priority 20 showed
+  the application standing in `SDL_AtomicLock` under `SDL_AtomicAdd` and the
+  audio thread ready in every sample). On AmigaOS 3 the atomics now run under
+  `Forbid()`/`Permit()`, atomic against every task on its one CPU, and
+  `SDL_AtomicLock`, still used for a few rare locks, sleeps a tick
+  (`SDL_Delay(1)`) between tries.
 - **`-fbbb=abcfhilmnprsz0`**: the library and tests are built with ogles2's
   optimiser passes (without "e").
 - **`tests/run_for.c`**: a `main` for SDL's test programs on the test

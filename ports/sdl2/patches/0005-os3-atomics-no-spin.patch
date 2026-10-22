@@ -1,0 +1,79 @@
+diff --git a/libSDL2-amigaos3-main/src/atomic/SDL_atomic.c b/libSDL2-amigaos3-main/src/atomic/SDL_atomic.c
+index 79a006d5..11023ca0 100644
+--- a/libSDL2-amigaos3-main/src/atomic/SDL_atomic.c
++++ b/libSDL2-amigaos3-main/src/atomic/SDL_atomic.c
+@@ -109,7 +109,28 @@ extern __inline int _SDL_xadd_watcom(volatile int *a, int v);
+ #define EMULATE_CAS
+ #endif
+ 
+-#ifdef EMULATE_CAS
++#if defined(EMULATE_CAS) && defined(__AMIGAOS3__)
++/* AmigaOS 3: the read-modify-write under Forbid(), which on its one CPU is
++   atomic against every other task; no spinlock, so nothing ever waits. With
++   the spinlocks below, a task of higher priority (the audio thread, 10) that
++   wanted the lock a lower one held (the application's task, 0, in an
++   SDL_AtomicAdd) spun for ever: the holder never ran again to release it,
++   and everything under priority 10 stopped (an application froze the whole
++   A1200 at random, seconds to minutes in). */
++#include <proto/exec.h>
++
++static SDL_INLINE void enterLock(void *a)
++{
++    (void)a;
++    Forbid();
++}
++
++static SDL_INLINE void leaveLock(void *a)
++{
++    (void)a;
++    Permit();
++}
++#elif defined(EMULATE_CAS)
+ static SDL_SpinLock locks[32];
+ 
+ static SDL_INLINE void enterLock(void *a)
+diff --git a/libSDL2-amigaos3-main/src/atomic/SDL_spinlock.c b/libSDL2-amigaos3-main/src/atomic/SDL_spinlock.c
+index f68560fe..d54b4a9d 100644
+--- a/libSDL2-amigaos3-main/src/atomic/SDL_spinlock.c
++++ b/libSDL2-amigaos3-main/src/atomic/SDL_spinlock.c
+@@ -204,8 +204,16 @@ void SDL_AtomicLock(SDL_SpinLock *lock)
+             iterations++;
+             SDL_CPUPauseInstruction();
+         } else {
++#ifdef __AMIGAOS3__
++            /* A real sleep. exec always runs the highest-priority task
++               that is ready, so a "yield" (Delay(0)) gives nothing to a
++               holder of lower priority, which then never runs to release
++               the lock. One tick (20 ms) lets it. */
++            SDL_Delay(1);
++#else
+             /* !!! FIXME: this doesn't definitely give up the current timeslice, it does different things on various platforms. */
+             SDL_Delay(0);
++#endif
+         }
+     }
+ }
+diff --git a/libSDL2-amigaos3-main/src/timer/amigaos3/SDL_systimer.c b/libSDL2-amigaos3-main/src/timer/amigaos3/SDL_systimer.c
+index 0c29a825..6732a4f3 100644
+--- a/libSDL2-amigaos3-main/src/timer/amigaos3/SDL_systimer.c
++++ b/libSDL2-amigaos3-main/src/timer/amigaos3/SDL_systimer.c
+@@ -183,14 +183,13 @@ void SDL_Delay(Uint32 ms)
+ {
+     /* dos.library Delay() for coarse timing.
+        Delay(n) waits n * 1/50 s (one 50Hz tick ~= 20ms per tick).
+-       Delay(0) yields the current timeslice immediately -- this is
+-       CRITICAL for AmigaOS cooperative multitasking: SDL_AtomicLock
+-       calls SDL_Delay(0) inside its spin loop, and without a real
+-       yield the waiting task monopolizes the CPU and starves the task
+-       that holds the lock. */
++       Delay(0) returns at once. It is no yield to a task of lower
++       priority: exec runs the highest-priority ready task, so a waiter
++       that loops on Delay(0) still starves a lower-priority holder
++       (SDL_AtomicLock sleeps a tick instead). */
+     ULONG ticks;
+     if (ms == 0) {
+-        /* Yield immediately -- Delay(0) does one task switch on AmigaOS */
++        /* Delay(0): to tasks of the same priority at most (see above) */
+         Delay(0UL);
+     } else {
+         /* Round up: 1 tick = 20ms at 50Hz.  Use (ms + 19) / 20 to
