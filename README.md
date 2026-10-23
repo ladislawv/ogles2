@@ -169,8 +169,8 @@ link them. Third-party code and the ports keep their own licences and notices (`
 
 ogles2 is developed by R-Typer and Ladislawv, with Claude Opus 5.5 (Anthropic's AI assistant).
 
-It builds on: PiStorm3D (`minigl.library` for PiStorm) by Steffen "MagicSN" Haeuser, whose V3D
-backend this library builds on, with Dennis van der Boon; the V3D assembler and V3D documentation by Macoy Madson; Mesa's
+It builds on: PiStorm3D (`minigl.library` for PiStorm) by Steffen "MagicSN" Haeuser, and its V3D
+backend, which this library builds on, by Dennis van der Boon; the V3D assembler and V3D documentation by Macoy Madson; Mesa's
 V3D driver and compiler (Broadcom, VMware and the Mesa contributors); Emu68 by Michal Schulz;
 PiStorm by Claude Schwarz and contributors; bebbo's amiga-gcc; SDL2_68k and SDL3_68k by Steffen
 Haeuser.
