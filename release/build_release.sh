@@ -136,11 +136,11 @@ python3 "$REPO/v3dp/v3ds_record.py" "$R/Examples/shaders" "$W"/src/*.vert "$W"/s
 cp -r "$R/SDK/." "$W/sdk/"
 make -C "$W/sdk/examples" CC="$TC/bin/m68k-amigaos-gcc" > "$W/examples-gcc.txt"
 for p in triangle cube boingocean; do
-    $TC/bin/m68k-amigaos-strip -o "$R/Examples/$p" "$W/sdk/examples/$p"
+    $TC/bin/m68k-amigaos-strip -o "$R/Examples/$p" "$W/sdk/examples/$p" && chmod 755 "$R/Examples/$p"
 done
 # Boing 2026: GCC only (its sound calls BeginIO through GCC's inline assembly)
 make -C "$W/sdk/examples/boing2026" CC="$TC/bin/m68k-amigaos-gcc" boing2026 >> "$W/examples-gcc.txt"
-$TC/bin/m68k-amigaos-strip -o "$R/Examples/boing2026" "$W/sdk/examples/boing2026/boing2026"
+$TC/bin/m68k-amigaos-strip -o "$R/Examples/boing2026" "$W/sdk/examples/boing2026/boing2026" && chmod 755 "$R/Examples/boing2026"
 text "$B26/ReadMe.txt" "$R/Examples/boing2026.txt"
 mkdir -p "$W/sdk-vbcc" && cp -r "$R/SDK/." "$W/sdk-vbcc/"
 PATH=$VBCC/bin:$PATH VBCC=$VBCC make -C "$W/sdk-vbcc/examples" vbcc \
@@ -211,7 +211,7 @@ if [ $SDL = 1 ]; then
     make -C "$W/sdk-sdl/examples-sdl" CC="$TC/bin/m68k-amigaos-gcc" > "$W/examples-sdl.txt" 2>&1 ||
         { grep -v lang_reloc "$W/examples-sdl.txt" | tail -20; exit 1; } # the linker traces relocations on stderr
     for p in sdl2_sprites sdl3_gles2; do
-        $TC/bin/m68k-amigaos-strip -o "$RS/Examples/SDL/$p" "$W/sdk-sdl/examples-sdl/$p"
+        $TC/bin/m68k-amigaos-strip -o "$RS/Examples/SDL/$p" "$W/sdk-sdl/examples-sdl/$p" && chmod 755 "$RS/Examples/SDL/$p"
     done
     echo "SDL examples: built"
     rm -f "$OUT"/ogles2-$RELEASE-sdl.lha "$OUT"/ogles2-$RELEASE-sdl.zip

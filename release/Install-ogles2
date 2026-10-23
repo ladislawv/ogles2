@@ -1,4 +1,4 @@
-; Install-ogles2 - installs ogles2.library 1.3 (release 1.3.1). See ReadMe.
+; Install-ogles2 - installs ogles2.library 1.3 (release 1.3.2). See ReadMe.
 ; From a Shell, in this drawer:   Execute Install-ogles2
 ; It asks before each step; with ALL it does every step without asking:
 ;                                 Execute Install-ogles2 ALL
@@ -13,7 +13,7 @@ If NOT EXISTS Libs/ogles2.library
   Quit 20
 EndIf
 
-Echo "ogles2.library 1.3 (release 1.3.1): OpenGL ES 2.0 for PiStorm (Raspberry Pi 4)"
+Echo "ogles2.library 1.3 (release 1.3.2): OpenGL ES 2.0 for PiStorm (Raspberry Pi 4)"
 Echo ""
 
 ; ---- the library
