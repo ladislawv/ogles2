@@ -1561,6 +1561,8 @@ M6's exit criterion. Each row is a workload measured on the test A1200 (Pi 4B, E
 
 **Done (2026-10-24): SDL3's atomics tested on the A1200** (`ports/sdl3/patches/0002-os3-atomics-no-spin.patch`, `ports/sdl3/tests/atomictest.c`). The test has SDL3's audio thread (priority 10) and the application's task hammer one atomic counter, a CAS loop and a spinlock while a tone plays through AHI; `--hold` makes the task keep the spinlock 2 s while the audio thread waits. Patched: two 60 s runs and a 15 s `--hold` run pass, no update lost, about 37 million atomic updates a minute. **Unpatched (the same tree without 0002): it passes too**, also under `--hold` (20 million a minute): SDL3_68k's `SDL_Delay(0)` is dos.library's `Delay(0)`, which sleeps, so a waiting thread lets a lower-priority holder run. SDL3_68k does not have SDL2's freeze (0002's commit message assumed it did); the patch stays for the unguarded mutex creation it removes and for speed (about 1.9x). Runs `s3at-20261024-210206`, `s3old-20261024-210659`, `s3h-20261024-211031`.
 
+**Done (2026-10-24): the 1.3.2 SDL archives rebuilt with SDL3's patch 0002** (`release/dist/ogles2-1.3.2-sdl.*`, as 1.3.1's were with SDL2's 0005). Only `libSDL3.a` and the SDL3 example changed; the user and SDK archives are unchanged (a rebuild differed in file dates only, so the committed ones stay). The GitHub release `v1.3.2` carries the new SDL files and `SHA256SUMS`.
+
 **Next, in order (M6: ecosystem, sharing and performance, §9):**
 1. **After the release:**
    - the next archives to carry the fullscreen window drawn without the copy (2026-10-20, above) and SDL2's relative mouse mode and AHI fix (2026-10-21, above);
