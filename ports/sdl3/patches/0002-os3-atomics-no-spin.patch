@@ -1,0 +1,100 @@
+diff --git a/SDL3/src/atomic/SDL_atomic.c b/SDL3/src/atomic/SDL_atomic.c
+index f14bd10..4012b69 100644
+--- a/SDL3/src/atomic/SDL_atomic.c
++++ b/SDL3/src/atomic/SDL_atomic.c
+@@ -73,7 +73,27 @@
+ #define EMULATE_CAS 1
+ #endif
+ 
+-#ifdef EMULATE_CAS
++#if defined(EMULATE_CAS) && defined(__AMIGAOS3__)
++/* AmigaOS 3: the read-modify-write under Forbid(), which on its one CPU is
++   atomic against every other task; no spinlock, so nothing ever waits. With
++   the spinlocks below, a task of higher priority (the audio thread, 10) that
++   wanted the lock a lower one held (the application's task, 0, in an
++   SDL_AddAtomicInt) spun for ever: the holder never ran again to release it,
++   and everything under that priority stopped (ports/sdl2 patch 0005). */
++#include <proto/exec.h>
++
++static SDL_INLINE void enterLock(void *a)
++{
++    (void)a;
++    Forbid();
++}
++
++static SDL_INLINE void leaveLock(void *a)
++{
++    (void)a;
++    Permit();
++}
++#elif defined(EMULATE_CAS)
+ static SDL_SpinLock locks[32];
+ 
+ static SDL_INLINE void enterLock(void *a)
+diff --git a/SDL3/src/atomic/SDL_spinlock.c b/SDL3/src/atomic/SDL_spinlock.c
+index c048866..9ca9a17 100644
+--- a/SDL3/src/atomic/SDL_spinlock.c
++++ b/SDL3/src/atomic/SDL_spinlock.c
+@@ -40,6 +40,10 @@
+ #include <kernel.h>
+ #endif
+ 
++#if !defined(HAVE_GCC_ATOMICS) && defined(__AMIGAOS3__)
++#include <proto/exec.h>
++#endif
++
+ #if !defined(HAVE_GCC_ATOMICS) && defined(SDL_PLATFORM_MACOS)
+ #include <libkern/OSAtomic.h>
+ #endif
+@@ -112,6 +116,20 @@ bool SDL_TryLockSpinlock(SDL_SpinLock *lock)
+ #elif defined(SDL_PLATFORM_SOLARIS) && !defined(_LP64)
+     // Used for Solaris with non-gcc compilers.
+     return ((int)atomic_cas_32((volatile uint32_t *)lock, 0, 1) == 0);
++#elif defined(__AMIGAOS3__)
++    /* Under Forbid(), as PS2 below with interrupts off: atomic against
++       every other task on the one CPU. (The mutex fallback created its
++       mutex unguarded on first use.) */
++    bool res = false;
++
++    Forbid();
++    if (*lock == 0) {
++        *lock = 1;
++        res = true;
++    }
++    Permit();
++    return res;
++
+ #elif defined(PS2)
+     uint32_t oldintr;
+     bool res = false;
+@@ -156,8 +174,16 @@ void SDL_LockSpinlock(SDL_SpinLock *lock)
+             iterations++;
+             SDL_CPUPauseInstruction();
+         } else {
++#ifdef __AMIGAOS3__
++            /* A real sleep. exec always runs the highest-priority task
++               that is ready, so a "yield" (Delay(0)) gives nothing to a
++               holder of lower priority, which then never runs to release
++               the lock. One tick (20 ms) lets it. */
++            SDL_Delay(1);
++#else
+             // !!! FIXME: this doesn't definitely give up the current timeslice, it does different things on various platforms.
+             SDL_Delay(0);
++#endif
+         }
+     }
+ }
+diff --git a/SDL3/src/timer/amigaos3/SDL_systimer.c b/SDL3/src/timer/amigaos3/SDL_systimer.c
+index 3b8c1ee..e152d18 100644
+--- a/SDL3/src/timer/amigaos3/SDL_systimer.c
++++ b/SDL3/src/timer/amigaos3/SDL_systimer.c
+@@ -108,6 +108,9 @@ void SDL_SYS_DelayNS(Uint64 ns)
+     ULONG ticks;
+ 
+     if (ns == 0) {
++        /* Delay(0) returns at once: no yield to a task of lower priority,
++           as exec runs the highest-priority ready task (SDL_LockSpinlock
++           sleeps a tick instead). */
+         Delay(0);
+         return;
+     }

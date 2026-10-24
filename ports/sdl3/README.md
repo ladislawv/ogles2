@@ -49,6 +49,16 @@ compiled with `-fshort-wchar` (below).
   building the GLES2 renderer with `$(OGLES2_CFLAGS)` and `-fshort-wchar`.
   The driver already keeps SDL from emulating the window surface with a
   texture (`checked_texture_framebuffer`), which SDL2_68k needed a patch for.
+- **`patches/0002-os3-atomics-no-spin.patch`** (2026-10-24): SDL's atomics
+  without spinlocks, as `ports/sdl2`'s patch 0005. SDL3_68k has no native
+  atomics either (`HAVE_GCC_ATOMICS` off), so every atomic operation took one
+  of 32 spinlocks and `SDL_LockSpinlock` waited with `SDL_Delay(0)`, which
+  gives nothing to a holder of lower priority (the audio thread, 10, could
+  spin for ever on a lock the application's task, 0, held, and freeze
+  everything under it). On AmigaOS 3 the atomics now run under
+  `Forbid()`/`Permit()`, `SDL_TryLockSpinlock` does too (instead of SDL's
+  mutex fallback, whose mutex was created unguarded on first use), and
+  `SDL_LockSpinlock` sleeps a tick (`SDL_Delay(1)`) between tries.
 - **`-fshort-wchar`**: this toolchain's clib2 defines `wchar_t` as
   `unsigned short`, GCC as 4 bytes; SDL3's `SDL_string.c` asserts they agree.
   SDL3_68k does not build with it otherwise.
