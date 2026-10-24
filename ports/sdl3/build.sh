@@ -76,5 +76,9 @@ for t in testgles2 testsprite testrendercopyex testdraw; do
             "$O/run_for_main.o" "${LIBS[@]}" -o "$O/tests/$t"
     fi
 done
+# Ours for patches/0002: atomictest (the audio thread and the application's
+# task contending for SDL's atomics and spinlocks while a tone plays).
+m68k-amigaos-gcc "${CFLAGS[@]}" "$HERE/tests/atomictest.c" -L"$O" -lSDL3 -L"$B" -logles2 -L"$O/lib" -lminigl \
+    -ldebug -lamiga -lm881 -latomic -lstubs -o "$O/tests/atomictest"
 cp "$L/test/icon.png" "$L/test/sample.png" "$O/tests/"
 ls -l "$O/tests"

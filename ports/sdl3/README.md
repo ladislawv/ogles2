@@ -53,15 +53,26 @@ compiled with `-fshort-wchar` (below).
   without spinlocks, as `ports/sdl2`'s patch 0005. SDL3_68k has no native
   atomics either (`HAVE_GCC_ATOMICS` off), so every atomic operation took one
   of 32 spinlocks and `SDL_LockSpinlock` waited with `SDL_Delay(0)`, which
-  gives nothing to a holder of lower priority (the audio thread, 10, could
-  spin for ever on a lock the application's task, 0, held, and freeze
-  everything under it). On AmigaOS 3 the atomics now run under
-  `Forbid()`/`Permit()`, `SDL_TryLockSpinlock` does too (instead of SDL's
-  mutex fallback, whose mutex was created unguarded on first use), and
-  `SDL_LockSpinlock` sleeps a tick (`SDL_Delay(1)`) between tries.
+  was expected to give nothing to a holder of lower priority, as in SDL2.
+  On AmigaOS 3 the atomics now run under `Forbid()`/`Permit()`,
+  `SDL_TryLockSpinlock` does too (instead of SDL's mutex fallback, whose
+  mutex was created unguarded on first use), and `SDL_LockSpinlock` sleeps a
+  tick (`SDL_Delay(1)`) between tries. **Tested on the A1200 (2026-10-24,
+  `tests/atomictest.c`):** SDL3_68k does NOT have SDL2's freeze. Its
+  `SDL_Delay(0)` (dos.library's `Delay(0)`) does sleep: with the
+  application's task holding a spinlock for 2 s while the audio thread
+  (priority 10) waits for it (`--hold`), the unpatched build ran on and
+  passed, as the patched one does. The patch stays for the mutex race and
+  for speed: about 37 million atomic updates a minute under contention
+  against 20 million unpatched, none lost in either.
 - **`-fshort-wchar`**: this toolchain's clib2 defines `wchar_t` as
   `unsigned short`, GCC as 4 bytes; SDL3's `SDL_string.c` asserts they agree.
   SDL3_68k does not build with it otherwise.
+- **`tests/atomictest.c`**: the audio thread and the application's task
+  contending for one atomic counter, a CAS loop and a spinlock while a quiet
+  tone plays through AHI (`--seconds N`, default 10); `--hold` makes the
+  application's task keep the spinlock 2 s every 3 s. Prints PASS when the
+  audio thread kept running and no update was lost.
 - **`tests/run_for.c`**: the test programs' start on the test station:
   `--seconds N` posts `SDL_EVENT_QUIT` N seconds after the first frame
   (checked at each present; no thread). On AmigaOS 3, `SDL_main.h` makes a
